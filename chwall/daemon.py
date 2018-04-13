@@ -26,13 +26,16 @@ def daemon_loop(road_map, config):
             choose_wallpaper(road_map, config)
             time.sleep(sleep_time)
     except (KeyboardInterrupt, SystemExit):
-        print("Kthxbye!")
+        print("Exit signal received")
     except Exception as e:
         print("{}: {}".format(type(e).__name__, e), file=sys.stderr)
         error_code = 1
     finally:
+        print("Cleaning up…")
         os.unlink(road_map)
         os.unlink("{}/roadmap".format(BASE_CACHE_PATH))
+        if error_code == 0:
+            print("Kthxbye!")
         sys.exit(error_code)
 
 
