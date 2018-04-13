@@ -3,6 +3,7 @@
 import os
 import sys
 import yaml
+import random
 import shutil
 import hashlib
 import requests
@@ -10,6 +11,31 @@ import subprocess
 
 # chwall imports
 from chwall.utils import BASE_CACHE_PATH
+
+
+def build_wallpapers_list(config):
+    print("Fetching pictures addresses…")
+    collecs = {}
+    for module_name in config["general"]["sources"]:
+        m = __import__(
+            "chwall.fetcher.{}".format(module_name),
+            globals(), locals(), ['fetch_pictures'], 0)
+        collecs.update(m.fetch_pictures(config))
+    all_pics = list(collecs.keys())
+    try:
+        with open("{}/blacklist.yml"
+                  .format(BASE_CACHE_PATH), "r") as f:
+            blacklist = yaml.load(f) or []
+    except FileNotFoundError:
+        blacklist = []
+    for p in all_pics:
+        if p not in blacklist:
+            continue
+        print("Remove {} as it's in blacklist".format(p))
+        all_pics.remove(p)
+        collecs.pop(p)
+    random.shuffle(all_pics)
+    return {"data": collecs, "pictures": all_pics, "history": []}
 
 
 def set_mate_wallpaper(path, config):

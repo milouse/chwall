@@ -3,7 +3,6 @@
 import os
 import re
 import yaml
-import random
 import subprocess
 from xdg.BaseDirectory import xdg_cache_home, xdg_config_home
 
@@ -52,30 +51,3 @@ def read_config():
     if "sleep" not in config["general"]:
         config["general"]["sleep"] = 10 * 60
     return config
-
-
-def build_picture_lists(config):
-    print("Fetching pictures addresses…")
-
-    collecs = {}
-    for module_name in config["general"]["sources"]:
-        m = __import__(
-            "chwall.fetcher.{}".format(module_name),
-            globals(), locals(), ['fetch_pictures'], 0)
-        collecs.update(m.fetch_pictures(config))
-    all_pics = list(collecs.keys())
-
-    try:
-        with open("{}/blacklist.yml"
-                  .format(BASE_CACHE_PATH), "r") as f:
-            blacklist = yaml.load(f) or []
-    except FileNotFoundError:
-        blacklist = []
-    for p in all_pics:
-        if p not in blacklist:
-            continue
-        print("Remove {} as it's in blacklist".format(p))
-        all_pics.remove(p)
-        collecs.pop(p)
-    random.shuffle(all_pics)
-    return {"data": collecs, "pictures": all_pics, "history": []}

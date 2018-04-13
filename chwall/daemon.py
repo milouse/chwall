@@ -9,9 +9,8 @@ import tempfile
 
 
 # chwall imports
-from chwall.utils import BASE_CACHE_PATH, build_picture_lists, \
-                         read_config
-from chwall.wallpaper import choose_wallpaper
+from chwall.utils import BASE_CACHE_PATH, read_config
+from chwall.wallpaper import build_wallpapers_list, choose_wallpaper
 
 
 def kill_daemon(_signo, _stack_frame):
@@ -56,7 +55,7 @@ def run_daemon(data, config):
 
 def daemon():
     config = read_config()
-    data = build_picture_lists(config)
+    data = build_wallpapers_list(config)
     run_daemon(data, config)
 
 

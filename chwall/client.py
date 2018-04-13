@@ -6,10 +6,9 @@ import subprocess
 
 
 # chwall imports
-from chwall.utils import BASE_CACHE_PATH, build_picture_lists, \
-                         read_config, temp_file_path
-from chwall.wallpaper import choose_wallpaper, fetch_wallpaper, \
-                             set_wallpaper
+from chwall.utils import BASE_CACHE_PATH, read_config, temp_file_path
+from chwall.wallpaper import build_wallpapers_list, choose_wallpaper, \
+                             fetch_wallpaper, set_wallpaper
 
 
 def blacklist_wallpaper():
@@ -99,7 +98,7 @@ def client():
     if sys.argv[1] != "once":
         run_client(config)
 
-    data = build_picture_lists(config)
+    data = build_wallpapers_list(config)
     wp = fetch_wallpaper(data)
     set_wallpaper(wp[0], config)
 
