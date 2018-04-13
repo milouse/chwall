@@ -40,18 +40,21 @@ def daemon():
     config = read_config()
     data = build_wallpapers_list(config)
     f = tempfile.mkstemp(suffix="_chwall")
-    with open(f[1], "w") as tmp:
-        yaml.dump(data, tmp, explicit_start=True,
-                  default_flow_style=False)
     os.close(f[0])
     road_map = f[1]
     del f
+    newpid = os.fork()
+    if newpid != 0:
+        print("Start loop")
+        return True
+    # In the forked process
+    data["chwall_pid"] = os.getpid()
+    with open(road_map, "w") as tmp:
+        yaml.dump(data, tmp, explicit_start=True,
+                  default_flow_style=False)
     with open("{}/roadmap".format(BASE_CACHE_PATH), "w") as f:
         f.write(road_map)
-    print("Start loop")
-    newpid = os.fork()
-    if newpid == 0:
-        daemon_loop(road_map, config)
+    daemon_loop(road_map, config)
 
 
 if __name__ == "__main__":

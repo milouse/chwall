@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import os
 import sys
 import yaml
 import subprocess
@@ -60,7 +61,7 @@ WantedBy=default.target
 """.strip().format(command=sys.argv[0]))
         sys.exit()
     if sys.argv[1] not in [
-            "blacklist", "history", "info", "next", "pending"]:
+            "blacklist", "history", "info", "next", "pending", "quit"]:
         print_help()
         sys.exit(1)
     road_map = road_map_path()
@@ -81,7 +82,11 @@ WantedBy=default.target
         sys.exit()
     with open(road_map, "r") as f:
         data = yaml.load(f)
-    if action == "history":
+    if action == "quit":
+        print("Kill process {}".format(data["chwall_pid"]))
+        # 15 == signal.SIGTERM
+        os.kill(data["chwall_pid"], 15)
+    elif action == "history":
         print("\n".join(data["history"]))
     elif action == "pending":
         print("\n".join(data["pictures"]))
