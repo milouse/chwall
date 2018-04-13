@@ -21,6 +21,7 @@ def daemon_loop(temp_file, temp_info_file, config):
     sleep_time = config['general']['sleep']
     error_code = 0
     try:
+        signal.signal(signal.SIGTERM, kill_daemon)
         while True:
             choose_wallpaper(temp_file, config)
             time.sleep(sleep_time)
@@ -35,8 +36,9 @@ def daemon_loop(temp_file, temp_info_file, config):
         sys.exit(error_code)
 
 
-def run_daemon(data, config):
-    signal.signal(signal.SIGTERM, kill_daemon)
+def daemon():
+    config = read_config()
+    data = build_wallpapers_list(config)
     f = tempfile.mkstemp(suffix="_chwall")
     with open(f[1], "w") as tmp:
         yaml.dump(data, tmp, explicit_start=True,
@@ -51,12 +53,6 @@ def run_daemon(data, config):
     newpid = os.fork()
     if newpid == 0:
         daemon_loop(temp_file, temp_info_file, config)
-
-
-def daemon():
-    config = read_config()
-    data = build_wallpapers_list(config)
-    run_daemon(data, config)
 
 
 if __name__ == "__main__":
