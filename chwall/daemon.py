@@ -17,13 +17,13 @@ def kill_daemon(_signo, _stack_frame):
     sys.exit(0)
 
 
-def daemon_loop(temp_file, temp_info_file, config):
+def daemon_loop(road_map, config):
     sleep_time = config['general']['sleep']
     error_code = 0
     try:
         signal.signal(signal.SIGTERM, kill_daemon)
         while True:
-            choose_wallpaper(temp_file, config)
+            choose_wallpaper(road_map, config)
             time.sleep(sleep_time)
     except (KeyboardInterrupt, SystemExit):
         print("Kthxbye!")
@@ -31,8 +31,8 @@ def daemon_loop(temp_file, temp_info_file, config):
         print("{}: {}".format(type(e).__name__, e), file=sys.stderr)
         error_code = 1
     finally:
-        os.unlink(temp_file)
-        os.unlink(temp_info_file)
+        os.unlink(road_map)
+        os.unlink("{}/roadmap".format(BASE_CACHE_PATH))
         sys.exit(error_code)
 
 
@@ -44,15 +44,14 @@ def daemon():
         yaml.dump(data, tmp, explicit_start=True,
                   default_flow_style=False)
     os.close(f[0])
-    temp_file = f[1]
+    road_map = f[1]
     del f
-    temp_info_file = "{}/temp".format(BASE_CACHE_PATH)
-    with open(temp_info_file, "w") as f:
-        f.write(temp_file)
+    with open("{}/roadmap".format(BASE_CACHE_PATH), "w") as f:
+        f.write(road_map)
     print("Start loop")
     newpid = os.fork()
     if newpid == 0:
-        daemon_loop(temp_file, temp_info_file, config)
+        daemon_loop(road_map, config)
 
 
 if __name__ == "__main__":

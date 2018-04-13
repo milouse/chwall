@@ -6,7 +6,7 @@ import subprocess
 
 
 # chwall imports
-from chwall.utils import BASE_CACHE_PATH, read_config, temp_file_path
+from chwall.utils import BASE_CACHE_PATH, read_config, road_map_path
 from chwall.wallpaper import build_wallpapers_list, choose_wallpaper, \
                              fetch_wallpaper, set_wallpaper
 
@@ -63,8 +63,8 @@ WantedBy=default.target
             "blacklist", "history", "info", "next", "pending"]:
         print_help()
         sys.exit(1)
-    temp_file = temp_file_path()
-    if not temp_file:
+    road_map = road_map_path()
+    if not road_map:
         print("{} seems not to be running"
               .format(sys.argv[0]), file=sys.stderr)
         sys.exit(1)
@@ -77,9 +77,9 @@ WantedBy=default.target
         action = "next"
     data = {}
     if action == "next":
-        choose_wallpaper(temp_file, config)
+        choose_wallpaper(road_map, config)
         sys.exit()
-    with open(temp_file, "r") as f:
+    with open(road_map, "r") as f:
         data = yaml.load(f)
     if action == "history":
         print("\n".join(data["history"]))

@@ -11,14 +11,14 @@ VERSION = "0.1"
 BASE_CACHE_PATH = "{}/chwall".format(xdg_cache_home)
 
 
-def temp_file_path():
+def road_map_path():
     try:
-        with open("{}/temp".format(BASE_CACHE_PATH), "r") as f:
-            temp_file = f.readline()
+        with open("{}/roadmap".format(BASE_CACHE_PATH), "r") as f:
+            road_map = f.readline()
     except FileNotFoundError:
         return None
-    if os.path.exists(temp_file):
-        return temp_file
+    if os.path.exists(road_map):
+        return road_map
     return None
 
 
