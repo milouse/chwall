@@ -1,0 +1,30 @@
+#+title: README
+#+author: Étienne Deparis
+
+Chwall [[https://en.wiktionary.org/wiki/Appendix:French_pronunciation][\ʃwal\]] is tiny automatic wallpaper changer, written in python.
+
+It's name is the contraction of /change wallpaper/, which may be
+pronounced as a twisted version of /cheval/, which means /horse/ in
+french.
+
+* Goal
+
+Easily change your wallpaper from time to time, benefiting from various
+online sources and your own wallpapers collections.
+
+* Install
+
+#+begin_src bash
+pip install -r requirements.txt
+python setup.py install
+#+end_src bash
+
+* Customize
+
+Put the =chwall.yml.example= file in =~/.config/= and tune it as you
+want. This file is not mandatary. More information about the different
+config keys will come later.
+
+* Credits
+
+The icon is resized [[https://openclipart.org/detail/21282/waved-horse-spring-version-2009][from the work of Bernd Wachtmeister (Touchstone)]].

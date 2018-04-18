@@ -1,0 +1,18 @@
+---
+local:
+  - ~/Pictures/**
+  - /usr/share/wallpapers/**
+bing:
+  - fr-FR
+  - en-US
+  - de-DE
+  - ja-JP
+unsplash:
+  width: 1920
+general:
+  lightdm_wall: /var/cache/last-wall
+  sources:
+    - bing
+    - nasa
+    - unsplash
+    - local
