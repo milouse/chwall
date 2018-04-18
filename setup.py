@@ -9,26 +9,27 @@ with open(os.path.join(os.path.abspath(os.path.dirname(__file__)),
     requirements = f.readlines()
 
 
-setuptools.setup(name="chwall",
-                 version=VERSION,
-                 description="Wallpaper changer daemon and client",
-                 author="Étienne Deparis",
-                 author_email="etienne@depar.is",
-                 license="WTFPL",
-                 url="https://git.deparis.io/chwall",
-                 classifiers=[
-                     "Development Status :: 3 - Alpha",
-                     "Environment :: Console",
-                     "Intended Audience :: End Users/Desktop",
-                     "License :: What The F*** Public License (WTFPL)",
-                     "Programming Language :: Python :: 3"
-                 ],
-                 keywords="wallpaper",
-                 packages=setuptools.find_packages(),
-                 install_requires=requirements,
-                 entry_points={
-                     "console_scripts": [
-                         "chwall-daemon = chwall.daemon:daemon",
-                         "chwall = chwall.client:client"
-                     ]
-                 })
+setuptools.setup(
+    name="chwall",
+    version=VERSION,
+    description="Wallpaper changer daemon and client",
+    author="Étienne Deparis",
+    author_email="etienne@depar.is",
+    license="WTFPL",
+    url="https://git.deparis.io/chwall",
+    classifiers=[
+        "Development Status :: 3 - Alpha",
+        "Environment :: Console",
+        "Intended Audience :: End Users/Desktop",
+        "License :: What The F*** Public License (WTFPL)",
+        "Programming Language :: Python :: 3"
+    ],
+    keywords="wallpaper",
+    packages=setuptools.find_packages(),
+    install_requires=requirements,
+    entry_points={
+        "console_scripts": [
+            "chwall-daemon = chwall.daemon:daemon",
+            "chwall = chwall.client:client"
+        ]
+    })
