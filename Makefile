@@ -1,6 +1,8 @@
 ROOT = /
 DEST = $(ROOT)usr
 
+VERSION = $(shell python -c "from chwall.utils import VERSION;print(VERSION)")
+
 ICON       = data/icon_800.png
 ICON_SIZE  = 128 64 48 32 24 16
 ICON_PATH  = $(foreach z,$(ICON_SIZE),$(z)x$(z))
@@ -12,19 +14,17 @@ PY_SITE    = $(ROOT)usr/lib/python$(PY_VERSION)/site-packages
 
 cut = $(shell echo "$(1)" | cut -dx -f1)
 
-.PHONY: build clean install uninstall
+.PHONY: clean install uninstall
 
-all: build
-
-build: $(ALL_ICONS)
-
-install: build $(DEST_ICONS)
-	python setup.py install --root=$(ROOT) --quiet
+install:
+	python setup.py install --root=$(ROOT)
+	install -d -m755 $(DEST)/share/licenses/chwall
+	install -D -m644 LICENSE $(DEST)/share/licenses/chwall/LICENSE
 
 uninstall:
-	rm -rf $(PY_SITE)/chwall
+	rm -rf $(PY_SITE)/chwall $(PY_SITE)/chwall-$(VERSION)-py$(PY_VERSION).egg-info
+	rm -rf $(DEST)/share/licenses/chwall
 	rm -f $(DEST)/bin/chwall $(DEST)/bin/chwall-daemon
-	rm -f $(DEST_ICONS)
 
 $(DEST)/share/icons/hicolor/%/apps/chwall.png:
 	install -d -m755 $(@:%/chwall.png=%)
