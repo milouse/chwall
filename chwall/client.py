@@ -47,10 +47,18 @@ def print_help():
 
 
 def run_client(config):
+    # Is it an installed version?
+    if os.path.exists("/usr/bin/chwall-daemon"):
+        chwall_cmd = "/usr/bin/chwall-daemon"
+    else:
+        chwall_cmd = "{0}/chwall.py\nWorkingDirectory={0}".format(
+            os.path.realpath(
+                os.path.join(os.path.dirname(__file__), "..")))
     if sys.argv[1] == "systemd":
         print("""
 [Unit]
 Description = Simple wallpaper changer
+After=network.target
 
 [Service]
 Type=forking
@@ -58,7 +66,7 @@ ExecStart={command}
 
 [Install]
 WantedBy=default.target
-""".strip().format(command=sys.argv[0]))
+""".strip().format(command=chwall_cmd))
         sys.exit()
     if sys.argv[1] not in [
             "blacklist", "history", "info", "next", "pending", "quit"]:
