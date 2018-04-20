@@ -67,27 +67,26 @@ ExecStart={command}
 [Install]
 WantedBy=default.target
 """.strip().format(command=chwall_cmd))
-        sys.exit()
+        return True
     if sys.argv[1] not in [
             "blacklist", "history", "info", "next", "pending", "quit"]:
         print_help()
-        sys.exit(1)
+        return False
     road_map = road_map_path()
     if not road_map:
         print("{} seems not to be running"
               .format(sys.argv[0]), file=sys.stderr)
-        sys.exit(1)
+        return False
     if sys.argv[1] == "info":
         display_wallpaper_info()
-        sys.exit()
+        return True
     action = sys.argv[1]
     if action == "blacklist":
         blacklist_wallpaper()
         action = "next"
     data = {}
     if action == "next":
-        choose_wallpaper(road_map, config)
-        sys.exit()
+        return choose_wallpaper(road_map, config)
     with open(road_map, "r") as f:
         data = yaml.load(f)
     if action == "quit":
@@ -98,18 +97,21 @@ WantedBy=default.target
         print("\n".join(data["history"]))
     elif action == "pending":
         print("\n".join(data["pictures"]))
-    sys.exit()
+    return True
 
 
 def client():
     if len(sys.argv) == 1:
         print_help()
-        sys.exit(1)
+        return 1
 
     config = read_config()
 
     if sys.argv[1] != "once":
-        run_client(config)
+        if run_client(config):
+            return 0
+        else:
+            return 1
 
     data = build_wallpapers_list(config)
     wp = fetch_wallpaper(data)
@@ -117,4 +119,4 @@ def client():
 
 
 if __name__ == "__main__":
-    client()
+    sys.exit(client())

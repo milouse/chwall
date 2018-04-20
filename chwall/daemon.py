@@ -23,6 +23,7 @@ def daemon_loop(road_map, config):
     try:
         signal.signal(signal.SIGTERM, kill_daemon)
         while True:
+            # Silently ignore failures
             choose_wallpaper(road_map, config)
             time.sleep(sleep_time)
     except (KeyboardInterrupt, SystemExit):
@@ -36,7 +37,7 @@ def daemon_loop(road_map, config):
         os.unlink("{}/roadmap".format(BASE_CACHE_PATH))
         if error_code == 0:
             print("Kthxbye!")
-        sys.exit(error_code)
+        return error_code
 
 
 def daemon():
@@ -49,7 +50,7 @@ def daemon():
     newpid = os.fork()
     if newpid != 0:
         print("Start loop")
-        sys.exit(0)
+        return 0
     # In the forked process
     data["chwall_pid"] = os.getpid()
     with open(road_map, "w") as tmp:
@@ -57,8 +58,8 @@ def daemon():
                   default_flow_style=False)
     with open("{}/roadmap".format(BASE_CACHE_PATH), "w") as f:
         f.write(road_map)
-    daemon_loop(road_map, config)
+    return daemon_loop(road_map, config)
 
 
 if __name__ == "__main__":
-    daemon()
+    sys.exit(daemon())
