@@ -49,7 +49,7 @@ def daemon():
     newpid = os.fork()
     if newpid != 0:
         print("Start loop")
-        return True
+        sys.exit(0)
     # In the forked process
     data["chwall_pid"] = os.getpid()
     with open(road_map, "w") as tmp:
