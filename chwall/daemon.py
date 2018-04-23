@@ -41,8 +41,6 @@ def daemon_loop(road_map, config):
 
 
 def daemon():
-    config = read_config()
-    data = build_wallpapers_list(config)
     f = tempfile.mkstemp(suffix="_chwall")
     os.close(f[0])
     road_map = f[1]
@@ -52,6 +50,8 @@ def daemon():
         print("Start loop")
         return 0
     # In the forked process
+    config = read_config()
+    data = build_wallpapers_list(config)
     data["chwall_pid"] = os.getpid()
     with open(road_map, "w") as tmp:
         yaml.dump(data, tmp, explicit_start=True,
