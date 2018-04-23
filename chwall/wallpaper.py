@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
 import os
+import sys
+import time
 import yaml
 import random
 import shutil
@@ -12,14 +14,37 @@ import subprocess
 from chwall.utils import BASE_CACHE_PATH
 
 
+WAIT_ERROR = 10
+
+
 def build_wallpapers_list(config):
     print("Fetching pictures addresses…")
     collecs = {}
     for module_name in config["general"]["sources"]:
-        m = __import__(
-            "chwall.fetcher.{}".format(module_name),
-            globals(), locals(), ['fetch_pictures'], 0)
-        collecs.update(m.fetch_pictures(config))
+        try_again = 5
+        ll = {}
+        while try_again > 0:
+            try:
+                m = __import__(
+                    "chwall.fetcher.{}".format(module_name),
+                    globals(), locals(), ['fetch_pictures'], 0)
+                ll = m.fetch_pictures(config)
+                try_again = 0
+            except (requests.exceptions.ConnectionError,
+                    requests.exceptions.HTTPError,
+                    requests.exceptions.Timeout) as e:
+                print("Catch {error} exception while retrieving "
+                      "images from {module}. Wait {time} seconds "
+                      "before retrying.".format(
+                        error=type(e).__name__, module=module_name,
+                        time=WAIT_ERROR),
+                      file=sys.stderr)
+            try_again -= 1
+            try:
+                time.sleep(WAIT_ERROR)
+            except KeyboardInterrupt:
+                try_again = 0
+        collecs.update(ll)
     all_pics = list(collecs.keys())
     try:
         with open("{}/blacklist.yml"
