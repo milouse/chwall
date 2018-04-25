@@ -19,11 +19,17 @@ cut = $(shell echo "$(1)" | cut -dx -f1)
 install:
 	python setup.py install --root=$(ROOT)
 	install -d -m755 $(DEST)/share/licenses/chwall
+	install -d -m755 $(DEST)/share/bash-completion/completions
+	install -d -m755 $(DEST)/share/zsh/site-functions
 	install -D -m644 LICENSE $(DEST)/share/licenses/chwall/LICENSE
+	install -D -m644 data/chwall-completions $(DEST)/share/bash-completion/completions/chwall
+	install -D -m644 data/_chwall $(DEST)/share/zsh/site-functions/_chwall
 
 uninstall:
 	rm -rf $(PY_SITE)/chwall $(PY_SITE)/chwall-$(VERSION)-py$(PY_VERSION).egg-info
 	rm -rf $(DEST)/share/licenses/chwall
+	rm -f $(DEST)/share/bash-completion/completions/chwall
+	rm -f $(DEST)/share/zsh/site-functions/_chwall
 	rm -f $(DEST)/bin/chwall $(DEST)/bin/chwall-daemon
 
 $(DEST)/share/icons/hicolor/%/apps/chwall.png:

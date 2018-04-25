@@ -1,0 +1,16 @@
+# Command name completion for Chwall.
+function _chwall() {
+    local cur commands
+    local cur=${COMP_WORDS[COMP_CWORD]}
+    local prev=${COMP_WORDS[1]}
+
+    case "$prev" in
+        info)
+            commands=open
+            ;;
+        *) commands="blacklist history info next once pending systemd" ;;
+    esac
+
+    COMPREPLY=( $(compgen -o nospace -W "$commands" "$cur") )
+}
+complete -o default -F _chwall chwall f

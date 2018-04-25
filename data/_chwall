@@ -1,0 +1,28 @@
+#compdef chwall
+#autoload
+
+_chwall () {
+	local cmd
+	if (( CURRENT > 2)); then
+		cmd=${words[2]}
+		case "${cmd}" in
+            info)
+                _values 'Open in browser' open
+                ;;
+		esac
+	else
+		local -a subcommands
+		subcommands=(
+            "blacklist:Never use the current wallpaper any more and switch next"
+			"history:Display last used wallpapers"
+            "info:Display information about the current wallpaper"
+            "next:Switch to next wallpaper (only with daemon)"
+            "once:Just set one wallpaper"
+            "pending:Display the upcoming wallpapers"
+            "systemd:Display an exemple service file"
+		)
+		_describe -t commands 'chwall' subcommands
+	fi
+}
+
+_chwall
