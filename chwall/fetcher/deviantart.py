@@ -13,14 +13,14 @@ def fetch_pictures(config):
         return {}
     for q in config["deviantart"]:
         data = ElementTree.fromstring(requests.get(url.format(q)).text)
-        for child in data[0].findall("item"):
-            title = child.find("title").text
-            author = child.find(
+        for item in data[0].findall("item"):
+            title = item.find("title").text
+            author = item.find(
                         "{http://search.yahoo.com/mrss/}credit").text
-            pic_page = child.find("link").text
+            pic_page = item.find("link").text
             try:
                 da_target = os.path.basename(
-                    child.find(
+                    item.find(
                         "{http://search.yahoo.com/mrss/}content")
                     .attrib["url"])
             except AttributeError:
