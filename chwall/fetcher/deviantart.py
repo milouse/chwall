@@ -8,7 +8,6 @@ from xml.etree import ElementTree
 
 def fetch_pictures(config):
     collecs = {}
-    already_done = []
     url = "https://backend.deviantart.com/rss.xml?type=deviation&q={}"
     if "deviantart" not in config or len(config["deviantart"]) == 0:
         return {}
@@ -26,19 +25,32 @@ def fetch_pictures(config):
                     .attrib["url"])
             except AttributeError:
                 continue
-            scrap = requests.get(pic_page).text
-            for line in scrap.split("\n"):
+            dadl = "https://www.deviantart.com/download"
+            scrap = requests.get(pic_page)
+            url = None
+            m = re.search(
+                "^\\s+href=\"({dadl}/[0-9]+/{target}\\?token=[^\"]+)\"$"
+                .format(dadl=dadl, target=da_target),
+                scrap.text, re.MULTILINE)
+            if m:
+                # directly fetch linked picture
+                r = requests.get(re.sub("&amp;", "&", m[1]),
+                                 cookies=scrap.cookies)
+                url = r.url
+                # prefer download url over preview picture
+            else:
                 m = re.search(
                     "data-super-full-img=\"([^\"]+{target})\""
-                    .format(target=da_target),
-                    line)
-                if m is None:
-                    continue
-                collecs[m[1]] = {
-                    "image": m[1],
-                    "type": "deviantart",
-                    "local": False,
-                    "url": pic_page,
-                    "copyright": "{} by {}".format(title, author)
-                }
+                    .format(target=da_target), scrap.text)
+                if m:
+                    url = m[1]
+            if url is None:
+                continue
+            collecs[url] = {
+                "image": url,
+                "type": "deviantart",
+                "local": False,
+                "url": pic_page,
+                "copyright": "{} by {}".format(title, author)
+            }
     return collecs
