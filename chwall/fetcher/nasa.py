@@ -13,19 +13,17 @@ def fetch_pictures(config):
             time.strftime("%y%m%d", time.localtime(curday)))
         # Go to yesterday
         curday = curday - 86400
-        data = requests.get(pic_page)
-        for line in data.text.split("\n"):
-            m = re.search("^<a href=\"(image/[0-9]{4}/.+)\">$",
-                          line, re.MULTILINE)
-            if m is None:
-                continue
-            url = "https://apod.nasa.gov/apod/{}".format(m[1])
-            collecs[url] = {
-                "image": url,
-                "type": "nasa",
-                "local": False,
-                "url": pic_page,
-                "copyright": "NASA Astronomy Picture of the Day"
-            }
-            break
+        data = requests.get(pic_page).text
+        m = re.search("^<a href=\"(image/[0-9]{4}/.+)\">$",
+                      data, re.MULTILINE)
+        if m is None:
+            continue
+        url = "https://apod.nasa.gov/apod/{}".format(m[1])
+        collecs[url] = {
+            "image": url,
+            "type": "nasa",
+            "local": False,
+            "url": pic_page,
+            "copyright": "NASA Astronomy Picture of the Day"
+        }
     return collecs
