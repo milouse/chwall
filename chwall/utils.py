@@ -11,17 +11,6 @@ VERSION = "0.1"
 BASE_CACHE_PATH = "{}/chwall".format(xdg_cache_home)
 
 
-def road_map_path():
-    try:
-        with open("{}/roadmap".format(BASE_CACHE_PATH), "r") as f:
-            road_map = f.readline()
-    except FileNotFoundError:
-        return None
-    if os.path.exists(road_map):
-        return road_map
-    return None
-
-
 def get_screen_config():
     n = subprocess.run("xrandr -q | grep '*' | wc -l",
                        check=True, shell=True,

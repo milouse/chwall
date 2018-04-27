@@ -104,15 +104,16 @@ def fetch_wallpaper(collecs):
     return pic_file, wp["image"]
 
 
-def choose_wallpaper(collecs_file, config):
-    with open(collecs_file, "r") as f:
+def choose_wallpaper(config):
+    road_map = "{}/roadmap".format(BASE_CACHE_PATH)
+    with open(road_map, "r") as f:
         data = yaml.load(f)
     lp, wp = fetch_wallpaper(data)
     if lp is None:
         return False
     data["pictures"].remove(wp)
     data["history"].append(wp)
-    with open(collecs_file, "w") as f:
+    with open(road_map, "w") as f:
         yaml.dump(data, f, explicit_start=True,
                   default_flow_style=False)
     return set_mate_wallpaper(lp, config)
