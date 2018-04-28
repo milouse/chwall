@@ -27,7 +27,7 @@ def fetch_pictures(config):
                 continue
             dadl = "https://www.deviantart.com/download"
             scrap = requests.get(pic_page)
-            url = None
+            pic_url = None
             m = re.search(
                 "^\\s+href=\"({dadl}/[0-9]+/{target}\\?token=[^\"]+)\"$"
                 .format(dadl=dadl, target=da_target),
@@ -36,18 +36,18 @@ def fetch_pictures(config):
                 # directly fetch linked picture
                 r = requests.get(re.sub("&amp;", "&", m[1]),
                                  cookies=scrap.cookies)
-                url = r.url
+                pic_url = r.url
                 # prefer download url over preview picture
             else:
                 m = re.search(
                     "data-super-full-img=\"([^\"]+{target})\""
                     .format(target=da_target), scrap.text)
                 if m:
-                    url = m[1]
-            if url is None:
+                    pic_url = m[1]
+            if pic_url is None:
                 continue
-            collecs[url] = {
-                "image": url,
+            collecs[pic_url] = {
+                "image": pic_url,
                 "type": "deviantart",
                 "local": False,
                 "url": pic_page,
