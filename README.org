@@ -1,7 +1,7 @@
 #+title: README
 #+author: Étienne Deparis
 
-Chwall [[https://en.wiktionary.org/wiki/Appendix:French_pronunciation][\ʃwal\]] is tiny automatic wallpaper changer, written in python.
+Chwall [[https://en.wiktionary.org/wiki/Appendix:French_pronunciation][{ʃwal}]] is tiny automatic wallpaper changer, written in python.
 
 It's name is the contraction of /change wallpaper/, which may be
 pronounced as a twisted version of /cheval/, which means /horse/ in
@@ -12,18 +12,112 @@ french.
 Easily change your wallpaper from time to time, benefiting from various
 online sources and your own wallpapers collections.
 
+* Features
+
+** Current
+
+Chwall is currently able to retrieve pictures from the following
+sources:
+
+- your local folders
+- bing picture of the day
+- Nasa Astronomical Picture of the Day
+- Unsplash RSS feed
+- deviantart RSS feeds
+
+** Planned
+
+In the near future, I plan to add support for the unsplash api, allowing
+you to display pictures from any collections.
+
 * Install
 
 #+begin_src bash
 pip install -r requirements.txt
 python setup.py install
-#+end_src bash
+#+end_src
+
+You can also install it system-wide with the provided =Makefile=
 
 * Customize
 
 Put the =chwall.yml.example= file in =~/.config/= and tune it as you
-want. This file is not mandatary. More information about the different
-config keys will come later.
+want. This file is not mandatary.
+
+The =chwall.yml= config file is a [[http://yaml.org/][YAML]] file with several top level
+objects:
+
+- =general= will contains preferences, which are used by chwall to
+  operate as intended.
+- one key for each activated (or not) picture sources.
+
+
+=general= may contains the following subkeys:
+
+- =lightdm_wall= the path to a writable file, which will always contains
+  the last set wallpaper. This is usefull to display the same wallpaper
+  on lightdm than on your desktop, without having to open too widely
+  your home folder. Use something in =/var/cache= for exemple.
+- =sources= is an array containing the activated pictures sources. By
+  default none is activated.
+
+#+begin_src yaml
+---
+general:
+  lightdm_wall: /var/cache/last-wall
+  sources:
+    - bing
+    - nasa
+    - unsplash
+    - local
+#+end_src
+
+** Add local folders to inspect
+
+In order to display wallpaper from your own local collection, just add
+the top level key =local= to the =chwall.yml= file. This variable must
+contains an array containing folder path. you can use =*= or =**= as
+placeholder. See [[https://docs.python.org/3/library/glob.html#glob.glob][python glob documentation]] to know more how to write
+your folder pathes.
+
+#+begin_src yaml
+---
+local:
+  - ~/Pictures/mywall/*
+  - /usr/share/wallpapers/**
+#+end_src
+
+** Add Deviantart RSS Feeds
+
+Deviantart RSS feeds follow the same URL pattern:
+https://backend.deviantart.com/rss.xml?q=[REQUEST]&type=deviation
+
+All you have to do is to add a the top level key =deviantart= to your
+=chwall.yml= file, containing a list of =[REQUEST]=.
+
+#+begin_src yaml
+---
+deviantart:
+  - in%3Acustomization%2Fwallpaper+1440x900
+  - gallery%3Amattahan%2F59801
+#+end_src
+
+** Set the Bing region to fetch picture from
+
+Add the top level key =bing= to your =chwall.yml= file as a list of
+regional setting. See the [[https://www.bing.com/account/general?#region-section][appropriate Bing page]] to know more about the
+available regions. If you add more than one region (at least one is
+required!), duplicate pictures won't be add to the pending list.
+
+#+begin_src yaml
+---
+bing:
+  - fr-FR
+  - en-US
+  - de-DE
+  - ja-JP
+#+end_src
+
 
 * Credits
 
