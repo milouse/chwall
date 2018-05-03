@@ -73,7 +73,7 @@ WantedBy=default.target
         print_help()
         return False
     road_map = "{}/roadmap".format(BASE_CACHE_PATH)
-    if not road_map:
+    if not os.path.exists(road_map):
         print("{} seems not to be running"
               .format(sys.argv[0]), file=sys.stderr)
         return False
