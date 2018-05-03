@@ -39,10 +39,14 @@ def build_wallpapers_list(config):
                         error=type(e).__name__, module=module_name,
                         time=WAIT_ERROR),
                       file=sys.stderr)
-            try_again -= 1
-            try:
-                time.sleep(WAIT_ERROR)
+                try_again -= 1
+                try:
+                    time.sleep(WAIT_ERROR)
+                except KeyboardInterrupt:
+                    print("Retry NOW to connect to {}"
+                          .format(module_name))
             except KeyboardInterrupt:
+                print("Switch to next picture provider or exit")
                 try_again = 0
         collecs.update(ll)
     all_pics = list(collecs.keys())
