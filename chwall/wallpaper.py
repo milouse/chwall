@@ -108,7 +108,7 @@ def fetch_wallpaper(collecs):
     return pic_file, wp["image"]
 
 
-def choose_wallpaper(config):
+def pick_wallpaper(config):
     road_map = "{}/roadmap".format(BASE_CACHE_PATH)
     with open(road_map, "r") as f:
         data = yaml.load(f)

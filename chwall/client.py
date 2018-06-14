@@ -8,7 +8,7 @@ import subprocess
 
 # chwall imports
 from chwall.utils import BASE_CACHE_PATH, read_config
-from chwall.wallpaper import build_wallpapers_list, choose_wallpaper, \
+from chwall.wallpaper import build_wallpapers_list, pick_wallpaper, \
                              fetch_wallpaper, set_wallpaper
 
 
@@ -86,7 +86,7 @@ WantedBy=default.target
         action = "next"
     data = {}
     if action == "next":
-        return choose_wallpaper(config)
+        return pick_wallpaper(config)
     with open(road_map, "r") as f:
         data = yaml.load(f)
     if action == "quit":

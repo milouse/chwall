@@ -23,7 +23,7 @@ def daemon_loop(config):
         signal.signal(signal.SIGTERM, kill_daemon)
         while True:
             # Silently ignore failures
-            choose_wallpaper(config)
+            pick_wallpaper(config)
             time.sleep(sleep_time)
     except (KeyboardInterrupt, SystemExit):
         print("Exit signal received")
