@@ -12,7 +12,7 @@ from chwall.wallpaper import build_wallpapers_list, pick_wallpaper, \
                              fetch_wallpaper, set_wallpaper
 
 
-chwall_commands = ["blacklist", "history", "info", "next",
+chwall_commands = ["blacklist", "current", "history", "info", "next",
                    "once", "pending", "quit", "systemd"]
 
 
@@ -49,10 +49,11 @@ def print_help():
     filtered_cmd.remove("once")
     filtered_cmd.remove("systemd")
     filtered_cmd.remove("info")
+    filtered_cmd.remove("current")
     print("Usage: {} [ {} ]".format(sys.argv[0], " | ".join(filtered_cmd)),
           file=sys.stderr)
     print("       {} [ once | systemd ]".format(sys.argv[0]), file=sys.stderr)
-    print("       {} info [ open ]".format(sys.argv[0]),
+    print("       {} [ current | info ] [ open ]".format(sys.argv[0]),
           file=sys.stderr)
 
 
@@ -79,7 +80,7 @@ WantedBy=default.target
 """.strip().format(command=chwall_cmd))
         return True
     action = sys.argv[1]
-    if action == "info":
+    if action in ["current", "info"]:
         display_wallpaper_info()
         return True
     if action == "blacklist":
