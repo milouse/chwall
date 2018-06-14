@@ -78,24 +78,21 @@ ExecStart={command}
 WantedBy=default.target
 """.strip().format(command=chwall_cmd))
         return True
-    if sys.argv[1] not in chwall_commands:
-        print_help()
-        return False
+    action = sys.argv[1]
+    if action == "info":
+        display_wallpaper_info()
+        return True
+    if action == "blacklist":
+        blacklist_wallpaper()
+        action = "next"
+    if action == "next":
+        return pick_wallpaper(config)
+    data = {}
     road_map = "{}/roadmap".format(BASE_CACHE_PATH)
     if not os.path.exists(road_map):
         print("{} seems not to be running"
               .format(sys.argv[0]), file=sys.stderr)
         return False
-    if sys.argv[1] == "info":
-        display_wallpaper_info()
-        return True
-    action = sys.argv[1]
-    if action == "blacklist":
-        blacklist_wallpaper()
-        action = "next"
-    data = {}
-    if action == "next":
-        return pick_wallpaper(config)
     with open(road_map, "r") as f:
         data = yaml.load(f)
     if action == "quit":
@@ -106,6 +103,9 @@ WantedBy=default.target
         print("\n".join(data["history"]))
     elif action == "pending":
         print("\n".join(data["pictures"]))
+    elif action not in chwall_commands:
+        print_help()
+        return False
     return True
 
 
