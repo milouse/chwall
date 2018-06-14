@@ -14,6 +14,14 @@ import subprocess
 from chwall.utils import BASE_CACHE_PATH
 
 
+class ChwallEmptyListError(Exception):
+    pass
+
+
+class ChwallWallpaperSetError(Exception):
+    pass
+
+
 WAIT_ERROR = 10
 
 
@@ -68,28 +76,30 @@ def build_wallpapers_list(config):
 
 def set_mate_wallpaper(path, config):
     if path is None:
-        return False
-    err = []
-    err.append(
-        subprocess.run(["gsettings", "set", "org.mate.background",
-                        "picture-filename", path]).returncode)
-    err.append(
-        subprocess.run(["gsettings", "set", "org.mate.background",
-                        "picture-options", "zoom"]).returncode)
+        raise ChwallWallpaperSetError("No wallpaper path given")
+    err = subprocess.run(["gsettings", "set", "org.mate.background",
+                         "picture-filename", path]).returncode
+    if err == 1:
+        raise ChwallWallpaperSetError(
+            "Error while setting picture-filename property")
+    err = subprocess.run(["gsettings", "set", "org.mate.background",
+                         "picture-options", "zoom"]).returncode
+    if err == 1:
+        raise ChwallWallpaperSetError(
+            "Error while setting picture-options property")
     if "lightdm_wall" in config["general"]:
         ld_path = os.path.expanduser(
             config["general"]["lightdm_wall"])
         shutil.copy(path, ld_path)
-    return 1 not in err
 
 
 def set_wallpaper(path, config):
-    return set_mate_wallpaper(path, config)
+    set_mate_wallpaper(path, config)
 
 
 def fetch_wallpaper(collecs):
-    if len(collecs["pictures"]) == 0:
-        return None, None
+    if collecs["pictures"] is None or len(collecs["pictures"]) == 0:
+        raise ChwallEmptyListError("No wallpaper in list")
     wp = collecs["data"][collecs["pictures"][0]]
     # screen_config = get_screen_config()
     with open("{}/current_wallpaper".format(BASE_CACHE_PATH), "w") as f:
@@ -113,11 +123,9 @@ def pick_wallpaper(config):
     with open(road_map, "r") as f:
         data = yaml.load(f)
     lp, wp = fetch_wallpaper(data)
-    if lp is None:
-        return False
     data["pictures"].remove(wp)
     data["history"].append(wp)
     with open(road_map, "w") as f:
         yaml.dump(data, f, explicit_start=True,
                   default_flow_style=False)
-    return set_mate_wallpaper(lp, config)
+    set_wallpaper(lp, config)

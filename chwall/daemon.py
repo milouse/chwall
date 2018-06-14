@@ -9,7 +9,8 @@ import signal
 
 # chwall imports
 from chwall.utils import BASE_CACHE_PATH, read_config
-from chwall.wallpaper import build_wallpapers_list, choose_wallpaper
+from chwall.wallpaper import build_wallpapers_list, pick_wallpaper, \
+     ChwallEmptyListError, ChwallWallpaperSetError
 
 
 def kill_daemon(_signo, _stack_frame):
@@ -22,9 +23,14 @@ def daemon_loop(config):
     try:
         signal.signal(signal.SIGTERM, kill_daemon)
         while True:
-            # Silently ignore failures
-            pick_wallpaper(config)
+            try:
+                pick_wallpaper(config)
+            except ChwallWallpaperSetError:
+                # weird, but try again…
+                continue
             time.sleep(sleep_time)
+    except ChwallEmptyListError:
+        error_code = -1
     except (KeyboardInterrupt, SystemExit):
         print("Exit signal received")
     except Exception as e:
@@ -49,7 +55,12 @@ def daemon():
     data["chwall_pid"] = os.getpid()
     with open("{}/roadmap".format(BASE_CACHE_PATH), "w") as f:
         yaml.dump(data, f, explicit_start=True, default_flow_style=False)
-    return daemon_loop(config)
+    err = daemon_loop(config)
+    if err == -1:
+        # The wallpaper queue was empty, start again please
+        print("Restarting…")
+        return daemon()
+    return err
 
 
 if __name__ == "__main__":

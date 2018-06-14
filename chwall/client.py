@@ -9,7 +9,8 @@ import subprocess
 # chwall imports
 from chwall.utils import BASE_CACHE_PATH, read_config
 from chwall.wallpaper import build_wallpapers_list, pick_wallpaper, \
-                             fetch_wallpaper, set_wallpaper
+                             fetch_wallpaper, set_wallpaper, \
+                             ChwallEmptyListError
 
 
 chwall_commands = ["blacklist", "current", "history", "info", "next",
@@ -87,7 +88,14 @@ WantedBy=default.target
         blacklist_wallpaper()
         action = "next"
     if action == "next":
-        return pick_wallpaper(config)
+        try:
+            pick_wallpaper(config)
+            return True
+        except ChwallEmptyListError as e:
+            print(e, file=sys.stderr)
+            action = "quit"
+        except Exception:
+            return False
     data = {}
     road_map = "{}/roadmap".format(BASE_CACHE_PATH)
     if not os.path.exists(road_map):
