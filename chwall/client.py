@@ -12,6 +12,10 @@ from chwall.wallpaper import build_wallpapers_list, pick_wallpaper, \
                              fetch_wallpaper, set_wallpaper
 
 
+chwall_commands = ["blacklist", "history", "info", "next",
+                   "once", "pending", "quit", "systemd"]
+
+
 def blacklist_wallpaper():
     try:
         with open("{}/blacklist.yml"
@@ -41,9 +45,15 @@ def display_wallpaper_info():
 
 
 def print_help():
-    print("Usage: {} [ history | next | once | pending "
-          "| systemd | info [ open ] ]"
-          .format(sys.argv[0]), file=sys.stderr)
+    filtered_cmd = chwall_commands.copy()
+    filtered_cmd.remove("once")
+    filtered_cmd.remove("systemd")
+    filtered_cmd.remove("info")
+    print("Usage: {} [ {} ]".format(sys.argv[0], " | ".join(filtered_cmd)),
+          file=sys.stderr)
+    print("       {} [ once | systemd ]".format(sys.argv[0]), file=sys.stderr)
+    print("       {} info [ open ]".format(sys.argv[0]),
+          file=sys.stderr)
 
 
 def run_client(config):
@@ -68,8 +78,7 @@ ExecStart={command}
 WantedBy=default.target
 """.strip().format(command=chwall_cmd))
         return True
-    if sys.argv[1] not in [
-            "blacklist", "history", "info", "next", "pending", "quit"]:
+    if sys.argv[1] not in chwall_commands:
         print_help()
         return False
     road_map = "{}/roadmap".format(BASE_CACHE_PATH)
