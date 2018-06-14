@@ -57,14 +57,14 @@ def print_help():
 
 
 def run_client(config):
-    # Is it an installed version?
-    if os.path.exists("/usr/bin/chwall-daemon"):
-        chwall_cmd = "/usr/bin/chwall-daemon"
-    else:
-        chwall_cmd = "{0}/chwall.py\nWorkingDirectory={0}".format(
-            os.path.realpath(
-                os.path.join(os.path.dirname(__file__), "..")))
     if sys.argv[1] == "systemd":
+        # Is it an installed version?
+        if os.path.exists("/usr/bin/chwall-daemon"):
+            chwall_cmd = "/usr/bin/chwall-daemon"
+        else:
+            chwall_cmd = "{0}/chwall.py\nWorkingDirectory={0}".format(
+                os.path.realpath(
+                    os.path.join(os.path.dirname(__file__), "..")))
         print("""
 [Unit]
 Description = Simple wallpaper changer
