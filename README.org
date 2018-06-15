@@ -21,6 +21,7 @@ sources:
 
 - your local folders
 - bing pictures of the day
+- National Geographic pictures of the day
 - NASA astronomical pictures of the day
 - Unsplash RSS feed
 - deviantart RSS feeds
@@ -59,8 +60,9 @@ objects:
   on lightdm than on your desktop, without having to open too widely
   your home folder. Use something in =/var/cache= for exemple.
 - =sources= is an array containing the activated pictures sources. By
-  default, only =bing= is activated. The sources must be one or more of:
-  =bing=, =nasa= (for the NASA astronomical picture of the day),
+  default, only =bing= and =natgeo= are activated. The sources must be
+  one or more of: =bing=, =natgeo= (for the National Geographic picture
+  of the day), =nasa= (for the NASA astronomical picture of the day),
   =unsplash=, =deviantart=, or =local= (for your local folders).
 
 #+begin_src yaml
@@ -69,6 +71,7 @@ general:
   lightdm_wall: /var/cache/last-wall
   sources:
     - bing
+    - natgeo
     - nasa
     - unsplash
     - deviantart
@@ -104,6 +107,19 @@ bing:
   - en-US
   - de-DE
   - ja-JP
+#+end_src
+
+** Set the picture resolution for National Geographic
+
+Add the top level key =natgeo= to your =chwall.yml= file. Then, add a
+subkey named =width= under it, with one of the following value: =240=,
+=320=, =500=, =640=, =800=, =1024=, =1600=, or =2048=. The default value
+is =1600=.
+
+#+begin_src yaml
+---
+natgeo:
+  width: 2048
 #+end_src
 
 ** Set the picture resolution for unsplash
