@@ -35,8 +35,7 @@ def read_config():
     if "general" not in config:
         config["general"] = {}
     if "sources" not in config["general"]:
-        config["general"]["sources"] = [
-            "bing", "unsplash", "nasa", "local"]
+        config["general"]["sources"] = ["bing"]
     if "sleep" not in config["general"]:
         config["general"]["sleep"] = 10 * 60
     return config

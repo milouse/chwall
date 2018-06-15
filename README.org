@@ -20,8 +20,8 @@ Chwall is currently able to retrieve pictures from the following
 sources:
 
 - your local folders
-- bing picture of the day
-- Nasa Astronomical Picture of the Day
+- bing pictures of the day
+- NASA astronomical pictures of the day
 - Unsplash RSS feed
 - deviantart RSS feeds
 
@@ -59,7 +59,9 @@ objects:
   on lightdm than on your desktop, without having to open too widely
   your home folder. Use something in =/var/cache= for exemple.
 - =sources= is an array containing the activated pictures sources. By
-  default none is activated.
+  default, only =bing= is activated. The sources must be one or more of:
+  =bing=, =nasa= (for the NASA astronomical picture of the day),
+  =unsplash=, =deviantart=, or =local= (for your local folders).
 
 #+begin_src yaml
 ---
@@ -69,6 +71,7 @@ general:
     - bing
     - nasa
     - unsplash
+    - deviantart
     - local
 #+end_src
 
@@ -87,21 +90,6 @@ local:
   - /usr/share/wallpapers/**
 #+end_src
 
-** Add Deviantart RSS Feeds
-
-Deviantart RSS feeds follow the same URL pattern:
-https://backend.deviantart.com/rss.xml?q=[REQUEST]&type=deviation
-
-All you have to do is to add a the top level key =deviantart= to your
-=chwall.yml= file, containing a list of =[REQUEST]=.
-
-#+begin_src yaml
----
-deviantart:
-  - in%3Acustomization%2Fwallpaper+1440x900
-  - gallery%3Amattahan%2F59801
-#+end_src
-
 ** Set the Bing region to fetch picture from
 
 Add the top level key =bing= to your =chwall.yml= file as a list of
@@ -116,6 +104,33 @@ bing:
   - en-US
   - de-DE
   - ja-JP
+#+end_src
+
+** Set the picture resolution for unsplash
+
+Add the top level key =unsplash= to your =chwall.yml= file. Then, add a
+subkey named =width= under it, with the value of your choice. This value
+should be the width of your screen. The default value is =1600=.
+
+#+begin_src yaml
+---
+unsplash:
+  width: 1920
+#+end_src
+
+** Add Deviantart RSS Feeds
+
+Deviantart RSS feeds follow the same URL pattern:
+https://backend.deviantart.com/rss.xml?q=[REQUEST]&type=deviation
+
+All you have to do is to add a the top level key =deviantart= to your
+=chwall.yml= file, containing a list of =[REQUEST]=.
+
+#+begin_src yaml
+---
+deviantart:
+  - in%3Acustomization%2Fwallpaper+1440x900
+  - gallery%3Amattahan%2F59801
 #+end_src
 
 
