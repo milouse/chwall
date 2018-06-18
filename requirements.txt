@@ -1,3 +1,5 @@
 pyyaml
 requests
 pyxdg
+lxml
+cssselect
