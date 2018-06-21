@@ -26,11 +26,6 @@ sources:
 - Unsplash RSS feed
 - deviantart RSS feeds
 
-** Planned
-
-In the near future, I plan to add support for the unsplash api, allowing
-you to display pictures from any collections.
-
 * Install
 
 #+begin_src bash
@@ -122,7 +117,7 @@ natgeo:
   width: 2048
 #+end_src
 
-** Set the picture resolution for unsplash
+** Set the picture resolution for Unsplash
 
 Add the top level key =unsplash= to your =chwall.yml= file. Then, add a
 subkey named =width= under it, with the value of your choice. This value
@@ -133,6 +128,37 @@ should be the width of your screen. The default value is =1600=.
 unsplash:
   width: 1920
 #+end_src
+
+** Retrieve pictures from an Unsplash collection
+
+To do so, you must [[https://unsplash.com/developers][register an application on Unsplash]] in order to
+consume their API. Once this is done, you must add the subkey
+=access_key= under the =unsplash= key in your =chwall.yml= config file.
+
+Then, you have access to the =collections= subkey, which let you specify
+one or more public collections IDs. If you don't give any, pictures will
+be retrieved randomly from all the Unsplash website.
+
+#+begin_src yaml
+---
+unsplash:
+  width: 1920
+  access_key: [your access key]
+  collections:
+    - 1510726
+#+end_src
+
+The =count= subkey let you choose how many pictures you want to retrieve
+from Unsplash. You are limited to 30 by the API, and the default is 20.
+
+#+begin_src yaml
+---
+unsplash:
+  width: 1920
+  access_key: [your access key]
+  count: 10
+#+end_src
+
 
 ** Add Deviantart RSS Feeds
 
