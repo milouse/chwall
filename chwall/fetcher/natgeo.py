@@ -16,9 +16,9 @@ def fetch_pictures(config):
     t = date.today()
     data = requests.get(url.format(t.year, t.strftime("%m"))).json()
     for p in data["items"]:
-        url = p["url"] + p["sizes"]["%d" % width]
-        collecs[url] = {
-            "image": url,
+        px = p["url"] + p["sizes"]["%d" % width]
+        collecs[px] = {
+            "image": px,
             "copyright": "{} by {}".format(p["altText"], p["credit"]),
             "url": p["full-path-url"],
             "type": "natgeo",
