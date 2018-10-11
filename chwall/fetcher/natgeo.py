@@ -16,11 +16,18 @@ def fetch_pictures(config):
     t = date.today()
     data = requests.get(url.format(t.year, t.strftime("%m"))).json()
     for p in data["items"]:
-        px = p["sizes"]["%d" % width]
+        if p["url"] == "https://yourshot.nationalgeographic.com":
+            px = p["sizes"]["%d" % width]
+            purl = p["full-path-url"]
+            pcredit = "{} by {}".format(p["altText"], p["credit"])
+        else:
+            px = p["url"]
+            purl = p["pageUrl"]
+            pcredit = "{}. {}".format(p["altText"], p["credit"])
         collecs[px] = {
             "image": px,
-            "copyright": "{} by {}".format(p["altText"], p["credit"]),
-            "url": p["full-path-url"],
+            "copyright": pcredit,
+            "url": purl,
             "type": "natgeo",
             "local": False
         }
