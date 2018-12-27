@@ -8,9 +8,7 @@ import subprocess
 
 # chwall imports
 from chwall.utils import BASE_CACHE_PATH, read_config
-from chwall.wallpaper import build_wallpapers_list, pick_wallpaper, \
-                             fetch_wallpaper, set_wallpaper, \
-                             ChwallEmptyListError
+from chwall.wallpaper import pick_wallpaper, ChwallEmptyListError
 
 
 chwall_commands = ["blacklist", "current", "history", "info", "next",
@@ -87,7 +85,7 @@ WantedBy=default.target
     if action == "blacklist":
         blacklist_wallpaper()
         action = "next"
-    if action == "next":
+    if action in ["next", "once"]:
         try:
             pick_wallpaper(config)
             return True
@@ -96,6 +94,17 @@ WantedBy=default.target
             action = "quit"
         except Exception:
             return False
+    if action == "quit":
+        pid_file = "{}/chwall_pid".format(BASE_CACHE_PATH)
+        if not os.path.exists(pid_file):
+            return False
+        pid = None
+        with open(pid_file, "r") as f:
+            pid = f.read().strip()
+        print("Kill process {}".format(pid))
+        # 15 == signal.SIGTERM
+        os.kill(int(pid), 15)
+        return True
     data = {}
     road_map = "{}/roadmap".format(BASE_CACHE_PATH)
     if not os.path.exists(road_map):
@@ -104,11 +113,7 @@ WantedBy=default.target
         return False
     with open(road_map, "r") as f:
         data = yaml.load(f)
-    if action == "quit":
-        print("Kill process {}".format(data["chwall_pid"]))
-        # 15 == signal.SIGTERM
-        os.kill(data["chwall_pid"], 15)
-    elif action == "history":
+    if action == "history":
         print("\n".join(data["history"]))
     elif action == "pending":
         print("\n".join(data["pictures"]))
@@ -122,18 +127,11 @@ def client():
     if len(sys.argv) == 1:
         print_help()
         return 1
-
     config = read_config()
-
-    if sys.argv[1] != "once":
-        if run_client(config):
-            return 0
-        else:
-            return 1
-
-    data = build_wallpapers_list(config)
-    wp = fetch_wallpaper(data)
-    set_wallpaper(wp[0], config)
+    if run_client(config):
+        return 0
+    else:
+        return 1
 
 
 if __name__ == "__main__":

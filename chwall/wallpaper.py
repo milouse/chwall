@@ -31,11 +31,11 @@ def build_wallpapers_list(config):
     for module_name in config["general"]["sources"]:
         try_again = 5
         ll = {}
+        m = __import__(
+            "chwall.fetcher.{}".format(module_name),
+            globals(), locals(), ['fetch_pictures'], 0)
         while try_again > 0:
             try:
-                m = __import__(
-                    "chwall.fetcher.{}".format(module_name),
-                    globals(), locals(), ['fetch_pictures'], 0)
                 ll = m.fetch_pictures(config)
                 try_again = 0
             except (requests.exceptions.ConnectionError,
@@ -57,6 +57,10 @@ def build_wallpapers_list(config):
                 print("Switch to next picture provider or exit")
                 try_again = 0
         collecs.update(ll)
+    return collecs
+
+
+def filter_wallpapers_list(collecs):
     all_pics = list(collecs.keys())
     try:
         with open("{}/blacklist.yml"
@@ -70,8 +74,19 @@ def build_wallpapers_list(config):
         print("Remove {} as it's in blacklist".format(p))
         all_pics.remove(p)
         collecs.pop(p)
+    return (all_pics, collecs)
+
+
+def write_roadmap(data):
+    all_pics = data[0]
     random.shuffle(all_pics)
-    return {"data": collecs, "pictures": all_pics, "history": []}
+    road_map = {"data": data[1], "pictures": all_pics, "history": []}
+    with open("{}/roadmap".format(BASE_CACHE_PATH), "w") as f:
+        yaml.dump(road_map, f, explicit_start=True, default_flow_style=False)
+
+
+def build_roadmap(config):
+    write_roadmap(filter_wallpapers_list(build_wallpapers_list(config)))
 
 
 def set_mate_wallpaper(path, config):
@@ -118,11 +133,23 @@ def fetch_wallpaper(collecs):
     return pic_file, wp["image"]
 
 
-def pick_wallpaper(config):
+def pick_wallpaper(config, guard=0):
+    if guard == 3:
+        # Something goes wrong, abort
+        raise ChwallEmptyListError("Cannot fetch any wallpapers list")
     road_map = "{}/roadmap".format(BASE_CACHE_PATH)
+    if not os.path.exists(road_map):
+        build_roadmap(config)
     with open(road_map, "r") as f:
         data = yaml.load(f)
-    lp, wp = fetch_wallpaper(data)
+    try:
+        lp, wp = fetch_wallpaper(data)
+    except ChwallEmptyListError:
+        # Try again with a fresh road_map
+        os.unlink(road_map)
+        guard += 1
+        build_roadmap(config)
+        return pick_wallpaper(config, guard)
     data["pictures"].remove(wp)
     data["history"].append(wp)
     with open(road_map, "w") as f:
