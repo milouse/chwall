@@ -49,15 +49,19 @@ def print_help():
     filtered_cmd.remove("systemd")
     filtered_cmd.remove("info")
     filtered_cmd.remove("current")
-    print("Usage: {} [ {} ]".format(sys.argv[0], " | ".join(filtered_cmd)),
+    print("Usage: {} ( {} )".format(sys.argv[0], " | ".join(filtered_cmd)),
           file=sys.stderr)
-    print("       {} [ once | systemd ]".format(sys.argv[0]), file=sys.stderr)
-    print("       {} [ current | info ] [ open ]".format(sys.argv[0]),
+    print("       {} ( once | systemd )".format(sys.argv[0]), file=sys.stderr)
+    print("       {} ( current | info ) [ open ]".format(sys.argv[0]),
           file=sys.stderr)
 
 
 def run_client(config):
-    if sys.argv[1] == "systemd":
+    if sys.argv[1] not in chwall_commands:
+        print_help()
+        return False
+    action = sys.argv[1]
+    if action == "systemd":
         # Is it an installed version?
         if os.path.exists("/usr/bin/chwall-daemon"):
             chwall_cmd = "/usr/bin/chwall-daemon"
@@ -78,10 +82,10 @@ ExecStart={command}
 WantedBy=default.target
 """.strip().format(command=chwall_cmd))
         return True
-    action = sys.argv[1]
-    if action in ["current", "info"]:
+    elif action in ["current", "info"]:
         display_wallpaper_info()
         return True
+
     if action == "blacklist":
         blacklist_wallpaper()
         action = "next"
@@ -105,6 +109,7 @@ WantedBy=default.target
         # 15 == signal.SIGTERM
         os.kill(int(pid), 15)
         return True
+
     data = {}
     road_map = "{}/roadmap".format(BASE_CACHE_PATH)
     if not os.path.exists(road_map):
@@ -117,9 +122,6 @@ WantedBy=default.target
         print("\n".join(data["history"]))
     elif action == "pending":
         print("\n".join(data["pictures"]))
-    elif action not in chwall_commands:
-        print_help()
-        return False
     return True
 
 
