@@ -8,6 +8,6 @@ from chwall.daemon import daemon
 
 
 if __name__ == "__main__":
-    if len(sys.argv) > 1:
+    if len(sys.argv) > 1 and sys.argv[1] != "daemon":
         sys.exit(client())
     sys.exit(daemon())
