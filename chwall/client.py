@@ -12,7 +12,7 @@ from chwall.wallpaper import pick_wallpaper, ChwallEmptyListError
 
 
 chwall_commands = ["blacklist", "current", "history", "info", "next",
-                   "once", "pending", "quit", "systemd"]
+                   "once", "pending", "purge", "quit", "systemd"]
 
 
 def blacklist_wallpaper():
@@ -112,6 +112,10 @@ WantedBy=default.target
 
     data = {}
     road_map = "{}/roadmap".format(BASE_CACHE_PATH)
+    if action == "purge":
+        if os.path.exists(road_map):
+            os.unlink(road_map)
+        return True
     if not os.path.exists(road_map):
         print("{} seems not to be running"
               .format(sys.argv[0]), file=sys.stderr)
