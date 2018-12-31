@@ -23,8 +23,8 @@ sources:
 - bing pictures of the day
 - National Geographic pictures of the day
 - NASA astronomical pictures of the day
-- Unsplash RSS feed
 - deviantart RSS feeds
+- Unsplash random API (requires a free account to access their API)
 
 * Install
 
@@ -68,8 +68,8 @@ general:
     - bing
     - natgeo
     - nasa
-    - unsplash
     - deviantart
+    - unsplash
     - local
 #+end_src
 

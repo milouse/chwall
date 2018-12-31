@@ -1,38 +1,7 @@
 #!/usr/bin/env python3
 
-import re
+import sys
 import requests
-from xml.etree import ElementTree
-from urllib.parse import urlsplit
-
-
-def fetch_from_rss(config, width):
-    collecs = {}
-    data = ElementTree.fromstring(
-        requests.get("https://unsplash.com/rss").text)
-    for item in data[0].findall("item"):
-        tp = {
-            "type": "unsplash",
-            "local": False
-        }
-        data = item.find("description").text
-        m = re.search("^\\s+<img src=\"(.+)\" title=\"By .+\">$",
-                      data, re.MULTILINE)
-        if m is None:
-            continue
-        u = urlsplit(re.sub("&amp;", "&", m[1]))
-        url = "{}://{}{}?w={}&fit=max".format(
-            u.scheme, u.netloc, u.path, str(width))
-        tp["image"] = url
-        m = re.search("^\\s+<a href=\"(.+)\">Download</a> / "
-                      "By <a href=\"(.+)\">(.+)</a>$",
-                      data, re.MULTILINE)
-        if m is None:
-            continue
-        tp["copyright"] = "Picture by {} (on Unsplash)".format(m[3])
-        tp["url"] = m[1]
-        collecs[tp["image"]] = tp
-    return collecs
 
 
 def fetch_pictures(config):
@@ -53,7 +22,9 @@ def fetch_pictures(config):
             params.append(
                 "collections=" + ",".join(config["unsplash"]["collections"]))
     if client_id is None:
-        return fetch_from_rss(config, width)
+        print("WARNING: Unsplash has discontinued their RSS feed. Thus "
+              "an `access_key' param is now required.", file=sys.stderr)
+        return {}
     url = "https://api.unsplash.com/photos/random"
     params.append("client_id=" + client_id)
     collecs = {}
