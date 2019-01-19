@@ -96,8 +96,6 @@ WantedBy=default.target
         except ChwallEmptyListError as e:
             print(e, file=sys.stderr)
             action = "quit"
-        except Exception:
-            return False
     if action == "quit":
         pid_file = "{}/chwall_pid".format(BASE_CACHE_PATH)
         if not os.path.exists(pid_file):
