@@ -6,6 +6,7 @@ import requests
 
 def fetch_pictures(config):
     width = 1600
+    nb_pic = 10
     params = ["w=1600"]
     client_id = None
     if "unsplash" in config:
@@ -15,7 +16,7 @@ def fetch_pictures(config):
         if "access_key" in config["unsplash"]:
             client_id = config["unsplash"]["access_key"]
         if "count" in config["unsplash"]:
-            params.append("count=%d" % config["unsplash"]["count"])
+            nb_pic = config["unsplash"]["count"]
         if "query" in config["unsplash"]:
             params.append("query=" + config["unsplash"]["query"])
         if "collections" in config["unsplash"]:
@@ -25,10 +26,12 @@ def fetch_pictures(config):
         print("WARNING: Unsplash has discontinued their RSS feed. Thus "
               "an `access_key' param is now required.", file=sys.stderr)
         return {}
+    params.append("count=%d" % nb_pic)
     url = "https://api.unsplash.com/photos/random"
     params.append("client_id=" + client_id)
     collecs = {}
-    data = requests.get("{}?{}".format(url, "&".join(params))).json()
+    final_uri = "{}?{}".format(url, "&".join(params))
+    data = requests.get(final_uri).json()
     for p in data:
         px = p["urls"]["custom"]
         if p["description"] is None:
