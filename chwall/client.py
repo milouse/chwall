@@ -12,7 +12,7 @@ from chwall.wallpaper import pick_wallpaper, ChwallEmptyListError
 
 
 chwall_commands = ["blacklist", "current", "history", "info", "next",
-                   "once", "pending", "purge", "quit", "systemd"]
+                   "once", "pending", "previous", "purge", "quit", "systemd"]
 
 
 def blacklist_wallpaper():
@@ -89,9 +89,12 @@ WantedBy=default.target
     if action == "blacklist":
         blacklist_wallpaper()
         action = "next"
-    if action in ["next", "once"]:
+    if action in ["next", "once", "previous"]:
+        direction = False
+        if action == "previous":
+            direction = True
         try:
-            pick_wallpaper(config)
+            pick_wallpaper(config, direction)
             return True
         except ChwallEmptyListError as e:
             print(e, file=sys.stderr)
