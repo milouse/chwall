@@ -15,7 +15,7 @@ def fetch_pictures(config):
                                 recursive=True):
                 collecs[f] = {
                     "image": f,
-                    "local": True,
+                    "type": "local",
                     "url": f,
                     "copyright": "Local wallpaper"
                 }

@@ -37,7 +37,7 @@ def display_wallpaper_info():
         infos = f.readlines()[1:]
     print("".join(infos))
     if len(sys.argv) > 2 and sys.argv[2] == "open" and \
-       len(infos) == 2:
+       len(infos) >= 2:
         url = infos[1].strip()
         if url != "":
             subprocess.run(["gio", "open", url])

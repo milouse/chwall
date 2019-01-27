@@ -22,7 +22,6 @@ def fetch_pictures(config):
         collecs[url] = {
             "image": url,
             "type": "nasa",
-            "local": False,
             "url": pic_page,
             "copyright": "NASA Astronomy Picture of the Day"
         }

@@ -26,7 +26,6 @@ def fetch_pictures(config):
                 "image": px,
                 "copyright": p["copyright"],
                 "url": p["copyrightlink"],
-                "type": "bing",
-                "local": False
+                "type": "bing"
             }
     return collecs

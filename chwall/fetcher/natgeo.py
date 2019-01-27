@@ -28,7 +28,6 @@ def fetch_pictures(config):
             "image": px,
             "copyright": pcredit,
             "url": purl,
-            "type": "natgeo",
-            "local": False
+            "type": "natgeo"
         }
     return collecs

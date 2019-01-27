@@ -49,7 +49,6 @@ def fetch_pictures(config):
             collecs[pic_url] = {
                 "image": pic_url,
                 "type": "deviantart",
-                "local": False,
                 "url": pic_page,
                 "copyright": "{} by {}".format(title, author)
             }

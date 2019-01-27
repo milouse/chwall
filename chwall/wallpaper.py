@@ -119,8 +119,9 @@ def fetch_wallpaper(collecs):
     # screen_config = get_screen_config()
     with open("{}/current_wallpaper".format(BASE_CACHE_PATH), "w") as f:
         f.write(wp["image"])
-        f.write("\n{}\n{}".format(wp["copyright"], wp["url"]))
-    if wp["local"] is True:
+        f.write("\n{copy}\n{url}\n{source}".format(
+            copy=wp["copyright"], url=wp["url"], source=wp["type"]))
+    if wp["type"] == "local":
         return wp["image"], wp["image"]
     m = hashlib.md5()
     m.update(wp["image"].encode())

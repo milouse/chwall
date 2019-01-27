@@ -45,7 +45,6 @@ def fetch_pictures(config):
             "image": px,
             "copyright": label,
             "url": p["links"]["html"],
-            "type": "unsplash",
-            "local": False
+            "type": "unsplash"
         }
     return collecs
