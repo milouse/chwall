@@ -5,9 +5,16 @@ import sys
 # chwall imports
 from chwall.client import client
 from chwall.daemon import daemon
+from chwall.icon import start_icon
 
 
 if __name__ == "__main__":
-    if len(sys.argv) > 1 and sys.argv[1] != "daemon":
+    action = "daemon"
+    if len(sys.argv) > 1:
+        action = sys.argv[1]
+    if action in ["icon", "gui"]:
+        start_icon()
+    elif action != "daemon":
         sys.exit(client())
-    sys.exit(daemon())
+    else:
+        sys.exit(daemon())

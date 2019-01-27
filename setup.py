@@ -28,6 +28,9 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     install_requires=requirements,
     entry_points={
+        "gui_scripts": [
+            "chwall-icon = chwall.icon:start_icon"
+        ],
         "console_scripts": [
             "chwall-daemon = chwall.daemon:daemon",
             "chwall = chwall.client:client"
