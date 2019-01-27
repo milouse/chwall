@@ -45,15 +45,14 @@ def display_wallpaper_info():
 
 def print_help():
     filtered_cmd = chwall_commands.copy()
-    filtered_cmd.remove("once")
     filtered_cmd.remove("systemd")
     filtered_cmd.remove("info")
     filtered_cmd.remove("current")
     print("Usage: {} ( {} )".format(sys.argv[0], " | ".join(filtered_cmd)),
           file=sys.stderr)
-    print("       {} ( once | systemd )".format(sys.argv[0]), file=sys.stderr)
     print("       {} ( current | info ) [ open ]".format(sys.argv[0]),
           file=sys.stderr)
+    print("       {} systemd".format(sys.argv[0]), file=sys.stderr)
 
 
 def run_client(config):
