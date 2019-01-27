@@ -8,7 +8,7 @@ function _chwall() {
         info)
             commands=open
             ;;
-        *) commands="blacklist history info next once pending systemd" ;;
+        *) commands="blacklist history info next once pending previous systemd" ;;
     esac
 
     COMPREPLY=( $(compgen -o nospace -W "$commands" "$cur") )
