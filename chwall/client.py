@@ -7,7 +7,7 @@ import subprocess
 
 
 # chwall imports
-from chwall.utils import BASE_CACHE_PATH, read_config
+from chwall.utils import BASE_CACHE_PATH, read_config, systemd_file
 from chwall.wallpaper import pick_wallpaper, ChwallEmptyListError
 
 
@@ -61,25 +61,7 @@ def run_client(config):
         return False
     action = sys.argv[1]
     if action == "systemd":
-        # Is it an installed version?
-        if os.path.exists("/usr/bin/chwall-daemon"):
-            chwall_cmd = "/usr/bin/chwall-daemon"
-        else:
-            chwall_cmd = "{0}/chwall.py\nWorkingDirectory={0}".format(
-                os.path.realpath(
-                    os.path.join(os.path.dirname(__file__), "..")))
-        print("""
-[Unit]
-Description = Simple wallpaper changer
-After=network.target
-
-[Service]
-Type=forking
-ExecStart={command}
-
-[Install]
-WantedBy=default.target
-""".strip().format(command=chwall_cmd))
+        systemd_file()
         return True
     elif action in ["current", "info"]:
         display_wallpaper_info()

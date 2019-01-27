@@ -18,6 +18,16 @@ gettext.textdomain("chwall")
 _ = gettext.gettext
 
 
+DAEMON_STATE = {
+    "started": _("Daemon started"),
+    "stopped": _("Daemon stopped"),
+    "started_absent": _("Daemon started (service file not found)"),
+    "stopped_absent": _("Daemon stopped (service file not found)"),
+    "started_disabled": _("Daemon started, but disabled"),
+    "stopped_disabled": _("Daemon stopped and disabled")
+}
+
+
 class ChwallIcon:
     def __init__(self):
         self.config = read_config()
@@ -29,13 +39,24 @@ class ChwallIcon:
     def display_menu(self, _icon, event_button, event_time):
         menu = Gtk.Menu()
 
+        daemon_state = []
         pid_file = "{}/chwall_pid".format(BASE_CACHE_PATH)
         if os.path.exists(pid_file):
-            daemon_state = Gtk.MenuItem.new_with_label(_("Daemon started"))
+            daemon_state.append("started")
         else:
-            daemon_state = Gtk.MenuItem.new_with_label(_("Daemon stopped"))
-        daemon_state.set_sensitive(False)
-        menu.append(daemon_state)
+            daemon_state.append("stopped")
+
+        systemd_path = os.path.expanduser("~/.config/systemd/user")
+        if not os.path.exists("{}/chwall.service".format(systemd_path)):
+            daemon_state.append("absent")
+        elif not os.path.exists("{}/default.target.wants/chwall.service"
+                                .format(systemd_path)):
+            daemon_state.append("disabled")
+
+        daemon_state_label = DAEMON_STATE["_".join(daemon_state)]
+        daemon_state_btn = Gtk.MenuItem.new_with_label(daemon_state_label)
+        daemon_state_btn.set_sensitive(False)
+        menu.append(daemon_state_btn)
 
         curwall = []
         # line 0 contains wallpaper uri

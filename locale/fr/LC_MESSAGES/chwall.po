@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chwall 0.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-27 17:27+0100\n"
-"PO-Revision-Date: 2019-01-27 17:32+0100\n"
+"POT-Creation-Date: 2019-01-27 18:42+0100\n"
+"PO-Revision-Date: 2019-01-27 18:46+0100\n"
 "Last-Translator: Étienne Deparis <etienne@depar.is>\n"
 "Language-Team: none\n"
 "Language: fr\n"
@@ -18,34 +18,50 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 2.2\n"
 
-#: chwall/icon.py:33
+#: chwall/icon.py:22
 msgid "Daemon started"
 msgstr "Service démarré"
 
-#: chwall/icon.py:35
+#: chwall/icon.py:23
 msgid "Daemon stopped"
 msgstr "Service arrêté"
 
-#: chwall/icon.py:55
+#: chwall/icon.py:24
+msgid "Daemon started (service file not found)"
+msgstr "Service démarré (fichier du service non trouvé)"
+
+#: chwall/icon.py:25
+msgid "Daemon stopped (service file not found)"
+msgstr "Service arrêté (fichier du service non trouvé)"
+
+#: chwall/icon.py:26
+msgid "Daemon started, but disabled"
+msgstr "Service démarré, mais désactivé"
+
+#: chwall/icon.py:27
+msgid "Daemon stopped and disabled"
+msgstr "Service arrêté et désactivé"
+
+#: chwall/icon.py:79
 msgid "Next wallpaper"
 msgstr "Papier-peint suivant"
 
-#: chwall/icon.py:60
+#: chwall/icon.py:84
 msgid "Previous wallpaper"
 msgstr "Papier-peint précédent"
 
-#: chwall/icon.py:68
+#: chwall/icon.py:92
 msgid "Report a bug"
 msgstr "Signaler un bogue"
 
-#: chwall/icon.py:101
+#: chwall/icon.py:125
 msgid "Chwall"
 msgstr "Chwall"
 
-#: chwall/icon.py:103
+#: chwall/icon.py:127
 msgid "Wallpaper Changer"
 msgstr "Changeur de papier-peint"
 
-#: chwall/icon.py:105
+#: chwall/icon.py:129
 msgid "Chwall is released under the WTFPL"
 msgstr "Chwall est disponible selon les termes de la WTFPL"

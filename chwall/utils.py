@@ -39,3 +39,32 @@ def read_config():
     if "sleep" not in config["general"]:
         config["general"]["sleep"] = 10 * 60
     return config
+
+
+def systemd_file(write=False):
+    # Is it an installed version?
+    if os.path.exists("/usr/bin/chwall-daemon"):
+        chwall_cmd = "/usr/bin/chwall-daemon"
+    else:
+        chwall_cmd = "{0}/chwall.py\nWorkingDirectory={0}".format(
+            os.path.realpath(
+                os.path.join(os.path.dirname(__file__), "..")))
+    file_content = """
+[Unit]
+Description = Simple wallpaper changer
+After=network.target
+
+[Service]
+Type=forking
+ExecStart={command}
+
+[Install]
+WantedBy=default.target
+""".strip().format(command=chwall_cmd)
+    if write is False:
+        print(file_content)
+        return
+    systemd_path = os.path.expanduser("~/.config/systemd/user")
+    os.makedirs(systemd_path, exist_ok=True)
+    with open("{}/chwall.service".format("systemd_path"), "w") as f:
+        f.write(file_content)

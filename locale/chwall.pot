@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chwall 0.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-27 17:27+0100\n"
+"POT-Creation-Date: 2019-01-27 18:42+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,34 +17,50 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: chwall/icon.py:33
+#: chwall/icon.py:22
 msgid "Daemon started"
 msgstr ""
 
-#: chwall/icon.py:35
+#: chwall/icon.py:23
 msgid "Daemon stopped"
 msgstr ""
 
-#: chwall/icon.py:55
+#: chwall/icon.py:24
+msgid "Daemon started (service file not found)"
+msgstr ""
+
+#: chwall/icon.py:25
+msgid "Daemon stopped (service file not found)"
+msgstr ""
+
+#: chwall/icon.py:26
+msgid "Daemon started, but disabled"
+msgstr ""
+
+#: chwall/icon.py:27
+msgid "Daemon stopped and disabled"
+msgstr ""
+
+#: chwall/icon.py:79
 msgid "Next wallpaper"
 msgstr ""
 
-#: chwall/icon.py:60
+#: chwall/icon.py:84
 msgid "Previous wallpaper"
 msgstr ""
 
-#: chwall/icon.py:68
+#: chwall/icon.py:92
 msgid "Report a bug"
 msgstr ""
 
-#: chwall/icon.py:101
+#: chwall/icon.py:125
 msgid "Chwall"
 msgstr ""
 
-#: chwall/icon.py:103
+#: chwall/icon.py:127
 msgid "Wallpaper Changer"
 msgstr ""
 
-#: chwall/icon.py:105
+#: chwall/icon.py:129
 msgid "Chwall is released under the WTFPL"
 msgstr ""
