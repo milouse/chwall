@@ -5,7 +5,6 @@ VERSION = $(shell python -c "from chwall.utils import VERSION;print(VERSION)")
 
 ICON       = data/icon_800.png
 ICON_SIZE  = 128 64 48 32 24 16
-ALL_ICONS  = $(foreach z,$(ICON_SIZE),data/icon_$(z)x$(z).png)
 DEST_ICONS = $(foreach z,$(ICON_SIZE),$(DEST)/share/icons/hicolor/$(z)x$(z)/apps/chwall.png)
 
 PY_VERSION = $(shell python -c "import sys;v=sys.version_info;print('{}.{}'.format(v.major, v.minor))")
@@ -17,10 +16,11 @@ MO_FILES   = $(PO_FILES:%.po=%.mo)
 DEST_MO    = $(L10N_LANGS:%=$(DEST)/share/locale/%/LC_MESSAGES/chwall.mo)
 
 
-.PHONY: clean install lang uninstall
+.PHONY: install lang uninstall
 
 install: $(DEST_ICONS) $(DEST_MO)
 	python setup.py install --root=$(ROOT)
+	@rm -rf build chwall.egg-info
 	install -d -m755 $(DEST)/share/licenses/chwall
 	install -d -m755 $(DEST)/share/bash-completion/completions
 	install -d -m755 $(DEST)/share/zsh/site-functions
@@ -45,11 +45,6 @@ $(DEST)/share/icons/hicolor/%/apps/chwall.png: data/icon_%.png
 
 data/icon_%.png:
 	convert $(ICON) -resize $(@:data/icon_%.png=%) $@
-
-clean:
-	rm -f $(ALL_ICONS)
-	rm -f $(MO_FILES)
-	rm -rf build chwall.egg-info
 
 locale/chwall.pot:
 	mkdir -p locale
