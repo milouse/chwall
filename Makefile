@@ -16,7 +16,7 @@ MO_FILES   = $(PO_FILES:%.po=%.mo)
 DEST_MO    = $(L10N_LANGS:%=$(DEST)/share/locale/%/LC_MESSAGES/chwall.mo)
 
 
-.PHONY: install lang uninstall
+.PHONY: install lang uninstall uplang
 
 install: $(DEST_ICONS) $(DEST_MO)
 	python setup.py install --root=$(ROOT)
@@ -69,3 +69,10 @@ $(DEST)/share/locale/%/LC_MESSAGES/chwall.mo: locale/%/LC_MESSAGES/chwall.mo
 	install -D -m644 $< $@
 
 lang: $(PO_FILES)
+
+%.po~: %.po
+	msgmerge --lang $(@:locale/%/LC_MESSAGES/chwall.po~=%) \
+		-o $@ $< locale/chwall.pot
+	@cp $@ $< && rm $@
+
+uplang: $(PO_FILES:%=%~)
