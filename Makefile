@@ -67,10 +67,10 @@ locale/chwall.pot:
 	msginit -l $(@:locale/%/LC_MESSAGES/chwall.po=%) \
 		--no-translator -i $< -o $@
 
-%.mo: %.po
+locale/%/LC_MESSAGES/chwall.mo: locale/%/LC_MESSAGES/chwall.po
 	msgfmt -o $@ $<
 
-$(DEST_MO): $(MO_FILES)
+$(DEST)/share/locale/%/LC_MESSAGES/chwall.mo: locale/%/LC_MESSAGES/chwall.mo
 	install -D -m644 $< $@
 
 lang: $(PO_FILES)
