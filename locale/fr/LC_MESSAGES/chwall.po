@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chwall 0.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-27 18:59+0100\n"
-"PO-Revision-Date: 2019-01-28 11:23+0100\n"
+"POT-Creation-Date: 2019-01-30 19:06+0100\n"
+"PO-Revision-Date: 2019-01-30 19:09+0100\n"
 "Last-Translator: Étienne Deparis <etienne@depar.is>\n"
 "Language-Team: none\n"
 "Language: fr\n"
@@ -16,52 +16,60 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 2.2\n"
+"X-Generator: Poedit 2.2.1\n"
 
-#: chwall/icon.py:22
+#: chwall/icon.py:23
 msgid "Daemon started"
 msgstr "Service démarré"
 
-#: chwall/icon.py:23
+#: chwall/icon.py:24
 msgid "Daemon stopped"
 msgstr "Service arrêté"
 
-#: chwall/icon.py:24
+#: chwall/icon.py:25
 msgid "Daemon started (service file not found)"
 msgstr "Service démarré (fichier du service non trouvé)"
 
-#: chwall/icon.py:25
+#: chwall/icon.py:26
 msgid "Daemon stopped (service file not found)"
 msgstr "Service arrêté (fichier du service non trouvé)"
 
-#: chwall/icon.py:26
+#: chwall/icon.py:27
 msgid "Daemon started, but disabled"
 msgstr "Service démarré, mais désactivé"
 
-#: chwall/icon.py:27
+#: chwall/icon.py:28
 msgid "Daemon stopped and disabled"
 msgstr "Service arrêté et désactivé"
 
-#: chwall/icon.py:79
+#: chwall/icon.py:88
 msgid "Next wallpaper"
 msgstr "Papier-peint suivant"
 
-#: chwall/icon.py:84
+#: chwall/icon.py:93
 msgid "Previous wallpaper"
 msgstr "Papier-peint précédent"
 
-#: chwall/icon.py:92
+#: chwall/icon.py:98
+msgid "Blacklist"
+msgstr "Mettre en liste noire"
+
+#: chwall/icon.py:106
+msgid "Always display this icon"
+msgstr "Toujours afficher cette icône"
+
+#: chwall/icon.py:112
 msgid "Report a bug"
 msgstr "Signaler un bogue"
 
-#: chwall/icon.py:125
+#: chwall/icon.py:158 chwall/icon.py:171
 msgid "Chwall"
 msgstr "Chwall"
 
-#: chwall/icon.py:127
+#: chwall/icon.py:158 chwall/icon.py:173
 msgid "Wallpaper Changer"
 msgstr "Changeur de papier-peint"
 
-#: chwall/icon.py:129
+#: chwall/icon.py:175
 msgid "Chwall is released under the WTFPL"
 msgstr "Chwall est publié selon les termes de la WTFPL"
