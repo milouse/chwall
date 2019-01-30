@@ -3,6 +3,7 @@
 import os
 import signal
 import subprocess
+from xdg.BaseDirectory import xdg_config_home
 from chwall.utils import VERSION, BASE_CACHE_PATH, read_config
 from chwall.wallpaper import pick_wallpaper
 
@@ -35,6 +36,9 @@ class ChwallIcon:
         self.tray.set_from_icon_name("chwall")
         self.tray.set_tooltip_text("Chwall")
         self.tray.connect("popup-menu", self.display_menu)
+        self.autostart_file = os.path.join(xdg_config_home, "autostart",
+                                           "chwall-icon.desktop")
+        self.must_autostart = os.path.isfile(self.autostart_file)
 
     def display_menu(self, _icon, event_button, event_time):
         menu = Gtk.Menu()
@@ -92,6 +96,12 @@ class ChwallIcon:
         sep = Gtk.SeparatorMenuItem()
         menu.append(sep)
 
+        # Launch at session start
+        asbtn = Gtk.CheckMenuItem(_("Always display this icon"))
+        asbtn.set_active(self.must_autostart)
+        menu.append(asbtn)
+        asbtn.connect("toggled", self.toggle_must_autostart)
+
         # report a bug
         reportbug = Gtk.MenuItem.new_with_label(_("Report a bug"))
         menu.append(reportbug)
@@ -116,6 +126,29 @@ class ChwallIcon:
 
     def open_in_context(self, widget, wall_url):
         subprocess.Popen(["gio", "open", wall_url])
+
+    def toggle_must_autostart(self, widget):
+        self.must_autostart = widget.get_active()
+        autostart_dir = os.path.join(xdg_config_home, "autostart")
+        if not os.path.isdir(autostart_dir):
+            os.makedirs(autostart_dir)
+        file_yet_exists = os.path.isfile(self.autostart_file)
+        if not file_yet_exists and self.must_autostart:
+            with open(self.autostart_file, "w") as f:
+                f.write("""\
+[Desktop Entry]
+Name={}
+Comment={}
+Exec=chwall-icon
+Icon=chwall
+Terminal=false
+Type=Application
+X-MATE-Autostart-enabled=true
+X-GNOME-Autostart-Delay=20
+StartupNotify=false
+""".format(_("Chwall"), _("Wallpaper Changer")))
+        elif file_yet_exists and not self.must_autostart:
+            os.remove(self.autostart_file)
 
     def report_a_bug(self, widget):
         subprocess.Popen(
