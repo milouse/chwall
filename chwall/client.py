@@ -8,27 +8,12 @@ import subprocess
 
 # chwall imports
 from chwall.utils import BASE_CACHE_PATH, read_config, systemd_file
-from chwall.wallpaper import pick_wallpaper, ChwallEmptyListError
+from chwall.wallpaper import blacklist_wallpaper, pick_wallpaper, \
+                             ChwallEmptyListError
 
 
 chwall_commands = ["blacklist", "current", "history", "info", "next",
                    "once", "pending", "previous", "purge", "quit", "systemd"]
-
-
-def blacklist_wallpaper():
-    try:
-        with open("{}/blacklist.yml"
-                  .format(BASE_CACHE_PATH), "r") as f:
-            blacklist = yaml.load(f) or []
-    except FileNotFoundError:
-        blacklist = []
-    with open("{}/current_wallpaper"
-              .format(BASE_CACHE_PATH), "r") as f:
-        blacklist.append(f.readlines()[0].strip())
-    with open("{}/blacklist.yml"
-              .format(BASE_CACHE_PATH), "w") as f:
-        yaml.dump(blacklist, f, explicit_start=True,
-                  default_flow_style=False)
 
 
 def display_wallpaper_info():

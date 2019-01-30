@@ -5,7 +5,7 @@ import signal
 import subprocess
 from xdg.BaseDirectory import xdg_config_home
 from chwall.utils import VERSION, BASE_CACHE_PATH, read_config
-from chwall.wallpaper import pick_wallpaper
+from chwall.wallpaper import blacklist_wallpaper, pick_wallpaper
 
 import gi
 gi.require_version('Gtk', '3.0')  # noqa: E402
@@ -93,6 +93,11 @@ class ChwallIcon:
         menu.append(prevbtn)
         prevbtn.connect("activate", self.change_wallpaper, True)
 
+        # previous wallpaper
+        blackbtn = Gtk.MenuItem.new_with_label(_("Blacklist"))
+        menu.append(blackbtn)
+        blackbtn.connect("activate", self.blacklist_wallpaper)
+
         sep = Gtk.SeparatorMenuItem()
         menu.append(sep)
 
@@ -123,6 +128,9 @@ class ChwallIcon:
 
     def change_wallpaper(self, widget, direction=False):
         pick_wallpaper(self.config, direction)
+
+    def blacklist_wallpaper(self, widget):
+        blacklist_wallpaper()
 
     def open_in_context(self, widget, wall_url):
         subprocess.Popen(["gio", "open", wall_url])
