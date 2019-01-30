@@ -65,11 +65,15 @@ class ChwallIcon:
         with open("{}/current_wallpaper"
                   .format(BASE_CACHE_PATH), "r") as f:
             curwall = f.readlines()
-        curlabel = "{copy} ({source})".format(
-            copy=curwall[1].strip(), source=curwall[3].strip())
+        source = curwall[3].strip()
+        uri = curwall[2].strip()
+        if source == "local":
+            curlabel = uri
+        else:
+            curlabel = "{copy} ({source})".format(
+                copy=curwall[1].strip(), source=source)
         current_wall_info = Gtk.MenuItem.new_with_label(curlabel)
-        current_wall_info.connect("activate", self.open_in_context,
-                                  curwall[2].strip())
+        current_wall_info.connect("activate", self.open_in_context, uri)
         menu.append(current_wall_info)
 
         sep = Gtk.SeparatorMenuItem()
