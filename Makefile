@@ -27,17 +27,17 @@ install: $(DEST_ICONS) $(DEST_MO)
 	install -D -m644 LICENSE $(DEST)/share/licenses/chwall/LICENSE
 	install -D -m644 data/chwall-completions $(DEST)/share/bash-completion/completions/chwall
 	install -D -m644 data/_chwall $(DEST)/share/zsh/site-functions/_chwall
-	update-desktop-database
+	@gtk-update-icon-cache $(DEST)/share/icons/hicolor
 
 uninstall:
 	rm -rf $(PY_SITE)/chwall $(PY_SITE)/chwall-$(VERSION)-py$(PY_VERSION).egg-info
 	rm -rf $(DEST)/share/licenses/chwall
 	rm -f $(DEST_ICONS)
+	@gtk-update-icon-cache $(DEST)/share/icons/hicolor
 	rm -f $(DEST_MO)
 	rm -f $(DEST)/share/bash-completion/completions/chwall
 	rm -f $(DEST)/share/zsh/site-functions/_chwall
 	rm -f $(DEST)/bin/chwall $(DEST)/bin/chwall-daemon
-	update-desktop-database
 
 $(DEST)/share/icons/hicolor/%/apps/chwall.png: data/icon_%.png
 	install -d -m755 $(@:%/chwall.png=%)
