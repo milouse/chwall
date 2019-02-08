@@ -131,13 +131,15 @@ def fetch_wallpaper(collecs):
         return pic_file, wp["image"]
     with open(pic_file, "wb") as f:
         f.write(requests.get(wp["image"]).content)
+    if os.path.getsize(pic_file) == 0:
+        # Do not keep empty files. It may be caused by a network error or
+        # something else, which may be resolved later.
+        os.unlink(pic_file)
+        raise ChwallEmptyListError("Wallpaper file was empty")
     return pic_file, wp["image"]
 
 
 def pick_wallpaper(config, backward=False, guard=0):
-    if guard == 3:
-        # Something goes wrong, abort
-        raise ChwallEmptyListError("Cannot fetch any wallpapers list")
     road_map = "{}/roadmap".format(BASE_CACHE_PATH)
     if not os.path.exists(road_map):
         build_roadmap(config)
@@ -153,10 +155,13 @@ def pick_wallpaper(config, backward=False, guard=0):
             data["pictures"].insert(0, data["history"].pop())
     try:
         lp, wp = fetch_wallpaper(data)
-    except ChwallEmptyListError:
+    except ChwallEmptyListError as err:
         # Try again with a fresh road_map
         os.unlink(road_map)
         guard += 1
+        if guard == 3:
+            # Something goes wrong, reraise and abort
+            raise ChwallEmptyListError(err)
         build_roadmap(config)
         # Backward is always false because at this point, something went wrong
         # and we should start over.
