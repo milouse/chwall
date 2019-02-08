@@ -131,6 +131,7 @@ class ChwallIcon:
 
     def blacklist_wallpaper(self, widget):
         blacklist_wallpaper()
+        pick_wallpaper(self.config)
 
     def open_in_context(self, widget, wall_url):
         subprocess.Popen(["gio", "open", wall_url])
