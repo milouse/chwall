@@ -96,16 +96,32 @@ def set_mate_wallpaper(path):
                          "picture-filename", path]).returncode
     if err == 1:
         raise ChwallWallpaperSetError(
-            "Error while setting picture-filename property")
+            "Error while setting mate picture-filename property")
     err = subprocess.run(["gsettings", "set", "org.mate.background",
                          "picture-options", "zoom"]).returncode
     if err == 1:
         raise ChwallWallpaperSetError(
-            "Error while setting picture-options property")
+            "Error while setting mate picture-options property")
+
+
+def set_gnome_wallpaper(path):
+    if path is None:
+        raise ChwallWallpaperSetError("No wallpaper path given")
+    err = subprocess.run(["gsettings", "set", "org.gnome.desktop.background",
+                         "picture-uri", 'file://{}'.format(path)]).returncode
+    if err == 1:
+        raise ChwallWallpaperSetError(
+            "Error while setting gnome picture-uri property")
+    err = subprocess.run(["gsettings", "set", "org.gnome.desktop.background",
+                         "picture-options", "zoom"]).returncode
+    if err == 1:
+        raise ChwallWallpaperSetError(
+            "Error while setting gnome picture-options property")
 
 
 def set_wallpaper(path, config):
     set_mate_wallpaper(path)
+    set_gnome_wallpaper(path)
     if "lightdm_wall" in config["general"]:
         ld_path = os.path.expanduser(
             config["general"]["lightdm_wall"])
