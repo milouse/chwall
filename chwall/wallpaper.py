@@ -89,7 +89,7 @@ def build_roadmap(config):
     write_roadmap(filter_wallpapers_list(build_wallpapers_list(config)))
 
 
-def set_mate_wallpaper(path, config):
+def set_mate_wallpaper(path):
     if path is None:
         raise ChwallWallpaperSetError("No wallpaper path given")
     err = subprocess.run(["gsettings", "set", "org.mate.background",
@@ -102,14 +102,14 @@ def set_mate_wallpaper(path, config):
     if err == 1:
         raise ChwallWallpaperSetError(
             "Error while setting picture-options property")
+
+
+def set_wallpaper(path, config):
+    set_mate_wallpaper(path)
     if "lightdm_wall" in config["general"]:
         ld_path = os.path.expanduser(
             config["general"]["lightdm_wall"])
         shutil.copy(path, ld_path)
-
-
-def set_wallpaper(path, config):
-    set_mate_wallpaper(path, config)
 
 
 def fetch_wallpaper(collecs):
