@@ -7,6 +7,7 @@ import subprocess
 
 
 # chwall imports
+from chwall.daemon import notify_daemon_if_any
 from chwall.utils import BASE_CACHE_PATH, read_config, systemd_file
 from chwall.wallpaper import blacklist_wallpaper, pick_wallpaper, \
                              ChwallEmptyListError
@@ -61,21 +62,14 @@ def run_client(config):
             direction = True
         try:
             pick_wallpaper(config, direction)
+            notify_daemon_if_any()
             return True
         except ChwallEmptyListError as e:
             print(e, file=sys.stderr)
             action = "quit"
     if action == "quit":
-        pid_file = "{}/chwall_pid".format(BASE_CACHE_PATH)
-        if not os.path.exists(pid_file):
-            return False
-        pid = None
-        with open(pid_file, "r") as f:
-            pid = f.read().strip()
-        print("Kill process {}".format(pid))
         # 15 == signal.SIGTERM
-        os.kill(int(pid), 15)
-        return True
+        return notify_daemon_if_any(15)
 
     data = {}
     road_map = "{}/roadmap".format(BASE_CACHE_PATH)

@@ -4,6 +4,7 @@ import os
 import signal
 import subprocess
 from xdg.BaseDirectory import xdg_config_home
+from chwall.daemon import notify_daemon_if_any
 from chwall.utils import VERSION, BASE_CACHE_PATH, read_config
 from chwall.wallpaper import blacklist_wallpaper, pick_wallpaper
 
@@ -128,10 +129,11 @@ class ChwallIcon:
 
     def change_wallpaper(self, widget, direction=False):
         pick_wallpaper(self.config, direction)
+        notify_daemon_if_any()
 
     def blacklist_wallpaper(self, widget):
         blacklist_wallpaper()
-        pick_wallpaper(self.config)
+        self.change_wallpaper(widget)
 
     def open_in_context(self, widget, wall_url):
         subprocess.Popen(["gio", "open", wall_url])
