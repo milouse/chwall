@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chwall 0.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-30 19:06+0100\n"
-"PO-Revision-Date: 2019-01-30 19:09+0100\n"
+"POT-Creation-Date: 2019-02-19 13:45+0100\n"
+"PO-Revision-Date: 2019-02-19 13:50+0100\n"
 "Last-Translator: Étienne Deparis <etienne@depar.is>\n"
 "Language-Team: none\n"
 "Language: fr\n"
@@ -18,58 +18,76 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 2.2.1\n"
 
-#: chwall/icon.py:23
+#: chwall/icon.py:25
 msgid "Daemon started"
 msgstr "Service démarré"
 
-#: chwall/icon.py:24
+#: chwall/icon.py:26
 msgid "Daemon stopped"
 msgstr "Service arrêté"
 
-#: chwall/icon.py:25
+#: chwall/icon.py:27
 msgid "Daemon started (service file not found)"
 msgstr "Service démarré (fichier du service non trouvé)"
 
-#: chwall/icon.py:26
+#: chwall/icon.py:28
 msgid "Daemon stopped (service file not found)"
 msgstr "Service arrêté (fichier du service non trouvé)"
 
-#: chwall/icon.py:27
+#: chwall/icon.py:29
 msgid "Daemon started, but disabled"
 msgstr "Service démarré, mais désactivé"
 
-#: chwall/icon.py:28
+#: chwall/icon.py:30
 msgid "Daemon stopped and disabled"
 msgstr "Service arrêté et désactivé"
 
-#: chwall/icon.py:88
+#: chwall/icon.py:63
+msgid "minute"
+msgstr "minute"
+
+#: chwall/icon.py:65
+msgid "minutes"
+msgstr "minutes"
+
+#: chwall/icon.py:66
+#, python-brace-format
+msgid "Next change in {minute_number} {minute_label} {second_number}s"
+msgstr "Prochain changement dans {minute_number} {minute_label} {second_number}s"
+
+#: chwall/icon.py:72
+#, python-brace-format
+msgid "Next change in {second_number}s"
+msgstr "Prochain changement dans {second_number}s"
+
+#: chwall/icon.py:116
 msgid "Next wallpaper"
 msgstr "Papier-peint suivant"
 
-#: chwall/icon.py:93
+#: chwall/icon.py:121
 msgid "Previous wallpaper"
 msgstr "Papier-peint précédent"
 
-#: chwall/icon.py:98
+#: chwall/icon.py:126
 msgid "Blacklist"
 msgstr "Mettre en liste noire"
 
-#: chwall/icon.py:106
+#: chwall/icon.py:134
 msgid "Always display this icon"
 msgstr "Toujours afficher cette icône"
 
-#: chwall/icon.py:112
+#: chwall/icon.py:140
 msgid "Report a bug"
 msgstr "Signaler un bogue"
 
-#: chwall/icon.py:158 chwall/icon.py:171
+#: chwall/icon.py:188 chwall/icon.py:201
 msgid "Chwall"
 msgstr "Chwall"
 
-#: chwall/icon.py:158 chwall/icon.py:173
+#: chwall/icon.py:188 chwall/icon.py:203
 msgid "Wallpaper Changer"
 msgstr "Changeur de papier-peint"
 
-#: chwall/icon.py:175
+#: chwall/icon.py:205
 msgid "Chwall is released under the WTFPL"
 msgstr "Chwall est publié selon les termes de la WTFPL"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chwall 0.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-30 19:06+0100\n"
+"POT-Creation-Date: 2019-02-19 13:45+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,58 +17,76 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: chwall/icon.py:23
+#: chwall/icon.py:25
 msgid "Daemon started"
 msgstr ""
 
-#: chwall/icon.py:24
+#: chwall/icon.py:26
 msgid "Daemon stopped"
 msgstr ""
 
-#: chwall/icon.py:25
+#: chwall/icon.py:27
 msgid "Daemon started (service file not found)"
 msgstr ""
 
-#: chwall/icon.py:26
+#: chwall/icon.py:28
 msgid "Daemon stopped (service file not found)"
 msgstr ""
 
-#: chwall/icon.py:27
+#: chwall/icon.py:29
 msgid "Daemon started, but disabled"
 msgstr ""
 
-#: chwall/icon.py:28
+#: chwall/icon.py:30
 msgid "Daemon stopped and disabled"
 msgstr ""
 
-#: chwall/icon.py:88
+#: chwall/icon.py:63
+msgid "minute"
+msgstr ""
+
+#: chwall/icon.py:65
+msgid "minutes"
+msgstr ""
+
+#: chwall/icon.py:66
+#, python-brace-format
+msgid "Next change in {minute_number} {minute_label} {second_number}s"
+msgstr ""
+
+#: chwall/icon.py:72
+#, python-brace-format
+msgid "Next change in {second_number}s"
+msgstr ""
+
+#: chwall/icon.py:116
 msgid "Next wallpaper"
 msgstr ""
 
-#: chwall/icon.py:93
+#: chwall/icon.py:121
 msgid "Previous wallpaper"
 msgstr ""
 
-#: chwall/icon.py:98
+#: chwall/icon.py:126
 msgid "Blacklist"
 msgstr ""
 
-#: chwall/icon.py:106
+#: chwall/icon.py:134
 msgid "Always display this icon"
 msgstr ""
 
-#: chwall/icon.py:112
+#: chwall/icon.py:140
 msgid "Report a bug"
 msgstr ""
 
-#: chwall/icon.py:158 chwall/icon.py:171
+#: chwall/icon.py:188 chwall/icon.py:201
 msgid "Chwall"
 msgstr ""
 
-#: chwall/icon.py:158 chwall/icon.py:173
+#: chwall/icon.py:188 chwall/icon.py:203
 msgid "Wallpaper Changer"
 msgstr ""
 
-#: chwall/icon.py:175
+#: chwall/icon.py:205
 msgid "Chwall is released under the WTFPL"
 msgstr ""
