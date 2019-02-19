@@ -70,9 +70,9 @@ $(DEST)/share/locale/%/LC_MESSAGES/chwall.mo: locale/%/LC_MESSAGES/chwall.mo
 
 lang: $(PO_FILES)
 
-%.po~: %.po
+%.po~:
 	msgmerge --lang $(@:locale/%/LC_MESSAGES/chwall.po~=%) \
-		-o $@ $< locale/chwall.pot
-	@cp $@ $< && rm $@
+		-o $@ $(@:%~=%) locale/chwall.pot
+	@cp $@ $(@:%~=%) && rm $@
 
 uplang: $(PO_FILES:%=%~)
