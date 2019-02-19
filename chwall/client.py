@@ -2,6 +2,7 @@
 
 import os
 import sys
+import time
 import yaml
 import subprocess
 
@@ -22,6 +23,18 @@ def display_wallpaper_info():
               .format(BASE_CACHE_PATH), "r") as f:
         infos = f.readlines()[1:]
     print("".join(infos))
+    with open("{}/last_change".format(BASE_CACHE_PATH), "r") as f:
+        try:
+            last_change = int(time.time()) - int(f.read().strip())
+        except ValueError:
+            last_change = -1
+    if last_change > 60:
+        last_change_m = int(last_change / 60)
+        last_change = last_change % 60
+        print("Last change: {} minute(s) {}s ago"
+              .format(last_change_m, last_change))
+    else:
+        print("Last change: {}s ago".format(last_change))
     if len(sys.argv) > 2 and sys.argv[2] == "open" and \
        len(infos) >= 2:
         url = infos[1].strip()

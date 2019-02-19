@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import os
+import time
 import signal
 import subprocess
 from xdg.BaseDirectory import xdg_config_home
@@ -44,10 +45,32 @@ class ChwallIcon:
     def display_menu(self, _icon, event_button, event_time):
         menu = Gtk.Menu()
 
+        next_change_label = None
         daemon_state = []
         pid_file = "{}/chwall_pid".format(BASE_CACHE_PATH)
         if os.path.exists(pid_file):
             daemon_state.append("started")
+            with open("{}/last_change".format(BASE_CACHE_PATH), "r") as f:
+                try:
+                    last_change = int(time.time()) - int(f.read().strip())
+                except ValueError:
+                    last_change = -1
+            sleep_time = self.config['general']['sleep']
+            next_change = sleep_time - last_change
+            if next_change > 60:
+                next_change_m = int(next_change / 60)
+                next_change_s = next_change % 60
+                min_str = _("minute")
+                if next_change > 120:
+                    min_str = _("minutes")
+                next_change_label = _("Next change in {minute_number} "
+                                      "{minute_label} {second_number}s")
+                next_change_label = next_change_label.format(
+                    minute_number=next_change_m, minute_label=min_str,
+                    second_number=next_change_s)
+            else:
+                next_change_label = (_("Next change in {second_number}s")
+                                     .format(next_change))
         else:
             daemon_state.append("stopped")
 
@@ -62,6 +85,11 @@ class ChwallIcon:
         daemon_state_btn = Gtk.MenuItem.new_with_label(daemon_state_label)
         daemon_state_btn.set_sensitive(False)
         menu.append(daemon_state_btn)
+
+        if next_change_label is not None:
+            next_change_btn = Gtk.MenuItem.new_with_label(next_change_label)
+            next_change_btn.set_sensitive(False)
+            menu.append(next_change_btn)
 
         curwall = []
         # line 0 contains wallpaper uri
