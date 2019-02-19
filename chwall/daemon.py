@@ -56,6 +56,8 @@ def daemon_loop():
     try:
         signal.signal(signal.SIGTERM, kill_daemon)
         signal.signal(signal.SIGUSR1, restart_sleep)
+        # Keep the current wallpaper once before changing it
+        wait_before_change(sleep_time)
         while True:
             try:
                 pick_wallpaper(config)
