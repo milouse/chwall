@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import requests
 from datetime import date
 
