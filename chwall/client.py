@@ -10,8 +10,7 @@ import subprocess
 # chwall imports
 from chwall.daemon import notify_daemon_if_any
 from chwall.utils import BASE_CACHE_PATH, read_config, systemd_file
-from chwall.wallpaper import blacklist_wallpaper, pick_wallpaper, \
-                             ChwallEmptyListError
+from chwall.wallpaper import blacklist_wallpaper, pick_wallpaper
 
 
 chwall_commands = ["blacklist", "current", "history", "info", "next",
@@ -73,13 +72,13 @@ def run_client(config):
         direction = False
         if action == "previous":
             direction = True
-        try:
-            pick_wallpaper(config, direction)
+        if pick_wallpaper(config, direction) is None:
+            print("Unable to pick wallpaper this time. Please, try again.",
+                  file=sys.stderr)
+            action = "quit"
+        else:
             notify_daemon_if_any()
             return True
-        except ChwallEmptyListError as e:
-            print(e, file=sys.stderr)
-            action = "quit"
     if action == "quit":
         # 15 == signal.SIGTERM
         return notify_daemon_if_any(15)

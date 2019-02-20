@@ -64,8 +64,8 @@ def daemon_loop():
             try:
                 pick_wallpaper(config)
             except ChwallWallpaperSetError:
-                # weird, but try again…
-                continue
+                # weird, but try again after some sleep
+                pass
             # Sleep may be interrupted by a signal raising an error.
             # We should add an handler on signal.SIGALRM
             wait_before_change(sleep_time)

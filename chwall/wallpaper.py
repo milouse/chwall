@@ -12,10 +12,6 @@ import subprocess
 from chwall.utils import BASE_CACHE_PATH
 
 
-class ChwallEmptyListError(Exception):
-    pass
-
-
 class ChwallWallpaperSetError(Exception):
     pass
 
@@ -124,11 +120,10 @@ def set_wallpaper(path, config):
         ld_path = os.path.expanduser(
             config["general"]["lightdm_wall"])
         shutil.copy(path, ld_path)
+    return path
 
 
 def fetch_wallpaper(collecs):
-    if collecs["pictures"] is None or len(collecs["pictures"]) == 0:
-        raise ChwallEmptyListError("No wallpaper in list")
     wp = collecs["data"][collecs["pictures"][0]]
     # screen_config = get_screen_config()
     with open("{}/current_wallpaper".format(BASE_CACHE_PATH), "w") as f:
@@ -149,11 +144,11 @@ def fetch_wallpaper(collecs):
         # Do not keep empty files. It may be caused by a network error or
         # something else, which may be resolved later.
         os.unlink(pic_file)
-        raise ChwallEmptyListError("Wallpaper file was empty")
+        return None, None
     return pic_file, wp["image"]
 
 
-def pick_wallpaper(config, backward=False, guard=0):
+def pick_wallpaper(config, backward=False, guard=False):
     road_map = "{}/roadmap".format(BASE_CACHE_PATH)
     if not os.path.exists(road_map):
         build_roadmap(config)
@@ -167,25 +162,32 @@ def pick_wallpaper(config, backward=False, guard=0):
             data["pictures"].insert(0, data["history"].pop())
             # Previous one
             data["pictures"].insert(0, data["history"].pop())
-    try:
-        lp, wp = fetch_wallpaper(data)
-    except ChwallEmptyListError as err:
-        # Try again with a fresh road_map
+            # Now we are good to do a fake "forward" move
+    if data["pictures"] is None or len(data["pictures"]) == 0:
+        # Woops, no picture left. Removing current roadmap.
         os.unlink(road_map)
-        guard += 1
-        if guard == 3:
-            # Something goes wrong, reraise and abort
-            raise ChwallEmptyListError(err)
-        build_roadmap(config)
-        # Backward is always false because at this point, something went wrong
-        # and we should start over.
-        return pick_wallpaper(config, False, guard)
+        if guard is True:
+            # Wow, we already try to reload once, it's very bad to be
+            # there. Maybe a little network error. Be patient
+            return None
+        # List is empty. Maybe it was the last picture of the current list?
+        # Thus, try again now. Backward is always false because at this point,
+        # something went wrong and we should start over.
+        return pick_wallpaper(config, False, True)
+    lp, wp = fetch_wallpaper(data)
+    if lp is None:
+        # Something goes wrong, thus do nothing. It may be because of a
+        # networking error or something else.
+        # In any case, we remove the current roadmap file to force its
+        # recomputing the next time pick_wallpaper is called.
+        os.unlink(road_map)
+        return None
     data["pictures"].remove(wp)
     data["history"].append(wp)
     with open(road_map, "w") as f:
         yaml.dump(data, f, explicit_start=True,
                   default_flow_style=False)
-    set_wallpaper(lp, config)
+    return set_wallpaper(lp, config)
 
 
 def blacklist_wallpaper():
