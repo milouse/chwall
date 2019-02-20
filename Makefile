@@ -10,23 +10,27 @@ DEST_ICONS = $(foreach z,$(ICON_SIZE),$(DEST)/share/icons/hicolor/$(z)x$(z)/apps
 PY_VERSION = $(shell python -c "import sys;v=sys.version_info;print('{}.{}'.format(v.major, v.minor))")
 PY_SITE    = $(ROOT)usr/lib/python$(PY_VERSION)/site-packages
 
-L10N_LANGS = fr
-PO_FILES   = $(L10N_LANGS:%=locale/%/LC_MESSAGES/chwall.po)
-MO_FILES   = $(PO_FILES:%.po=%.mo)
-DEST_MO    = $(L10N_LANGS:%=$(DEST)/share/locale/%/LC_MESSAGES/chwall.mo)
+L10N_LANGS   = fr
+PO_FILES     = $(L10N_LANGS:%=locale/%/LC_MESSAGES/chwall.po)
+MO_FILES     = $(PO_FILES:%.po=%.mo)
+DEST_MO      = $(L10N_LANGS:%=$(DEST)/share/locale/%/LC_MESSAGES/chwall.mo)
+TRANSLATABLE = chwall/gui/shared.py chwall/gui/icon.py chwall/gui/app.py chwall/daemon.py chwall/client.py
 
 
 .PHONY: install lang uninstall uplang
 
-install: $(DEST_ICONS) $(DEST_MO)
+install: $(DEST_ICONS) $(DEST_MO) chwall-gtk.desktop
 	python setup.py install --root=$(ROOT)
 	@rm -rf build chwall.egg-info
+	install -d -m755 $(DEST)/share/applications
 	install -d -m755 $(DEST)/share/licenses/chwall
 	install -d -m755 $(DEST)/share/bash-completion/completions
 	install -d -m755 $(DEST)/share/zsh/site-functions
+	install -D -m644 chwall-gtk.desktop $(DEST)/share/applications/chwall-gtk.desktop
 	install -D -m644 LICENSE $(DEST)/share/licenses/chwall/LICENSE
 	install -D -m644 data/chwall-completions $(DEST)/share/bash-completion/completions/chwall
 	install -D -m644 data/_chwall $(DEST)/share/zsh/site-functions/_chwall
+	@update-desktop-database $(DEST)/share/applications
 	@gtk-update-icon-cache $(DEST)/share/icons/hicolor
 
 uninstall:
@@ -37,7 +41,11 @@ uninstall:
 	rm -f $(DEST_MO)
 	rm -f $(DEST)/share/bash-completion/completions/chwall
 	rm -f $(DEST)/share/zsh/site-functions/_chwall
-	rm -f $(DEST)/bin/chwall $(DEST)/bin/chwall-daemon
+	rm -f $(DEST)/bin/chwall $(DEST)/bin/chwall-daemon $(DEST)/bin/chwall-icon $(DEST)/bin/chwall-gtk
+	rm -f $(DEST)/share/applications/chwall-gtk.desktop
+
+chwall-gtk.desktop:
+	python chwall.py desktop
 
 $(DEST)/share/icons/hicolor/%/apps/chwall.png: data/icon_%.png
 	install -d -m755 $(@:%/chwall.png=%)
@@ -51,7 +59,7 @@ locale/chwall.pot:
 	xgettext --language=Python --keyword=_ \
 		--copyright-holder="Chwall volunteers" \
 		--package-name=Chwall --package-version=$(VERSION) \
-		--from-code=UTF-8 --output=locale/chwall.pot chwall/icon.py
+		--from-code=UTF-8 --output=locale/chwall.pot $(TRANSLATABLE)
 	sed -i -e "s/SOME DESCRIPTIVE TITLE./Chwall Translation Effort/" \
 		-e "s|Content-Type: text/plain; charset=CHARSET|Content-Type: text/plain; charset=UTF-8|" \
 		-e "s|Copyright (C) YEAR|Copyright (C) $(shell date +%Y)|" \

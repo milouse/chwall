@@ -59,7 +59,16 @@ def read_config():
         config["general"]["sources"] = ["bing", "natgeo"]
     if "sleep" not in config["general"]:
         config["general"]["sleep"] = 10 * 60
+    if "notify" not in config["general"]:
+        config["general"]["notify"] = False
     return config
+
+
+def write_config(config):
+    config_file = os.path.join(xdg_config_home, "chwall.yml")
+    with open(config_file, "w") as f:
+        f.write(yaml.dump(config, default_flow_style=False,
+                          explicit_start=True))
 
 
 def systemd_file(write=False):
