@@ -125,17 +125,19 @@ def set_wallpaper(path, config):
 
 def fetch_wallpaper(collecs):
     wp = collecs["data"][collecs["pictures"][0]]
+    if wp["type"] == "local":
+        pic_file = wp["image"]
+    else:
+        m = hashlib.md5()
+        m.update(wp["image"].encode())
+        pic_file = "{}/pictures/{}-{}".format(
+            BASE_CACHE_PATH, wp["type"], m.hexdigest())
     # screen_config = get_screen_config()
     with open("{}/current_wallpaper".format(BASE_CACHE_PATH), "w") as f:
         f.write(wp["image"])
-        f.write("\n{copy}\n{url}\n{source}".format(
-            copy=wp["copyright"], url=wp["url"], source=wp["type"]))
-    if wp["type"] == "local":
-        return wp["image"], wp["image"]
-    m = hashlib.md5()
-    m.update(wp["image"].encode())
-    pic_file = "{}/pictures/{}-{}".format(
-        BASE_CACHE_PATH, wp["type"], m.hexdigest())
+        f.write("\n{copy}\n{url}\n{source}\n{local_path}".format(
+            copy=wp["copyright"], url=wp["url"], source=wp["type"],
+            local_path=pic_file))
     if os.path.exists(pic_file):
         return pic_file, wp["image"]
     with open(pic_file, "wb") as f:
