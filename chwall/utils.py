@@ -27,6 +27,20 @@ def get_screen_config():
     return size
 
 
+def get_wall_config(path):
+    try:
+        size_data = subprocess.run(["identify", "-format", "%wx%h", path],
+                                   check=True, stdout=subprocess.PIPE)
+    except subprocess.CalledProcessError:
+        return None
+    size = size_data.stdout.decode().split('x')
+    try:
+        size_t = (int(size[0]), int(size[1]))
+    except ValueError:
+        return None
+    return size_t
+
+
 def read_config():
     config_file = os.path.join(xdg_config_home, "chwall.yml")
     try:
