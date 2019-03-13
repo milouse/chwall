@@ -10,14 +10,21 @@ BASE_CACHE_PATH = "{}/chwall".format(xdg_cache_home)
 
 
 def get_screen_config():
-    n = subprocess.run("xrandr -q | grep '*' | wc -l",
-                       check=True, shell=True,
-                       stdout=subprocess.PIPE).stdout.decode()
-    sp = subprocess.run("xrandr -q | head -n1",
-                        check=True, shell=True,
-                        stdout=subprocess.PIPE).stdout.decode()
+    try:
+        n = subprocess.run("xrandr -q | grep '*' | wc -l",
+                           check=True, shell=True,
+                           stdout=subprocess.PIPE).stdout.decode()
+        sp = subprocess.run("xrandr -q | head -n1",
+                            check=True, shell=True,
+                            stdout=subprocess.PIPE).stdout.decode()
+    except subprocess.CalledProcessError:
+        return None
     s = re.match(".*, current ([0-9]+) x .*", sp.strip())
-    return (n.strip(), s[1])
+    try:
+        size = (int(n.strip()), int(s[1]))
+    except ValueError:
+        return None
+    return size
 
 
 def read_config():
