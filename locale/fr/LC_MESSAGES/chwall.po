@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chwall 0.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-26 12:01+0100\n"
-"PO-Revision-Date: 2019-02-26 12:02+0100\n"
+"POT-Creation-Date: 2019-03-19 20:57+0100\n"
+"PO-Revision-Date: 2019-03-19 20:58+0100\n"
 "Last-Translator: Étienne Deparis <etienne@depar.is>\n"
 "Language-Team: none\n"
 "Language: fr\n"
@@ -22,31 +22,39 @@ msgstr ""
 msgid "Start daemon"
 msgstr "Démarrer le service"
 
-#: chwall/gui/shared.py:70 chwall/gui/app.py:41 chwall/gui/app.py:124
+#: chwall/gui/shared.py:74 chwall/gui/app.py:41 chwall/gui/app.py:124
 msgid "Preferences"
 msgstr "Préférences"
 
-#: chwall/gui/shared.py:81
+#: chwall/gui/shared.py:85
 msgid "Display notification when wallpaper changes"
 msgstr "Montrer une notification lorsque le papier-peint est changé"
 
-#: chwall/gui/shared.py:90
+#: chwall/gui/shared.py:94
 msgid "Time between each wallpaper change"
 msgstr "Délai entre chaque changement de papier-peint"
 
-#: chwall/gui/shared.py:112 chwall/gui/icon.py:126 chwall/gui/app.py:147
+#: chwall/gui/shared.py:107
+msgid "Desktop environment"
+msgstr "Environnement de bureau"
+
+#: chwall/gui/shared.py:112
+msgid "Use Nitrogen application"
+msgstr "Utiliser l'application Nitrogen"
+
+#: chwall/gui/shared.py:132 chwall/gui/icon.py:127 chwall/gui/app.py:149
 msgid "Wallpaper Changer"
 msgstr "Changeur de papier-peint"
 
-#: chwall/gui/shared.py:114
+#: chwall/gui/shared.py:134
 msgid "Chwall is released under the WTFPL"
 msgstr "Chwall est publié selon les termes de la WTFPL"
 
-#: chwall/gui/icon.py:54 chwall/gui/app.py:64
+#: chwall/gui/icon.py:54 chwall/gui/app.py:64 chwall/gui/app.py:157
 msgid "Next wallpaper"
 msgstr "Papier-peint suivant"
 
-#: chwall/gui/icon.py:59 chwall/gui/app.py:58
+#: chwall/gui/icon.py:59 chwall/gui/app.py:58 chwall/gui/app.py:161
 msgid "Previous wallpaper"
 msgstr "Papier-peint précédent"
 
@@ -66,7 +74,7 @@ msgstr "Toujours afficher cette icône"
 msgid "Report a bug"
 msgstr "Signaler un bogue"
 
-#: chwall/gui/icon.py:126
+#: chwall/gui/icon.py:127
 msgid "Chwall"
 msgstr "Chwall"
 
@@ -78,7 +86,7 @@ msgstr "À propos"
 msgid "Display notification icon"
 msgstr "Afficher une icône dans la zone de notification"
 
-#: chwall/gui/app.py:151
+#: chwall/gui/app.py:153
 msgid "Main window of the Chwall wallpaper changer"
 msgstr "Fenêtre principale du changeur de papier-peint Chwall"
 

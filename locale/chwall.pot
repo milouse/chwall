@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chwall 0.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-26 12:01+0100\n"
+"POT-Creation-Date: 2019-03-19 20:57+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,31 +21,39 @@ msgstr ""
 msgid "Start daemon"
 msgstr ""
 
-#: chwall/gui/shared.py:70 chwall/gui/app.py:41 chwall/gui/app.py:124
+#: chwall/gui/shared.py:74 chwall/gui/app.py:41 chwall/gui/app.py:124
 msgid "Preferences"
 msgstr ""
 
-#: chwall/gui/shared.py:81
+#: chwall/gui/shared.py:85
 msgid "Display notification when wallpaper changes"
 msgstr ""
 
-#: chwall/gui/shared.py:90
+#: chwall/gui/shared.py:94
 msgid "Time between each wallpaper change"
 msgstr ""
 
-#: chwall/gui/shared.py:112 chwall/gui/icon.py:126 chwall/gui/app.py:147
+#: chwall/gui/shared.py:107
+msgid "Desktop environment"
+msgstr ""
+
+#: chwall/gui/shared.py:112
+msgid "Use Nitrogen application"
+msgstr ""
+
+#: chwall/gui/shared.py:132 chwall/gui/icon.py:127 chwall/gui/app.py:149
 msgid "Wallpaper Changer"
 msgstr ""
 
-#: chwall/gui/shared.py:114
+#: chwall/gui/shared.py:134
 msgid "Chwall is released under the WTFPL"
 msgstr ""
 
-#: chwall/gui/icon.py:54 chwall/gui/app.py:64
+#: chwall/gui/icon.py:54 chwall/gui/app.py:64 chwall/gui/app.py:157
 msgid "Next wallpaper"
 msgstr ""
 
-#: chwall/gui/icon.py:59 chwall/gui/app.py:58
+#: chwall/gui/icon.py:59 chwall/gui/app.py:58 chwall/gui/app.py:161
 msgid "Previous wallpaper"
 msgstr ""
 
@@ -65,7 +73,7 @@ msgstr ""
 msgid "Report a bug"
 msgstr ""
 
-#: chwall/gui/icon.py:126
+#: chwall/gui/icon.py:127
 msgid "Chwall"
 msgstr ""
 
@@ -77,7 +85,7 @@ msgstr ""
 msgid "Display notification icon"
 msgstr ""
 
-#: chwall/gui/app.py:151
+#: chwall/gui/app.py:153
 msgid "Main window of the Chwall wallpaper changer"
 msgstr ""
 

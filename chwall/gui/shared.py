@@ -62,13 +62,17 @@ class ChwallGui:
         self.config["general"]["sleep"] = widget.get_value_as_int() * 60
         write_config(self.config)
 
+    def update_desktop_env(self, widget):
+        self.config["general"]["desktop"] = widget.get_active_id()
+        write_config(self.config)
+
     def show_preferences_dialog(self, widget, opener=None):
         flags = 0
         if opener is not None:
             flags = Gtk.DialogFlags.MODAL
         prefwin = Gtk.Dialog(
             _("Preferences"), opener, flags,
-            (Gtk.STOCK_OK, Gtk.ResponseType.OK))
+            (Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE))
         prefwin.set_icon_name("stock-preferences")
 
         box = prefwin.get_content_area()
@@ -96,6 +100,22 @@ class ChwallGui:
         button.set_numeric(True)
         button.set_update_policy(Gtk.SpinButtonUpdatePolicy.IF_VALID)
         button.connect("value-changed", self.update_sleep_time)
+        prefbox.pack_end(button, False, False, 5)
+        box.pack_start(prefbox, True, True, 0)
+
+        prefbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        label = Gtk.Label(_("Desktop environment"))
+        prefbox.pack_start(label, False, False, 5)
+        button = Gtk.ComboBoxText()
+        button.append("gnome", "Gnome, Budgie, …")
+        button.append("mate", "Mate")
+        button.append("nitrogen", _("Use Nitrogen application"))
+        if "desktop" in self.config["general"]:
+            desktop = self.config["general"]["desktop"]
+        else:
+            desktop = "gnome"
+        button.set_active_id(desktop)
+        button.connect("changed", self.update_desktop_env)
         prefbox.pack_end(button, False, False, 5)
         box.pack_start(prefbox, True, True, 0)
 
