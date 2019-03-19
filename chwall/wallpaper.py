@@ -142,8 +142,15 @@ def set_nitrogen_wallpaper(path):
 
 
 def set_wallpaper(path, config):
-    set_mate_wallpaper(path)
-    set_gnome_wallpaper(path)
+    if "desktop" in config["general"]:
+        desktop = config["general"]["desktop"]
+    else:
+        desktop = "gnome"
+    method = "set_{}_wallpaper".format(desktop)
+    if method in globals():
+        globals()[method](path)
+    else:
+        set_gnome_wallpaper(path)
     if "lightdm_wall" in config["general"]:
         ld_path = os.path.expanduser(
             config["general"]["lightdm_wall"])
