@@ -162,7 +162,7 @@ Exec=chwall-app
 Icon=chwall
 Terminal=false
 Type=Application
-Categories=System;
+Categories=GTK;GNOME;Utility;
 StartupNotify=false
 """
     with open("chwall-app.desktop", "w") as f:

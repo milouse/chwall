@@ -120,6 +120,7 @@ Exec=chwall-icon
 Icon=chwall
 Terminal=false
 Type=Application
+Categories=GTK;GNOME;TrayIcon;
 X-MATE-Autostart-enabled=true
 X-GNOME-Autostart-Delay=20
 StartupNotify=false
