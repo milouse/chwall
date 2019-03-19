@@ -19,7 +19,8 @@ _ = gettext.gettext
 
 
 chwall_commands = ["blacklist", "current", "history", "info", "next",
-                   "once", "pending", "previous", "purge", "quit", "systemd"]
+                   "once", "pending", "previous", "purge", "quit",
+                   "status", "systemd"]
 
 
 def display_wallpaper_info(config):
@@ -41,9 +42,10 @@ def print_help():
     filtered_cmd.remove("systemd")
     filtered_cmd.remove("info")
     filtered_cmd.remove("current")
+    filtered_cmd.remove("status")
     print("Usage: {} ( {} )".format(sys.argv[0], " | ".join(filtered_cmd)),
           file=sys.stderr)
-    print("       {} ( current | info ) [ open ]".format(sys.argv[0]),
+    print("       {} ( current | info | status ) [ open ]".format(sys.argv[0]),
           file=sys.stderr)
     print("       {} systemd".format(sys.argv[0]), file=sys.stderr)
 
@@ -56,7 +58,7 @@ def run_client(config):
     if action == "systemd":
         systemd_file()
         return True
-    elif action in ["current", "info"]:
+    elif action in ["current", "info", "status"]:
         display_wallpaper_info(config)
         return True
 
