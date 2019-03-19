@@ -16,12 +16,14 @@ def get_screen_config():
     except subprocess.CalledProcessError:
         return None
     screen_info = screen_data.stdout.decode()
-    s = re.match(".*, current ([0-9]+) x .*", screen_info)
+    s = re.match(".*, current ([0-9]+) x ([0-9]+).*", screen_info)
     if s is None:
         width = 0
     else:
         width = int(s[1])
-    return (screen_info.count("*"), width)
+        height = int(s[2])
+        ratio = round(width / height, 2)
+    return (screen_info.count("*"), width, height, ratio)
 
 
 def get_wall_config(path):
@@ -32,7 +34,10 @@ def get_wall_config(path):
         return None
     size = size_data.stdout.decode().split('x')
     try:
-        size_t = (int(size[0]), int(size[1]))
+        width = int(size[0])
+        height = int(size[1])
+        ratio = round(width / height, 2)
+        size_t = (width, height, ratio)
     except ValueError:
         return None
     return size_t
