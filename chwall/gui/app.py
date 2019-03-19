@@ -132,13 +132,15 @@ class ChwallApp(ChwallGui):
 def generate_desktop_file():
     lng_attrs = {
         "gname": [],
-        "comment": []
+        "comment": [],
+        "next_name": [],
+        "prev_name": []
     }
     for lng in os.listdir("locale"):
-        if lng == "chwall.pot":
+        if lng in ["chwall.pot", "en"]:
             continue
         glng = gettext.translation(
-            "chwall", localedir="locale",
+            "chwall", localedir="./locale",
             languages=[lng])
         glng.install()
         _ = glng.gettext
@@ -149,6 +151,14 @@ def generate_desktop_file():
             "Comment[{lang}]={key}".format(
                 lang=lng,
                 key=_("Main window of the Chwall wallpaper changer")))
+        lng_attrs["next_name"].append(
+            "Name[{lang}]={key}".format(
+                lang=lng,
+                key=_("Next wallpaper")))
+        lng_attrs["prev_name"].append(
+            "Name[{lang}]={key}".format(
+                lang=lng,
+                key=_("Previous wallpaper")))
     df_content = ["[Desktop Entry]"]
     df_content.append("Name=Chwall")
     df_content.append("GenericName=Wallpaper Changer")
@@ -164,7 +174,18 @@ Terminal=false
 Type=Application
 Categories=GTK;GNOME;Utility;
 StartupNotify=false
+Actions=Next;Previous;
 """
+    actions = ["", "[Desktop Action Next]", "Exec=chwall next",
+               "Name=Next wallpaper"]
+    for line in lng_attrs["next_name"]:
+        actions.append(line)
+    actions += ["", "[Desktop Action Previous]", "Exec=chwall previous",
+                "Name=Previous wallpaper"]
+    for line in lng_attrs["prev_name"]:
+        actions.append(line)
+    df_content += "\n".join(actions)
+
     with open("chwall-app.desktop", "w") as f:
         f.write(df_content)
 
