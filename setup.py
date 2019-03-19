@@ -29,7 +29,8 @@ setuptools.setup(
     install_requires=requirements,
     entry_points={
         "gui_scripts": [
-            "chwall-icon = chwall.icon:start_icon"
+            "chwall-icon = chwall.gui.icon:start_icon",
+            "chwall-app = chwall.gui.app:start_app"
         ],
         "console_scripts": [
             "chwall-daemon = chwall.daemon:daemon",

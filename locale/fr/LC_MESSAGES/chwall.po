@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chwall 0.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-19 13:45+0100\n"
-"PO-Revision-Date: 2019-02-19 13:50+0100\n"
+"POT-Creation-Date: 2019-03-19 20:57+0100\n"
+"PO-Revision-Date: 2019-03-19 20:58+0100\n"
 "Last-Translator: Étienne Deparis <etienne@depar.is>\n"
 "Language-Team: none\n"
 "Language: fr\n"
@@ -18,76 +18,152 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 2.2.1\n"
 
-#: chwall/icon.py:25
-msgid "Daemon started"
-msgstr "Service démarré"
+#: chwall/gui/shared.py:48
+msgid "Start daemon"
+msgstr "Démarrer le service"
 
-#: chwall/icon.py:26
-msgid "Daemon stopped"
-msgstr "Service arrêté"
+#: chwall/gui/shared.py:74 chwall/gui/app.py:41 chwall/gui/app.py:124
+msgid "Preferences"
+msgstr "Préférences"
 
-#: chwall/icon.py:27
-msgid "Daemon started (service file not found)"
-msgstr "Service démarré (fichier du service non trouvé)"
+#: chwall/gui/shared.py:85
+msgid "Display notification when wallpaper changes"
+msgstr "Montrer une notification lorsque le papier-peint est changé"
 
-#: chwall/icon.py:28
-msgid "Daemon stopped (service file not found)"
-msgstr "Service arrêté (fichier du service non trouvé)"
+#: chwall/gui/shared.py:94
+msgid "Time between each wallpaper change"
+msgstr "Délai entre chaque changement de papier-peint"
 
-#: chwall/icon.py:29
-msgid "Daemon started, but disabled"
-msgstr "Service démarré, mais désactivé"
+#: chwall/gui/shared.py:107
+msgid "Desktop environment"
+msgstr "Environnement de bureau"
 
-#: chwall/icon.py:30
-msgid "Daemon stopped and disabled"
-msgstr "Service arrêté et désactivé"
+#: chwall/gui/shared.py:112
+msgid "Use Nitrogen application"
+msgstr "Utiliser l'application Nitrogen"
 
-#: chwall/icon.py:63
-msgid "minute"
-msgstr "minute"
-
-#: chwall/icon.py:65
-msgid "minutes"
-msgstr "minutes"
-
-#: chwall/icon.py:66
-#, python-brace-format
-msgid "Next change in {minute_number} {minute_label} {second_number}s"
-msgstr "Prochain changement dans {minute_number} {minute_label} {second_number}s"
-
-#: chwall/icon.py:72
-#, python-brace-format
-msgid "Next change in {second_number}s"
-msgstr "Prochain changement dans {second_number}s"
-
-#: chwall/icon.py:116
-msgid "Next wallpaper"
-msgstr "Papier-peint suivant"
-
-#: chwall/icon.py:121
-msgid "Previous wallpaper"
-msgstr "Papier-peint précédent"
-
-#: chwall/icon.py:126
-msgid "Blacklist"
-msgstr "Mettre en liste noire"
-
-#: chwall/icon.py:134
-msgid "Always display this icon"
-msgstr "Toujours afficher cette icône"
-
-#: chwall/icon.py:140
-msgid "Report a bug"
-msgstr "Signaler un bogue"
-
-#: chwall/icon.py:188 chwall/icon.py:201
-msgid "Chwall"
-msgstr "Chwall"
-
-#: chwall/icon.py:188 chwall/icon.py:203
+#: chwall/gui/shared.py:132 chwall/gui/icon.py:127 chwall/gui/app.py:149
 msgid "Wallpaper Changer"
 msgstr "Changeur de papier-peint"
 
-#: chwall/icon.py:205
+#: chwall/gui/shared.py:134
 msgid "Chwall is released under the WTFPL"
 msgstr "Chwall est publié selon les termes de la WTFPL"
+
+#: chwall/gui/icon.py:54 chwall/gui/app.py:64 chwall/gui/app.py:157
+msgid "Next wallpaper"
+msgstr "Papier-peint suivant"
+
+#: chwall/gui/icon.py:59 chwall/gui/app.py:58 chwall/gui/app.py:161
+msgid "Previous wallpaper"
+msgstr "Papier-peint précédent"
+
+#: chwall/gui/icon.py:64 chwall/gui/app.py:75
+msgid "Blacklist"
+msgstr "Mettre en liste noire"
+
+#: chwall/gui/icon.py:71
+msgid "Open main window"
+msgstr "Ouvrir la fenêtre principale"
+
+#: chwall/gui/icon.py:76
+msgid "Always display this icon"
+msgstr "Toujours afficher cette icône"
+
+#: chwall/gui/icon.py:86
+msgid "Report a bug"
+msgstr "Signaler un bogue"
+
+#: chwall/gui/icon.py:127
+msgid "Chwall"
+msgstr "Chwall"
+
+#: chwall/gui/app.py:36
+msgid "About"
+msgstr "À propos"
+
+#: chwall/gui/app.py:120
+msgid "Display notification icon"
+msgstr "Afficher une icône dans la zone de notification"
+
+#: chwall/gui/app.py:153
+msgid "Main window of the Chwall wallpaper changer"
+msgstr "Fenêtre principale du changeur de papier-peint Chwall"
+
+#: chwall/daemon.py:70
+#, python-brace-format
+msgid "Last change was {seconds}s ago"
+msgstr "Le dernier changement a eu lieu il y a {seconds}s"
+
+#: chwall/daemon.py:81
+#, python-brace-format
+msgid "Next change in {seconds}s"
+msgstr "Prochain changement dans {seconds}s"
+
+#: chwall/daemon.py:90
+msgid "Daemon stopped"
+msgstr "Service arrêté"
+
+#: chwall/daemon.py:98
+msgid "Daemon started"
+msgstr "Service démarré"
+
+#: chwall/daemon.py:110
+#, python-brace-format
+msgid "{daemon_state} (disabled)"
+msgstr "{daemon_state} (désactivé)"
+
+#: chwall/daemon.py:133
+#, python-brace-format
+msgid "Kill process {pid}"
+msgstr "Tuer le processus {pid}"
+
+#: chwall/daemon.py:135
+#, python-brace-format
+msgid "Sending process {pid} signal {sid}"
+msgstr "Envoi du signal {sid} au processus {pid}"
+
+#: chwall/daemon.py:174
+msgid "Exit signal received"
+msgstr "Signal d'extinction reçu"
+
+#: chwall/daemon.py:179
+msgid "Cleaning up…"
+msgstr "Nettoyage…"
+
+#: chwall/daemon.py:189
+msgid "Start loop"
+msgstr "Démarrage de la boucle"
+
+#: chwall/client.py:71
+msgid "Unable to pick wallpaper this time. Please, try again."
+msgstr ""
+"Impossible de récupérer un fond d'écran pour cette fois. Merci de bien "
+"vouloir réessayer."
+
+#: chwall/client.py:88
+#, python-brace-format
+msgid "{progname} seems not to be running"
+msgstr "{progname} ne semble pas lancé"
+
+#~ msgid "Options"
+#~ msgstr "Options"
+
+#~ msgid "Daemon started (service file not found)"
+#~ msgstr "Service démarré (fichier du service non trouvé)"
+
+#~ msgid "Daemon stopped (service file not found)"
+#~ msgstr "Service arrêté (fichier du service non trouvé)"
+
+#~ msgid "Daemon stopped and disabled"
+#~ msgstr "Service arrêté et désactivé"
+
+#~ msgid "minute"
+#~ msgstr "minute"
+
+#~ msgid "minutes"
+#~ msgstr "minutes"
+
+#~ msgid "Next change in {minute_number} {minute_label} {second_number}s"
+#~ msgstr ""
+#~ "Prochain changement dans {minute_number} {minute_label} {second_number}s"

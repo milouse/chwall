@@ -2,38 +2,34 @@
 
 import os
 import sys
-import time
 import yaml
 import subprocess
 
-
 # chwall imports
-from chwall.daemon import notify_daemon_if_any
+from chwall.daemon import notify_daemon_if_any, daemon_info
 from chwall.utils import BASE_CACHE_PATH, read_config, systemd_file
 from chwall.wallpaper import blacklist_wallpaper, pick_wallpaper
 
+import gettext
+# Uncomment the following line during development.
+# Please, be cautious to NOT commit the following line uncommented.
+# gettext.bindtextdomain("chwall", "./locale")
+gettext.textdomain("chwall")
+_ = gettext.gettext
+
 
 chwall_commands = ["blacklist", "current", "history", "info", "next",
-                   "once", "pending", "previous", "purge", "quit", "systemd"]
+                   "once", "pending", "previous", "purge", "quit",
+                   "status", "systemd"]
 
 
-def display_wallpaper_info():
+def display_wallpaper_info(config):
     with open("{}/current_wallpaper"
               .format(BASE_CACHE_PATH), "r") as f:
         infos = f.readlines()[1:]
     print("".join(infos))
-    with open("{}/last_change".format(BASE_CACHE_PATH), "r") as f:
-        try:
-            last_change = int(time.time()) - int(f.read().strip())
-        except ValueError:
-            last_change = -1
-    if last_change > 60:
-        last_change_m = int(last_change / 60)
-        last_change = last_change % 60
-        print("Last change: {} minute(s) {}s ago"
-              .format(last_change_m, last_change))
-    else:
-        print("Last change: {}s ago".format(last_change))
+    dinfo = daemon_info(config)
+    print(dinfo["last-change-label"])
     if len(sys.argv) > 2 and sys.argv[2] == "open" and \
        len(infos) >= 2:
         url = infos[1].strip()
@@ -46,9 +42,10 @@ def print_help():
     filtered_cmd.remove("systemd")
     filtered_cmd.remove("info")
     filtered_cmd.remove("current")
+    filtered_cmd.remove("status")
     print("Usage: {} ( {} )".format(sys.argv[0], " | ".join(filtered_cmd)),
           file=sys.stderr)
-    print("       {} ( current | info ) [ open ]".format(sys.argv[0]),
+    print("       {} ( current | info | status ) [ open ]".format(sys.argv[0]),
           file=sys.stderr)
     print("       {} systemd".format(sys.argv[0]), file=sys.stderr)
 
@@ -61,8 +58,8 @@ def run_client(config):
     if action == "systemd":
         systemd_file()
         return True
-    elif action in ["current", "info"]:
-        display_wallpaper_info()
+    elif action in ["current", "info", "status"]:
+        display_wallpaper_info(config)
         return True
 
     if action == "blacklist":
@@ -73,7 +70,7 @@ def run_client(config):
         if action == "previous":
             direction = True
         if pick_wallpaper(config, direction) is None:
-            print("Unable to pick wallpaper this time. Please, try again.",
+            print(_("Unable to pick wallpaper this time. Please, try again."),
                   file=sys.stderr)
             action = "quit"
         else:
@@ -90,8 +87,8 @@ def run_client(config):
             os.unlink(road_map)
         return True
     if not os.path.exists(road_map):
-        print("{} seems not to be running"
-              .format(sys.argv[0]), file=sys.stderr)
+        print(_("{progname} seems not to be running")
+              .format(progname=sys.argv[0]), file=sys.stderr)
         return False
     with open(road_map, "r") as f:
         data = yaml.load(f)
