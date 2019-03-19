@@ -19,14 +19,14 @@ TRANSLATABLE = chwall/gui/shared.py chwall/gui/icon.py chwall/gui/app.py chwall/
 
 .PHONY: install lang uninstall uplang
 
-install: $(DEST_ICONS) $(DEST_MO) chwall-gtk.desktop
+install: $(DEST_ICONS) $(DEST_MO) chwall-app.desktop
 	python setup.py install --root=$(ROOT)
 	@rm -rf build chwall.egg-info
 	install -d -m755 $(DEST)/share/applications
 	install -d -m755 $(DEST)/share/licenses/chwall
 	install -d -m755 $(DEST)/share/bash-completion/completions
 	install -d -m755 $(DEST)/share/zsh/site-functions
-	install -D -m644 chwall-gtk.desktop $(DEST)/share/applications/chwall-gtk.desktop
+	install -D -m644 chwall-app.desktop $(DEST)/share/applications/chwall-app.desktop
 	install -D -m644 LICENSE $(DEST)/share/licenses/chwall/LICENSE
 	install -D -m644 data/chwall-completions $(DEST)/share/bash-completion/completions/chwall
 	install -D -m644 data/_chwall $(DEST)/share/zsh/site-functions/_chwall
@@ -41,10 +41,10 @@ uninstall:
 	rm -f $(DEST_MO)
 	rm -f $(DEST)/share/bash-completion/completions/chwall
 	rm -f $(DEST)/share/zsh/site-functions/_chwall
-	rm -f $(DEST)/bin/chwall $(DEST)/bin/chwall-daemon $(DEST)/bin/chwall-icon $(DEST)/bin/chwall-gtk
-	rm -f $(DEST)/share/applications/chwall-gtk.desktop
+	rm -f $(DEST)/bin/chwall $(DEST)/bin/chwall-daemon $(DEST)/bin/chwall-icon $(DEST)/bin/chwall-app
+	rm -f $(DEST)/share/applications/chwall-app.desktop
 
-chwall-gtk.desktop:
+chwall-app.desktop:
 	python chwall.py desktop
 
 $(DEST)/share/icons/hicolor/%/apps/chwall.png: data/icon_%.png

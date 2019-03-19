@@ -69,7 +69,7 @@ class ChwallIcon(ChwallGui):
         menu.append(sep)
 
         item = Gtk.MenuItem.new_with_label(_("Open main window"))
-        item.connect("activate", self.run_chwall_component, "gtk")
+        item.connect("activate", self.run_chwall_component, "app")
         menu.append(item)
 
         # Launch at session start

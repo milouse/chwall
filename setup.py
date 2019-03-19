@@ -30,7 +30,7 @@ setuptools.setup(
     entry_points={
         "gui_scripts": [
             "chwall-icon = chwall.gui.icon:start_icon",
-            "chwall-gtk = chwall.gui.app:start_app"
+            "chwall-app = chwall.gui.app:start_app"
         ],
         "console_scripts": [
             "chwall-daemon = chwall.daemon:daemon",

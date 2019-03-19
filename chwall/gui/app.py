@@ -158,14 +158,14 @@ def generate_desktop_file():
         df_content.append(line)
     df_content = "\n".join(df_content)
     df_content += """
-Exec=chwall-gtk
+Exec=chwall-app
 Icon=chwall
 Terminal=false
 Type=Application
 Categories=System;
 StartupNotify=false
 """
-    with open("chwall-gtk.desktop", "w") as f:
+    with open("chwall-app.desktop", "w") as f:
         f.write(df_content)
 
 
