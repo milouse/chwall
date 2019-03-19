@@ -11,20 +11,17 @@ BASE_CACHE_PATH = "{}/chwall".format(xdg_cache_home)
 
 def get_screen_config():
     try:
-        n = subprocess.run("xrandr -q | grep '*' | wc -l",
-                           check=True, shell=True,
-                           stdout=subprocess.PIPE).stdout.decode()
-        sp = subprocess.run("xrandr -q | head -n1",
-                            check=True, shell=True,
-                            stdout=subprocess.PIPE).stdout.decode()
+        screen_data = subprocess.run(["xrandr", "-q", "-d", ":0"],
+                                     check=True, stdout=subprocess.PIPE)
     except subprocess.CalledProcessError:
         return None
-    s = re.match(".*, current ([0-9]+) x .*", sp.strip())
-    try:
-        size = (int(n.strip()), int(s[1]))
-    except ValueError:
-        return None
-    return size
+    screen_info = screen_data.stdout.decode()
+    s = re.match(".*, current ([0-9]+) x .*", screen_info)
+    if s is None:
+        width = 0
+    else:
+        width = int(s[1])
+    return (screen_info.count("*"), width)
 
 
 def get_wall_config(path):
