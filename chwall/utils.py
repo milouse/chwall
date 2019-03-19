@@ -10,14 +10,37 @@ BASE_CACHE_PATH = "{}/chwall".format(xdg_cache_home)
 
 
 def get_screen_config():
-    n = subprocess.run("xrandr -q | grep '*' | wc -l",
-                       check=True, shell=True,
-                       stdout=subprocess.PIPE).stdout.decode()
-    sp = subprocess.run("xrandr -q | head -n1",
-                        check=True, shell=True,
-                        stdout=subprocess.PIPE).stdout.decode()
-    s = re.match(".*, current ([0-9]+) x .*", sp.strip())
-    return (n.strip(), s[1])
+    try:
+        screen_data = subprocess.run(["xrandr", "-q", "-d", ":0"],
+                                     check=True, stdout=subprocess.PIPE)
+    except subprocess.CalledProcessError:
+        return None
+    screen_info = screen_data.stdout.decode()
+    s = re.match(".*, current ([0-9]+) x ([0-9]+).*", screen_info)
+    if s is None:
+        width = 0
+    else:
+        width = int(s[1])
+        height = int(s[2])
+        ratio = round(width / height, 2)
+    return (screen_info.count("*"), width, height, ratio)
+
+
+def get_wall_config(path):
+    try:
+        size_data = subprocess.run(["identify", "-format", "%wx%h", path],
+                                   check=True, stdout=subprocess.PIPE)
+    except subprocess.CalledProcessError:
+        return None
+    size = size_data.stdout.decode().split('x')
+    try:
+        width = int(size[0])
+        height = int(size[1])
+        ratio = round(width / height, 2)
+        size_t = (width, height, ratio)
+    except ValueError:
+        return None
+    return size_t
 
 
 def read_config():

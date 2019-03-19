@@ -9,7 +9,7 @@ import requests
 import subprocess
 
 # chwall imports
-from chwall.utils import BASE_CACHE_PATH
+from chwall.utils import BASE_CACHE_PATH, get_screen_config, get_wall_config
 
 
 class ChwallWallpaperSetError(Exception):
@@ -113,9 +113,44 @@ def set_gnome_wallpaper(path):
             "Error while setting gnome picture-options property")
 
 
+def set_nitrogen_wallpaper(path):
+    cmd = ["nitrogen", "--set-auto"]
+    # screen_info = (scr_number, scr_width, scr_height, scr_ratio)
+    screen_info = get_screen_config()
+    if screen_info is None:
+        screen_info = (1, 0, 0, 1)
+    # wall_info = (wall_width, wall_height, wall_ratio)
+    wall_info = get_wall_config(path)
+    if wall_info is None:
+        wall_info = (0, 0, 1)
+    ratio_cmp = int(screen_info[3]) - int(wall_info[2])
+    if ratio_cmp == 0 or wall_info[2] < 1:
+        cmd[1] = "--set-zoom-fill"
+    if screen_info[0] > 1 and ratio_cmp != 0:
+        err = 0
+        for screen_index in range(screen_info[0]):
+            head = "--head={}".format(screen_index)
+            err += subprocess.run(cmd + [head, path]).returncode
+        if err == 0:
+            return
+        raise ChwallWallpaperSetError(
+            "Error while calling nitrogen for multihead display")
+    err = subprocess.run(cmd + [path]).returncode
+    if err != 0:
+        raise ChwallWallpaperSetError(
+            "Error while calling nitrogen for single display")
+
+
 def set_wallpaper(path, config):
-    set_mate_wallpaper(path)
-    set_gnome_wallpaper(path)
+    if "desktop" in config["general"]:
+        desktop = config["general"]["desktop"]
+    else:
+        desktop = "gnome"
+    method = "set_{}_wallpaper".format(desktop)
+    if method in globals():
+        globals()[method](path)
+    else:
+        set_gnome_wallpaper(path)
     if "lightdm_wall" in config["general"]:
         ld_path = os.path.expanduser(
             config["general"]["lightdm_wall"])
