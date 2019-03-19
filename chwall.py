@@ -18,7 +18,7 @@ if __name__ == "__main__":
     elif action in ["app", "gui"]:
         start_app()
     elif action == "desktop":
-        generate_desktop_file()
+        generate_desktop_file(sys.argv[2])
     elif action != "daemon":
         sys.exit(client())
     else:

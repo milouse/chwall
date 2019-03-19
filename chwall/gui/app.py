@@ -129,7 +129,7 @@ class ChwallApp(ChwallGui):
         return menu
 
 
-def generate_desktop_file():
+def generate_desktop_file(localedir="./locale"):
     lng_attrs = {
         "gname": [],
         "comment": [],
@@ -140,7 +140,7 @@ def generate_desktop_file():
         if lng in ["chwall.pot", "en"]:
             continue
         glng = gettext.translation(
-            "chwall", localedir="./locale",
+            "chwall", localedir=localedir,
             languages=[lng])
         glng.install()
         _ = glng.gettext

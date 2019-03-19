@@ -19,6 +19,8 @@ TRANSLATABLE = chwall/gui/shared.py chwall/gui/icon.py chwall/gui/app.py chwall/
 
 .PHONY: install lang uninstall uplang
 
+.INTERMEDIATE: chwall-app.desktop
+
 install: $(DEST_ICONS) $(DEST_MO) chwall-app.desktop
 	python setup.py install --root=$(ROOT)
 	@rm -rf build chwall.egg-info
@@ -45,7 +47,7 @@ uninstall:
 	rm -f $(DEST)/share/applications/chwall-app.desktop
 
 chwall-app.desktop:
-	python chwall.py desktop
+	python chwall.py desktop $(DEST)/share/locale
 
 $(DEST)/share/icons/hicolor/%/apps/chwall.png: data/icon_%.png
 	install -d -m755 $(@:%/chwall.png=%)
