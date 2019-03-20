@@ -20,13 +20,13 @@ class ChwallGui:
     def __init__(self):
         self.config = read_config()
 
-    def change_wallpaper(self, widget, direction=False):
+    def on_change_wallpaper(self, widget, direction=False):
         pick_wallpaper(self.config, direction)
         notify_daemon_if_any()
 
-    def blacklist_wallpaper(self, widget):
+    def on_blacklist_wallpaper(self, widget):
         blacklist_wallpaper()
-        self.change_wallpaper(widget)
+        self.on_change_wallpaper(widget)
 
     def run_chwall_component(self, _widget, component):
         subprocess.Popen(["chwall-{}".format(component)])

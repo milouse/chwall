@@ -53,17 +53,17 @@ class ChwallIcon(ChwallGui):
         # next wallpaper
         nextbtn = Gtk.MenuItem.new_with_label(_("Next wallpaper"))
         menu.append(nextbtn)
-        nextbtn.connect("activate", self.change_wallpaper)
+        nextbtn.connect("activate", self.on_change_wallpaper)
 
         # previous wallpaper
         prevbtn = Gtk.MenuItem.new_with_label(_("Previous wallpaper"))
         menu.append(prevbtn)
-        prevbtn.connect("activate", self.change_wallpaper, True)
+        prevbtn.connect("activate", self.on_change_wallpaper, True)
 
         # previous wallpaper
         blackbtn = Gtk.MenuItem.new_with_label(_("Blacklist"))
         menu.append(blackbtn)
-        blackbtn.connect("activate", self.blacklist_wallpaper)
+        blackbtn.connect("activate", self.on_blacklist_wallpaper)
 
         sep = Gtk.SeparatorMenuItem()
         menu.append(sep)

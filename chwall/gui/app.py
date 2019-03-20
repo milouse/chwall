@@ -55,13 +55,13 @@ class ChwallApp(ChwallGui):
         button = Gtk.Button.new_from_icon_name(
             "gtk-go-back", Gtk.IconSize.LARGE_TOOLBAR)
         button.set_tooltip_text(_("Previous wallpaper"))
-        button.connect("clicked", self.change_wallpaper, True)
+        button.connect("clicked", self.on_change_wallpaper, True)
         control_box.pack_start(button)
 
         button = Gtk.Button.new_from_icon_name(
             "gtk-go-forward", Gtk.IconSize.LARGE_TOOLBAR)
         button.set_tooltip_text(_("Next wallpaper"))
-        button.connect("clicked", self.change_wallpaper)
+        button.connect("clicked", self.on_change_wallpaper)
         control_box.pack_start(button)
 
         self.walldesc = Gtk.Label()
@@ -72,7 +72,7 @@ class ChwallApp(ChwallGui):
         button = Gtk.Button.new_from_icon_name(
             "gtk-delete", Gtk.IconSize.LARGE_TOOLBAR)
         button.set_tooltip_text(_("Blacklist"))
-        button.connect("clicked", self.blacklist_wallpaper)
+        button.connect("clicked", self.on_blacklist_wallpaper)
         control_box.pack_end(button)
 
         app_box.add(control_box)
@@ -107,8 +107,8 @@ class ChwallApp(ChwallGui):
 
         self.app.resize(width, size_data[1].height)
 
-    def change_wallpaper(self, widget, direction=False):
-        super().change_wallpaper(widget, direction)
+    def on_change_wallpaper(self, widget, direction=False):
+        super().on_change_wallpaper(widget, direction)
         self.update_wall_box()
 
     def main_menu(self):
