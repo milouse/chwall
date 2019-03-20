@@ -20,9 +20,6 @@ class ChwallGui:
     def __init__(self):
         self.config = read_config()
 
-    def show(self):
-        Gtk.main()
-
     def change_wallpaper(self, widget, direction=False):
         pick_wallpaper(self.config, direction)
         notify_daemon_if_any()
@@ -34,23 +31,20 @@ class ChwallGui:
     def run_chwall_component(self, _widget, component):
         subprocess.Popen(["chwall-{}".format(component)])
 
-    def daemon_info(self):
-        return daemon_info(self.config)
-
     def append_daemon_info(self, menu):
-        daemon_info = self.daemon_info()
+        dinfo = daemon_info(self.config)
         daemon_state_btn = Gtk.MenuItem.new_with_label(
-            daemon_info["daemon-state-label"])
+            dinfo["daemon-state-label"])
         daemon_state_btn.set_sensitive(False)
         menu.append(daemon_state_btn)
 
-        if daemon_info["next-change-label"] is None:
+        if dinfo["next-change-label"] is None:
             run_btn = Gtk.MenuItem.new_with_label(_("Start daemon"))
             run_btn.connect("activate", self.run_chwall_component, "daemon")
             menu.append(run_btn)
         else:
             next_change_btn = Gtk.MenuItem.new_with_label(
-                daemon_info["next-change-label"])
+                dinfo["next-change-label"])
             next_change_btn.set_sensitive(False)
             menu.append(next_change_btn)
 

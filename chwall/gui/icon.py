@@ -140,7 +140,8 @@ def start_icon():
                          Gtk.main_quit, None)
     GLib.unix_signal_add(GLib.PRIORITY_DEFAULT, signal.SIGINT,
                          Gtk.main_quit, None)
-    ChwallIcon().show()
+    ChwallIcon()
+    Gtk.main()
 
 
 if __name__ == "__main__":

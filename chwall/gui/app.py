@@ -203,7 +203,8 @@ def start_app():
                          Gtk.main_quit, None)
     GLib.unix_signal_add(GLib.PRIORITY_DEFAULT, signal.SIGINT,
                          Gtk.main_quit, None)
-    ChwallApp().show()
+    ChwallApp()
+    Gtk.main()
 
 
 if __name__ == "__main__":
