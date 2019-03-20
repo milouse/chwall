@@ -63,7 +63,8 @@ class ChwallGui:
     def show_preferences_dialog(self, widget, opener=None):
         flags = 0
         if opener is not None:
-            flags = Gtk.DialogFlags.MODAL
+            # flags 3 = MODAL | DESTROY_WITH_PARENT
+            flags = 3
         prefwin = Gtk.Dialog(
             _("Preferences"), opener, flags,
             (Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE))
