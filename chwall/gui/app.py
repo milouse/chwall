@@ -122,7 +122,7 @@ class ChwallApp(ChwallGui):
         menu.append(item)
 
         item = Gtk.MenuItem.new_with_label(_("Preferences"))
-        item.connect("activate", self.show_preferences_dialog, self.app)
+        item.connect("activate", self.show_preferences_dialog)
         menu.append(item)
 
         menu.show_all()

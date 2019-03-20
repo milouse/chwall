@@ -19,6 +19,7 @@ _ = gettext.gettext
 class ChwallGui:
     def __init__(self):
         self.config = read_config()
+        self.app = None
 
     def on_change_wallpaper(self, widget, direction=False):
         pick_wallpaper(self.config, direction)
@@ -52,6 +53,12 @@ class ChwallGui:
 
         return menu
 
+    def get_flags_if_app(self):
+        if self.app is not None:
+            # flags 3 = MODAL | DESTROY_WITH_PARENT
+            return 3
+        return 0
+
     def toggle_show_notifications(self, widget, state):
         self.config["general"]["notify"] = state
         write_config(self.config)
@@ -64,13 +71,9 @@ class ChwallGui:
         self.config["general"]["desktop"] = widget.get_active_id()
         write_config(self.config)
 
-    def show_preferences_dialog(self, widget, opener=None):
-        flags = 0
-        if opener is not None:
-            # flags 3 = MODAL | DESTROY_WITH_PARENT
-            flags = 3
+    def show_preferences_dialog(self, widget):
         prefwin = Gtk.Dialog(
-            _("Preferences"), opener, flags,
+            _("Preferences"), self.app, self.get_flags_if_app(),
             (Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE))
         prefwin.set_icon_name("stock-preferences")
 
