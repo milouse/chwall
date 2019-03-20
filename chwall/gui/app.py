@@ -117,6 +117,9 @@ class ChwallApp(ChwallGui):
 
         menu = self.main_menu()
 
+        item = Gtk.SeparatorMenuItem()
+        menu.append(item)
+
         item = Gtk.MenuItem.new_with_label(_("Display notification icon"))
         item.connect("activate", self.run_chwall_component, "icon")
         menu.append(item)

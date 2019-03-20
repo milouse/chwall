@@ -43,25 +43,26 @@ class ChwallIcon(ChwallGui):
         current_wall_info = Gtk.MenuItem.new_with_label(curlabel)
         current_wall_info.connect("activate", self.open_in_context,
                                   wallinfo["remote-uri"])
-        menu.append(current_wall_info)
-
-        sep = Gtk.SeparatorMenuItem()
-        menu.append(sep)
+        # We'll use only insert for a while to push down main_menu last items
+        menu.insert(current_wall_info, 2)
 
         # next wallpaper
         nextbtn = Gtk.MenuItem.new_with_label(_("Next wallpaper"))
-        menu.append(nextbtn)
         nextbtn.connect("activate", self.on_change_wallpaper)
+        menu.insert(nextbtn, 4)
 
         # previous wallpaper
         prevbtn = Gtk.MenuItem.new_with_label(_("Previous wallpaper"))
-        menu.append(prevbtn)
         prevbtn.connect("activate", self.on_change_wallpaper, True)
+        menu.insert(prevbtn, 5)
 
         # previous wallpaper
         blackbtn = Gtk.MenuItem.new_with_label(_("Blacklist"))
-        menu.append(blackbtn)
         blackbtn.connect("activate", self.on_blacklist_wallpaper)
+        menu.insert(blackbtn, 6)
+
+        # We use insert until there to move down the "Cleanup cache" button. We
+        # can now resume a normal append way to add menuitems
 
         sep = Gtk.SeparatorMenuItem()
         menu.append(sep)

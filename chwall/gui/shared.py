@@ -1,7 +1,7 @@
 import subprocess
 
 from chwall.daemon import notify_daemon_if_any, daemon_info
-from chwall.utils import VERSION, read_config, write_config
+from chwall.utils import VERSION, read_config, write_config, cleanup_cache
 from chwall.wallpaper import blacklist_wallpaper, pick_wallpaper
 
 import gi
@@ -51,6 +51,14 @@ class ChwallGui:
             next_change_btn.set_sensitive(False)
             menu.append(next_change_btn)
 
+        item = Gtk.SeparatorMenuItem()
+        menu.append(item)
+
+        item = Gtk.MenuItem.new_with_label(
+            _("Cleanup broken entries in cache"))
+        item.connect("activate", self.on_cleanup_cache)
+        menu.append(item)
+
         return menu
 
     def get_flags_if_app(self):
@@ -58,6 +66,21 @@ class ChwallGui:
             # flags 3 = MODAL | DESTROY_WITH_PARENT
             return 3
         return 0
+
+    def on_cleanup_cache(self, _widget):
+        deleted = cleanup_cache()
+        if deleted < 2:
+            message = _("{number} broken cache entry has been removed")
+        else:
+            message = _("{number} broken cache entries have been removed")
+        # flags 3 = MODAL | DESTROY_WITH_PARENT
+        dialog = Gtk.MessageDialog(self.app, self.get_flags_if_app(),
+                                   Gtk.MessageType.INFO, Gtk.ButtonsType.OK,
+                                   _("Cache cleanup"))
+        dialog.set_icon_name("chwall")
+        dialog.format_secondary_text(message.format(number=deleted))
+        dialog.run()
+        dialog.destroy()
 
     def toggle_show_notifications(self, widget, state):
         self.config["general"]["notify"] = state
