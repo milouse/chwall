@@ -9,7 +9,7 @@ from chwall.wallpaper import current_wallpaper_info
 
 import gi
 gi.require_version('Gtk', '3.0')  # noqa: E402
-from gi.repository import GdkPixbuf, GLib, Gtk
+from gi.repository import Gdk, GdkPixbuf, GLib, Gtk
 
 import gettext
 # Uncomment the following line during development.
@@ -37,12 +37,11 @@ class ChwallApp(ChwallGui):
         button.connect("clicked", self.show_about_dialog)
         hb.pack_end(button)
 
-        button = Gtk.MenuButton()
+        button = Gtk.ToggleButton()
+        button.set_image(Gtk.Image.new_from_icon_name(
+            "gtk-preferences", Gtk.IconSize.BUTTON))
         button.set_tooltip_text(_("Preferences"))
-        # If a direction is given, an Arrow is displayed instead of the burger
-        # icon
-        button.set_direction(Gtk.ArrowType.NONE)
-        button.set_popup(self.main_menu())
+        button.connect("toggled", self.show_main_menu)
         hb.pack_end(button)
 
         self.app.set_titlebar(hb)
@@ -125,8 +124,16 @@ class ChwallApp(ChwallGui):
         item.connect("activate", self.show_preferences_dialog, self.app)
         menu.append(item)
 
-        menu.show_all()
         return menu
+
+    def show_main_menu(self, widget):
+        if not widget.get_active():
+            return
+        menu = self.main_menu()
+        menu.show_all()
+        menu.connect("hide", lambda _w, b: b.set_active(False), widget)
+        menu.popup_at_widget(widget, Gdk.Gravity.SOUTH_WEST,
+                             Gdk.Gravity.NORTH_WEST, None)
 
 
 def generate_desktop_file(localedir="./locale"):
