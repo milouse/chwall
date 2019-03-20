@@ -111,10 +111,11 @@ class ChwallApp(ChwallGui):
         super().on_change_wallpaper(widget, direction)
         self.update_wall_box()
 
-    def main_menu(self):
-        menu = Gtk.Menu()
+    def show_main_menu(self, widget):
+        if not widget.get_active():
+            return
 
-        self.append_daemon_info(menu)
+        menu = self.main_menu()
 
         item = Gtk.MenuItem.new_with_label(_("Display notification icon"))
         item.connect("activate", self.run_chwall_component, "icon")
@@ -124,12 +125,6 @@ class ChwallApp(ChwallGui):
         item.connect("activate", self.show_preferences_dialog, self.app)
         menu.append(item)
 
-        return menu
-
-    def show_main_menu(self, widget):
-        if not widget.get_active():
-            return
-        menu = self.main_menu()
         menu.show_all()
         menu.connect("hide", lambda _w, b: b.set_active(False), widget)
         menu.popup_at_widget(widget, Gdk.Gravity.SOUTH_WEST,

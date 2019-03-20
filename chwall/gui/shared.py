@@ -31,7 +31,9 @@ class ChwallGui:
     def run_chwall_component(self, _widget, component):
         subprocess.Popen(["chwall-{}".format(component)])
 
-    def append_daemon_info(self, menu):
+    def main_menu(self):
+        menu = Gtk.Menu()
+
         dinfo = daemon_info(self.config)
         daemon_state_btn = Gtk.MenuItem.new_with_label(
             dinfo["daemon-state-label"])
@@ -47,6 +49,8 @@ class ChwallGui:
                 dinfo["next-change-label"])
             next_change_btn.set_sensitive(False)
             menu.append(next_change_btn)
+
+        return menu
 
     def toggle_show_notifications(self, widget, state):
         self.config["general"]["notify"] = state

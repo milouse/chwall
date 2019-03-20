@@ -32,9 +32,7 @@ class ChwallIcon(ChwallGui):
         self.must_autostart = os.path.isfile(self.autostart_file)
 
     def display_menu(self, _icon, event_button, event_time):
-        menu = Gtk.Menu()
-
-        self.append_daemon_info(menu)
+        menu = self.main_menu()
 
         wallinfo = current_wallpaper_info()
         if wallinfo["type"] == "local":
