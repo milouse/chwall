@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import os
-import signal
 import subprocess
 from xdg.BaseDirectory import xdg_config_home
 
@@ -135,10 +134,10 @@ StartupNotify=false
 
 def start_icon():
     # Install signal handlers
-    GLib.unix_signal_add(GLib.PRIORITY_DEFAULT, signal.SIGTERM,
-                         Gtk.main_quit, None)
-    GLib.unix_signal_add(GLib.PRIORITY_DEFAULT, signal.SIGINT,
-                         Gtk.main_quit, None)
+    # SIGTERM = 15
+    # SIGINT = 2
+    GLib.unix_signal_add(GLib.PRIORITY_DEFAULT, 15, Gtk.main_quit, None)
+    GLib.unix_signal_add(GLib.PRIORITY_DEFAULT, 2, Gtk.main_quit, None)
     ChwallIcon()
     Gtk.main()
 
