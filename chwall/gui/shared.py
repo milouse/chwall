@@ -30,7 +30,11 @@ class ChwallGui:
         self.on_change_wallpaper(widget)
 
     def run_chwall_component(self, _widget, component):
-        subprocess.Popen(["chwall-{}".format(component)])
+        if component == "daemon":
+            # No need to fork, daemon already do that
+            subprocess.run(["chwall-daemon"])
+        else:
+            subprocess.run(["chwall", "detach", component])
 
     def main_menu(self):
         menu = Gtk.Menu()

@@ -6,7 +6,7 @@ import yaml
 import subprocess
 
 # chwall imports
-from chwall.daemon import notify_daemon_if_any, daemon_info
+from chwall.daemon import notify_daemon_if_any, daemon_info, daemonize
 from chwall.utils import BASE_CACHE_PATH, read_config, systemd_file
 from chwall.wallpaper import blacklist_wallpaper, pick_wallpaper
 
@@ -18,9 +18,9 @@ gettext.textdomain("chwall")
 _ = gettext.gettext
 
 
-chwall_commands = ["blacklist", "current", "history", "info", "next",
-                   "once", "pending", "previous", "purge", "quit",
-                   "status", "systemd"]
+chwall_commands = ["blacklist", "current", "detach", "history", "info",
+                   "next", "once", "pending", "previous", "purge",
+                   "quit", "status", "systemd"]
 
 
 def display_wallpaper_info(config):
@@ -43,6 +43,7 @@ def print_help():
     filtered_cmd.remove("info")
     filtered_cmd.remove("current")
     filtered_cmd.remove("status")
+    filtered_cmd.remove("detach")
     print("Usage: {} ( {} )".format(sys.argv[0], " | ".join(filtered_cmd)),
           file=sys.stderr)
     print("       {} ( current | info | status ) [ open ]".format(sys.argv[0]),
@@ -63,6 +64,17 @@ def run_client():
     if action == "systemd":
         systemd_file()
         sys.exit(0)
+    elif action == "detach":
+        if len(sys.argv) < 3:
+            sys.exit(1)
+        comp = sys.argv[2].strip()
+        if comp == "" or comp not in ["app", "icon"]:
+            sys.exit(1)
+        daemonize()
+        cmd = "chwall-{}".format(comp)
+        os.execl("/usr/bin/{}".format(cmd), cmd)
+        # Subprocess has now replaced current process, thus no need to exit or
+        # return from here.
     elif action in ["current", "info", "status"]:
         display_wallpaper_info(config)
         sys.exit(0)
