@@ -10,7 +10,7 @@ DEST_ICONS = $(foreach z,$(ICON_SIZE),$(DEST)/share/icons/hicolor/$(z)x$(z)/apps
 PY_VERSION = $(shell python -c "import sys;v=sys.version_info;print('{}.{}'.format(v.major, v.minor))")
 PY_SITE    = $(ROOT)usr/lib/python$(PY_VERSION)/site-packages
 
-L10N_LANGS   = fr
+L10N_LANGS   = fr es
 PO_FILES     = $(L10N_LANGS:%=locale/%/LC_MESSAGES/chwall.po)
 MO_FILES     = $(PO_FILES:%.po=%.mo)
 DEST_MO      = $(L10N_LANGS:%=$(DEST)/share/locale/%/LC_MESSAGES/chwall.mo)
