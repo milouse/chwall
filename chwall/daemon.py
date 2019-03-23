@@ -183,16 +183,30 @@ def daemon_loop():
         return error_code
 
 
-def daemon():
+def start_daemon():
+    """
+    do the UNIX double-fork magic, see Stevens' "Advanced
+    Programming in the UNIX Environment" for details (ISBN 0201563177)
+    http://www.erlenstar.demon.co.uk/unix/faq_2.html#SEC16
+    https://web.archive.org/web/20131017130434/http://www.jejik.com/articles/2007/02/a_simple_unix_linux_daemon_in_python/
+    """
     newpid = os.fork()
-    if newpid != 0:
-        print(_("Start loop"))
-        return 0
-    # In the forked process
+    if newpid > 0:
+        sys.exit(0)
+    # decouple from parent environment
+    os.chdir("/")
+    os.setsid()
+    os.umask(0)
+    # Fork a second time
+    newpid = os.fork()
+    if newpid > 0:
+        sys.exit(0)
+
     with open("{}/chwall_pid".format(BASE_CACHE_PATH), "w") as f:
         f.write(str(os.getpid()))
-    return daemon_loop()
+    print(_("Start loop"))
+    sys.exit(daemon_loop())
 
 
 if __name__ == "__main__":
-    sys.exit(daemon())
+    start_daemon()
