@@ -82,8 +82,9 @@ class ChwallApp(ChwallGui):
         self.app.show_all()
 
         self.update_wall_box()
+        signal.signal(signal.SIGUSR1, self.update_wall_box)
 
-    def update_wall_box(self):
+    def update_wall_box(self, _signo=None, _stack_frame=None):
         wallinfo = current_wallpaper_info()
 
         label_str = "<a href=\"{link}\">{text}</a>".format(

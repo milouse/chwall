@@ -141,6 +141,19 @@ def notify_daemon_if_any(sig=signal.SIGUSR1):
     return True
 
 
+def notify_app_if_any():
+    pid_data = subprocess.run(["pgrep", "-f", "chwall.+app"],
+                              stdout=subprocess.PIPE)
+    try:
+        pid = int(pid_data.stdout.decode().strip())
+    except ValueError:
+        return False
+    print(_("Sending process {pid} signal {sid}")
+          .format(pid=pid, sid=signal.SIGUSR1))
+    os.kill(pid, signal.SIGUSR1)
+    return True
+
+
 def show_notification():
     wallinfo = current_wallpaper_info()
     subprocess.run(["notify-send", "-a", "chwall", "-i",
@@ -156,6 +169,7 @@ def daemon_step():
     config = read_config()
     try:
         pick_wallpaper(config)
+        notify_app_if_any()
         if config["general"]["notify"] is True:
             show_notification()
     except ChwallWallpaperSetError:
