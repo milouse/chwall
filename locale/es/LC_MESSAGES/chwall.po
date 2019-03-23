@@ -1,0 +1,161 @@
+# Chwall Translation Effort
+# Copyright (C) 2019 Chwall volunteers
+# This file is distributed under the same license as the Chwall package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Chwall 0.3\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-03-20 19:32+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: chwall/gui/shared.py:42
+msgid "Start daemon"
+msgstr ""
+
+#: chwall/gui/shared.py:69 chwall/gui/app.py:44 chwall/gui/app.py:150
+msgid "Preferences"
+msgstr ""
+
+#: chwall/gui/shared.py:80
+msgid "Display notification when wallpaper changes"
+msgstr ""
+
+#: chwall/gui/shared.py:89
+msgid "Time between each wallpaper change"
+msgstr ""
+
+#: chwall/gui/shared.py:102
+msgid "Desktop environment"
+msgstr ""
+
+#: chwall/gui/shared.py:107
+msgid "Use Nitrogen application"
+msgstr ""
+
+#: chwall/gui/shared.py:127 chwall/gui/icon.py:127 chwall/gui/app.py:183
+msgid "Wallpaper Changer"
+msgstr ""
+
+#: chwall/gui/shared.py:129
+msgid "Chwall is released under the WTFPL"
+msgstr ""
+
+#: chwall/gui/icon.py:54 chwall/gui/app.py:64 chwall/gui/app.py:191
+msgid "Next wallpaper"
+msgstr ""
+
+#: chwall/gui/icon.py:59 chwall/gui/app.py:58 chwall/gui/app.py:195
+msgid "Previous wallpaper"
+msgstr ""
+
+#: chwall/gui/icon.py:64 chwall/gui/app.py:75
+msgid "Blacklist"
+msgstr ""
+
+#: chwall/gui/icon.py:71
+msgid "Open main window"
+msgstr ""
+
+#: chwall/gui/icon.py:76
+msgid "Always display this icon"
+msgstr ""
+
+#: chwall/gui/icon.py:86
+msgid "Report a bug"
+msgstr ""
+
+#: chwall/gui/icon.py:127
+msgid "Chwall"
+msgstr ""
+
+#: chwall/gui/app.py:37
+msgid "About"
+msgstr ""
+
+#: chwall/gui/app.py:119
+#, python-brace-format
+msgid "{number} broken cache entry has been removed"
+msgstr ""
+
+#: chwall/gui/app.py:121
+#, python-brace-format
+msgid "{number} broken cache entries have been removed"
+msgstr ""
+
+#: chwall/gui/app.py:124
+msgid "Cache cleanup"
+msgstr ""
+
+#: chwall/gui/app.py:139
+msgid "Cleanup broken entries in cache"
+msgstr ""
+
+#: chwall/gui/app.py:146
+msgid "Display notification icon"
+msgstr ""
+
+#: chwall/gui/app.py:187
+msgid "Main window of the Chwall wallpaper changer"
+msgstr ""
+
+#: chwall/daemon.py:70
+#, python-brace-format
+msgid "Last change was {seconds}s ago"
+msgstr ""
+
+#: chwall/daemon.py:81
+#, python-brace-format
+msgid "Next change in {seconds}s"
+msgstr ""
+
+#: chwall/daemon.py:90
+msgid "Daemon stopped"
+msgstr ""
+
+#: chwall/daemon.py:98
+msgid "Daemon started"
+msgstr ""
+
+#: chwall/daemon.py:110
+#, python-brace-format
+msgid "{daemon_state} (disabled)"
+msgstr ""
+
+#: chwall/daemon.py:133
+#, python-brace-format
+msgid "Kill process {pid}"
+msgstr ""
+
+#: chwall/daemon.py:135
+#, python-brace-format
+msgid "Sending process {pid} signal {sid}"
+msgstr ""
+
+#: chwall/daemon.py:174
+msgid "Exit signal received"
+msgstr ""
+
+#: chwall/daemon.py:179
+msgid "Cleaning up…"
+msgstr ""
+
+#: chwall/daemon.py:189
+msgid "Start loop"
+msgstr ""
+
+#: chwall/client.py:73
+msgid "Unable to pick wallpaper this time. Please, try again."
+msgstr ""
+
+#: chwall/client.py:90
+#, python-brace-format
+msgid "{progname} seems not to be running"
+msgstr ""
