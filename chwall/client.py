@@ -50,17 +50,22 @@ def print_help():
     print("       {} systemd".format(sys.argv[0]), file=sys.stderr)
 
 
-def run_client(config):
+def run_client():
+    if len(sys.argv) == 1:
+        print_help()
+        sys.exit(1)
+    config = read_config()
     if sys.argv[1] not in chwall_commands:
         print_help()
-        return False
+        sys.exit(1)
+
     action = sys.argv[1]
     if action == "systemd":
         systemd_file()
-        return True
+        sys.exit(0)
     elif action in ["current", "info", "status"]:
         display_wallpaper_info(config)
-        return True
+        sys.exit(0)
 
     if action == "blacklist":
         blacklist_wallpaper()
@@ -75,7 +80,7 @@ def run_client(config):
             action = "quit"
         else:
             notify_daemon_if_any()
-            return True
+            sys.exit(0)
     if action == "quit":
         # 15 == signal.SIGTERM
         return notify_daemon_if_any(15)
@@ -85,30 +90,19 @@ def run_client(config):
     if action == "purge":
         if os.path.exists(road_map):
             os.unlink(road_map)
-        return True
+        sys.exit(0)
     if not os.path.exists(road_map):
         print(_("{progname} seems not to be running")
               .format(progname=sys.argv[0]), file=sys.stderr)
-        return False
+        sys.exit(1)
     with open(road_map, "r") as f:
         data = yaml.load(f)
     if action == "history":
         print("\n".join(data["history"]))
     elif action == "pending":
         print("\n".join(data["pictures"]))
-    return True
-
-
-def client():
-    if len(sys.argv) == 1:
-        print_help()
-        return 1
-    config = read_config()
-    if run_client(config):
-        return 0
-    else:
-        return 1
+    sys.exit(0)
 
 
 if __name__ == "__main__":
-    sys.exit(client())
+    run_client()
