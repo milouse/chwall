@@ -8,154 +8,157 @@ msgstr ""
 "Project-Id-Version: Chwall 0.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-03-20 19:32+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2019-03-23 18:22+0000\n"
+"Last-Translator: haitch <vruztablet@gmail.com>\n"
+"Language-Team: Spanish <https://translations.umaneti.net/projects/chwall/"
+"translations/es/>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 3.5.1\n"
 
 #: chwall/gui/shared.py:42
 msgid "Start daemon"
-msgstr ""
+msgstr "Iniciar servicio"
 
 #: chwall/gui/shared.py:69 chwall/gui/app.py:44 chwall/gui/app.py:150
 msgid "Preferences"
-msgstr ""
+msgstr "Preferencias"
 
 #: chwall/gui/shared.py:80
 msgid "Display notification when wallpaper changes"
-msgstr ""
+msgstr "Mostrar una notificación cuando el fondo de pantalla cambie"
 
 #: chwall/gui/shared.py:89
 msgid "Time between each wallpaper change"
-msgstr ""
+msgstr "Tiempo entre cada cambio de fondo de pantalla"
 
 #: chwall/gui/shared.py:102
 msgid "Desktop environment"
-msgstr ""
+msgstr "Entorno de escritorio"
 
 #: chwall/gui/shared.py:107
 msgid "Use Nitrogen application"
-msgstr ""
+msgstr "Usar la aplicación Nitrogen"
 
 #: chwall/gui/shared.py:127 chwall/gui/icon.py:127 chwall/gui/app.py:183
 msgid "Wallpaper Changer"
-msgstr ""
+msgstr "Seleccionador de fondo de pantalla"
 
 #: chwall/gui/shared.py:129
 msgid "Chwall is released under the WTFPL"
-msgstr ""
+msgstr "Chwall es publicado bajo los términos de la licencia WTFPL"
 
 #: chwall/gui/icon.py:54 chwall/gui/app.py:64 chwall/gui/app.py:191
 msgid "Next wallpaper"
-msgstr ""
+msgstr "Próximo fondo"
 
 #: chwall/gui/icon.py:59 chwall/gui/app.py:58 chwall/gui/app.py:195
 msgid "Previous wallpaper"
-msgstr ""
+msgstr "Fondo anterior"
 
 #: chwall/gui/icon.py:64 chwall/gui/app.py:75
 msgid "Blacklist"
-msgstr ""
+msgstr "Poner en lista negra"
 
 #: chwall/gui/icon.py:71
 msgid "Open main window"
-msgstr ""
+msgstr "Abrir ventana principal"
 
 #: chwall/gui/icon.py:76
 msgid "Always display this icon"
-msgstr ""
+msgstr "Mostrar siempre este ícono"
 
 #: chwall/gui/icon.py:86
 msgid "Report a bug"
-msgstr ""
+msgstr "Reportar un bug"
 
 #: chwall/gui/icon.py:127
 msgid "Chwall"
-msgstr ""
+msgstr "Chwall"
 
 #: chwall/gui/app.py:37
 msgid "About"
-msgstr ""
+msgstr "Acerca de"
 
 #: chwall/gui/app.py:119
 #, python-brace-format
 msgid "{number} broken cache entry has been removed"
-msgstr ""
+msgstr "{number} entrada corrupta en cache ha sido eliminada"
 
 #: chwall/gui/app.py:121
 #, python-brace-format
 msgid "{number} broken cache entries have been removed"
-msgstr ""
+msgstr "{number} entradas corruptas en cache han sido eliminadas"
 
 #: chwall/gui/app.py:124
 msgid "Cache cleanup"
-msgstr ""
+msgstr "Limpiar cache"
 
 #: chwall/gui/app.py:139
 msgid "Cleanup broken entries in cache"
-msgstr ""
+msgstr "Limpiar entradas corruptas en cache"
 
 #: chwall/gui/app.py:146
 msgid "Display notification icon"
-msgstr ""
+msgstr "Mostrar un ícono en el área de notificación"
 
 #: chwall/gui/app.py:187
 msgid "Main window of the Chwall wallpaper changer"
-msgstr ""
+msgstr "Ventana principal del seleccionador de fondos Chwall"
 
 #: chwall/daemon.py:70
 #, python-brace-format
 msgid "Last change was {seconds}s ago"
-msgstr ""
+msgstr "El último cambio ocurrió hace {seconds}s"
 
 #: chwall/daemon.py:81
 #, python-brace-format
 msgid "Next change in {seconds}s"
-msgstr ""
+msgstr "Próximo cambio en {seconds}s"
 
 #: chwall/daemon.py:90
 msgid "Daemon stopped"
-msgstr ""
+msgstr "Servicio detenido"
 
 #: chwall/daemon.py:98
 msgid "Daemon started"
-msgstr ""
+msgstr "Servicio iniciado"
 
 #: chwall/daemon.py:110
 #, python-brace-format
 msgid "{daemon_state} (disabled)"
-msgstr ""
+msgstr "{daemon_state} (inactivo)"
 
 #: chwall/daemon.py:133
 #, python-brace-format
 msgid "Kill process {pid}"
-msgstr ""
+msgstr "Detener proceso {pid}"
 
 #: chwall/daemon.py:135
 #, python-brace-format
 msgid "Sending process {pid} signal {sid}"
-msgstr ""
+msgstr "Enviando la señal {sid} al proceso {pid}"
 
 #: chwall/daemon.py:174
 msgid "Exit signal received"
-msgstr ""
+msgstr "Se recibió la señal de salida"
 
 #: chwall/daemon.py:179
 msgid "Cleaning up…"
-msgstr ""
+msgstr "Limpiando…"
 
 #: chwall/daemon.py:189
 msgid "Start loop"
-msgstr ""
+msgstr "Iniciar bucle"
 
 #: chwall/client.py:73
 msgid "Unable to pick wallpaper this time. Please, try again."
-msgstr ""
+msgstr "No se puede seleccionar un fondo en este momento. Inténtalo de nuevo."
 
 #: chwall/client.py:90
 #, python-brace-format
 msgid "{progname} seems not to be running"
-msgstr ""
+msgstr "{progname} no parece estar siendo ejecutado"
