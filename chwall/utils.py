@@ -32,7 +32,7 @@ def get_wall_config(path):
                                    check=True, stdout=subprocess.PIPE)
     except subprocess.CalledProcessError:
         return None
-    size = size_data.stdout.decode().split('x')
+    size = size_data.stdout.decode().split("x")
     try:
         width = int(size[0])
         height = int(size[1])

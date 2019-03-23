@@ -5,7 +5,7 @@ from chwall.utils import VERSION, read_config, write_config, cleanup_cache
 from chwall.wallpaper import blacklist_wallpaper, pick_wallpaper
 
 import gi
-gi.require_version('Gtk', '3.0')  # noqa: E402
+gi.require_version("Gtk", "3.0")  # noqa: E402
 from gi.repository import Gtk
 
 import gettext

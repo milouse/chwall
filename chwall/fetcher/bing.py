@@ -10,7 +10,7 @@ def fetch_pictures(config):
     if "bing" in config:
         i18n_src = config["bing"]
     else:
-        i18n_src = ['en-US', 'fr-FR']
+        i18n_src = ["en-US", "fr-FR"]
     for l in i18n_src:
         lu = "{}[0-9]{{10}}".format(l.upper())
         data = requests.get(url.format(l)).json()

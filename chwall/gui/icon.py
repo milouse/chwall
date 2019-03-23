@@ -8,7 +8,7 @@ from chwall.gui.shared import ChwallGui
 from chwall.wallpaper import current_wallpaper_info
 
 import gi
-gi.require_version('Gtk', '3.0')  # noqa: E402
+gi.require_version("Gtk", "3.0")  # noqa: E402
 from gi.repository import Gtk, GLib
 
 import gettext

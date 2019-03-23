@@ -27,7 +27,7 @@ def build_wallpapers_list(config):
         ll = {}
         m = __import__(
             "chwall.fetcher.{}".format(module_name),
-            globals(), locals(), ['fetch_pictures'], 0)
+            globals(), locals(), ["fetch_pictures"], 0)
         while try_again > 0:
             try:
                 ll = m.fetch_pictures(config)
@@ -102,7 +102,7 @@ def set_gnome_wallpaper(path):
     if path is None:
         raise ChwallWallpaperSetError("No wallpaper path given")
     err = subprocess.run(["gsettings", "set", "org.gnome.desktop.background",
-                         "picture-uri", 'file://{}'.format(path)]).returncode
+                         "picture-uri", "file://{}".format(path)]).returncode
     if err == 1:
         raise ChwallWallpaperSetError(
             "Error while setting gnome picture-uri property")
