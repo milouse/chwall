@@ -103,8 +103,8 @@ Description = Simple wallpaper changer
 After=network.target
 
 [Service]
-Type=forking
-ExecStart={command}
+Type=simple
+ExecStart={command} -D
 
 [Install]
 WantedBy=default.target

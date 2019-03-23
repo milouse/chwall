@@ -1,6 +1,6 @@
 import subprocess
 
-from chwall.daemon import notify_daemon_if_any, daemon_info
+from chwall.daemon import notify_daemon_if_any, notify_app_if_any, daemon_info
 from chwall.utils import VERSION, read_config, write_config, cleanup_cache
 from chwall.wallpaper import blacklist_wallpaper, pick_wallpaper
 
@@ -24,13 +24,19 @@ class ChwallGui:
     def on_change_wallpaper(self, widget, direction=False):
         pick_wallpaper(self.config, direction)
         notify_daemon_if_any()
+        if self.app is None:
+            notify_app_if_any()
 
     def on_blacklist_wallpaper(self, widget):
         blacklist_wallpaper()
         self.on_change_wallpaper(widget)
 
     def run_chwall_component(self, _widget, component):
-        subprocess.Popen(["chwall-{}".format(component)])
+        if component == "daemon":
+            # No need to fork, daemon already do that
+            subprocess.run(["chwall-daemon"])
+        else:
+            subprocess.run(["chwall", "detach", component])
 
     def main_menu(self):
         menu = Gtk.Menu()

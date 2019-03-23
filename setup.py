@@ -33,7 +33,7 @@ setuptools.setup(
             "chwall-app = chwall.gui.app:start_app"
         ],
         "console_scripts": [
-            "chwall-daemon = chwall.daemon:daemon",
-            "chwall = chwall.client:client"
+            "chwall-daemon = chwall.daemon:start_daemon",
+            "chwall = chwall.client:run_client"
         ]
     })
