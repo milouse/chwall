@@ -122,7 +122,7 @@ Categories=GTK;GNOME;TrayIcon;
 X-MATE-Autostart-enabled=true
 X-GNOME-Autostart-Delay=20
 StartupNotify=false
-""".format(_("Chwall"), _("Wallpaper Changer")))
+""".format("Chwall", _("Wallpaper Changer")))
         elif file_yet_exists and not self.must_autostart:
             os.remove(self.autostart_file)
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chwall 0.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 19:32+0100\n"
+"POT-Creation-Date: 2019-03-23 19:46+0100\n"
 "PO-Revision-Date: 2019-03-20 19:35+0100\n"
 "Last-Translator: Étienne Deparis <etienne@depar.is>\n"
 "Language-Team: none\n"
@@ -18,93 +18,89 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 2.2.1\n"
 
-#: chwall/gui/shared.py:42
+#: chwall/gui/shared.py:51
 msgid "Start daemon"
 msgstr "Démarrer le service"
 
-#: chwall/gui/shared.py:69 chwall/gui/app.py:44 chwall/gui/app.py:150
-msgid "Preferences"
-msgstr "Préférences"
+#: chwall/gui/shared.py:64
+msgid "Cleanup broken entries in cache"
+msgstr "Nettoyer les entrées cassées du cache"
 
-#: chwall/gui/shared.py:80
-msgid "Display notification when wallpaper changes"
-msgstr "Montrer une notification lorsque le papier-peint est changé"
-
-#: chwall/gui/shared.py:89
-msgid "Time between each wallpaper change"
-msgstr "Délai entre chaque changement de papier-peint"
-
-#: chwall/gui/shared.py:102
-msgid "Desktop environment"
-msgstr "Environnement de bureau"
-
-#: chwall/gui/shared.py:107
-msgid "Use Nitrogen application"
-msgstr "Utiliser l'application Nitrogen"
-
-#: chwall/gui/shared.py:127 chwall/gui/icon.py:127 chwall/gui/app.py:183
-msgid "Wallpaper Changer"
-msgstr "Changeur de papier-peint"
-
-#: chwall/gui/shared.py:129
-msgid "Chwall is released under the WTFPL"
-msgstr "Chwall est publié selon les termes de la WTFPL"
-
-#: chwall/gui/icon.py:54 chwall/gui/app.py:64 chwall/gui/app.py:191
-msgid "Next wallpaper"
-msgstr "Papier-peint suivant"
-
-#: chwall/gui/icon.py:59 chwall/gui/app.py:58 chwall/gui/app.py:195
-msgid "Previous wallpaper"
-msgstr "Papier-peint précédent"
-
-#: chwall/gui/icon.py:64 chwall/gui/app.py:75
-msgid "Blacklist"
-msgstr "Mettre en liste noire"
-
-#: chwall/gui/icon.py:71
-msgid "Open main window"
-msgstr "Ouvrir la fenêtre principale"
-
-#: chwall/gui/icon.py:76
-msgid "Always display this icon"
-msgstr "Toujours afficher cette icône"
-
-#: chwall/gui/icon.py:86
-msgid "Report a bug"
-msgstr "Signaler un bogue"
-
-#: chwall/gui/icon.py:127
-msgid "Chwall"
-msgstr "Chwall"
-
-#: chwall/gui/app.py:37
-msgid "About"
-msgstr "À propos"
-
-#: chwall/gui/app.py:119
+#: chwall/gui/shared.py:79
 #, python-brace-format
 msgid "{number} broken cache entry has been removed"
 msgstr "{number} entrée cassée du cache a été supprimée"
 
-#: chwall/gui/app.py:121
+#: chwall/gui/shared.py:81
 #, python-brace-format
 msgid "{number} broken cache entries have been removed"
 msgstr "{number} entrées cassées du cache ont été supprimées"
 
-#: chwall/gui/app.py:124
+#: chwall/gui/shared.py:85
 msgid "Cache cleanup"
 msgstr "Nettoyage du cache"
 
-#: chwall/gui/app.py:139
-msgid "Cleanup broken entries in cache"
-msgstr "Nettoyer les entrées cassées du cache"
+#: chwall/gui/shared.py:105 chwall/gui/app.py:43 chwall/gui/app.py:128
+msgid "Preferences"
+msgstr "Préférences"
 
-#: chwall/gui/app.py:146
+#: chwall/gui/shared.py:116
+msgid "Display notification when wallpaper changes"
+msgstr "Montrer une notification lorsque le papier-peint est changé"
+
+#: chwall/gui/shared.py:125
+msgid "Time between each wallpaper change"
+msgstr "Délai entre chaque changement de papier-peint"
+
+#: chwall/gui/shared.py:138
+msgid "Desktop environment"
+msgstr "Environnement de bureau"
+
+#: chwall/gui/shared.py:143
+msgid "Use Nitrogen application"
+msgstr "Utiliser l'application Nitrogen"
+
+#: chwall/gui/shared.py:163 chwall/gui/icon.py:125 chwall/gui/app.py:155
+msgid "Wallpaper Changer"
+msgstr "Changeur de papier-peint"
+
+#: chwall/gui/shared.py:165
+msgid "Chwall is released under the WTFPL"
+msgstr "Chwall est publié selon les termes de la WTFPL"
+
+#: chwall/gui/icon.py:49 chwall/gui/app.py:63 chwall/gui/app.py:163
+msgid "Next wallpaper"
+msgstr "Papier-peint suivant"
+
+#: chwall/gui/icon.py:54 chwall/gui/app.py:57 chwall/gui/app.py:167
+msgid "Previous wallpaper"
+msgstr "Papier-peint précédent"
+
+#: chwall/gui/icon.py:59 chwall/gui/app.py:74
+msgid "Blacklist"
+msgstr "Mettre en liste noire"
+
+#: chwall/gui/icon.py:69
+msgid "Open main window"
+msgstr "Ouvrir la fenêtre principale"
+
+#: chwall/gui/icon.py:74
+msgid "Always display this icon"
+msgstr "Toujours afficher cette icône"
+
+#: chwall/gui/icon.py:84
+msgid "Report a bug"
+msgstr "Signaler un bogue"
+
+#: chwall/gui/app.py:36
+msgid "About"
+msgstr "À propos"
+
+#: chwall/gui/app.py:124
 msgid "Display notification icon"
 msgstr "Afficher une icône dans la zone de notification"
 
-#: chwall/gui/app.py:187
+#: chwall/gui/app.py:159
 msgid "Main window of the Chwall wallpaper changer"
 msgstr "Fenêtre principale du changeur de papier-peint Chwall"
 
@@ -136,33 +132,36 @@ msgstr "{daemon_state} (désactivé)"
 msgid "Kill process {pid}"
 msgstr "Tuer le processus {pid}"
 
-#: chwall/daemon.py:135
+#: chwall/daemon.py:135 chwall/daemon.py:151
 #, python-brace-format
 msgid "Sending process {pid} signal {sid}"
 msgstr "Envoi du signal {sid} au processus {pid}"
 
-#: chwall/daemon.py:174
+#: chwall/daemon.py:188
 msgid "Exit signal received"
 msgstr "Signal d'extinction reçu"
 
-#: chwall/daemon.py:179
+#: chwall/daemon.py:193
 msgid "Cleaning up…"
 msgstr "Nettoyage…"
 
-#: chwall/daemon.py:189
+#: chwall/daemon.py:225
 msgid "Start loop"
 msgstr "Démarrage de la boucle"
 
-#: chwall/client.py:73
+#: chwall/client.py:90
 msgid "Unable to pick wallpaper this time. Please, try again."
 msgstr ""
 "Impossible de récupérer un fond d'écran pour cette fois. Merci de bien "
 "vouloir réessayer."
 
-#: chwall/client.py:90
+#: chwall/client.py:107
 #, python-brace-format
 msgid "{progname} seems not to be running"
 msgstr "{progname} ne semble pas lancé"
+
+#~ msgid "Chwall"
+#~ msgstr "Chwall"
 
 #~ msgid "Options"
 #~ msgstr "Options"
