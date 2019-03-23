@@ -24,3 +24,7 @@ def fetch_pictures(config):
             "copyright": "NASA Astronomy Picture of the Day"
         }
     return collecs
+
+
+def preferences():
+    return {"name": "NASA Picture Of The Day"}

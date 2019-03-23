@@ -46,3 +46,25 @@ def fetch_pictures(config):
             "type": "unsplash"
         }
     return collecs
+
+
+def preferences():
+    return {
+        "name": "Unsplash",
+        "options": {
+            "width": {
+                "widget": "number",
+                "default": 1600
+            },
+            "count": {
+                "widget": "number",
+                "default": 10
+            },
+            "access_key": {
+                "widget": "text"
+            },
+            "query": {
+                "widget": "text"
+            }
+        }
+    }

@@ -26,3 +26,7 @@ def fetch_pictures(config):
                 "copyright": "{} by {}".format(title, author)
             }
     return collecs
+
+
+def preferences():
+    return {"name": "Deviantart"}

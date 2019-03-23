@@ -27,3 +27,7 @@ def fetch_pictures(config):
                 "type": "bing"
             }
     return collecs
+
+
+def preferences():
+    return {"name": "Bing"}

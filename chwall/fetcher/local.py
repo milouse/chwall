@@ -18,3 +18,7 @@ def fetch_pictures(config):
                     "copyright": "Local wallpaper"
                 }
     return collecs
+
+
+def preferences():
+    return {"name": "Local files"}

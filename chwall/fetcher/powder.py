@@ -30,3 +30,7 @@ def fetch_pictures(config):
             "copyright": "Picture by {}".format(link.attrib["title"])
         }
     return collecs
+
+
+def preferences():
+    return {"name": "Powder"}
