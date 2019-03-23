@@ -183,7 +183,7 @@ def daemon_loop():
         return error_code
 
 
-def start_daemon():
+def daemonize():
     """
     do the UNIX double-fork magic, see Stevens' "Advanced
     Programming in the UNIX Environment" for details (ISBN 0201563177)
@@ -202,6 +202,10 @@ def start_daemon():
     if newpid > 0:
         sys.exit(0)
 
+
+def start_daemon():
+    if sys.argv[-1] != "-D":
+        daemonize()
     with open("{}/chwall_pid".format(BASE_CACHE_PATH), "w") as f:
         f.write(str(os.getpid()))
     print(_("Start loop"))
