@@ -17,11 +17,11 @@ DEST_MO      = $(L10N_LANGS:%=$(DEST)/share/locale/%/LC_MESSAGES/chwall.mo)
 TRANSLATABLE = chwall/gui/shared.py chwall/gui/icon.py chwall/gui/app.py chwall/daemon.py chwall/client.py
 
 
-.PHONY: install lang uninstall uplang
+.PHONY: dist install lang uninstall uplang
 
 .INTERMEDIATE: chwall-app.desktop
 
-install: $(DEST_ICONS) $(DEST_MO) chwall-app.desktop
+dist: $(DEST_ICONS) $(DEST_MO) chwall-app.desktop
 	python setup.py install --root=$(ROOT)
 	@rm -rf build chwall.egg-info
 	install -d -m755 $(DEST)/share/applications
@@ -32,6 +32,8 @@ install: $(DEST_ICONS) $(DEST_MO) chwall-app.desktop
 	install -D -m644 LICENSE $(DEST)/share/licenses/chwall/LICENSE
 	install -D -m644 data/chwall-completions $(DEST)/share/bash-completion/completions/chwall
 	install -D -m644 data/_chwall $(DEST)/share/zsh/site-functions/_chwall
+
+install: dist
 	@update-desktop-database $(DEST)/share/applications
 	@gtk-update-icon-cache $(DEST)/share/icons/hicolor
 
