@@ -100,6 +100,10 @@ class ChwallGui:
         self.config["general"]["desktop"] = widget.get_active_id()
         write_config(self.config)
 
+    def update_lightdm_wall(self, widget):
+        self.config["general"]["desktop"] = widget.get_filename()
+        write_config(self.config)
+
     def show_preferences_dialog(self, widget):
         prefwin = Gtk.Dialog(
             _("Preferences"), self.app, self.get_flags_if_app(),
@@ -147,6 +151,17 @@ class ChwallGui:
             desktop = "gnome"
         button.set_active_id(desktop)
         button.connect("changed", self.update_desktop_env)
+        prefbox.pack_end(button, False, False, 5)
+        box.pack_start(prefbox, True, True, 0)
+
+        prefbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        label = Gtk.Label(_("LightDM shared background path"))
+        prefbox.pack_start(label, False, False, 5)
+        button = Gtk.FileChooserButton.new(_("Select a file"),
+                                           Gtk.FileChooserAction.OPEN)
+        if "lightdm_wall" in self.config["general"]:
+            button.set_filename(self.config["general"]["lightdm_wall"])
+        button.connect("file-set", self.update_lightdm_wall)
         prefbox.pack_end(button, False, False, 5)
         box.pack_start(prefbox, True, True, 0)
 
