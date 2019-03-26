@@ -5,8 +5,10 @@ import glob
 def fetch_pictures(config):
     if "local" not in config:
         return {}
+    if "pathes" not in config["local"]:
+        return {}
     collecs = {}
-    for path in config["local"]:
+    for path in config["local"]["pathes"]:
         path = os.path.expanduser(path)
         for ext in ["jpg", "jpeg", "png"]:
             for f in glob.iglob("{}/*.{}".format(path, ext),
@@ -21,4 +23,11 @@ def fetch_pictures(config):
 
 
 def preferences():
-    return {"name": "Local files"}
+    return {
+        "name": "Local files",
+        "options": {
+            "pathes": {
+                "widget": "list"
+            }
+        }
+    }

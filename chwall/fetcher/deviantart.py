@@ -4,11 +4,13 @@ from xml.etree import ElementTree
 
 
 def fetch_pictures(config):
+    if "deviantart" not in config:
+        return {}
+    if "collections" not in config["deviantart"]:
+        return {}
     collecs = {}
     url = "https://backend.deviantart.com/rss.xml?type=deviation&q={}"
-    if "deviantart" not in config or len(config["deviantart"]) == 0:
-        return {}
-    for q in config["deviantart"]:
+    for q in config["deviantart"]["collections"]:
         data = ElementTree.fromstring(requests.get(url.format(q)).text)
         for item in data[0].findall("item"):
             title = item.find("title").text
@@ -29,4 +31,12 @@ def fetch_pictures(config):
 
 
 def preferences():
-    return {"name": "Deviantart"}
+    return {
+        "name": "Deviantart",
+        "options": {
+            "collections": {
+                "widget": "list",
+                "values": []
+            }
+        }
+    }
