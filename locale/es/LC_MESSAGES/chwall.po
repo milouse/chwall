@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chwall 0.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-23 19:46+0100\n"
+"POT-Creation-Date: 2019-03-26 13:51+0100\n"
 "PO-Revision-Date: 2019-03-23 18:22+0000\n"
 "Last-Translator: haitch <vruztablet@gmail.com>\n"
 "Language-Team: Spanish <https://translations.umaneti.net/projects/chwall/"
@@ -19,53 +19,33 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 3.5.1\n"
 
-#: chwall/gui/shared.py:51
+#: chwall/gui/shared.py:52
 msgid "Start daemon"
 msgstr "Iniciar servicio"
 
-#: chwall/gui/shared.py:64
+#: chwall/gui/shared.py:65
 msgid "Cleanup broken entries in cache"
 msgstr "Limpiar entradas corruptas en cache"
 
-#: chwall/gui/shared.py:79
+#: chwall/gui/shared.py:80
 #, python-brace-format
 msgid "{number} broken cache entry has been removed"
 msgstr "{number} entrada corrupta en cache ha sido eliminada"
 
-#: chwall/gui/shared.py:81
+#: chwall/gui/shared.py:82
 #, python-brace-format
 msgid "{number} broken cache entries have been removed"
 msgstr "{number} entradas corruptas en cache han sido eliminadas"
 
-#: chwall/gui/shared.py:85
+#: chwall/gui/shared.py:86
 msgid "Cache cleanup"
 msgstr "Limpiar cache"
 
-#: chwall/gui/shared.py:105 chwall/gui/app.py:43 chwall/gui/app.py:128
-msgid "Preferences"
-msgstr "Preferencias"
-
-#: chwall/gui/shared.py:116
-msgid "Display notification when wallpaper changes"
-msgstr "Mostrar una notificación cuando el fondo de pantalla cambie"
-
-#: chwall/gui/shared.py:125
-msgid "Time between each wallpaper change"
-msgstr "Tiempo entre cada cambio de fondo de pantalla"
-
-#: chwall/gui/shared.py:138
-msgid "Desktop environment"
-msgstr "Entorno de escritorio"
-
-#: chwall/gui/shared.py:143
-msgid "Use Nitrogen application"
-msgstr "Usar la aplicación Nitrogen"
-
-#: chwall/gui/shared.py:163 chwall/gui/icon.py:125 chwall/gui/app.py:155
+#: chwall/gui/shared.py:103 chwall/gui/icon.py:125 chwall/gui/app.py:155
 msgid "Wallpaper Changer"
 msgstr "Seleccionador de fondo de pantalla"
 
-#: chwall/gui/shared.py:165
+#: chwall/gui/shared.py:105
 msgid "Chwall is released under the WTFPL"
 msgstr "Chwall es publicado bajo los términos de la licencia WTFPL"
 
@@ -97,6 +77,10 @@ msgstr "Reportar un bug"
 msgid "About"
 msgstr "Acerca de"
 
+#: chwall/gui/app.py:43 chwall/gui/app.py:128 chwall/gui/preferences.py:22
+msgid "Preferences"
+msgstr "Preferencias"
+
 #: chwall/gui/app.py:124
 msgid "Display notification icon"
 msgstr "Mostrar un ícono en el área de notificación"
@@ -104,6 +88,43 @@ msgstr "Mostrar un ícono en el área de notificación"
 #: chwall/gui/app.py:159
 msgid "Main window of the Chwall wallpaper changer"
 msgstr "Ventana principal del seleccionador de fondos Chwall"
+
+#: chwall/gui/preferences.py:34
+msgid "Display notification when wallpaper changes"
+msgstr "Mostrar una notificación cuando el fondo de pantalla cambie"
+
+#: chwall/gui/preferences.py:39
+msgid "Time between each wallpaper change"
+msgstr "Tiempo entre cada cambio de fondo de pantalla"
+
+#: chwall/gui/preferences.py:44
+msgid "Use Nitrogen application"
+msgstr "Usar la aplicación Nitrogen"
+
+#: chwall/gui/preferences.py:46
+msgid "Desktop environment"
+msgstr "Entorno de escritorio"
+
+#: chwall/gui/preferences.py:51
+msgid "LightDM shared background path"
+msgstr ""
+
+#: chwall/gui/preferences.py:53
+msgid "Select a file"
+msgstr ""
+
+#: chwall/gui/preferences.py:66
+msgid "General"
+msgstr ""
+
+#: chwall/gui/preferences.py:113
+msgid "Pictures sources"
+msgstr ""
+
+#: chwall/gui/preferences.py:236 chwall/gui/preferences.py:243
+#: chwall/gui/preferences.py:250 chwall/gui/preferences.py:251
+msgid "New"
+msgstr ""
 
 #: chwall/daemon.py:70
 #, python-brace-format

@@ -14,7 +14,7 @@ L10N_LANGS   = fr es
 PO_FILES     = $(L10N_LANGS:%=locale/%/LC_MESSAGES/chwall.po)
 MO_FILES     = $(PO_FILES:%.po=%.mo)
 DEST_MO      = $(L10N_LANGS:%=$(DEST)/share/locale/%/LC_MESSAGES/chwall.mo)
-TRANSLATABLE = chwall/gui/shared.py chwall/gui/icon.py chwall/gui/app.py chwall/daemon.py chwall/client.py
+TRANSLATABLE = chwall/gui/shared.py chwall/gui/icon.py chwall/gui/app.py chwall/gui/preferences.py chwall/daemon.py chwall/client.py
 
 
 .PHONY: dist install lang uninstall uplang
