@@ -84,22 +84,23 @@ class PrefDialog(Gtk.Dialog):
             for opt in fprefs["options"]:
                 if "widget" not in fprefs["options"][opt]:
                     continue
+                options = fprefs["options"][opt]
                 prefbox = None
-                if fprefs["options"][opt]["widget"] == "select":
+                if options["widget"] == "select":
                     values = []
-                    for v in fprefs["options"][opt]["values"]:
+                    for v in options["values"]:
                         values.append((str(v), str(v)))
                     prefbox = self.make_select_pref(
                         fd.name, opt, opt, values, None,
-                        fprefs["options"][opt]["type"])
-                elif fprefs["options"][opt]["widget"] == "text":
+                        options["type"])
+                elif options["widget"] == "text":
                     prefbox = self.make_text_pref(fd.name, opt, opt)
-                elif fprefs["options"][opt]["widget"] == "number":
+                elif options["widget"] == "number":
                     prefbox = self.make_number_pref(fd.name, opt, opt)
-                elif fprefs["options"][opt]["widget"] == "list":
+                elif options["widget"] == "list":
                     values = []
-                    if "default" in fprefs["options"][opt]:
-                        values = fprefs["options"][opt]["default"]
+                    if "default" in options:
+                        values = options["default"]
                     prefbox = self.make_list_pref(fd.name, opt, opt, values)
                 if prefbox is not None:
                     picbox.pack_start(prefbox, True, True, 0)
