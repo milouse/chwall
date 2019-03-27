@@ -36,7 +36,6 @@ def preferences():
         "options": {
             "collections": {
                 "widget": "list",
-                "values": []
             }
         }
     }

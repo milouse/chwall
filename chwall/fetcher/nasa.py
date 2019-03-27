@@ -5,8 +5,11 @@ import requests
 
 def fetch_pictures(config):
     collecs = {}
+    nb_pic = 10
+    if "nasa" in config and "count" in config["nasa"]:
+        nb_pic = config["nasa"]["count"]
     curday = time.time()
-    for i in range(10):
+    for i in range(nb_pic):
         pic_page = "https://apod.nasa.gov/apod/ap{}.html".format(
             time.strftime("%y%m%d", time.localtime(curday)))
         # Go to yesterday
@@ -27,4 +30,12 @@ def fetch_pictures(config):
 
 
 def preferences():
-    return {"name": "NASA Picture Of The Day"}
+    return {
+        "name": "NASA Picture Of The Day",
+        "options": {
+            "count": {
+                "widget": "number",
+                "default": 10
+            }
+        }
+    }

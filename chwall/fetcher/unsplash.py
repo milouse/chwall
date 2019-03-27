@@ -65,6 +65,9 @@ def preferences():
             },
             "query": {
                 "widget": "text"
+            },
+            "collections": {
+                "widget": "list",
             }
         }
     }

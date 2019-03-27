@@ -33,4 +33,14 @@ def fetch_pictures(config):
 
 
 def preferences():
-    return {"name": "Powder"}
+    return {
+        "name": "Powder",
+        "options": {
+            "width": {
+                "type": "int",
+                "widget": "select",
+                "values": [320, 640, 970, 1920],
+                "default": 1920,
+            }
+        }
+    }
