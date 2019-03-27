@@ -89,6 +89,8 @@ class PrefDialog(Gtk.Dialog):
                 options = fprefs["options"][opt]
                 prefbox = None
                 label = opt.capitalize()
+                if "label" in options:
+                    label = options["label"]
                 if options["widget"] == "select":
                     values = []
                     for v in options["values"]:
