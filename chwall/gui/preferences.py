@@ -231,8 +231,12 @@ class PrefDialog(Gtk.Dialog):
             for val in self.config[path][opt]:
                 liststore.append([val])
         elif defaults is not None:
-            for val in defaults:
-                liststore.append([val])
+            if type(defaults).__name__ != "list":
+                liststore.append([defaults])
+            else:
+                for val in defaults:
+                    liststore.append([val])
+
         liststore.append([_("New")])
         treeview = Gtk.TreeView(model=liststore)
         renderer_text = Gtk.CellRendererText()
