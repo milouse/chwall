@@ -81,6 +81,8 @@ class PrefDialog(Gtk.Dialog):
                 sep = Gtk.Separator.new(Gtk.Orientation.HORIZONTAL)
                 picbox.pack_start(sep, False, False, 0)
                 continue
+            if fd.name not in self.config:
+                self.config[fd.name] = {}
             for opt in fprefs["options"]:
                 if "widget" not in fprefs["options"][opt]:
                     continue
