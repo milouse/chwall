@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Chwall 0.4.1\n"
+"Project-Id-Version: Chwall 0.4.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-27 19:42+0100\n"
+"POT-Creation-Date: 2019-03-27 20:28+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -115,57 +115,77 @@ msgstr ""
 msgid "General"
 msgstr ""
 
-#: chwall/gui/preferences.py:119
+#: chwall/gui/preferences.py:122
 msgid "Pictures sources"
 msgstr ""
 
-#: chwall/gui/preferences.py:246 chwall/gui/preferences.py:253
-#: chwall/gui/preferences.py:260 chwall/gui/preferences.py:261
+#: chwall/gui/preferences.py:249 chwall/gui/preferences.py:256
+#: chwall/gui/preferences.py:263 chwall/gui/preferences.py:264
 msgid "New"
 msgstr ""
 
-#: chwall/daemon.py:70
+#: chwall/daemon.py:65
+#, python-brace-format
+msgid "Last change was 1 minute and {seconds}s ago"
+msgstr ""
+
+#: chwall/daemon.py:69
+#, python-brace-format
+msgid "Last change was {minutes} minutes and {seconds}s ago"
+msgstr ""
+
+#: chwall/daemon.py:72
 #, python-brace-format
 msgid "Last change was {seconds}s ago"
 msgstr ""
 
-#: chwall/daemon.py:81
+#: chwall/daemon.py:79
+#, python-brace-format
+msgid "Next change in 1 minute and {seconds}s"
+msgstr ""
+
+#: chwall/daemon.py:83
+#, python-brace-format
+msgid "Next change in {minutes} minutes and {seconds}s"
+msgstr ""
+
+#: chwall/daemon.py:86
 #, python-brace-format
 msgid "Next change in {seconds}s"
 msgstr ""
 
-#: chwall/daemon.py:90
+#: chwall/daemon.py:95
 msgid "Daemon stopped"
 msgstr ""
 
-#: chwall/daemon.py:98
+#: chwall/daemon.py:103
 msgid "Daemon started"
 msgstr ""
 
-#: chwall/daemon.py:110
+#: chwall/daemon.py:115
 #, python-brace-format
 msgid "{daemon_state} (disabled)"
 msgstr ""
 
-#: chwall/daemon.py:133
+#: chwall/daemon.py:138
 #, python-brace-format
 msgid "Kill process {pid}"
 msgstr ""
 
-#: chwall/daemon.py:135 chwall/daemon.py:151
+#: chwall/daemon.py:140 chwall/daemon.py:156
 #, python-brace-format
 msgid "Sending process {pid} signal {sid}"
 msgstr ""
 
-#: chwall/daemon.py:188
+#: chwall/daemon.py:193
 msgid "Exit signal received"
 msgstr ""
 
-#: chwall/daemon.py:193
+#: chwall/daemon.py:198
 msgid "Cleaning up…"
 msgstr ""
 
-#: chwall/daemon.py:225
+#: chwall/daemon.py:230
 msgid "Start loop"
 msgstr ""
 

@@ -18,7 +18,6 @@ import gettext
 # gettext.bindtextdomain("chwall", "./locale")
 gettext.textdomain("chwall")
 _ = gettext.gettext
-_p = gettext.ngettext
 
 
 class ChwallRestartTimer(Exception):
@@ -61,22 +60,28 @@ def daemon_change_label(last_change, next_change):
     if last_change > 60:
         last_change_m = int(last_change / 60)
         last_change_s = last_change % 60
-        last_change_label = _p(
-            "Last change was 1 minute and {seconds}s ago",
-            "Last change was {minutes} minutes and {seconds}s ago",
-            last_change_m).format(minutes=last_change_m,
-                                  seconds=last_change_s)
+        if last_change_m < 2:
+            last_change_label = (
+                _("Last change was 1 minute and {seconds}s ago")
+                .format(seconds=last_change_s))
+        else:
+            last_change_label = (
+                _("Last change was {minutes} minutes and {seconds}s ago")
+                .format(minutes=last_change_m, seconds=last_change_s))
     else:
         last_change_label = (_("Last change was {seconds}s ago")
                              .format(seconds=last_change))
     if next_change > 60:
         next_change_m = int(next_change / 60)
         next_change_s = next_change % 60
-        next_change_label = _p(
-            "Next change in 1 minute and {seconds}s",
-            "Next change in {minutes} minutes and {seconds}s",
-            next_change_m).format(minutes=next_change_m,
-                                  seconds=next_change_s)
+        if next_change_m < 2:
+            next_change_label = (
+                _("Next change in 1 minute and {seconds}s")
+                .format(seconds=next_change_s))
+        else:
+            next_change_label = (
+                _("Next change in {minutes} minutes and {seconds}s")
+                .format(minutes=next_change_m, seconds=next_change_s))
     else:
         next_change_label = (_("Next change in {seconds}s")
                              .format(seconds=next_change))

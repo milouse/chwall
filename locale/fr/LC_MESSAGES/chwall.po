@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chwall 0.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-27 19:42+0100\n"
-"PO-Revision-Date: 2019-03-27 19:42+0100\n"
+"POT-Creation-Date: 2019-03-27 20:28+0100\n"
+"PO-Revision-Date: 2019-03-27 20:32+0100\n"
 "Last-Translator: Étienne Deparis <etienne@depar.is>\n"
 "Language-Team: none\n"
 "Language: fr\n"
@@ -116,57 +116,78 @@ msgstr "Sélectionner un fichier"
 msgid "General"
 msgstr "Général"
 
-#: chwall/gui/preferences.py:119
+#: chwall/gui/preferences.py:122
 msgid "Pictures sources"
 msgstr "Sources des images"
 
-#: chwall/gui/preferences.py:246 chwall/gui/preferences.py:253
-#: chwall/gui/preferences.py:260 chwall/gui/preferences.py:261
+#: chwall/gui/preferences.py:249 chwall/gui/preferences.py:256
+#: chwall/gui/preferences.py:263 chwall/gui/preferences.py:264
 msgid "New"
 msgstr "Nouveau"
 
-#: chwall/daemon.py:70
+#: chwall/daemon.py:65
+#, python-brace-format
+msgid "Last change was 1 minute and {seconds}s ago"
+msgstr "Le dernier changement a eu lieu il y a 1 minute et {seconds}s"
+
+#: chwall/daemon.py:69
+#, python-brace-format
+msgid "Last change was {minutes} minutes and {seconds}s ago"
+msgstr ""
+"Le dernier changement a eu lieu il y a {minutes} minutes et {seconds}s"
+
+#: chwall/daemon.py:72
 #, python-brace-format
 msgid "Last change was {seconds}s ago"
 msgstr "Le dernier changement a eu lieu il y a {seconds}s"
 
-#: chwall/daemon.py:81
+#: chwall/daemon.py:79
+#, python-brace-format
+msgid "Next change in 1 minute and {seconds}s"
+msgstr "Prochain changement dans 1 minute et {seconds}s"
+
+#: chwall/daemon.py:83
+#, python-brace-format
+msgid "Next change in {minutes} minutes and {seconds}s"
+msgstr "Prochain changement dans {minutes} minutes et {seconds}s"
+
+#: chwall/daemon.py:86
 #, python-brace-format
 msgid "Next change in {seconds}s"
 msgstr "Prochain changement dans {seconds}s"
 
-#: chwall/daemon.py:90
+#: chwall/daemon.py:95
 msgid "Daemon stopped"
 msgstr "Service arrêté"
 
-#: chwall/daemon.py:98
+#: chwall/daemon.py:103
 msgid "Daemon started"
 msgstr "Service démarré"
 
-#: chwall/daemon.py:110
+#: chwall/daemon.py:115
 #, python-brace-format
 msgid "{daemon_state} (disabled)"
 msgstr "{daemon_state} (désactivé)"
 
-#: chwall/daemon.py:133
+#: chwall/daemon.py:138
 #, python-brace-format
 msgid "Kill process {pid}"
 msgstr "Tuer le processus {pid}"
 
-#: chwall/daemon.py:135 chwall/daemon.py:151
+#: chwall/daemon.py:140 chwall/daemon.py:156
 #, python-brace-format
 msgid "Sending process {pid} signal {sid}"
 msgstr "Envoi du signal {sid} au processus {pid}"
 
-#: chwall/daemon.py:188
+#: chwall/daemon.py:193
 msgid "Exit signal received"
 msgstr "Signal d'extinction reçu"
 
-#: chwall/daemon.py:193
+#: chwall/daemon.py:198
 msgid "Cleaning up…"
 msgstr "Nettoyage…"
 
-#: chwall/daemon.py:225
+#: chwall/daemon.py:230
 msgid "Start loop"
 msgstr "Démarrage de la boucle"
 
@@ -238,7 +259,3 @@ msgstr "Requête complémentaire"
 
 #~ msgid "minutes"
 #~ msgstr "minutes"
-
-#~ msgid "Next change in {minute_number} {minute_label} {second_number}s"
-#~ msgstr ""
-#~ "Prochain changement dans {minute_number} {minute_label} {second_number}s"
