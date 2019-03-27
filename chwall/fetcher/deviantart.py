@@ -2,6 +2,13 @@ import requests
 from lxml import html
 from xml.etree import ElementTree
 
+import gettext
+# Uncomment the following line during development.
+# Please, be cautious to NOT commit the following line uncommented.
+# gettext.bindtextdomain("chwall", "./locale")
+gettext.textdomain("chwall")
+_ = gettext.gettext
+
 
 def fetch_pictures(config):
     if "deviantart" not in config:
@@ -36,6 +43,7 @@ def preferences():
         "options": {
             "collections": {
                 "widget": "list",
+                "label": _("Collections")
             }
         }
     }

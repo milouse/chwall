@@ -2,6 +2,13 @@ import re
 import time
 import requests
 
+import gettext
+# Uncomment the following line during development.
+# Please, be cautious to NOT commit the following line uncommented.
+# gettext.bindtextdomain("chwall", "./locale")
+gettext.textdomain("chwall")
+_ = gettext.gettext
+
 
 def fetch_pictures(config):
     collecs = {}
@@ -31,11 +38,12 @@ def fetch_pictures(config):
 
 def preferences():
     return {
-        "name": "NASA Picture Of The Day",
+        "name": _("NASA Picture Of The Day"),
         "options": {
             "count": {
                 "widget": "number",
-                "default": 10
+                "default": 10,
+                "label": _("Number of item to retrieve")
             }
         }
     }

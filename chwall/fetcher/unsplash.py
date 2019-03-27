@@ -1,6 +1,13 @@
 import sys
 import requests
 
+import gettext
+# Uncomment the following line during development.
+# Please, be cautious to NOT commit the following line uncommented.
+# gettext.bindtextdomain("chwall", "./locale")
+gettext.textdomain("chwall")
+_ = gettext.gettext
+
 
 def fetch_pictures(config):
     width = 1600
@@ -54,20 +61,25 @@ def preferences():
         "options": {
             "width": {
                 "widget": "number",
-                "default": 1600
+                "default": 1600,
+                "label": _("Wallpaper width")
             },
             "count": {
                 "widget": "number",
-                "default": 10
+                "default": 10,
+                "label": _("Number of item to retrieve")
             },
             "access_key": {
-                "widget": "text"
+                "widget": "text",
+                "label": _("API access_key")
             },
             "query": {
-                "widget": "text"
+                "widget": "text",
+                "label": _("Complementary query")
             },
             "collections": {
                 "widget": "list",
+                "label": _("Collections")
             }
         }
     }

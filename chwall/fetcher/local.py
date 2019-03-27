@@ -1,6 +1,13 @@
 import os
 import glob
 
+import gettext
+# Uncomment the following line during development.
+# Please, be cautious to NOT commit the following line uncommented.
+# gettext.bindtextdomain("chwall", "./locale")
+gettext.textdomain("chwall")
+_ = gettext.gettext
+
 
 def fetch_pictures(config):
     if "local" not in config:
@@ -24,10 +31,11 @@ def fetch_pictures(config):
 
 def preferences():
     return {
-        "name": "Local files",
+        "name": _("Local files"),
         "options": {
             "pathes": {
-                "widget": "list"
+                "widget": "list",
+                "label": _("Wallpaper repositories")
             }
         }
     }

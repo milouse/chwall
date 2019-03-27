@@ -1,6 +1,13 @@
 import re
 import requests
 
+import gettext
+# Uncomment the following line during development.
+# Please, be cautious to NOT commit the following line uncommented.
+# gettext.bindtextdomain("chwall", "./locale")
+gettext.textdomain("chwall")
+_ = gettext.gettext
+
 
 def fetch_pictures(config):
     if "bing" in config and "locales" in config["bing"] and \
@@ -37,7 +44,8 @@ def preferences():
         "options": {
             "locales": {
                 "widget": "list",
-                "default": ["en-US", "fr-FR"]
+                "default": ["en-US", "fr-FR"],
+                "label": _("Locales")
             }
         }
     }

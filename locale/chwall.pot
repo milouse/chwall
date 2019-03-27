@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chwall 0.4.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-26 13:51+0100\n"
+"POT-Creation-Date: 2019-03-27 19:42+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -115,12 +115,12 @@ msgstr ""
 msgid "General"
 msgstr ""
 
-#: chwall/gui/preferences.py:113
+#: chwall/gui/preferences.py:119
 msgid "Pictures sources"
 msgstr ""
 
-#: chwall/gui/preferences.py:236 chwall/gui/preferences.py:243
-#: chwall/gui/preferences.py:250 chwall/gui/preferences.py:251
+#: chwall/gui/preferences.py:246 chwall/gui/preferences.py:253
+#: chwall/gui/preferences.py:260 chwall/gui/preferences.py:261
 msgid "New"
 msgstr ""
 
@@ -176,4 +176,41 @@ msgstr ""
 #: chwall/client.py:107
 #, python-brace-format
 msgid "{progname} seems not to be running"
+msgstr ""
+
+#: chwall/fetcher/bing.py:48
+msgid "Locales"
+msgstr ""
+
+#: chwall/fetcher/deviantart.py:46 chwall/fetcher/unsplash.py:82
+msgid "Collections"
+msgstr ""
+
+#: chwall/fetcher/local.py:34
+msgid "Local files"
+msgstr ""
+
+#: chwall/fetcher/local.py:38
+msgid "Wallpaper repositories"
+msgstr ""
+
+#: chwall/fetcher/nasa.py:41
+msgid "NASA Picture Of The Day"
+msgstr ""
+
+#: chwall/fetcher/nasa.py:46 chwall/fetcher/unsplash.py:70
+msgid "Number of item to retrieve"
+msgstr ""
+
+#: chwall/fetcher/natgeo.py:50 chwall/fetcher/powder.py:51
+#: chwall/fetcher/unsplash.py:65
+msgid "Wallpaper width"
+msgstr ""
+
+#: chwall/fetcher/unsplash.py:74
+msgid "API access_key"
+msgstr ""
+
+#: chwall/fetcher/unsplash.py:78
+msgid "Complementary query"
 msgstr ""

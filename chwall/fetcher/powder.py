@@ -1,6 +1,13 @@
 import requests
 from lxml import html
 
+import gettext
+# Uncomment the following line during development.
+# Please, be cautious to NOT commit the following line uncommented.
+# gettext.bindtextdomain("chwall", "./locale")
+gettext.textdomain("chwall")
+_ = gettext.gettext
+
 
 def fetch_pictures(config):
     collecs = {}
@@ -41,6 +48,7 @@ def preferences():
                 "widget": "select",
                 "values": [320, 640, 970, 1920],
                 "default": 1920,
+                "label": _("Wallpaper width")
             }
         }
     }
