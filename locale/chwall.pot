@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Chwall 0.3\n"
+"Project-Id-Version: Chwall 0.4.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-23 19:46+0100\n"
+"POT-Creation-Date: 2019-03-27 19:42+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,53 +17,33 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: chwall/gui/shared.py:51
+#: chwall/gui/shared.py:52
 msgid "Start daemon"
 msgstr ""
 
-#: chwall/gui/shared.py:64
+#: chwall/gui/shared.py:65
 msgid "Cleanup broken entries in cache"
 msgstr ""
 
-#: chwall/gui/shared.py:79
+#: chwall/gui/shared.py:80
 #, python-brace-format
 msgid "{number} broken cache entry has been removed"
 msgstr ""
 
-#: chwall/gui/shared.py:81
+#: chwall/gui/shared.py:82
 #, python-brace-format
 msgid "{number} broken cache entries have been removed"
 msgstr ""
 
-#: chwall/gui/shared.py:85
+#: chwall/gui/shared.py:86
 msgid "Cache cleanup"
 msgstr ""
 
-#: chwall/gui/shared.py:105 chwall/gui/app.py:43 chwall/gui/app.py:128
-msgid "Preferences"
-msgstr ""
-
-#: chwall/gui/shared.py:116
-msgid "Display notification when wallpaper changes"
-msgstr ""
-
-#: chwall/gui/shared.py:125
-msgid "Time between each wallpaper change"
-msgstr ""
-
-#: chwall/gui/shared.py:138
-msgid "Desktop environment"
-msgstr ""
-
-#: chwall/gui/shared.py:143
-msgid "Use Nitrogen application"
-msgstr ""
-
-#: chwall/gui/shared.py:163 chwall/gui/icon.py:125 chwall/gui/app.py:155
+#: chwall/gui/shared.py:103 chwall/gui/icon.py:125 chwall/gui/app.py:155
 msgid "Wallpaper Changer"
 msgstr ""
 
-#: chwall/gui/shared.py:165
+#: chwall/gui/shared.py:105
 msgid "Chwall is released under the WTFPL"
 msgstr ""
 
@@ -95,12 +75,53 @@ msgstr ""
 msgid "About"
 msgstr ""
 
+#: chwall/gui/app.py:43 chwall/gui/app.py:128 chwall/gui/preferences.py:22
+msgid "Preferences"
+msgstr ""
+
 #: chwall/gui/app.py:124
 msgid "Display notification icon"
 msgstr ""
 
 #: chwall/gui/app.py:159
 msgid "Main window of the Chwall wallpaper changer"
+msgstr ""
+
+#: chwall/gui/preferences.py:34
+msgid "Display notification when wallpaper changes"
+msgstr ""
+
+#: chwall/gui/preferences.py:39
+msgid "Time between each wallpaper change"
+msgstr ""
+
+#: chwall/gui/preferences.py:44
+msgid "Use Nitrogen application"
+msgstr ""
+
+#: chwall/gui/preferences.py:46
+msgid "Desktop environment"
+msgstr ""
+
+#: chwall/gui/preferences.py:51
+msgid "LightDM shared background path"
+msgstr ""
+
+#: chwall/gui/preferences.py:53
+msgid "Select a file"
+msgstr ""
+
+#: chwall/gui/preferences.py:66
+msgid "General"
+msgstr ""
+
+#: chwall/gui/preferences.py:119
+msgid "Pictures sources"
+msgstr ""
+
+#: chwall/gui/preferences.py:246 chwall/gui/preferences.py:253
+#: chwall/gui/preferences.py:260 chwall/gui/preferences.py:261
+msgid "New"
 msgstr ""
 
 #: chwall/daemon.py:70
@@ -155,4 +176,41 @@ msgstr ""
 #: chwall/client.py:107
 #, python-brace-format
 msgid "{progname} seems not to be running"
+msgstr ""
+
+#: chwall/fetcher/bing.py:48
+msgid "Locales"
+msgstr ""
+
+#: chwall/fetcher/deviantart.py:46 chwall/fetcher/unsplash.py:82
+msgid "Collections"
+msgstr ""
+
+#: chwall/fetcher/local.py:34
+msgid "Local files"
+msgstr ""
+
+#: chwall/fetcher/local.py:38
+msgid "Wallpaper repositories"
+msgstr ""
+
+#: chwall/fetcher/nasa.py:41
+msgid "NASA Picture Of The Day"
+msgstr ""
+
+#: chwall/fetcher/nasa.py:46 chwall/fetcher/unsplash.py:70
+msgid "Number of item to retrieve"
+msgstr ""
+
+#: chwall/fetcher/natgeo.py:50 chwall/fetcher/powder.py:51
+#: chwall/fetcher/unsplash.py:65
+msgid "Wallpaper width"
+msgstr ""
+
+#: chwall/fetcher/unsplash.py:74
+msgid "API access_key"
+msgstr ""
+
+#: chwall/fetcher/unsplash.py:78
+msgid "Complementary query"
 msgstr ""

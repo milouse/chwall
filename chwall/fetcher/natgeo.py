@@ -1,6 +1,13 @@
 import requests
 from datetime import date
 
+import gettext
+# Uncomment the following line during development.
+# Please, be cautious to NOT commit the following line uncommented.
+# gettext.bindtextdomain("chwall", "./locale")
+gettext.textdomain("chwall")
+_ = gettext.gettext
+
 
 def fetch_pictures(config):
     collecs = {}
@@ -29,3 +36,18 @@ def fetch_pictures(config):
             "type": "natgeo"
         }
     return collecs
+
+
+def preferences():
+    return {
+        "name": "National Geographic",
+        "options": {
+            "width": {
+                "type": "int",
+                "widget": "select",
+                "values": [240, 320, 500, 640, 800, 1024, 1600, 2048],
+                "default": 1600,
+                "label": _("Wallpaper width")
+            }
+        }
+    }

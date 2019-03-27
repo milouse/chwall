@@ -96,7 +96,7 @@ def daemon_info(config):
     if last_change != -1:
         daemon_state = "started"
         daemon_state_label = _("Daemon started")
-        sleep_time = config['general']['sleep']
+        sleep_time = config["general"]["sleep"]
         next_change = sleep_time - last_change
         change_labels = daemon_change_label(last_change, next_change)
 
@@ -164,7 +164,7 @@ def show_notification():
 
 def daemon_step():
     config = read_config()
-    wait_before_change(config['general']['sleep'])
+    wait_before_change(config["general"]["sleep"])
     # Config may have change during sleep
     config = read_config()
     try:

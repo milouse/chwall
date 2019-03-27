@@ -2,13 +2,22 @@ import requests
 from lxml import html
 from xml.etree import ElementTree
 
+import gettext
+# Uncomment the following line during development.
+# Please, be cautious to NOT commit the following line uncommented.
+# gettext.bindtextdomain("chwall", "./locale")
+gettext.textdomain("chwall")
+_ = gettext.gettext
+
 
 def fetch_pictures(config):
+    if "deviantart" not in config:
+        return {}
+    if "collections" not in config["deviantart"]:
+        return {}
     collecs = {}
     url = "https://backend.deviantart.com/rss.xml?type=deviation&q={}"
-    if "deviantart" not in config or len(config["deviantart"]) == 0:
-        return {}
-    for q in config["deviantart"]:
+    for q in config["deviantart"]["collections"]:
         data = ElementTree.fromstring(requests.get(url.format(q)).text)
         for item in data[0].findall("item"):
             title = item.find("title").text
@@ -26,3 +35,15 @@ def fetch_pictures(config):
                 "copyright": "{} by {}".format(title, author)
             }
     return collecs
+
+
+def preferences():
+    return {
+        "name": "Deviantart",
+        "options": {
+            "collections": {
+                "widget": "list",
+                "label": _("Collections")
+            }
+        }
+    }

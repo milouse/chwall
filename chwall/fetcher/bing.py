@@ -1,16 +1,25 @@
 import re
 import requests
 
+import gettext
+# Uncomment the following line during development.
+# Please, be cautious to NOT commit the following line uncommented.
+# gettext.bindtextdomain("chwall", "./locale")
+gettext.textdomain("chwall")
+_ = gettext.gettext
+
 
 def fetch_pictures(config):
+    if "bing" in config and "locales" in config["bing"] and \
+       len(config["bing"]["locales"]) > 0:
+        i18n_src = config["bing"]
+    else:
+        i18n_src = ["en-US", "fr-FR"]
+    print(i18n_src)
     collecs = {}
     already_done = []
     url = "https://www.bing.com/HPImageArchive.aspx?format=js&idx=0" \
           "&n=10&mkt={}"
-    if "bing" in config:
-        i18n_src = config["bing"]
-    else:
-        i18n_src = ['en-US', 'fr-FR']
     for l in i18n_src:
         lu = "{}[0-9]{{10}}".format(l.upper())
         data = requests.get(url.format(l)).json()
@@ -27,3 +36,16 @@ def fetch_pictures(config):
                 "type": "bing"
             }
     return collecs
+
+
+def preferences():
+    return {
+        "name": "Bing",
+        "options": {
+            "locales": {
+                "widget": "list",
+                "default": ["en-US", "fr-FR"],
+                "label": _("Locales")
+            }
+        }
+    }

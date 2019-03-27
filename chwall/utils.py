@@ -32,7 +32,7 @@ def get_wall_config(path):
                                    check=True, stdout=subprocess.PIPE)
     except subprocess.CalledProcessError:
         return None
-    size = size_data.stdout.decode().split('x')
+    size = size_data.stdout.decode().split("x")
     try:
         width = int(size[0])
         height = int(size[1])
@@ -41,6 +41,20 @@ def get_wall_config(path):
     except ValueError:
         return None
     return size_t
+
+
+def is_list(obj):
+    return type(obj).__name__ == "list"
+
+
+def migrate_config(config):
+    if "local" in config and is_list(config["local"]):
+        config["local"] = {"pathes": config["local"]}
+    if "bing" in config and is_list(config["bing"]):
+        config["bing"] = {"locales": config["bing"]}
+    if "deviantart" in config and is_list(config["deviantart"]):
+        config["deviantart"] = {"collections": config["deviantart"]}
+    return config
 
 
 def read_config():
@@ -61,7 +75,7 @@ def read_config():
         config["general"]["sleep"] = 10 * 60
     if "notify" not in config["general"]:
         config["general"]["notify"] = False
-    return config
+    return migrate_config(config)
 
 
 def write_config(config):

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chwall 0.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-23 19:46+0100\n"
-"PO-Revision-Date: 2019-03-20 19:35+0100\n"
+"POT-Creation-Date: 2019-03-27 19:42+0100\n"
+"PO-Revision-Date: 2019-03-27 19:42+0100\n"
 "Last-Translator: Étienne Deparis <etienne@depar.is>\n"
 "Language-Team: none\n"
 "Language: fr\n"
@@ -18,53 +18,33 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 2.2.1\n"
 
-#: chwall/gui/shared.py:51
+#: chwall/gui/shared.py:52
 msgid "Start daemon"
 msgstr "Démarrer le service"
 
-#: chwall/gui/shared.py:64
+#: chwall/gui/shared.py:65
 msgid "Cleanup broken entries in cache"
 msgstr "Nettoyer les entrées cassées du cache"
 
-#: chwall/gui/shared.py:79
+#: chwall/gui/shared.py:80
 #, python-brace-format
 msgid "{number} broken cache entry has been removed"
 msgstr "{number} entrée cassée du cache a été supprimée"
 
-#: chwall/gui/shared.py:81
+#: chwall/gui/shared.py:82
 #, python-brace-format
 msgid "{number} broken cache entries have been removed"
 msgstr "{number} entrées cassées du cache ont été supprimées"
 
-#: chwall/gui/shared.py:85
+#: chwall/gui/shared.py:86
 msgid "Cache cleanup"
 msgstr "Nettoyage du cache"
 
-#: chwall/gui/shared.py:105 chwall/gui/app.py:43 chwall/gui/app.py:128
-msgid "Preferences"
-msgstr "Préférences"
-
-#: chwall/gui/shared.py:116
-msgid "Display notification when wallpaper changes"
-msgstr "Montrer une notification lorsque le papier-peint est changé"
-
-#: chwall/gui/shared.py:125
-msgid "Time between each wallpaper change"
-msgstr "Délai entre chaque changement de papier-peint"
-
-#: chwall/gui/shared.py:138
-msgid "Desktop environment"
-msgstr "Environnement de bureau"
-
-#: chwall/gui/shared.py:143
-msgid "Use Nitrogen application"
-msgstr "Utiliser l'application Nitrogen"
-
-#: chwall/gui/shared.py:163 chwall/gui/icon.py:125 chwall/gui/app.py:155
+#: chwall/gui/shared.py:103 chwall/gui/icon.py:125 chwall/gui/app.py:155
 msgid "Wallpaper Changer"
 msgstr "Changeur de papier-peint"
 
-#: chwall/gui/shared.py:165
+#: chwall/gui/shared.py:105
 msgid "Chwall is released under the WTFPL"
 msgstr "Chwall est publié selon les termes de la WTFPL"
 
@@ -96,6 +76,10 @@ msgstr "Signaler un bogue"
 msgid "About"
 msgstr "À propos"
 
+#: chwall/gui/app.py:43 chwall/gui/app.py:128 chwall/gui/preferences.py:22
+msgid "Preferences"
+msgstr "Préférences"
+
 #: chwall/gui/app.py:124
 msgid "Display notification icon"
 msgstr "Afficher une icône dans la zone de notification"
@@ -103,6 +87,43 @@ msgstr "Afficher une icône dans la zone de notification"
 #: chwall/gui/app.py:159
 msgid "Main window of the Chwall wallpaper changer"
 msgstr "Fenêtre principale du changeur de papier-peint Chwall"
+
+#: chwall/gui/preferences.py:34
+msgid "Display notification when wallpaper changes"
+msgstr "Montrer une notification lorsque le papier-peint est changé"
+
+#: chwall/gui/preferences.py:39
+msgid "Time between each wallpaper change"
+msgstr "Délai entre chaque changement de papier-peint"
+
+#: chwall/gui/preferences.py:44
+msgid "Use Nitrogen application"
+msgstr "Utiliser l'application Nitrogen"
+
+#: chwall/gui/preferences.py:46
+msgid "Desktop environment"
+msgstr "Environnement de bureau"
+
+#: chwall/gui/preferences.py:51
+msgid "LightDM shared background path"
+msgstr "Chemin vers le papier-peint partagé avec LightDM"
+
+#: chwall/gui/preferences.py:53
+msgid "Select a file"
+msgstr "Sélectionner un fichier"
+
+#: chwall/gui/preferences.py:66
+msgid "General"
+msgstr "Général"
+
+#: chwall/gui/preferences.py:119
+msgid "Pictures sources"
+msgstr "Sources des images"
+
+#: chwall/gui/preferences.py:246 chwall/gui/preferences.py:253
+#: chwall/gui/preferences.py:260 chwall/gui/preferences.py:261
+msgid "New"
+msgstr "Nouveau"
 
 #: chwall/daemon.py:70
 #, python-brace-format
@@ -159,6 +180,43 @@ msgstr ""
 #, python-brace-format
 msgid "{progname} seems not to be running"
 msgstr "{progname} ne semble pas lancé"
+
+#: chwall/fetcher/bing.py:48
+msgid "Locales"
+msgstr "Langues"
+
+#: chwall/fetcher/deviantart.py:46 chwall/fetcher/unsplash.py:82
+msgid "Collections"
+msgstr "Collections"
+
+#: chwall/fetcher/local.py:34
+msgid "Local files"
+msgstr "Fichiers locaux"
+
+#: chwall/fetcher/local.py:38
+msgid "Wallpaper repositories"
+msgstr "Dossiers de papiers-peints"
+
+#: chwall/fetcher/nasa.py:41
+msgid "NASA Picture Of The Day"
+msgstr "Images du jour de la NASA"
+
+#: chwall/fetcher/nasa.py:46 chwall/fetcher/unsplash.py:70
+msgid "Number of item to retrieve"
+msgstr "Nombre d'élément à récupérer"
+
+#: chwall/fetcher/natgeo.py:50 chwall/fetcher/powder.py:51
+#: chwall/fetcher/unsplash.py:65
+msgid "Wallpaper width"
+msgstr "Largeur du papier-peint"
+
+#: chwall/fetcher/unsplash.py:74
+msgid "API access_key"
+msgstr "Clé d'accès API (access_key)"
+
+#: chwall/fetcher/unsplash.py:78
+msgid "Complementary query"
+msgstr "Requête complémentaire"
 
 #~ msgid "Chwall"
 #~ msgstr "Chwall"

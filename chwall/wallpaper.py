@@ -7,6 +7,7 @@ import shutil
 import hashlib
 import requests
 import subprocess
+from importlib import import_module
 
 # chwall imports
 from chwall.utils import BASE_CACHE_PATH, get_screen_config, get_wall_config
@@ -25,9 +26,8 @@ def build_wallpapers_list(config):
     for module_name in config["general"]["sources"]:
         try_again = 5
         ll = {}
-        m = __import__(
-            "chwall.fetcher.{}".format(module_name),
-            globals(), locals(), ['fetch_pictures'], 0)
+        m = import_module("chwall.fetcher.{}".format(module_name))
+
         while try_again > 0:
             try:
                 ll = m.fetch_pictures(config)
@@ -102,7 +102,7 @@ def set_gnome_wallpaper(path):
     if path is None:
         raise ChwallWallpaperSetError("No wallpaper path given")
     err = subprocess.run(["gsettings", "set", "org.gnome.desktop.background",
-                         "picture-uri", 'file://{}'.format(path)]).returncode
+                         "picture-uri", "file://{}".format(path)]).returncode
     if err == 1:
         raise ChwallWallpaperSetError(
             "Error while setting gnome picture-uri property")

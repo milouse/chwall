@@ -77,31 +77,34 @@ general:
 
 In order to display wallpaper from your own local collection, just add
 the top level key =local= to the =chwall.yml= file. This variable must
-contains an array containing folder path. you can use =*= or =**= as
-placeholder. See [[https://docs.python.org/3/library/glob.html#glob.glob][python glob documentation]] to know more how to write
-your folder pathes.
+contains an option named =pathes=, which must contain an array listing
+folder path. you can use =*= or =**= as placeholder. See [[https://docs.python.org/3/library/glob.html#glob.glob][python glob
+documentation]] to know more how to write your folder pathes.
 
 #+begin_src yaml
 ---
 local:
-  - ~/Pictures/mywall/*
-  - /usr/share/wallpapers/**
+  pathes:
+    - ~/Pictures/mywall/*
+    - /usr/share/wallpapers/**
 #+end_src
 
 ** Set the Bing region to fetch picture from
 
-Add the top level key =bing= to your =chwall.yml= file as a list of
-regional setting. See the [[https://www.bing.com/account/general?#region-section][appropriate Bing page]] to know more about the
-available regions. If you add more than one region (at least one is
-required!), duplicate pictures won't be add to the pending list.
+Add the top level key =bing= to your =chwall.yml= file, containing an
+option named =locales=, which must list locale names. See the
+[[https://www.bing.com/account/general?#region-section][appropriate Bing page]] to know more about the available regions. If you
+add more than one locale (at least one is required!), duplicate pictures
+won't be add to the pending list.
 
 #+begin_src yaml
 ---
 bing:
-  - fr-FR
-  - en-US
-  - de-DE
-  - ja-JP
+  locales:
+    - fr-FR
+    - en-US
+    - de-DE
+    - ja-JP
 #+end_src
 
 ** Set the picture resolution for National Geographic
@@ -165,14 +168,16 @@ unsplash:
 Deviantart RSS feeds follow the same URL pattern:
 https://backend.deviantart.com/rss.xml?q=[REQUEST]&type=deviation
 
-All you have to do is to add a the top level key =deviantart= to your
-=chwall.yml= file, containing a list of =[REQUEST]=.
+All you have to do is to add the top level key =deviantart= to your
+=chwall.yml= file, containing an option named =collections=, which must
+list =[REQUEST]= items.
 
 #+begin_src yaml
 ---
 deviantart:
-  - in%3Acustomization%2Fwallpaper+1440x900
-  - gallery%3Amattahan%2F59801
+  collections:
+    - in%3Acustomization%2Fwallpaper+1440x900
+    - gallery%3Amattahan%2F59801
 #+end_src
 
 

@@ -1,11 +1,12 @@
 import subprocess
 
 from chwall.daemon import notify_daemon_if_any, notify_app_if_any, daemon_info
-from chwall.utils import VERSION, read_config, write_config, cleanup_cache
+from chwall.utils import VERSION, read_config, cleanup_cache
 from chwall.wallpaper import blacklist_wallpaper, pick_wallpaper
+from chwall.gui.preferences import PrefDialog
 
 import gi
-gi.require_version('Gtk', '3.0')  # noqa: E402
+gi.require_version("Gtk", "3.0")  # noqa: E402
 from gi.repository import Gtk
 
 import gettext
@@ -88,84 +89,8 @@ class ChwallGui:
         dialog.run()
         dialog.destroy()
 
-    def toggle_show_notifications(self, widget, state):
-        self.config["general"]["notify"] = state
-        write_config(self.config)
-
-    def update_sleep_time(self, widget):
-        self.config["general"]["sleep"] = widget.get_value_as_int() * 60
-        write_config(self.config)
-
-    def update_desktop_env(self, widget):
-        self.config["general"]["desktop"] = widget.get_active_id()
-        write_config(self.config)
-
-    def update_lightdm_wall(self, widget):
-        self.config["general"]["desktop"] = widget.get_filename()
-        write_config(self.config)
-
     def show_preferences_dialog(self, widget):
-        prefwin = Gtk.Dialog(
-            _("Preferences"), self.app, self.get_flags_if_app(),
-            (Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE))
-        prefwin.set_icon_name("stock-preferences")
-
-        box = prefwin.get_content_area()
-        box.set_spacing(10)
-
-        prefbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        show_notifications = False
-        if "notify" in self.config["general"]:
-            show_notifications = self.config["general"]["notify"]
-        label = Gtk.Label(_("Display notification when wallpaper changes"))
-        prefbox.pack_start(label, False, False, 5)
-        button = Gtk.Switch()
-        button.set_active(show_notifications)
-        button.connect("state-set", self.toggle_show_notifications)
-        prefbox.pack_end(button, False, False, 5)
-        box.pack_start(prefbox, True, True, 0)
-
-        prefbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        label = Gtk.Label(_("Time between each wallpaper change"))
-        prefbox.pack_start(label, False, False, 5)
-        sleep_time = int(self.config["general"]["sleep"] / 60)
-        adj = Gtk.Adjustment(sleep_time, 5, 120, 1, 10, 0)
-        button = Gtk.SpinButton()
-        button.set_adjustment(adj)
-        button.set_numeric(True)
-        button.set_update_policy(Gtk.SpinButtonUpdatePolicy.IF_VALID)
-        button.connect("value-changed", self.update_sleep_time)
-        prefbox.pack_end(button, False, False, 5)
-        box.pack_start(prefbox, True, True, 0)
-
-        prefbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        label = Gtk.Label(_("Desktop environment"))
-        prefbox.pack_start(label, False, False, 5)
-        button = Gtk.ComboBoxText()
-        button.append("gnome", "Gnome, Budgie, …")
-        button.append("mate", "Mate")
-        button.append("nitrogen", _("Use Nitrogen application"))
-        if "desktop" in self.config["general"]:
-            desktop = self.config["general"]["desktop"]
-        else:
-            desktop = "gnome"
-        button.set_active_id(desktop)
-        button.connect("changed", self.update_desktop_env)
-        prefbox.pack_end(button, False, False, 5)
-        box.pack_start(prefbox, True, True, 0)
-
-        prefbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        label = Gtk.Label(_("LightDM shared background path"))
-        prefbox.pack_start(label, False, False, 5)
-        button = Gtk.FileChooserButton.new(_("Select a file"),
-                                           Gtk.FileChooserAction.OPEN)
-        if "lightdm_wall" in self.config["general"]:
-            button.set_filename(self.config["general"]["lightdm_wall"])
-        button.connect("file-set", self.update_lightdm_wall)
-        prefbox.pack_end(button, False, False, 5)
-        box.pack_start(prefbox, True, True, 0)
-
-        prefwin.show_all()
+        prefwin = PrefDialog(self.app, self.get_flags_if_app(), self.config)
         prefwin.run()
         prefwin.destroy()
 

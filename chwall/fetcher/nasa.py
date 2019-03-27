@@ -2,11 +2,21 @@ import re
 import time
 import requests
 
+import gettext
+# Uncomment the following line during development.
+# Please, be cautious to NOT commit the following line uncommented.
+# gettext.bindtextdomain("chwall", "./locale")
+gettext.textdomain("chwall")
+_ = gettext.gettext
+
 
 def fetch_pictures(config):
     collecs = {}
+    nb_pic = 10
+    if "nasa" in config and "count" in config["nasa"]:
+        nb_pic = config["nasa"]["count"]
     curday = time.time()
-    for i in range(10):
+    for i in range(nb_pic):
         pic_page = "https://apod.nasa.gov/apod/ap{}.html".format(
             time.strftime("%y%m%d", time.localtime(curday)))
         # Go to yesterday
@@ -24,3 +34,16 @@ def fetch_pictures(config):
             "copyright": "NASA Astronomy Picture of the Day"
         }
     return collecs
+
+
+def preferences():
+    return {
+        "name": _("NASA Picture Of The Day"),
+        "options": {
+            "count": {
+                "widget": "number",
+                "default": 10,
+                "label": _("Number of item to retrieve")
+            }
+        }
+    }
