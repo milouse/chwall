@@ -255,7 +255,10 @@ class PrefDialog(Gtk.Dialog):
                 liststore[storepath][0] = text
             vals = []
             liststore.foreach(update_pref_list, vals)
-            self.config[path][opt] = vals
+            if len(vals) == 0:
+                del self.config[path][opt]
+            else:
+                self.config[path][opt] = vals
             write_config(self.config)
 
         renderer_text.connect("edited", on_cell_edited)
