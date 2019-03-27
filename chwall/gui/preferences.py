@@ -88,22 +88,23 @@ class PrefDialog(Gtk.Dialog):
                     continue
                 options = fprefs["options"][opt]
                 prefbox = None
+                label = opt.capitalize()
                 if options["widget"] == "select":
                     values = []
                     for v in options["values"]:
                         values.append((str(v), str(v)))
                     prefbox = self.make_select_pref(
-                        fd.name, opt, opt, values, None,
+                        fd.name, opt, label, values, None,
                         options["type"])
                 elif options["widget"] == "text":
-                    prefbox = self.make_text_pref(fd.name, opt, opt)
+                    prefbox = self.make_text_pref(fd.name, opt, label)
                 elif options["widget"] == "number":
-                    prefbox = self.make_number_pref(fd.name, opt, opt)
+                    prefbox = self.make_number_pref(fd.name, opt, label)
                 elif options["widget"] == "list":
                     values = []
                     if "default" in options:
                         values = options["default"]
-                    prefbox = self.make_list_pref(fd.name, opt, opt, values)
+                    prefbox = self.make_list_pref(fd.name, opt, label, values)
                 if prefbox is not None:
                     picbox.pack_start(prefbox, True, True, 0)
             sep = Gtk.Separator.new(Gtk.Orientation.HORIZONTAL)
