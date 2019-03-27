@@ -37,7 +37,7 @@ def preferences():
         "options": {
             "locales": {
                 "widget": "list",
-                "values": ["en-US", "fr-FR"]
+                "default": ["en-US", "fr-FR"]
             }
         }
     }

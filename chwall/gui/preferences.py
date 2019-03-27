@@ -98,8 +98,8 @@ class PrefDialog(Gtk.Dialog):
                     prefbox = self.make_number_pref(fd.name, opt, opt)
                 elif fprefs["options"][opt]["widget"] == "list":
                     values = []
-                    if "values" in fprefs["options"][opt]:
-                        values = fprefs["options"][opt]["values"]
+                    if "default" in fprefs["options"][opt]:
+                        values = fprefs["options"][opt]["default"]
                     prefbox = self.make_list_pref(fd.name, opt, opt, values)
                 if prefbox is not None:
                     picbox.pack_start(prefbox, True, True, 0)
