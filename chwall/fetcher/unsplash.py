@@ -40,7 +40,7 @@ def fetch_pictures(config):
     for p in data:
         px = p["urls"]["custom"]
         if p["description"] is None:
-            label = "Picture"
+            label = _("Picture")
         else:
             label = p["description"]
         label = (_("{title} by {author} (on {source})")

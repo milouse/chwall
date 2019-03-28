@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chwall 0.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-28 13:24+0100\n"
-"PO-Revision-Date: 2019-03-28 13:24+0100\n"
+"POT-Creation-Date: 2019-03-28 13:31+0100\n"
+"PO-Revision-Date: 2019-03-28 13:32+0100\n"
 "Last-Translator: Étienne Deparis <etienne@depar.is>\n"
 "Language-Team: none\n"
 "Language: fr\n"
@@ -201,12 +201,12 @@ msgstr ""
 msgid "{progname} seems not to be running"
 msgstr "{progname} ne semble pas lancé"
 
-#: chwall/fetcher/bing.py:34
+#: chwall/fetcher/bing.py:33
 #, python-brace-format
 msgid "{title} (on {source})"
 msgstr "{title} (sur {source})"
 
-#: chwall/fetcher/bing.py:49
+#: chwall/fetcher/bing.py:48
 msgid "Locales"
 msgstr "Langues"
 
@@ -244,6 +244,10 @@ msgstr "Nombre d'élément à récupérer"
 #: chwall/fetcher/unsplash.py:68
 msgid "Wallpaper width"
 msgstr "Largeur du papier-peint"
+
+#: chwall/fetcher/powder.py:38 chwall/fetcher/unsplash.py:43
+msgid "Picture"
+msgstr "Image"
 
 #: chwall/fetcher/unsplash.py:50
 #, python-brace-format

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chwall 0.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-28 13:24+0100\n"
+"POT-Creation-Date: 2019-03-28 13:31+0100\n"
 "PO-Revision-Date: 2019-03-23 18:22+0000\n"
 "Last-Translator: haitch <vruztablet@gmail.com>\n"
 "Language-Team: Spanish <https://translations.umaneti.net/projects/chwall/"
@@ -200,12 +200,12 @@ msgstr "No se puede seleccionar un fondo en este momento. Inténtalo de nuevo."
 msgid "{progname} seems not to be running"
 msgstr "{progname} no parece estar siendo ejecutado"
 
-#: chwall/fetcher/bing.py:34
+#: chwall/fetcher/bing.py:33
 #, python-brace-format
 msgid "{title} (on {source})"
 msgstr ""
 
-#: chwall/fetcher/bing.py:49
+#: chwall/fetcher/bing.py:48
 msgid "Locales"
 msgstr ""
 
@@ -242,6 +242,10 @@ msgstr ""
 #: chwall/fetcher/natgeo.py:53 chwall/fetcher/powder.py:53
 #: chwall/fetcher/unsplash.py:68
 msgid "Wallpaper width"
+msgstr ""
+
+#: chwall/fetcher/powder.py:38 chwall/fetcher/unsplash.py:43
+msgid "Picture"
 msgstr ""
 
 #: chwall/fetcher/unsplash.py:50
