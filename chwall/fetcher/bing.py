@@ -15,7 +15,6 @@ def fetch_pictures(config):
         i18n_src = config["bing"]
     else:
         i18n_src = ["en-US", "fr-FR"]
-    print(i18n_src)
     collecs = {}
     already_done = []
     url = "https://www.bing.com/HPImageArchive.aspx?format=js&idx=0" \
