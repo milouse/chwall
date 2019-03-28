@@ -9,6 +9,7 @@ import subprocess
 from chwall.daemon import notify_daemon_if_any, daemon_info, daemonize
 from chwall.utils import BASE_CACHE_PATH, read_config, systemd_file
 from chwall.wallpaper import blacklist_wallpaper, pick_wallpaper
+from chwall.gui.preferences import PrefDialog
 
 import gettext
 # Uncomment the following line during development.
@@ -19,8 +20,8 @@ _ = gettext.gettext
 
 
 chwall_commands = ["blacklist", "current", "detach", "history", "info",
-                   "next", "once", "pending", "previous", "purge",
-                   "quit", "status", "systemd"]
+                   "next", "once", "options", "pending", "preferences",
+                   "previous", "purge", "quit", "status", "systemd"]
 
 
 def display_wallpaper_info(config):
@@ -63,6 +64,11 @@ def run_client():
     action = sys.argv[1]
     if action == "systemd":
         systemd_file()
+        sys.exit(0)
+    elif action in ["options", "preferences"]:
+        prefwin = PrefDialog(None, 0, config)
+        prefwin.run()
+        prefwin.destroy()
         sys.exit(0)
     elif action == "detach":
         if len(sys.argv) < 3:
