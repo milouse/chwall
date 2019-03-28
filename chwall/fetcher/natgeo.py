@@ -24,11 +24,14 @@ def fetch_pictures(config):
         if p["url"] == "https://yourshot.nationalgeographic.com":
             px = p["sizes"]["%d" % width]
             purl = p["full-path-url"]
-            pcredit = "{} by {}".format(p["altText"], p["credit"])
+            pcredit = (_("{title} by {author} (on {source})")
+                       .format(title=p["altText"], author=p["credit"],
+                               source="National Geographic"))
         else:
             px = p["url"]
             purl = p["pageUrl"]
-            pcredit = "{}. {}".format(p["altText"], p["credit"])
+            pcredit = ("{}. {} (on National Geographic)"
+                       .format(p["altText"], p["credit"]))
         collecs[px] = {
             "image": px,
             "copyright": pcredit,

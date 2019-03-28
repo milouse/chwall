@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chwall 0.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-27 20:28+0100\n"
-"PO-Revision-Date: 2019-03-27 20:32+0100\n"
+"POT-Creation-Date: 2019-03-28 09:17+0100\n"
+"PO-Revision-Date: 2019-03-28 09:16+0100\n"
 "Last-Translator: Étienne Deparis <etienne@depar.is>\n"
 "Language-Team: none\n"
 "Language: fr\n"
@@ -40,7 +40,7 @@ msgstr "{number} entrées cassées du cache ont été supprimées"
 msgid "Cache cleanup"
 msgstr "Nettoyage du cache"
 
-#: chwall/gui/shared.py:103 chwall/gui/icon.py:125 chwall/gui/app.py:155
+#: chwall/gui/shared.py:103 chwall/gui/icon.py:124 chwall/gui/app.py:155
 msgid "Wallpaper Changer"
 msgstr "Changeur de papier-peint"
 
@@ -48,27 +48,27 @@ msgstr "Changeur de papier-peint"
 msgid "Chwall is released under the WTFPL"
 msgstr "Chwall est publié selon les termes de la WTFPL"
 
-#: chwall/gui/icon.py:49 chwall/gui/app.py:63 chwall/gui/app.py:163
+#: chwall/gui/icon.py:48 chwall/gui/app.py:63 chwall/gui/app.py:163
 msgid "Next wallpaper"
 msgstr "Papier-peint suivant"
 
-#: chwall/gui/icon.py:54 chwall/gui/app.py:57 chwall/gui/app.py:167
+#: chwall/gui/icon.py:53 chwall/gui/app.py:57 chwall/gui/app.py:167
 msgid "Previous wallpaper"
 msgstr "Papier-peint précédent"
 
-#: chwall/gui/icon.py:59 chwall/gui/app.py:74
+#: chwall/gui/icon.py:58 chwall/gui/app.py:74
 msgid "Blacklist"
 msgstr "Mettre en liste noire"
 
-#: chwall/gui/icon.py:69
+#: chwall/gui/icon.py:68
 msgid "Open main window"
 msgstr "Ouvrir la fenêtre principale"
 
-#: chwall/gui/icon.py:74
+#: chwall/gui/icon.py:73
 msgid "Always display this icon"
 msgstr "Toujours afficher cette icône"
 
-#: chwall/gui/icon.py:84
+#: chwall/gui/icon.py:83
 msgid "Report a bug"
 msgstr "Signaler un bogue"
 
@@ -133,8 +133,7 @@ msgstr "Le dernier changement a eu lieu il y a 1 minute et {seconds}s"
 #: chwall/daemon.py:69
 #, python-brace-format
 msgid "Last change was {minutes} minutes and {seconds}s ago"
-msgstr ""
-"Le dernier changement a eu lieu il y a {minutes} minutes et {seconds}s"
+msgstr "Le dernier changement a eu lieu il y a {minutes} minutes et {seconds}s"
 
 #: chwall/daemon.py:72
 #, python-brace-format
@@ -206,9 +205,19 @@ msgstr "{progname} ne semble pas lancé"
 msgid "Locales"
 msgstr "Langues"
 
-#: chwall/fetcher/deviantart.py:46 chwall/fetcher/unsplash.py:82
+#: chwall/fetcher/deviantart.py:35 chwall/fetcher/natgeo.py:27
+#: chwall/fetcher/powder.py:37 chwall/fetcher/unsplash.py:46
+#, python-brace-format
+msgid "{title} by {author} (on {source})"
+msgstr "{title} de {author} (sur {source})"
+
+#: chwall/fetcher/deviantart.py:48 chwall/fetcher/unsplash.py:85
 msgid "Collections"
 msgstr "Collections"
+
+#: chwall/fetcher/local.py:27
+msgid "Local wallpaper"
+msgstr "Papier-peint local"
 
 #: chwall/fetcher/local.py:34
 msgid "Local files"
@@ -218,24 +227,29 @@ msgstr "Fichiers locaux"
 msgid "Wallpaper repositories"
 msgstr "Dossiers de papiers-peints"
 
-#: chwall/fetcher/nasa.py:41
-msgid "NASA Picture Of The Day"
-msgstr "Images du jour de la NASA"
+#: chwall/fetcher/nasa.py:34 chwall/fetcher/nasa.py:41
+msgid "NASA Astronomy Picture Of The Day"
+msgstr "Image astronomique du jour de la NASA"
 
-#: chwall/fetcher/nasa.py:46 chwall/fetcher/unsplash.py:70
+#: chwall/fetcher/nasa.py:46 chwall/fetcher/unsplash.py:73
 msgid "Number of item to retrieve"
 msgstr "Nombre d'élément à récupérer"
 
-#: chwall/fetcher/natgeo.py:50 chwall/fetcher/powder.py:51
-#: chwall/fetcher/unsplash.py:65
+#: chwall/fetcher/natgeo.py:53 chwall/fetcher/powder.py:53
+#: chwall/fetcher/unsplash.py:68
 msgid "Wallpaper width"
 msgstr "Largeur du papier-peint"
 
-#: chwall/fetcher/unsplash.py:74
+#: chwall/fetcher/unsplash.py:50
+#, python-brace-format
+msgid "{desc}, taken in {location}"
+msgstr "{desc}, prise à {location}"
+
+#: chwall/fetcher/unsplash.py:77
 msgid "API access_key"
 msgstr "Clé d'accès API (access_key)"
 
-#: chwall/fetcher/unsplash.py:78
+#: chwall/fetcher/unsplash.py:81
 msgid "Complementary query"
 msgstr "Requête complémentaire"
 

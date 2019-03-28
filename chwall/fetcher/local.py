@@ -24,7 +24,7 @@ def fetch_pictures(config):
                     "image": f,
                     "type": "local",
                     "url": f,
-                    "copyright": "Local wallpaper"
+                    "copyright": _("Local wallpaper")
                 }
     return collecs
 

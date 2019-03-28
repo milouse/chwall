@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chwall 0.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-27 20:28+0100\n"
+"POT-Creation-Date: 2019-03-28 09:17+0100\n"
 "PO-Revision-Date: 2019-03-23 18:22+0000\n"
 "Last-Translator: haitch <vruztablet@gmail.com>\n"
 "Language-Team: Spanish <https://translations.umaneti.net/projects/chwall/"
@@ -41,7 +41,7 @@ msgstr "{number} entradas corruptas en cache han sido eliminadas"
 msgid "Cache cleanup"
 msgstr "Limpiar cache"
 
-#: chwall/gui/shared.py:103 chwall/gui/icon.py:125 chwall/gui/app.py:155
+#: chwall/gui/shared.py:103 chwall/gui/icon.py:124 chwall/gui/app.py:155
 msgid "Wallpaper Changer"
 msgstr "Seleccionador de fondo de pantalla"
 
@@ -49,27 +49,27 @@ msgstr "Seleccionador de fondo de pantalla"
 msgid "Chwall is released under the WTFPL"
 msgstr "Chwall es publicado bajo los términos de la licencia WTFPL"
 
-#: chwall/gui/icon.py:49 chwall/gui/app.py:63 chwall/gui/app.py:163
+#: chwall/gui/icon.py:48 chwall/gui/app.py:63 chwall/gui/app.py:163
 msgid "Next wallpaper"
 msgstr "Próximo fondo"
 
-#: chwall/gui/icon.py:54 chwall/gui/app.py:57 chwall/gui/app.py:167
+#: chwall/gui/icon.py:53 chwall/gui/app.py:57 chwall/gui/app.py:167
 msgid "Previous wallpaper"
 msgstr "Fondo anterior"
 
-#: chwall/gui/icon.py:59 chwall/gui/app.py:74
+#: chwall/gui/icon.py:58 chwall/gui/app.py:74
 msgid "Blacklist"
 msgstr "Poner en lista negra"
 
-#: chwall/gui/icon.py:69
+#: chwall/gui/icon.py:68
 msgid "Open main window"
 msgstr "Abrir ventana principal"
 
-#: chwall/gui/icon.py:74
+#: chwall/gui/icon.py:73
 msgid "Always display this icon"
 msgstr "Mostrar siempre este ícono"
 
-#: chwall/gui/icon.py:84
+#: chwall/gui/icon.py:83
 msgid "Report a bug"
 msgstr "Reportar un bug"
 
@@ -127,14 +127,14 @@ msgid "New"
 msgstr ""
 
 #: chwall/daemon.py:65
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Last change was 1 minute and {seconds}s ago"
-msgstr "El último cambio ocurrió hace {seconds}s"
+msgstr ""
 
 #: chwall/daemon.py:69
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Last change was {minutes} minutes and {seconds}s ago"
-msgstr "El último cambio ocurrió hace {seconds}s"
+msgstr ""
 
 #: chwall/daemon.py:72
 #, python-brace-format
@@ -142,14 +142,14 @@ msgid "Last change was {seconds}s ago"
 msgstr "El último cambio ocurrió hace {seconds}s"
 
 #: chwall/daemon.py:79
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Next change in 1 minute and {seconds}s"
-msgstr "Próximo cambio en {seconds}s"
+msgstr ""
 
 #: chwall/daemon.py:83
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Next change in {minutes} minutes and {seconds}s"
-msgstr "Próximo cambio en {seconds}s"
+msgstr ""
 
 #: chwall/daemon.py:86
 #, python-brace-format
@@ -204,8 +204,18 @@ msgstr "{progname} no parece estar siendo ejecutado"
 msgid "Locales"
 msgstr ""
 
-#: chwall/fetcher/deviantart.py:46 chwall/fetcher/unsplash.py:82
+#: chwall/fetcher/deviantart.py:35 chwall/fetcher/natgeo.py:27
+#: chwall/fetcher/powder.py:37 chwall/fetcher/unsplash.py:46
+#, python-brace-format
+msgid "{title} by {author} (on {source})"
+msgstr ""
+
+#: chwall/fetcher/deviantart.py:48 chwall/fetcher/unsplash.py:85
 msgid "Collections"
+msgstr ""
+
+#: chwall/fetcher/local.py:27
+msgid "Local wallpaper"
 msgstr ""
 
 #: chwall/fetcher/local.py:34
@@ -213,31 +223,31 @@ msgid "Local files"
 msgstr ""
 
 #: chwall/fetcher/local.py:38
-#, fuzzy
 msgid "Wallpaper repositories"
-msgstr "Seleccionador de fondo de pantalla"
-
-#: chwall/fetcher/nasa.py:41
-msgid "NASA Picture Of The Day"
 msgstr ""
 
-#: chwall/fetcher/nasa.py:46 chwall/fetcher/unsplash.py:70
+#: chwall/fetcher/nasa.py:34 chwall/fetcher/nasa.py:41
+msgid "NASA Astronomy Picture Of The Day"
+msgstr ""
+
+#: chwall/fetcher/nasa.py:46 chwall/fetcher/unsplash.py:73
 msgid "Number of item to retrieve"
 msgstr ""
 
-#: chwall/fetcher/natgeo.py:50 chwall/fetcher/powder.py:51
-#: chwall/fetcher/unsplash.py:65
-#, fuzzy
+#: chwall/fetcher/natgeo.py:53 chwall/fetcher/powder.py:53
+#: chwall/fetcher/unsplash.py:68
 msgid "Wallpaper width"
-msgstr "Seleccionador de fondo de pantalla"
+msgstr ""
 
-#: chwall/fetcher/unsplash.py:74
+#: chwall/fetcher/unsplash.py:50
+#, python-brace-format
+msgid "{desc}, taken in {location}"
+msgstr ""
+
+#: chwall/fetcher/unsplash.py:77
 msgid "API access_key"
 msgstr ""
 
-#: chwall/fetcher/unsplash.py:78
+#: chwall/fetcher/unsplash.py:81
 msgid "Complementary query"
 msgstr ""
-
-#~ msgid "Chwall"
-#~ msgstr "Chwall"

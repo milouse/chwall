@@ -34,7 +34,9 @@ def fetch_pictures(config):
             "image": url,
             "type": "powder",
             "url": "https://www.powder.com" + link.attrib["href"],
-            "copyright": "Picture by {}".format(link.attrib["title"])
+            "copyright": (_("{title} by {author} (on {source})")
+                          .format(title="Picture", source="Powder",
+                                  author=link.attrib["title"]))
         }
     return collecs
 

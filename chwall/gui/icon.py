@@ -37,8 +37,7 @@ class ChwallIcon(ChwallGui):
         if wallinfo["type"] == "local":
             curlabel = wallinfo["local-picture-path"]
         else:
-            curlabel = "{copy} ({source})".format(
-                copy=wallinfo["description"], source=wallinfo["type"])
+            curlabel = wallinfo["description"]
         current_wall_info = Gtk.MenuItem.new_with_label(curlabel)
         current_wall_info.connect("activate", self.open_in_context,
                                   wallinfo["remote-uri"])

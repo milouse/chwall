@@ -31,14 +31,14 @@ def fetch_pictures(config):
             "image": url,
             "type": "nasa",
             "url": pic_page,
-            "copyright": "NASA Astronomy Picture of the Day"
+            "copyright": _("NASA Astronomy Picture Of The Day")
         }
     return collecs
 
 
 def preferences():
     return {
-        "name": _("NASA Picture Of The Day"),
+        "name": _("NASA Astronomy Picture Of The Day"),
         "options": {
             "count": {
                 "widget": "number",

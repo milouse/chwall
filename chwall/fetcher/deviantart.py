@@ -32,7 +32,9 @@ def fetch_pictures(config):
                 "image": pic_url,
                 "type": "deviantart",
                 "url": pic_page,
-                "copyright": "{} by {}".format(title, author)
+                "copyright": (_("{title} by {author} (on {source})")
+                              .format(title=title, author=author,
+                                      source="Deviantart"))
             }
     return collecs
 

@@ -43,9 +43,12 @@ def fetch_pictures(config):
             label = "Picture"
         else:
             label = p["description"]
-        label = "{} by {} (on Unsplash)".format(label, p["user"]["name"])
+        label = (_("{title} by {author} (on {source})")
+                 .format(title=label, author=p["user"]["name"],
+                         source="Unsplash"))
         if "location" in p and p["location"]["title"] is not None:
-            label = "{}, taken in {}".format(label, p["location"]["title"])
+            label = (_("{desc}, taken in {location}")
+                     .format(desc=label, location=p["location"]["title"]))
         collecs[px] = {
             "image": px,
             "copyright": label,
