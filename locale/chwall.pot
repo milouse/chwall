@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chwall 0.4.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-28 13:31+0100\n"
+"POT-Creation-Date: 2019-03-28 23:48+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -119,9 +119,12 @@ msgstr ""
 msgid "Pictures sources"
 msgstr ""
 
-#: chwall/gui/preferences.py:249 chwall/gui/preferences.py:256
-#: chwall/gui/preferences.py:263 chwall/gui/preferences.py:264
-msgid "New"
+#: chwall/gui/preferences.py:309
+msgid "Remove"
+msgstr ""
+
+#: chwall/gui/preferences.py:314
+msgid "Add"
 msgstr ""
 
 #: chwall/daemon.py:65
@@ -189,11 +192,11 @@ msgstr ""
 msgid "Start loop"
 msgstr ""
 
-#: chwall/client.py:90
+#: chwall/client.py:96
 msgid "Unable to pick wallpaper this time. Please, try again."
 msgstr ""
 
-#: chwall/client.py:107
+#: chwall/client.py:113
 #, python-brace-format
 msgid "{progname} seems not to be running"
 msgstr ""

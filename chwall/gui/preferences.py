@@ -245,37 +245,76 @@ class PrefDialog(Gtk.Dialog):
             else:
                 for val in defaults:
                     liststore.append([val])
+        if len(liststore) == 0:
+            # Append an empty value to draw column name
+            liststore.append([""])
 
-        liststore.append([_("New")])
+        def save_model_in_config():
+            vals = []
+            for row in liststore:
+                ts = liststore[row.path][0].strip()
+                if ts == "" or ts in vals:
+                    continue
+                vals.append(ts)
+            if len(vals) > 0:
+                self.config[path][opt] = vals
+            elif opt in self.config[path]:
+                del self.config[path][opt]
+            write_config(self.config)
+
+        def on_cell_edited(widget, storepath, text):
+            if text.strip() != "":
+                liststore[storepath][0] = text
+            elif len(liststore) > 1:
+                # We do not remove the last empty child.
+                liststore.remove(liststore.get_iter(storepath))
+            save_model_in_config()
+
+        def on_remove_clicked(_widget):
+            s = treeview.get_selection()
+            if s is None:
+                return
+            model, storepathes = s.get_selected_rows()
+            for p in storepathes:
+                model.remove(model.get_iter(p))
+            save_model_in_config()
+            if len(liststore) > 0:
+                return
+            # Always keep at list one empty value
+            liststore.append([""])
+
+        def on_add_clicked(_widget):
+            if len(liststore) == 1 and liststore[liststore[0].path][0] == "":
+                # We are looking at an empty list, thus we override this first
+                # item.
+                storepath = liststore[0].path
+            else:
+                storepath = liststore.get_path(liststore.append([""]))
+            treeview.set_cursor_on_cell(storepath, column_text,
+                                        renderer_text, True)
+
         treeview = Gtk.TreeView(model=liststore)
         renderer_text = Gtk.CellRendererText()
         renderer_text.set_property("editable", True)
 
-        def update_pref_list(store, storepath, _iter, vals):
-            item = store[storepath][0].strip()
-            if item == _("New"):
-                return False
-            vals.append(item)
-            # Always return False to continue iterating
-            return False
-
-        def on_cell_edited(widget, storepath, text):
-            if liststore[storepath][0] == _("New"):
-                liststore.append([_("New")])
-            if text.strip() == "":
-                liststore.remove(liststore.get_iter(storepath))
-            else:
-                liststore[storepath][0] = text
-            vals = []
-            liststore.foreach(update_pref_list, vals)
-            if len(vals) == 0:
-                del self.config[path][opt]
-            else:
-                self.config[path][opt] = vals
-            write_config(self.config)
-
         renderer_text.connect("edited", on_cell_edited)
         column_text = Gtk.TreeViewColumn(label, renderer_text, text=0)
         treeview.append_column(column_text)
-        prefbox.pack_end(treeview, True, True, 0)
+        listbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        listbox.pack_start(treeview, True, True, 0)
+
+        control_box = Gtk.ActionBar()
+        button = Gtk.Button.new_from_icon_name(
+            "edit_remove", Gtk.IconSize.SMALL_TOOLBAR)
+        button.set_tooltip_text(_("Remove"))
+        button.connect("clicked", on_remove_clicked)
+        control_box.pack_start(button)
+        button = Gtk.Button.new_from_icon_name(
+            "edit_add", Gtk.IconSize.SMALL_TOOLBAR)
+        button.set_tooltip_text(_("Add"))
+        button.connect("clicked", on_add_clicked)
+        control_box.pack_start(button)
+        listbox.pack_end(control_box, False, False, 0)
+
+        prefbox.pack_end(listbox, True, True, 0)
         return prefbox
