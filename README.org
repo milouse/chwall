@@ -7,14 +7,10 @@ It's name is the contraction of /change wallpaper/, which may be
 pronounced as a twisted version of /cheval/, which means /horse/ in
 french.
 
-* Goal
+* Goal and features
 
 Easily change your wallpaper from time to time, benefiting from various
 online sources and your own wallpapers collections.
-
-* Features
-
-** Current
 
 Chwall is currently able to retrieve pictures from the following
 sources:
@@ -180,6 +176,27 @@ deviantart:
     - gallery%3Amattahan%2F59801
 #+end_src
 
+* Contributing
+
+** Translations
+
+#+html: <a href="https://translations.umaneti.net/engage/chwall/?utm_source=widget">
+#+html: <img src="https://translations.umaneti.net/widgets/chwall/-/svg-badge.svg" alt="Translations state" />
+#+html: </a>
+
+Chwall is [[https://translations.umaneti.net/engage/chwall/][being translated using Weblate]], a web tool designed to ease
+translating for both developers and translators.
+
+You can also fetch the gettext files directly from the source code tree
+and send your changes as a pull request (see bellow).
+
+** Code
+
+The canonical repository is located at
+[[https://git.deparis.io/chwall]]. Mirror exists on [[https://framagit.org/milouse/chwall][Framagit]] and on [[https://github.com/milouse/chwall][Github]].
+
+Merge request and issues are accepted on all mirrors or by mail to the
+main author.
 
 * Credits
 
