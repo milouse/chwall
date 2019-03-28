@@ -31,7 +31,8 @@ def fetch_pictures(config):
             px = "https://www.bing.com{}".format(p["url"])
             collecs[px] = {
                 "image": px,
-                "copyright": p["copyright"],
+                "copyright": (_("{title} (on {source})")
+                              .format(title=p["copyright"], source="Bing")),
                 "url": p["copyrightlink"],
                 "type": "bing"
             }
