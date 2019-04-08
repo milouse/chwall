@@ -32,7 +32,7 @@ class ChwallApp(ChwallGui):
         hb.props.title = "Chwall"
 
         button = Gtk.Button.new_from_icon_name(
-            "gtk-about", Gtk.IconSize.BUTTON)
+            "help-about", Gtk.IconSize.BUTTON)
         button.set_tooltip_text(_("About"))
         button.connect("clicked", self.show_about_dialog)
         hb.pack_end(button)
@@ -53,13 +53,13 @@ class ChwallApp(ChwallGui):
         control_box = Gtk.ActionBar()
 
         button = Gtk.Button.new_from_icon_name(
-            "gtk-go-back", Gtk.IconSize.LARGE_TOOLBAR)
+            "go-previous", Gtk.IconSize.LARGE_TOOLBAR)
         button.set_tooltip_text(_("Previous wallpaper"))
         button.connect("clicked", self.on_change_wallpaper, True)
         control_box.pack_start(button)
 
         button = Gtk.Button.new_from_icon_name(
-            "gtk-go-forward", Gtk.IconSize.LARGE_TOOLBAR)
+            "go-next", Gtk.IconSize.LARGE_TOOLBAR)
         button.set_tooltip_text(_("Next wallpaper"))
         button.connect("clicked", self.on_change_wallpaper)
         control_box.pack_start(button)
@@ -70,7 +70,7 @@ class ChwallApp(ChwallGui):
         control_box.set_center_widget(self.walldesc)
 
         button = Gtk.Button.new_from_icon_name(
-            "gtk-delete", Gtk.IconSize.LARGE_TOOLBAR)
+            "edit-delete", Gtk.IconSize.LARGE_TOOLBAR)
         button.set_tooltip_text(_("Blacklist"))
         button.connect("clicked", self.on_blacklist_wallpaper)
         control_box.pack_end(button)

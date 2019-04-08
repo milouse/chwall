@@ -305,12 +305,12 @@ class PrefDialog(Gtk.Dialog):
 
         control_box = Gtk.ActionBar()
         button = Gtk.Button.new_from_icon_name(
-            "edit_remove", Gtk.IconSize.SMALL_TOOLBAR)
+            "list-remove", Gtk.IconSize.SMALL_TOOLBAR)
         button.set_tooltip_text(_("Remove"))
         button.connect("clicked", on_remove_clicked)
         control_box.pack_start(button)
         button = Gtk.Button.new_from_icon_name(
-            "edit_add", Gtk.IconSize.SMALL_TOOLBAR)
+            "list-add", Gtk.IconSize.SMALL_TOOLBAR)
         button.set_tooltip_text(_("Add"))
         button.connect("clicked", on_add_clicked)
         control_box.pack_start(button)
