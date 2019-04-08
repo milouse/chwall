@@ -22,7 +22,7 @@ class PrefDialog(Gtk.Dialog):
             _("Preferences"), opener, flags,
             (Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE))
         self.set_icon_name("stock-preferences")
-        self.set_default_size(-1, 600)
+        self.set_default_size(-1, 400)
 
         stack = Gtk.Stack()
 
@@ -65,8 +65,7 @@ class PrefDialog(Gtk.Dialog):
 
         stack.add_titled(genbox, "general", _("General"))
 
-        picbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-        picbox.set_spacing(10)
+        self.sources_stack = Gtk.Stack()
 
         fetcher_package = import_module("chwall.fetcher")
         fp_source = fetcher_package.__path__
@@ -74,52 +73,16 @@ class PrefDialog(Gtk.Dialog):
             fetcher = import_module("chwall.fetcher.{}".format(fd.name))
             if "preferences" not in dir(fetcher):
                 continue
-            fprefs = fetcher.preferences()
-            prefbox = self.make_fetcher_toggle_pref(fd.name, fprefs)
-            picbox.pack_start(prefbox, True, True, 0)
-            if "options" not in fprefs:
-                sep = Gtk.Separator.new(Gtk.Orientation.HORIZONTAL)
-                picbox.pack_start(sep, False, False, 0)
-                continue
-            if fd.name not in self.config:
-                self.config[fd.name] = {}
-            for opt in fprefs["options"]:
-                if "widget" not in fprefs["options"][opt]:
-                    continue
-                options = fprefs["options"][opt]
-                prefbox = None
-                label = opt.capitalize()
-                if "label" in options:
-                    label = options["label"]
-                defval = None
-                if "default" in options:
-                    defval = options["default"]
-                if options["widget"] == "select":
-                    values = []
-                    for v in options["values"]:
-                        values.append((str(v), str(v)))
-                    prefbox = self.make_select_pref(
-                        fd.name, opt, label, values, str(defval),
-                        options["type"])
-                elif options["widget"] == "text":
-                    prefbox = self.make_text_pref(fd.name, opt, label)
-                elif options["widget"] == "number":
-                    prefbox = self.make_number_pref(
-                        fd.name, opt, label,
-                        Gtk.Adjustment(defval or 0, 0, 100000, 1))
-                elif options["widget"] == "list":
-                    prefbox = self.make_list_pref(fd.name, opt, label,
-                                                  defval or [])
-                if prefbox is not None:
-                    picbox.pack_start(prefbox, True, True, 0)
-            sep = Gtk.Separator.new(Gtk.Orientation.HORIZONTAL)
-            picbox.pack_start(sep, False, False, 0)
+            self.add_source_panel(fd.name, fetcher)
 
-        picscrollbox = Gtk.ScrolledWindow()
-        picscrollbox.set_vexpand(True)
-        picscrollbox.add(picbox)
+        sources_switcher = Gtk.StackSidebar()
+        sources_switcher.set_stack(self.sources_stack)
+        sources_switcher.set_size_request(150, -1)
+        sourcesbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        sourcesbox.pack_start(sources_switcher, False, False, 5)
+        sourcesbox.pack_start(self.sources_stack, True, True, 5)
 
-        stack.add_titled(picscrollbox, "sources", _("Pictures sources"))
+        stack.add_titled(sourcesbox, "sources", _("Pictures sources"))
 
         box = self.get_content_area()
         box.set_spacing(10)
@@ -131,14 +94,65 @@ class PrefDialog(Gtk.Dialog):
         box.pack_start(stack, True, True, 0)
         self.show_all()
 
+    def add_source_panel(self, fetcher_name, fetcher):
+        sourceprefbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        sourceprefbox.set_spacing(10)
+        fprefs = fetcher.preferences()
+        prefbox = self.make_fetcher_toggle_pref(fetcher_name, fprefs)
+        sourceprefbox.pack_start(prefbox, False, False, 0)
+        if "options" not in fprefs:
+            self.make_source_frame(fetcher_name, fprefs, sourceprefbox)
+            return
+        if fetcher_name not in self.config:
+            self.config[fetcher_name] = {}
+        for opt in fprefs["options"]:
+            if "widget" not in fprefs["options"][opt]:
+                continue
+            options = fprefs["options"][opt]
+            prefbox = None
+            label = opt.capitalize()
+            if "label" in options:
+                label = options["label"]
+            defval = None
+            if "default" in options:
+                defval = options["default"]
+            if options["widget"] == "select":
+                values = []
+                for v in options["values"]:
+                    values.append((str(v), str(v)))
+                prefbox = self.make_select_pref(
+                    fetcher_name, opt, label, values, str(defval),
+                    options["type"])
+            elif options["widget"] == "text":
+                prefbox = self.make_text_pref(fetcher_name, opt, label)
+            elif options["widget"] == "number":
+                prefbox = self.make_number_pref(
+                    fetcher_name, opt, label,
+                    Gtk.Adjustment(defval or 0, 0, 100000, 1))
+            elif options["widget"] == "list":
+                prefbox = self.make_list_pref(fetcher_name, opt, label,
+                                              defval or [])
+            if prefbox is not None:
+                sourceprefbox.pack_start(prefbox, False, False, 0)
+        self.make_source_frame(fetcher_name, fprefs, sourceprefbox)
+
+    def make_source_frame(self, fetcher_name, fprefs, sourceprefbox):
+        frame = Gtk.Frame()
+        fetcher_label = Gtk.Label()
+        cap_name = fetcher_name.capitalize()
+        if "name" in fprefs:
+            fetcher_label.set_markup("<b>{}</b>".format(fprefs["name"]))
+        else:
+            fetcher_label.set_markup("<b>{}</b>".format(cap_name))
+        frame.set_label_widget(fetcher_label)
+        sourceprefbox.set_border_width(10)
+        frame.add(sourceprefbox)
+        self.sources_stack.add_titled(frame, fetcher_name, cap_name)
+
     def make_fetcher_toggle_pref(self, fetcher, fprefs):
         prefbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        fetcher_name = fetcher
-        if "name" in fprefs:
-            fetcher_name = fprefs["name"]
-        label = Gtk.Label()
-        label.set_markup("<b>{}</b>".format(fetcher_name))
-        prefbox.pack_start(label, False, False, 5)
+        label = Gtk.Label(_("Enable"))
+        prefbox.pack_start(label, False, False, 10)
         button = Gtk.Switch()
         button.set_active(fetcher in self.config["general"]["sources"])
 
@@ -151,13 +165,13 @@ class PrefDialog(Gtk.Dialog):
                 write_config(self.config)
 
         button.connect("state-set", on_toggle_fetcher_set, fetcher)
-        prefbox.pack_end(button, False, False, 5)
+        prefbox.pack_end(button, False, False, 10)
         return prefbox
 
     def make_prefbox_with_label(self, label):
         prefbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         preflabel = Gtk.Label(label)
-        prefbox.pack_start(preflabel, False, False, 5)
+        prefbox.pack_start(preflabel, False, False, 10)
         return prefbox
 
     def make_toggle_pref(self, path, opt, label):
@@ -171,7 +185,7 @@ class PrefDialog(Gtk.Dialog):
             write_config(self.config)
 
         button.connect("state-set", on_toggle_state_set)
-        prefbox.pack_end(button, False, False, 5)
+        prefbox.pack_end(button, False, False, 10)
         return prefbox
 
     def make_select_pref(self, path, opt, label, values,
@@ -194,7 +208,7 @@ class PrefDialog(Gtk.Dialog):
             write_config(self.config)
 
         button.connect("changed", on_select_changed)
-        prefbox.pack_end(button, False, False, 5)
+        prefbox.pack_end(button, False, False, 10)
         return prefbox
 
     def make_text_pref(self, path, opt, label):
@@ -211,7 +225,7 @@ class PrefDialog(Gtk.Dialog):
 
         button.connect("activate", on_text_edited)
         button.connect("focus-out-event", on_text_edited)
-        prefbox.pack_end(button, True, True, 5)
+        prefbox.pack_end(button, True, True, 10)
         return prefbox
 
     def make_number_pref(self, path, opt, label, adj=None, factor=1):
@@ -230,7 +244,7 @@ class PrefDialog(Gtk.Dialog):
             write_config(self.config)
 
         button.connect("value-changed", on_spin_value_changed)
-        prefbox.pack_end(button, False, False, 5)
+        prefbox.pack_end(button, False, False, 10)
         return prefbox
 
     def make_list_pref(self, path, opt, label, defaults=None):
@@ -300,8 +314,12 @@ class PrefDialog(Gtk.Dialog):
         renderer_text.connect("edited", on_cell_edited)
         column_text = Gtk.TreeViewColumn(label, renderer_text, text=0)
         treeview.append_column(column_text)
+
+        listscrollbox = Gtk.ScrolledWindow()
+        listscrollbox.add(treeview)
+        listscrollbox.set_size_request(-1, 200)
         listbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-        listbox.pack_start(treeview, True, True, 0)
+        listbox.pack_start(listscrollbox, True, True, 0)
 
         control_box = Gtk.ActionBar()
         button = Gtk.Button.new_from_icon_name(

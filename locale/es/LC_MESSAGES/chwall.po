@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chwall 0.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-28 23:48+0100\n"
+"POT-Creation-Date: 2019-04-08 21:17+0200\n"
 "PO-Revision-Date: 2019-03-23 18:22+0000\n"
 "Last-Translator: haitch <vruztablet@gmail.com>\n"
 "Language-Team: Spanish <https://translations.umaneti.net/projects/chwall/"
@@ -117,15 +117,19 @@ msgstr ""
 msgid "General"
 msgstr ""
 
-#: chwall/gui/preferences.py:122
+#: chwall/gui/preferences.py:85
 msgid "Pictures sources"
 msgstr ""
 
-#: chwall/gui/preferences.py:309
+#: chwall/gui/preferences.py:154
+msgid "Enable"
+msgstr ""
+
+#: chwall/gui/preferences.py:327
 msgid "Remove"
 msgstr ""
 
-#: chwall/gui/preferences.py:314
+#: chwall/gui/preferences.py:332
 msgid "Add"
 msgstr ""
 
