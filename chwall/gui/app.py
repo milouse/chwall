@@ -39,7 +39,7 @@ class ChwallApp(ChwallGui):
 
         button = Gtk.ToggleButton()
         button.set_image(Gtk.Image.new_from_icon_name(
-            "gtk-preferences", Gtk.IconSize.BUTTON))
+            "open-menu-symbolic", Gtk.IconSize.BUTTON))
         button.set_tooltip_text(_("Preferences"))
         button.connect("toggled", self.show_main_menu)
         hb.pack_end(button)
