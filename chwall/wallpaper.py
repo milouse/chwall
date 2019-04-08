@@ -105,12 +105,22 @@ def set_gnome_wallpaper(path):
                          "picture-uri", "file://{}".format(path)]).returncode
     if err == 1:
         raise ChwallWallpaperSetError(
-            "Error while setting gnome picture-uri property")
+            "Error while setting gnome background picture-uri property")
     err = subprocess.run(["gsettings", "set", "org.gnome.desktop.background",
                          "picture-options", "zoom"]).returncode
     if err == 1:
         raise ChwallWallpaperSetError(
-            "Error while setting gnome picture-options property")
+            "Error while setting gnome background picture-options property")
+    err = subprocess.run(["gsettings", "set", "org.gnome.desktop.screensaver",
+                         "picture-uri", "file://{}".format(path)]).returncode
+    if err == 1:
+        raise ChwallWallpaperSetError(
+            "Error while setting gnome screensaver picture-uri property")
+    err = subprocess.run(["gsettings", "set", "org.gnome.desktop.screensaver",
+                         "picture-options", "zoom"]).returncode
+    if err == 1:
+        raise ChwallWallpaperSetError(
+            "Error while setting gnome screensaver picture-options property")
 
 
 def set_nitrogen_wallpaper(path):
