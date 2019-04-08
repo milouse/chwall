@@ -117,9 +117,9 @@ Exec=chwall-icon
 Icon=chwall
 Terminal=false
 Type=Application
-Categories=GTK;GNOME;TrayIcon;
+Categories=GTK;TrayIcon;
 X-MATE-Autostart-enabled=true
-X-GNOME-Autostart-Delay=20
+X-GNOME-Autostart-enabled=false
 StartupNotify=false
 """.format("Chwall", _("Wallpaper Changer")))
         elif file_yet_exists and not self.must_autostart:
