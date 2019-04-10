@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 
-import os
 import subprocess
-from xdg.BaseDirectory import xdg_config_home
 
 from chwall.gui.shared import ChwallGui
 from chwall.wallpaper import current_wallpaper_info
+from chwall.utils import ServiceFileManager
 
 import gi
 gi.require_version("Gtk", "3.0")  # noqa: E402
@@ -26,9 +25,8 @@ class ChwallIcon(ChwallGui):
         self.tray.set_from_icon_name("chwall")
         self.tray.set_tooltip_text("Chwall")
         self.tray.connect("popup-menu", self.display_menu)
-        self.autostart_file = os.path.join(xdg_config_home, "autostart",
-                                           "chwall-icon.desktop")
-        self.must_autostart = os.path.isfile(self.autostart_file)
+        self.sfm = ServiceFileManager()
+        self.must_autostart = self.sfm.xdg_autostart_file_exists("icon")
 
     def display_menu(self, _icon, event_button, event_time):
         menu = Gtk.Menu()
@@ -123,27 +121,11 @@ class ChwallIcon(ChwallGui):
 
     def toggle_must_autostart(self, widget):
         self.must_autostart = widget.get_active()
-        autostart_dir = os.path.join(xdg_config_home, "autostart")
-        if not os.path.isdir(autostart_dir):
-            os.makedirs(autostart_dir)
-        file_yet_exists = os.path.isfile(self.autostart_file)
-        if not file_yet_exists and self.must_autostart:
-            with open(self.autostart_file, "w") as f:
-                f.write("""\
-[Desktop Entry]
-Name={}
-Comment={}
-Exec=chwall-icon
-Icon=chwall
-Terminal=false
-Type=Application
-Categories=GTK;TrayIcon;
-X-MATE-Autostart-enabled=true
-X-GNOME-Autostart-enabled=false
-StartupNotify=false
-""".format("Chwall", _("Wallpaper Changer")))
-        elif file_yet_exists and not self.must_autostart:
-            os.remove(self.autostart_file)
+        if self.must_autostart:
+            self.sfm.xdg_autostart_file("Chwall", _("Wallpaper Changer"),
+                                        "icon")
+        else:
+            self.sfm.remove_xdg_autostart_file("icon")
 
     def report_a_bug(self, widget):
         subprocess.Popen(

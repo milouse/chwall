@@ -7,7 +7,7 @@ import subprocess
 
 # chwall imports
 from chwall.daemon import notify_daemon_if_any, daemon_info, daemonize
-from chwall.utils import BASE_CACHE_PATH, read_config, systemd_file
+from chwall.utils import BASE_CACHE_PATH, read_config, ServiceFileManager
 from chwall.wallpaper import blacklist_wallpaper, pick_wallpaper
 from chwall.gui.preferences import PrefDialog
 
@@ -63,7 +63,8 @@ def run_client():
 
     action = sys.argv[1]
     if action == "systemd":
-        systemd_file()
+        sfm = ServiceFileManager()
+        sfm.systemd_service_file()
         sys.exit(0)
     elif action in ["options", "preferences"]:
         prefwin = PrefDialog(None, 0, config)
