@@ -22,67 +22,12 @@ class PrefDialog(Gtk.Dialog):
             _("Preferences"), opener, flags,
             (Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE))
         self.set_icon_name("stock-preferences")
-        self.set_default_size(-1, 400)
 
         stack = Gtk.Stack()
-
-        genbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-        genbox.set_spacing(10)
-
-        prefbox = self.make_toggle_pref(
-            "general", "notify",
-            _("Display notification when wallpaper changes"))
-        genbox.pack_start(prefbox, False, False, 0)
-
-        sleep_time = int(self.config["general"]["sleep"] / 60)
-        prefbox = self.make_number_pref(
-            "general", "sleep", _("Time between each wallpaper change"),
-            Gtk.Adjustment(sleep_time, 5, 120, 1), 60)
-        genbox.pack_start(prefbox, False, False, 0)
-
-        environments = [("gnome", "Gnome, Budgie, …"), ("mate", "Mate"),
-                        ("nitrogen", _("Use Nitrogen application"))]
-        prefbox = self.make_select_pref(
-            "general", "desktop", _("Desktop environment"),
-            environments, "gnome")
-        genbox.pack_start(prefbox, False, False, 0)
-
-        prefbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        label = Gtk.Label(_("LightDM shared background path"))
-        prefbox.pack_start(label, False, False, 5)
-        button = Gtk.FileChooserButton.new(_("Select a file"),
-                                           Gtk.FileChooserAction.OPEN)
-        if "lightdm_wall" in self.config["general"]:
-            button.set_filename(self.config["general"]["lightdm_wall"])
-
-        def update_lightdm_wall(widget):
-            self.config["general"]["desktop"] = widget.get_filename()
-            write_config(self.config)
-
-        button.connect("file-set", update_lightdm_wall)
-        prefbox.pack_end(button, False, False, 5)
-        genbox.pack_start(prefbox, False, False, 0)
-
-        stack.add_titled(genbox, "general", _("General"))
-
-        self.sources_stack = Gtk.Stack()
-
-        fetcher_package = import_module("chwall.fetcher")
-        fp_source = fetcher_package.__path__
-        for fd in pkgutil.iter_modules(fp_source):
-            fetcher = import_module("chwall.fetcher.{}".format(fd.name))
-            if "preferences" not in dir(fetcher):
-                continue
-            self.add_source_panel(fd.name, fetcher)
-
-        sources_switcher = Gtk.StackSidebar()
-        sources_switcher.set_stack(self.sources_stack)
-        sources_switcher.set_size_request(150, -1)
-        sourcesbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        sourcesbox.pack_start(sources_switcher, False, False, 5)
-        sourcesbox.pack_start(self.sources_stack, True, True, 5)
-
-        stack.add_titled(sourcesbox, "sources", _("Pictures sources"))
+        stack.add_titled(self.make_general_pane(), "general",
+                         _("General"))
+        stack.add_titled(self.make_sources_pane(), "sources",
+                         _("Pictures sources"))
 
         box = self.get_content_area()
         box.set_spacing(10)
@@ -336,3 +281,61 @@ class PrefDialog(Gtk.Dialog):
 
         prefbox.pack_end(listbox, True, True, 0)
         return prefbox
+
+    def make_sources_pane(self):
+        self.sources_stack = Gtk.Stack()
+
+        fetcher_package = import_module("chwall.fetcher")
+        fp_source = fetcher_package.__path__
+        for fd in pkgutil.iter_modules(fp_source):
+            fetcher = import_module("chwall.fetcher.{}".format(fd.name))
+            if "preferences" not in dir(fetcher):
+                continue
+            self.add_source_panel(fd.name, fetcher)
+
+        sources_switcher = Gtk.StackSidebar()
+        sources_switcher.set_stack(self.sources_stack)
+        sources_switcher.set_size_request(150, -1)
+        sourcesbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        sourcesbox.pack_start(sources_switcher, False, False, 5)
+        sourcesbox.pack_start(self.sources_stack, True, True, 5)
+        return sourcesbox
+
+    def make_general_pane(self):
+        genbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        genbox.set_spacing(10)
+
+        prefbox = self.make_toggle_pref(
+            "general", "notify",
+            _("Display notification when wallpaper changes"))
+        genbox.pack_start(prefbox, False, False, 0)
+
+        sleep_time = int(self.config["general"]["sleep"] / 60)
+        prefbox = self.make_number_pref(
+            "general", "sleep", _("Time between each wallpaper change"),
+            Gtk.Adjustment(sleep_time, 5, 120, 1), 60)
+        genbox.pack_start(prefbox, False, False, 0)
+
+        environments = [("gnome", "Gnome, Budgie, …"), ("mate", "Mate"),
+                        ("nitrogen", _("Use Nitrogen application"))]
+        prefbox = self.make_select_pref(
+            "general", "desktop", _("Desktop environment"),
+            environments, "gnome")
+        genbox.pack_start(prefbox, False, False, 0)
+
+        prefbox = self.make_prefbox_with_label(
+            _("LightDM shared background path"))
+        button = Gtk.FileChooserButton.new(_("Select a file"),
+                                           Gtk.FileChooserAction.OPEN)
+        if "lightdm_wall" in self.config["general"]:
+            button.set_filename(self.config["general"]["lightdm_wall"])
+
+        def update_lightdm_wall(widget):
+            self.config["general"]["desktop"] = widget.get_filename()
+            write_config(self.config)
+
+        button.connect("file-set", update_lightdm_wall)
+        prefbox.pack_end(button, False, False, 10)
+        genbox.pack_start(prefbox, False, False, 0)
+
+        return genbox
