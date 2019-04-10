@@ -31,12 +31,6 @@ class ChwallApp(ChwallGui):
         hb.set_show_close_button(True)
         hb.props.title = "Chwall"
 
-        button = Gtk.Button.new_from_icon_name(
-            "help-about", Gtk.IconSize.BUTTON)
-        button.set_tooltip_text(_("About"))
-        button.connect("clicked", self.show_about_dialog)
-        hb.pack_end(button)
-
         button = Gtk.ToggleButton()
         button.set_image(Gtk.Image.new_from_icon_name(
             "open-menu-symbolic", Gtk.IconSize.BUTTON))
@@ -132,6 +126,10 @@ class ChwallApp(ChwallGui):
 
         item = Gtk.MenuItem.new_with_label(_("Preferences"))
         item.connect("activate", self.show_preferences_dialog)
+        menu.append(item)
+
+        item = Gtk.MenuItem.new_with_label(_("About Chwall"))
+        item.connect("activate", self.show_about_dialog)
         menu.append(item)
 
         menu.show_all()
