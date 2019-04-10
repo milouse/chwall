@@ -6,6 +6,7 @@ import signal
 
 from chwall.gui.shared import ChwallGui
 from chwall.wallpaper import current_wallpaper_info
+from chwall.daemon import notify_daemon_if_any
 
 import gi
 gi.require_version("Gtk", "3.0")  # noqa: E402
@@ -51,6 +52,8 @@ class ChwallApp(ChwallGui):
         button.set_tooltip_text(_("Previous wallpaper"))
         button.connect("clicked", self.on_change_wallpaper, True)
         control_box.pack_start(button)
+
+        control_box.pack_start(self.play_stop_daemon())
 
         button = Gtk.Button.new_from_icon_name(
             "go-next", Gtk.IconSize.LARGE_TOOLBAR)
@@ -136,6 +139,35 @@ class ChwallApp(ChwallGui):
         menu.connect("hide", lambda _w, b: b.set_active(False), widget)
         menu.popup_at_widget(widget, Gdk.Gravity.SOUTH_WEST,
                              Gdk.Gravity.NORTH_WEST, None)
+
+    def on_play_stop_clicked(self, widget, current_state):
+        if current_state == "started":
+            # 15 == signal.SIGTERM
+            notify_daemon_if_any(15)
+            icon = "media-playback-start"
+            tooltip = _("Start daemon")
+        else:
+            self.run_chwall_component(widget, "daemon")
+            icon = "media-playback-stop"
+            tooltip = _("Stop daemon")
+        widget.set_image(
+            Gtk.Image.new_from_icon_name(icon, Gtk.IconSize.LARGE_TOOLBAR))
+        widget.set_tooltip_text(tooltip)
+
+    def play_stop_daemon(self):
+        dinfo = self.daemon_info()
+        if dinfo["daemon-state"] == "started":
+            icon = "media-playback-stop"
+            tooltip = _("Stop daemon")
+        else:
+            icon = "media-playback-start"
+            tooltip = _("Start daemon")
+        button = Gtk.Button.new_from_icon_name(
+            icon, Gtk.IconSize.LARGE_TOOLBAR)
+        button.set_tooltip_text(tooltip)
+        button.connect("clicked", self.on_play_stop_clicked,
+                       dinfo["daemon-state"])
+        return button
 
 
 def generate_desktop_file(localedir="./locale"):
