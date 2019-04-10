@@ -116,10 +116,15 @@ class ChwallApp(ChwallGui):
         if not widget.get_active():
             return
 
-        menu = self.main_menu()
+        menu = Gtk.Menu()
 
-        item = Gtk.SeparatorMenuItem()
+        item = Gtk.MenuItem.new_with_label(
+            _("Cleanup broken entries in cache"))
+        item.connect("activate", self.on_cleanup_cache)
         menu.append(item)
+
+        sep = Gtk.SeparatorMenuItem()
+        menu.append(sep)
 
         item = Gtk.MenuItem.new_with_label(_("Display notification icon"))
         item.connect("activate", self.run_chwall_component, "icon")

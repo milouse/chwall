@@ -22,6 +22,9 @@ class ChwallGui:
         self.config = read_config()
         self.app = None
 
+    def daemon_info(self):
+        return daemon_info(self.config)
+
     def on_change_wallpaper(self, widget, direction=False):
         pick_wallpaper(self.config, direction)
         notify_daemon_if_any()
@@ -38,35 +41,6 @@ class ChwallGui:
             subprocess.run(["chwall-daemon"])
         else:
             subprocess.run(["chwall", "detach", component])
-
-    def main_menu(self):
-        menu = Gtk.Menu()
-
-        dinfo = daemon_info(self.config)
-        daemon_state_btn = Gtk.MenuItem.new_with_label(
-            dinfo["daemon-state-label"])
-        daemon_state_btn.set_sensitive(False)
-        menu.append(daemon_state_btn)
-
-        if dinfo["next-change-label"] is None:
-            run_btn = Gtk.MenuItem.new_with_label(_("Start daemon"))
-            run_btn.connect("activate", self.run_chwall_component, "daemon")
-            menu.append(run_btn)
-        else:
-            next_change_btn = Gtk.MenuItem.new_with_label(
-                dinfo["next-change-label"])
-            next_change_btn.set_sensitive(False)
-            menu.append(next_change_btn)
-
-        item = Gtk.SeparatorMenuItem()
-        menu.append(item)
-
-        item = Gtk.MenuItem.new_with_label(
-            _("Cleanup broken entries in cache"))
-        item.connect("activate", self.on_cleanup_cache)
-        menu.append(item)
-
-        return menu
 
     def get_flags_if_app(self):
         if self.app is not None:

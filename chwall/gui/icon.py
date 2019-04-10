@@ -31,7 +31,23 @@ class ChwallIcon(ChwallGui):
         self.must_autostart = os.path.isfile(self.autostart_file)
 
     def display_menu(self, _icon, event_button, event_time):
-        menu = self.main_menu()
+        menu = Gtk.Menu()
+
+        dinfo = self.daemon_info()
+        daemon_state_btn = Gtk.MenuItem.new_with_label(
+            dinfo["daemon-state-label"])
+        daemon_state_btn.set_sensitive(False)
+        menu.append(daemon_state_btn)
+
+        if dinfo["next-change-label"] is None:
+            run_btn = Gtk.MenuItem.new_with_label(_("Start daemon"))
+            run_btn.connect("activate", self.run_chwall_component, "daemon")
+            menu.append(run_btn)
+        else:
+            next_change_btn = Gtk.MenuItem.new_with_label(
+                dinfo["next-change-label"])
+            next_change_btn.set_sensitive(False)
+            menu.append(next_change_btn)
 
         wallinfo = current_wallpaper_info()
         if wallinfo["type"] == "local":
@@ -41,26 +57,30 @@ class ChwallIcon(ChwallGui):
         current_wall_info = Gtk.MenuItem.new_with_label(curlabel)
         current_wall_info.connect("activate", self.open_in_context,
                                   wallinfo["remote-uri"])
-        # We'll use only insert for a while to push down main_menu last items
-        menu.insert(current_wall_info, 2)
+        menu.append(current_wall_info)
+
+        item = Gtk.SeparatorMenuItem()
+        menu.append(item)
 
         # next wallpaper
         nextbtn = Gtk.MenuItem.new_with_label(_("Next wallpaper"))
         nextbtn.connect("activate", self.on_change_wallpaper)
-        menu.insert(nextbtn, 4)
+        menu.append(nextbtn)
 
         # previous wallpaper
         prevbtn = Gtk.MenuItem.new_with_label(_("Previous wallpaper"))
         prevbtn.connect("activate", self.on_change_wallpaper, True)
-        menu.insert(prevbtn, 5)
+        menu.append(prevbtn)
 
         # previous wallpaper
         blackbtn = Gtk.MenuItem.new_with_label(_("Blacklist"))
         blackbtn.connect("activate", self.on_blacklist_wallpaper)
-        menu.insert(blackbtn, 6)
+        menu.append(blackbtn)
 
-        # We use insert until there to move down the "Cleanup cache" button. We
-        # can now resume a normal append way to add menuitems
+        item = Gtk.MenuItem.new_with_label(
+            _("Cleanup broken entries in cache"))
+        item.connect("activate", self.on_cleanup_cache)
+        menu.append(item)
 
         sep = Gtk.SeparatorMenuItem()
         menu.append(sep)
