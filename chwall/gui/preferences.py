@@ -1,7 +1,7 @@
 import pkgutil
 from importlib import import_module
 
-from chwall.utils import write_config
+from chwall.utils import write_config, ServiceFileManager
 
 import gi
 gi.require_version("Gtk", "3.0")  # noqa: E402
@@ -337,5 +337,75 @@ class PrefDialog(Gtk.Dialog):
         button.connect("file-set", update_lightdm_wall)
         prefbox.pack_end(button, False, False, 10)
         genbox.pack_start(prefbox, False, False, 0)
+
+        sfm = ServiceFileManager()
+
+        prefbox = self.make_prefbox_with_label(
+            _("Classical autostart for daemon"))
+        classic_daemon_btn = Gtk.Switch()
+        classic_daemon_btn.set_active(sfm.xdg_autostart_file_exists())
+        prefbox.pack_end(classic_daemon_btn, False, False, 10)
+        genbox.pack_start(prefbox, False, False, 0)
+
+        install_systemd_btn = None
+
+        if sfm.systemd_version is not None:
+            prefbox = self.make_prefbox_with_label(
+                _("Install systemd service file"))
+            install_systemd_btn = Gtk.Switch()
+            service_installed = sfm.systemd_service_file_exists()
+            install_systemd_btn.set_active(service_installed)
+
+            prefbox.pack_end(install_systemd_btn, False, False, 10)
+            genbox.pack_start(prefbox, False, False, 0)
+
+            prefbox = self.make_prefbox_with_label(
+                _("Systemd autostart for daemon"))
+            enable_systemd_btn = Gtk.Switch()
+            enable_systemd_btn.set_active(
+                sfm.systemd_service_file_exists(True))
+
+            prefbox.pack_end(enable_systemd_btn, False, False, 10)
+            genbox.pack_start(prefbox, False, False, 0)
+
+            prefbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+            label = Gtk.Label()
+            label.set_markup("<i>{}</i>".format(sfm.systemd_version))
+            prefbox.pack_start(label, True, True, 10)
+            genbox.pack_start(prefbox, False, False, 0)
+
+            def on_toggle_install_systemd_state(widget, state):
+                if state:
+                    sfm.systemd_service_file(True)
+                    enable_systemd_btn.set_sensitive(True)
+                    classic_daemon_btn.set_sensitive(False)
+                else:
+                    sfm.remove_systemd_service_file()
+                    enable_systemd_btn.set_active(False)
+                    enable_systemd_btn.set_sensitive(False)
+                    classic_daemon_btn.set_sensitive(True)
+
+            def on_toggle_systemd_state(widget, state):
+                sfm.systemd_service_toggle(state)
+
+            install_systemd_btn.connect(
+                "state-set", on_toggle_install_systemd_state)
+            enable_systemd_btn.connect("state-set", on_toggle_systemd_state)
+
+            if service_installed:
+                classic_daemon_btn.set_sensitive(False)
+            else:
+                enable_systemd_btn.set_sensitive(False)
+
+        def on_toggle_state_set(widget, state):
+            if state:
+                sfm.xdg_autostart_file(_("Chwall daemon"),
+                                       _("Start chwall daemon"))
+            else:
+                sfm.remove_xdg_autostart_file()
+            if install_systemd_btn is not None:
+                install_systemd_btn.set_sensitive(not state)
+
+        classic_daemon_btn.connect("state-set", on_toggle_state_set)
 
         return genbox
