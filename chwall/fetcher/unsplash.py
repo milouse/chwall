@@ -42,7 +42,11 @@ def fetch_pictures(config):
         if p["description"] is None:
             label = _("Picture")
         else:
-            label = p["description"]
+            # Avoid descriptions to be on several lines
+            label = p["description"].replace("\n", " ")
+            # Avoid long descriptions
+            if len(label) > 200:
+                label = label[0:200] + "…"
         label = (_("{title} by {author} (on {source})")
                  .format(title=label, author=p["user"]["name"],
                          source="Unsplash"))
