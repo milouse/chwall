@@ -143,6 +143,10 @@ def notify_daemon_if_any(sig=signal.SIGUSR1):
         os.kill(int(pid), sig)
     except ValueError:
         return False
+    except ProcessLookupError:
+        # Weird, pid_file is orphaned...
+        os.unlink(pid_file)
+        return False
     return True
 
 
@@ -196,7 +200,9 @@ def daemon_loop():
         error_code = 1
     finally:
         print(_("Cleaning up…"))
-        os.unlink("{}/chwall_pid".format(BASE_CACHE_PATH))
+        pid_file = "{}/chwall_pid".format(BASE_CACHE_PATH)
+        if os.path.isfile(pid_file):
+            os.unlink(pid_file)
         if error_code == 0:
             print("Kthxbye!")
         return error_code
