@@ -47,14 +47,19 @@ class ChwallIcon(ChwallGui):
             next_change_btn.set_sensitive(False)
             menu.append(next_change_btn)
 
+        current_wall_info = Gtk.MenuItem()
         wallinfo = current_wallpaper_info()
-        if wallinfo["type"] == "local":
-            curlabel = wallinfo["local-picture-path"]
+        if wallinfo["remote-uri"] is None:
+            current_wall_info.set_label(
+                _("Current wallpaper is not managed by Chwall"))
+            current_wall_info.set_sensitive(False)
         else:
-            curlabel = wallinfo["description"]
-        current_wall_info = Gtk.MenuItem.new_with_label(curlabel)
-        current_wall_info.connect("activate", self.open_in_context,
-                                  wallinfo["remote-uri"])
+            if wallinfo["type"] == "local":
+                current_wall_info.set_label(wallinfo["local-picture-path"])
+            else:
+                current_wall_info.set_label(wallinfo["description"])
+            current_wall_info.connect("activate", self.open_in_context,
+                                      wallinfo["remote-uri"])
         menu.append(current_wall_info)
 
         item = Gtk.SeparatorMenuItem()

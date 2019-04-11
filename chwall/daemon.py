@@ -165,6 +165,8 @@ def notify_app_if_any():
 
 def show_notification():
     wallinfo = current_wallpaper_info()
+    if wallinfo["type"] is None or wallinfo["local-picture-path"] is None:
+        return
     subprocess.run(["notify-send", "-a", "chwall", "-i",
                     wallinfo["local-picture-path"],
                     "Chwall - {}".format(wallinfo["type"]),

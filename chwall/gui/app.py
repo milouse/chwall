@@ -83,6 +83,12 @@ class ChwallApp(ChwallGui):
 
     def update_wall_box(self, _signo=None, _stack_frame=None):
         wallinfo = current_wallpaper_info()
+        if wallinfo["local-picture-path"] is None:
+            self.walldesc.set_markup("<i>{}</i>".format(
+                _("Current wallpaper is not managed by Chwall")))
+            self.wallpaper.set_from_icon_name(
+                "preferences-desktop-wallpaper-symbolic", Gtk.IconSize.DIALOG)
+            return
 
         label_str = "<a href=\"{link}\">{text}</a>".format(
             link=html.escape(wallinfo["remote-uri"]),

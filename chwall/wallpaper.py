@@ -252,18 +252,26 @@ def blacklist_wallpaper():
 
 def current_wallpaper_info():
     curwall = []
+    wallinfo = {
+        "remote-picture-uri": None,
+        "description": None,
+        "remote-uri": None,
+        "type": None,
+        "local-picture-path": None
+    }
     # line 0 contains wallpaper uri
     # line 1 contains description
     # line 2 contains remote page in case of remote wallpaper
     # line 3 contains wallpaper type/origin
     # line 4 contains wallpaper local path
-    with open("{}/current_wallpaper"
-              .format(BASE_CACHE_PATH), "r") as f:
+    curfile = "{}/current_wallpaper".format(BASE_CACHE_PATH)
+    if not os.path.isfile(curfile):
+        return wallinfo
+    with open(curfile, "r") as f:
         curwall = f.readlines()
-    return {
-        "remote-picture-uri": curwall[0].strip(),
-        "description": curwall[1].strip(),
-        "remote-uri": curwall[2].strip(),
-        "type": curwall[3].strip(),
-        "local-picture-path": curwall[4].strip()
-    }
+    wallinfo["remote-picture-uri"] = curwall[0].strip()
+    wallinfo["description"] = curwall[1].strip()
+    wallinfo["remote-uri"] = curwall[2].strip()
+    wallinfo["type"] = curwall[3].strip()
+    wallinfo["local-picture-path"] = curwall[4].strip()
+    return wallinfo
