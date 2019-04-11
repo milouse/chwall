@@ -28,8 +28,7 @@ class ChwallGui:
     def on_change_wallpaper(self, widget, direction=False):
         pick_wallpaper(self.config, direction)
         notify_daemon_if_any()
-        if self.app is None:
-            notify_app_if_any()
+        notify_app_if_any()
 
     def on_blacklist_wallpaper(self, widget):
         blacklist_wallpaper()

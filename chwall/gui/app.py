@@ -111,10 +111,6 @@ class ChwallApp(ChwallGui):
 
         self.app.resize(width, size_data[1].height)
 
-    def on_change_wallpaper(self, widget, direction=False):
-        super().on_change_wallpaper(widget, direction)
-        self.update_wall_box()
-
     def show_main_menu(self, widget):
         if not widget.get_active():
             return
