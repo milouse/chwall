@@ -48,15 +48,18 @@ class ChwallApp(ChwallGui):
         control_box = Gtk.ActionBar()
 
         button = Gtk.Button.new_from_icon_name(
-            "go-previous", Gtk.IconSize.LARGE_TOOLBAR)
+            "media-skip-backward-symbolic", Gtk.IconSize.LARGE_TOOLBAR)
         button.set_tooltip_text(_("Previous wallpaper"))
         button.connect("clicked", self.on_change_wallpaper, True)
         control_box.pack_start(button)
 
-        control_box.pack_start(self.play_stop_daemon())
+        button = Gtk.Button.new()
+        self.decorate_play_stop_button(button, True)
+        button.connect("clicked", self.on_play_stop_clicked)
+        control_box.pack_start(button)
 
         button = Gtk.Button.new_from_icon_name(
-            "go-next", Gtk.IconSize.LARGE_TOOLBAR)
+            "media-skip-forward-symbolic", Gtk.IconSize.LARGE_TOOLBAR)
         button.set_tooltip_text(_("Next wallpaper"))
         button.connect("clicked", self.on_change_wallpaper)
         control_box.pack_start(button)
@@ -142,34 +145,37 @@ class ChwallApp(ChwallGui):
         menu.popup_at_widget(widget, Gdk.Gravity.SOUTH_WEST,
                              Gdk.Gravity.NORTH_WEST, None)
 
-    def on_play_stop_clicked(self, widget, current_state):
+    def decorate_play_stop_button(self, widget, startup=False):
+        dinfo = self.daemon_info()
+        # At startup we need to draw the real state of the daemon, but later,
+        # this function is called *before* the state change, thus it must
+        # reflect the future state of the daemon
+        if startup:
+            current_state = dinfo["daemon-state"]
+        elif dinfo["daemon-state"] == "started":
+            current_state = "stopped"
+        else:
+            current_state = "started"
         if current_state == "started":
+            widget.set_image(Gtk.Image.new_from_icon_name(
+                "media-playback-stop-symbolic", Gtk.IconSize.LARGE_TOOLBAR))
+            widget.set_tooltip_text(_("Stop daemon"))
+        else:
+            widget.set_image(Gtk.Image.new_from_icon_name(
+                "media-playback-start-symbolic", Gtk.IconSize.LARGE_TOOLBAR))
+            widget.set_tooltip_text(_("Start daemon"))
+        return current_state
+
+    def on_play_stop_clicked(self, widget):
+        # When called after a click, this method return the future state. Then
+        # we should actually kill the daemon if the *current_state* is
+        # *stopped*.
+        if self.decorate_play_stop_button(widget) == "stopped":
             # 15 == signal.SIGTERM
             notify_daemon_if_any(15)
-            icon = "media-playback-start"
-            tooltip = _("Start daemon")
-        else:
-            self.run_chwall_component(widget, "daemon")
-            icon = "media-playback-stop"
-            tooltip = _("Stop daemon")
-        widget.set_image(
-            Gtk.Image.new_from_icon_name(icon, Gtk.IconSize.LARGE_TOOLBAR))
-        widget.set_tooltip_text(tooltip)
-
-    def play_stop_daemon(self):
-        dinfo = self.daemon_info()
-        if dinfo["daemon-state"] == "started":
-            icon = "media-playback-stop"
-            tooltip = _("Stop daemon")
-        else:
-            icon = "media-playback-start"
-            tooltip = _("Start daemon")
-        button = Gtk.Button.new_from_icon_name(
-            icon, Gtk.IconSize.LARGE_TOOLBAR)
-        button.set_tooltip_text(tooltip)
-        button.connect("clicked", self.on_play_stop_clicked,
-                       dinfo["daemon-state"])
-        return button
+            return
+        # Else we should start the server
+        self.run_chwall_component(widget, "daemon")
 
 
 def generate_desktop_file(localedir="./locale"):
