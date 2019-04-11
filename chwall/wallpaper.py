@@ -201,7 +201,7 @@ def pick_wallpaper(config, backward=False, guard=False):
     if backward is True:
         # Current wallpaper is the last of the history array. Thus we should go
         # back two times
-        if len(data["history"]) >= 1:
+        if len(data["history"]) >= 2:
             # Current wall
             data["pictures"].insert(0, data["history"].pop())
             # Previous one
