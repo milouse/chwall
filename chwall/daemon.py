@@ -178,12 +178,12 @@ def daemon_step():
     config = read_config()
     try:
         pick_wallpaper(config)
-        notify_app_if_any()
-        if config["general"]["notify"] is True:
-            show_notification()
     except ChwallWallpaperSetError:
         # weird, but try again after some sleep
-        pass
+        return
+    notify_app_if_any()
+    if config["general"]["notify"] is True:
+        show_notification()
 
 
 def daemon_loop():
