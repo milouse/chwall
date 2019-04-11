@@ -71,16 +71,13 @@ def filter_wallpapers_list(collecs):
     return (all_pics, collecs)
 
 
-def write_roadmap(data):
+def build_roadmap(config):
+    data = filter_wallpapers_list(build_wallpapers_list(config))
     all_pics = data[0]
     random.shuffle(all_pics)
     road_map = {"data": data[1], "pictures": all_pics, "history": []}
     with open("{}/roadmap".format(BASE_CACHE_PATH), "w") as f:
         yaml.dump(road_map, f, explicit_start=True, default_flow_style=False)
-
-
-def build_roadmap(config):
-    write_roadmap(filter_wallpapers_list(build_wallpapers_list(config)))
 
 
 def set_mate_wallpaper(path):
