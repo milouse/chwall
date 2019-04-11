@@ -36,6 +36,11 @@ class ChwallGui:
 
     def run_chwall_component(self, _widget, component):
         if component == "daemon":
+            # At the difference of the daemon itself, it's expected than a
+            # service start from inside the app or the icon will immediatly
+            # change the current wallpaper.
+            pick_wallpaper(config)
+            notify_app_if_any()
             # No need to fork, daemon already do that
             subprocess.run(["chwall-daemon"])
         else:
