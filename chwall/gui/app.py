@@ -42,8 +42,14 @@ class ChwallApp(ChwallGui):
         self.app.set_titlebar(hb)
 
         app_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        self.notif_reset = Gtk.InfoBar()
+        self.notif_reset.set_message_type(Gtk.MessageType.WARNING)
+        notif_box = self.notif_reset.get_content_area()
+        notif_box.add(Gtk.Label(_("Wallpapers list may be built again. It may take a long time if you have a lot of sources enabled. Please be patient.")))  # noqa
+        app_box.pack_start(self.notif_reset, False, False, 0)
+
         self.wallpaper = Gtk.Image()
-        app_box.add(self.wallpaper)
+        app_box.pack_start(self.wallpaper, True, True, 0)
 
         control_box = Gtk.ActionBar()
 
@@ -75,7 +81,7 @@ class ChwallApp(ChwallGui):
         button.connect("clicked", self.on_blacklist_wallpaper)
         control_box.pack_end(button)
 
-        app_box.add(control_box)
+        app_box.pack_end(control_box, False, False, 0)
 
         self.app.add(app_box)
 
@@ -85,6 +91,8 @@ class ChwallApp(ChwallGui):
         signal.signal(signal.SIGUSR1, self.update_wall_box)
 
     def update_wall_box(self, _signo=None, _stack_frame=None):
+        self.notif_reset.set_revealed(False)
+        self.notif_reset.hide()
         wallinfo = current_wallpaper_info()
         if wallinfo["local-picture-path"] is None:
             self.walldesc.set_markup("<i>{}</i>".format(
@@ -175,6 +183,8 @@ class ChwallApp(ChwallGui):
             notify_daemon_if_any(15)
             return
         # Else we should start the server
+        self.notif_reset.show()
+        self.notif_reset.set_revealed(True)
         self.run_chwall_component(widget, "daemon")
 
 

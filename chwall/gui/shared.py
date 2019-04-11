@@ -1,3 +1,4 @@
+import threading
 import subprocess
 
 from chwall.daemon import notify_daemon_if_any, notify_app_if_any, daemon_info
@@ -25,17 +26,31 @@ class ChwallGui:
     def daemon_info(self):
         return daemon_info(self.config)
 
-    def on_change_wallpaper(self, widget, direction=False):
-        pick_wallpaper(self.config, direction)
-        notify_daemon_if_any()
-        notify_app_if_any()
+    def on_change_wallpaper(self, _widget, direction=False, threaded=True):
+        def change_wall_thread_target(direction, config):
+            pick_wallpaper(config, direction)
+            notify_daemon_if_any()
+            notify_app_if_any()
 
-    def on_blacklist_wallpaper(self, widget):
-        blacklist_wallpaper()
-        self.on_change_wallpaper(widget)
+        if threaded:
+            t = threading.Thread(target=change_wall_thread_target,
+                                 args=(direction, self.config))
+            t.daemon = True
+            t.start()
+        else:
+            change_wall_thread_target(direction, self.config)
+
+    def on_blacklist_wallpaper(self, _widget):
+        def blacklist_wall_thread_target():
+            blacklist_wallpaper()
+            self.on_change_wallpaper(None, threaded=False)
+
+        t = threading.Thread(target=blacklist_wall_thread_target)
+        t.daemon = True
+        t.start()
 
     def run_chwall_component(self, _widget, component):
-        if component == "daemon":
+        def start_daemon_from_thread(config):
             # At the difference of the daemon itself, it's expected than a
             # service start from inside the app or the icon will immediatly
             # change the current wallpaper.
@@ -43,6 +58,12 @@ class ChwallGui:
             notify_app_if_any()
             # No need to fork, daemon already do that
             subprocess.run(["chwall-daemon"])
+
+        if component == "daemon":
+            t = threading.Thread(target=start_daemon_from_thread,
+                                 args=(self.config,))
+            t.daemon = True
+            t.start()
         else:
             subprocess.run(["chwall", "detach", component])
 
