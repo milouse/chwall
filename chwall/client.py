@@ -111,8 +111,7 @@ def run_client():
             os.unlink(road_map)
         sys.exit(0)
     if not os.path.exists(road_map):
-        print(_("{progname} seems not to be running")
-              .format(progname=sys.argv[0]), file=sys.stderr)
+        print(_("No roadmap has been created yet"), file=sys.stderr)
         sys.exit(1)
     with open(road_map, "r") as f:
         data = yaml.load(f)
