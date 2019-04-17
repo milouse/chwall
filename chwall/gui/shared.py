@@ -73,6 +73,9 @@ class ChwallGui:
             return 3
         return 0
 
+    def reset_pending_list(self):
+        subprocess.run(["chwall", "purge"])
+
     def on_cleanup_cache(self, _widget):
         deleted = cleanup_cache()
         if deleted < 2:
