@@ -7,7 +7,7 @@ import subprocess
 
 # chwall imports
 from chwall.daemon import notify_daemon_if_any, daemon_info, daemonize
-from chwall.utils import BASE_CACHE_PATH, read_config, systemd_file
+from chwall.utils import BASE_CACHE_PATH, read_config, ServiceFileManager
 from chwall.wallpaper import blacklist_wallpaper, pick_wallpaper
 from chwall.gui.preferences import PrefDialog
 
@@ -63,7 +63,8 @@ def run_client():
 
     action = sys.argv[1]
     if action == "systemd":
-        systemd_file()
+        sfm = ServiceFileManager()
+        sfm.systemd_service_file()
         sys.exit(0)
     elif action in ["options", "preferences"]:
         prefwin = PrefDialog(None, 0, config)
@@ -110,8 +111,7 @@ def run_client():
             os.unlink(road_map)
         sys.exit(0)
     if not os.path.exists(road_map):
-        print(_("{progname} seems not to be running")
-              .format(progname=sys.argv[0]), file=sys.stderr)
+        print(_("No roadmap has been created yet"), file=sys.stderr)
         sys.exit(1)
     with open(road_map, "r") as f:
         data = yaml.load(f)

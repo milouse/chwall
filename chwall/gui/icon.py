@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 
-import os
 import subprocess
-from xdg.BaseDirectory import xdg_config_home
 
 from chwall.gui.shared import ChwallGui
 from chwall.wallpaper import current_wallpaper_info
+from chwall.utils import ServiceFileManager
 
 import gi
 gi.require_version("Gtk", "3.0")  # noqa: E402
@@ -26,41 +25,65 @@ class ChwallIcon(ChwallGui):
         self.tray.set_from_icon_name("chwall")
         self.tray.set_tooltip_text("Chwall")
         self.tray.connect("popup-menu", self.display_menu)
-        self.autostart_file = os.path.join(xdg_config_home, "autostart",
-                                           "chwall-icon.desktop")
-        self.must_autostart = os.path.isfile(self.autostart_file)
+        self.sfm = ServiceFileManager()
+        self.must_autostart = self.sfm.xdg_autostart_file_exists("icon")
 
     def display_menu(self, _icon, event_button, event_time):
-        menu = self.main_menu()
+        menu = Gtk.Menu()
 
-        wallinfo = current_wallpaper_info()
-        if wallinfo["type"] == "local":
-            curlabel = wallinfo["local-picture-path"]
+        dinfo = self.daemon_info()
+        daemon_state_btn = Gtk.MenuItem.new_with_label(
+            dinfo["daemon-state-label"])
+        daemon_state_btn.set_sensitive(False)
+        menu.append(daemon_state_btn)
+
+        if dinfo["next-change-label"] is None:
+            run_btn = Gtk.MenuItem.new_with_label(_("Start daemon"))
+            run_btn.connect("activate", self.run_chwall_component, "daemon")
+            menu.append(run_btn)
         else:
-            curlabel = wallinfo["description"]
-        current_wall_info = Gtk.MenuItem.new_with_label(curlabel)
-        current_wall_info.connect("activate", self.open_in_context,
-                                  wallinfo["remote-uri"])
-        # We'll use only insert for a while to push down main_menu last items
-        menu.insert(current_wall_info, 2)
+            next_change_btn = Gtk.MenuItem.new_with_label(
+                dinfo["next-change-label"])
+            next_change_btn.set_sensitive(False)
+            menu.append(next_change_btn)
+
+        current_wall_info = Gtk.MenuItem()
+        wallinfo = current_wallpaper_info()
+        if wallinfo["remote-uri"] is None:
+            current_wall_info.set_label(
+                _("Current wallpaper is not managed by Chwall"))
+            current_wall_info.set_sensitive(False)
+        else:
+            if wallinfo["type"] == "local":
+                current_wall_info.set_label(wallinfo["local-picture-path"])
+            else:
+                current_wall_info.set_label(wallinfo["description"])
+            current_wall_info.connect("activate", self.open_in_context,
+                                      wallinfo["remote-uri"])
+        menu.append(current_wall_info)
+
+        item = Gtk.SeparatorMenuItem()
+        menu.append(item)
 
         # next wallpaper
         nextbtn = Gtk.MenuItem.new_with_label(_("Next wallpaper"))
         nextbtn.connect("activate", self.on_change_wallpaper)
-        menu.insert(nextbtn, 4)
+        menu.append(nextbtn)
 
         # previous wallpaper
         prevbtn = Gtk.MenuItem.new_with_label(_("Previous wallpaper"))
         prevbtn.connect("activate", self.on_change_wallpaper, True)
-        menu.insert(prevbtn, 5)
+        menu.append(prevbtn)
 
         # previous wallpaper
         blackbtn = Gtk.MenuItem.new_with_label(_("Blacklist"))
         blackbtn.connect("activate", self.on_blacklist_wallpaper)
-        menu.insert(blackbtn, 6)
+        menu.append(blackbtn)
 
-        # We use insert until there to move down the "Cleanup cache" button. We
-        # can now resume a normal append way to add menuitems
+        item = Gtk.MenuItem.new_with_label(
+            _("Cleanup broken entries in cache"))
+        item.connect("activate", self.on_cleanup_cache)
+        menu.append(item)
 
         sep = Gtk.SeparatorMenuItem()
         menu.append(sep)
@@ -103,27 +126,11 @@ class ChwallIcon(ChwallGui):
 
     def toggle_must_autostart(self, widget):
         self.must_autostart = widget.get_active()
-        autostart_dir = os.path.join(xdg_config_home, "autostart")
-        if not os.path.isdir(autostart_dir):
-            os.makedirs(autostart_dir)
-        file_yet_exists = os.path.isfile(self.autostart_file)
-        if not file_yet_exists and self.must_autostart:
-            with open(self.autostart_file, "w") as f:
-                f.write("""\
-[Desktop Entry]
-Name={}
-Comment={}
-Exec=chwall-icon
-Icon=chwall
-Terminal=false
-Type=Application
-Categories=GTK;TrayIcon;
-X-MATE-Autostart-enabled=true
-X-GNOME-Autostart-enabled=false
-StartupNotify=false
-""".format("Chwall", _("Wallpaper Changer")))
-        elif file_yet_exists and not self.must_autostart:
-            os.remove(self.autostart_file)
+        if self.must_autostart:
+            self.sfm.xdg_autostart_file("Chwall", _("Wallpaper Changer"),
+                                        "icon")
+        else:
+            self.sfm.remove_xdg_autostart_file("icon")
 
     def report_a_bug(self, widget):
         subprocess.Popen(

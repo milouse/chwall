@@ -71,16 +71,13 @@ def filter_wallpapers_list(collecs):
     return (all_pics, collecs)
 
 
-def write_roadmap(data):
+def build_roadmap(config):
+    data = filter_wallpapers_list(build_wallpapers_list(config))
     all_pics = data[0]
     random.shuffle(all_pics)
     road_map = {"data": data[1], "pictures": all_pics, "history": []}
     with open("{}/roadmap".format(BASE_CACHE_PATH), "w") as f:
         yaml.dump(road_map, f, explicit_start=True, default_flow_style=False)
-
-
-def build_roadmap(config):
-    write_roadmap(filter_wallpapers_list(build_wallpapers_list(config)))
 
 
 def set_mate_wallpaper(path):
@@ -204,7 +201,7 @@ def pick_wallpaper(config, backward=False, guard=False):
     if backward is True:
         # Current wallpaper is the last of the history array. Thus we should go
         # back two times
-        if len(data["history"]) >= 1:
+        if len(data["history"]) >= 2:
             # Current wall
             data["pictures"].insert(0, data["history"].pop())
             # Previous one
@@ -255,18 +252,26 @@ def blacklist_wallpaper():
 
 def current_wallpaper_info():
     curwall = []
+    wallinfo = {
+        "remote-picture-uri": None,
+        "description": None,
+        "remote-uri": None,
+        "type": None,
+        "local-picture-path": None
+    }
     # line 0 contains wallpaper uri
     # line 1 contains description
     # line 2 contains remote page in case of remote wallpaper
     # line 3 contains wallpaper type/origin
     # line 4 contains wallpaper local path
-    with open("{}/current_wallpaper"
-              .format(BASE_CACHE_PATH), "r") as f:
+    curfile = "{}/current_wallpaper".format(BASE_CACHE_PATH)
+    if not os.path.isfile(curfile):
+        return wallinfo
+    with open(curfile, "r") as f:
         curwall = f.readlines()
-    return {
-        "remote-picture-uri": curwall[0].strip(),
-        "description": curwall[1].strip(),
-        "remote-uri": curwall[2].strip(),
-        "type": curwall[3].strip(),
-        "local-picture-path": curwall[4].strip()
-    }
+    wallinfo["remote-picture-uri"] = curwall[0].strip()
+    wallinfo["description"] = curwall[1].strip()
+    wallinfo["remote-uri"] = curwall[2].strip()
+    wallinfo["type"] = curwall[3].strip()
+    wallinfo["local-picture-path"] = curwall[4].strip()
+    return wallinfo

@@ -6,6 +6,7 @@ import signal
 
 from chwall.gui.shared import ChwallGui
 from chwall.wallpaper import current_wallpaper_info
+from chwall.daemon import notify_daemon_if_any
 
 import gi
 gi.require_version("Gtk", "3.0")  # noqa: E402
@@ -31,12 +32,6 @@ class ChwallApp(ChwallGui):
         hb.set_show_close_button(True)
         hb.props.title = "Chwall"
 
-        button = Gtk.Button.new_from_icon_name(
-            "help-about", Gtk.IconSize.BUTTON)
-        button.set_tooltip_text(_("About"))
-        button.connect("clicked", self.show_about_dialog)
-        hb.pack_end(button)
-
         button = Gtk.ToggleButton()
         button.set_image(Gtk.Image.new_from_icon_name(
             "open-menu-symbolic", Gtk.IconSize.BUTTON))
@@ -47,19 +42,33 @@ class ChwallApp(ChwallGui):
         self.app.set_titlebar(hb)
 
         app_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        self.notif_reset = Gtk.InfoBar()
+        self.notif_reset.set_message_type(Gtk.MessageType.WARNING)
+        notif_box = self.notif_reset.get_content_area()
+        notif_box.add(Gtk.Label(
+            _("Wallpapers list may be built again. It may take a long "
+              "time if you have a lot of sources enabled. Please be "
+              "patient.")))
+        app_box.pack_start(self.notif_reset, False, False, 0)
+
         self.wallpaper = Gtk.Image()
-        app_box.add(self.wallpaper)
+        app_box.pack_start(self.wallpaper, True, True, 0)
 
         control_box = Gtk.ActionBar()
 
         button = Gtk.Button.new_from_icon_name(
-            "go-previous", Gtk.IconSize.LARGE_TOOLBAR)
+            "media-skip-backward-symbolic", Gtk.IconSize.LARGE_TOOLBAR)
         button.set_tooltip_text(_("Previous wallpaper"))
         button.connect("clicked", self.on_change_wallpaper, True)
         control_box.pack_start(button)
 
+        button = Gtk.Button.new()
+        self.decorate_play_stop_button(button, True)
+        button.connect("clicked", self.on_play_stop_clicked)
+        control_box.pack_start(button)
+
         button = Gtk.Button.new_from_icon_name(
-            "go-next", Gtk.IconSize.LARGE_TOOLBAR)
+            "media-skip-forward-symbolic", Gtk.IconSize.LARGE_TOOLBAR)
         button.set_tooltip_text(_("Next wallpaper"))
         button.connect("clicked", self.on_change_wallpaper)
         control_box.pack_start(button)
@@ -75,7 +84,7 @@ class ChwallApp(ChwallGui):
         button.connect("clicked", self.on_blacklist_wallpaper)
         control_box.pack_end(button)
 
-        app_box.add(control_box)
+        app_box.pack_end(control_box, False, False, 0)
 
         self.app.add(app_box)
 
@@ -85,7 +94,15 @@ class ChwallApp(ChwallGui):
         signal.signal(signal.SIGUSR1, self.update_wall_box)
 
     def update_wall_box(self, _signo=None, _stack_frame=None):
+        self.notif_reset.set_revealed(False)
+        self.notif_reset.hide()
         wallinfo = current_wallpaper_info()
+        if wallinfo["local-picture-path"] is None:
+            self.walldesc.set_markup("<i>{}</i>".format(
+                _("Current wallpaper is not managed by Chwall")))
+            self.wallpaper.set_from_icon_name(
+                "preferences-desktop-wallpaper-symbolic", Gtk.IconSize.DIALOG)
+            return
 
         label_str = "<a href=\"{link}\">{text}</a>".format(
             link=html.escape(wallinfo["remote-uri"]),
@@ -108,20 +125,22 @@ class ChwallApp(ChwallGui):
 
         self.app.resize(width, size_data[1].height)
 
-    def on_change_wallpaper(self, widget, direction=False):
-        super().on_change_wallpaper(widget, direction)
-        self.update_wall_box()
-
     def show_main_menu(self, widget):
         if not widget.get_active():
             return
 
-        menu = self.main_menu()
+        menu = Gtk.Menu()
 
-        item = Gtk.SeparatorMenuItem()
+        item = Gtk.MenuItem.new_with_label(
+            _("Cleanup broken entries in cache"))
+        item.connect("activate", self.on_cleanup_cache)
         menu.append(item)
 
-        item = Gtk.MenuItem.new_with_label(_("Display notification icon"))
+        sep = Gtk.SeparatorMenuItem()
+        menu.append(sep)
+
+        item = Gtk.MenuItem.new_with_label(
+            _("Display notification icon"))
         item.connect("activate", self.run_chwall_component, "icon")
         menu.append(item)
 
@@ -129,10 +148,48 @@ class ChwallApp(ChwallGui):
         item.connect("activate", self.show_preferences_dialog)
         menu.append(item)
 
+        item = Gtk.MenuItem.new_with_label(_("About Chwall"))
+        item.connect("activate", self.show_about_dialog)
+        menu.append(item)
+
         menu.show_all()
         menu.connect("hide", lambda _w, b: b.set_active(False), widget)
         menu.popup_at_widget(widget, Gdk.Gravity.SOUTH_WEST,
                              Gdk.Gravity.NORTH_WEST, None)
+
+    def decorate_play_stop_button(self, widget, startup=False):
+        dinfo = self.daemon_info()
+        # At startup we need to draw the real state of the daemon, but later,
+        # this function is called *before* the state change, thus it must
+        # reflect the future state of the daemon
+        if startup:
+            current_state = dinfo["daemon-state"]
+        elif dinfo["daemon-state"] == "started":
+            current_state = "stopped"
+        else:
+            current_state = "started"
+        if current_state == "started":
+            widget.set_image(Gtk.Image.new_from_icon_name(
+                "media-playback-stop-symbolic", Gtk.IconSize.LARGE_TOOLBAR))
+            widget.set_tooltip_text(_("Stop daemon"))
+        else:
+            widget.set_image(Gtk.Image.new_from_icon_name(
+                "media-playback-start-symbolic", Gtk.IconSize.LARGE_TOOLBAR))
+            widget.set_tooltip_text(_("Start daemon"))
+        return current_state
+
+    def on_play_stop_clicked(self, widget):
+        # When called after a click, this method return the future state. Then
+        # we should actually kill the daemon if the *current_state* is
+        # *stopped*.
+        if self.decorate_play_stop_button(widget) == "stopped":
+            # 15 == signal.SIGTERM
+            notify_daemon_if_any(15)
+            return
+        # Else we should start the server
+        self.notif_reset.show()
+        self.notif_reset.set_revealed(True)
+        self.run_chwall_component(widget, "daemon")
 
 
 def generate_desktop_file(localedir="./locale"):

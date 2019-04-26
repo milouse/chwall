@@ -143,6 +143,10 @@ def notify_daemon_if_any(sig=signal.SIGUSR1):
         os.kill(int(pid), sig)
     except ValueError:
         return False
+    except ProcessLookupError:
+        # Weird, pid_file is orphaned...
+        os.unlink(pid_file)
+        return False
     return True
 
 
@@ -161,6 +165,8 @@ def notify_app_if_any():
 
 def show_notification():
     wallinfo = current_wallpaper_info()
+    if wallinfo["type"] is None or wallinfo["local-picture-path"] is None:
+        return
     subprocess.run(["notify-send", "-a", "chwall", "-i",
                     wallinfo["local-picture-path"],
                     "Chwall - {}".format(wallinfo["type"]),
@@ -174,12 +180,12 @@ def daemon_step():
     config = read_config()
     try:
         pick_wallpaper(config)
-        notify_app_if_any()
-        if config["general"]["notify"] is True:
-            show_notification()
     except ChwallWallpaperSetError:
         # weird, but try again after some sleep
-        pass
+        return
+    notify_app_if_any()
+    if config["general"]["notify"] is True:
+        show_notification()
 
 
 def daemon_loop():
@@ -196,7 +202,9 @@ def daemon_loop():
         error_code = 1
     finally:
         print(_("Cleaning up…"))
-        os.unlink("{}/chwall_pid".format(BASE_CACHE_PATH))
+        pid_file = "{}/chwall_pid".format(BASE_CACHE_PATH)
+        if os.path.isfile(pid_file):
+            os.unlink(pid_file)
         if error_code == 0:
             print("Kthxbye!")
         return error_code

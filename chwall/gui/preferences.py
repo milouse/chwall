@@ -1,7 +1,8 @@
+import os
 import pkgutil
 from importlib import import_module
 
-from chwall.utils import write_config
+from chwall.utils import write_config, ServiceFileManager
 
 import gi
 gi.require_version("Gtk", "3.0")  # noqa: E402
@@ -22,67 +23,12 @@ class PrefDialog(Gtk.Dialog):
             _("Preferences"), opener, flags,
             (Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE))
         self.set_icon_name("stock-preferences")
-        self.set_default_size(-1, 400)
 
         stack = Gtk.Stack()
-
-        genbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-        genbox.set_spacing(10)
-
-        prefbox = self.make_toggle_pref(
-            "general", "notify",
-            _("Display notification when wallpaper changes"))
-        genbox.pack_start(prefbox, False, False, 0)
-
-        sleep_time = int(self.config["general"]["sleep"] / 60)
-        prefbox = self.make_number_pref(
-            "general", "sleep", _("Time between each wallpaper change"),
-            Gtk.Adjustment(sleep_time, 5, 120, 1), 60)
-        genbox.pack_start(prefbox, False, False, 0)
-
-        environments = [("gnome", "Gnome, Budgie, …"), ("mate", "Mate"),
-                        ("nitrogen", _("Use Nitrogen application"))]
-        prefbox = self.make_select_pref(
-            "general", "desktop", _("Desktop environment"),
-            environments, "gnome")
-        genbox.pack_start(prefbox, False, False, 0)
-
-        prefbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        label = Gtk.Label(_("LightDM shared background path"))
-        prefbox.pack_start(label, False, False, 5)
-        button = Gtk.FileChooserButton.new(_("Select a file"),
-                                           Gtk.FileChooserAction.OPEN)
-        if "lightdm_wall" in self.config["general"]:
-            button.set_filename(self.config["general"]["lightdm_wall"])
-
-        def update_lightdm_wall(widget):
-            self.config["general"]["desktop"] = widget.get_filename()
-            write_config(self.config)
-
-        button.connect("file-set", update_lightdm_wall)
-        prefbox.pack_end(button, False, False, 5)
-        genbox.pack_start(prefbox, False, False, 0)
-
-        stack.add_titled(genbox, "general", _("General"))
-
-        self.sources_stack = Gtk.Stack()
-
-        fetcher_package = import_module("chwall.fetcher")
-        fp_source = fetcher_package.__path__
-        for fd in pkgutil.iter_modules(fp_source):
-            fetcher = import_module("chwall.fetcher.{}".format(fd.name))
-            if "preferences" not in dir(fetcher):
-                continue
-            self.add_source_panel(fd.name, fetcher)
-
-        sources_switcher = Gtk.StackSidebar()
-        sources_switcher.set_stack(self.sources_stack)
-        sources_switcher.set_size_request(150, -1)
-        sourcesbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        sourcesbox.pack_start(sources_switcher, False, False, 5)
-        sourcesbox.pack_start(self.sources_stack, True, True, 5)
-
-        stack.add_titled(sourcesbox, "sources", _("Pictures sources"))
+        stack.add_titled(self.make_general_pane(), "general",
+                         _("General"))
+        stack.add_titled(self.make_sources_pane(), "sources",
+                         _("Pictures sources"))
 
         box = self.get_content_area()
         box.set_spacing(10)
@@ -168,9 +114,11 @@ class PrefDialog(Gtk.Dialog):
         prefbox.pack_end(button, False, False, 10)
         return prefbox
 
-    def make_prefbox_with_label(self, label):
+    def make_prefbox_with_label(self, label, tooltip=None):
         prefbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         preflabel = Gtk.Label(label)
+        if tooltip is not None:
+            preflabel.set_tooltip_text(tooltip)
         prefbox.pack_start(preflabel, False, False, 10)
         return prefbox
 
@@ -336,3 +284,160 @@ class PrefDialog(Gtk.Dialog):
 
         prefbox.pack_end(listbox, True, True, 0)
         return prefbox
+
+    def lightdm_option_pref(self, genbox):
+        def update_lightdm_wall(widget):
+            self.config["general"]["desktop"] = widget.get_filename()
+            write_config(self.config)
+
+        prefbox = self.make_prefbox_with_label(
+            _("LightDM shared background path"))
+        button = Gtk.FileChooserButton.new(
+            _("Select a file"), Gtk.FileChooserAction.OPEN)
+        if "lightdm_wall" in self.config["general"]:
+            button.set_filename(self.config["general"]["lightdm_wall"])
+        button.connect("file-set", update_lightdm_wall)
+        prefbox.pack_end(button, False, False, 10)
+        genbox.pack_start(prefbox, False, False, 0)
+
+    def make_sources_pane(self):
+        self.sources_stack = Gtk.Stack()
+
+        fetcher_package = import_module("chwall.fetcher")
+        fp_source = fetcher_package.__path__
+        for fd in pkgutil.iter_modules(fp_source):
+            fetcher = import_module("chwall.fetcher.{}".format(fd.name))
+            if "preferences" not in dir(fetcher):
+                continue
+            self.add_source_panel(fd.name, fetcher)
+
+        sources_switcher = Gtk.StackSidebar()
+        sources_switcher.set_stack(self.sources_stack)
+        sources_switcher.set_size_request(150, -1)
+        sourcesbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        sourcesbox.pack_start(sources_switcher, False, False, 5)
+        sourcesbox.pack_start(self.sources_stack, True, True, 5)
+        return sourcesbox
+
+    def make_general_pane(self):
+        genbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        genbox.set_border_width(10)
+        genbox.set_spacing(10)
+
+        prefbox = self.make_toggle_pref(
+            "general", "notify",
+            _("Display notification when wallpaper changes"))
+        genbox.pack_start(prefbox, False, False, 0)
+
+        sleep_time = int(self.config["general"]["sleep"] / 60)
+        prefbox = self.make_number_pref(
+            "general", "sleep", _("Time between each wallpaper change"),
+            Gtk.Adjustment(sleep_time, 5, 120, 1), 60)
+        genbox.pack_start(prefbox, False, False, 0)
+
+        environments = [("gnome", "Gnome, Budgie, …"), ("mate", "Mate"),
+                        ("nitrogen", _("Use Nitrogen application"))]
+        prefbox = self.make_select_pref(
+            "general", "desktop", _("Desktop environment"),
+            environments, "gnome")
+        genbox.pack_start(prefbox, False, False, 0)
+
+        ldmfound = False
+        for bintest in ["/usr/bin/lightdm", "/bin/lightdm", "/sbin/lightdm"]:
+            if os.path.exists(bintest):
+                ldmfound = True
+                break
+        if ldmfound:
+            self.lightdm_option_pref(genbox)
+
+        daemonbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        daemonbox.set_border_width(10)
+        daemonbox.set_spacing(10)
+
+        sfm = ServiceFileManager()
+
+        prefbox = self.make_prefbox_with_label(
+            _("Launch Chwall daemon when your session starts"),
+            _("This use XDG autostart mechanism"))
+        classic_daemon_btn = Gtk.Switch()
+        classic_daemon_btn.set_active(sfm.xdg_autostart_file_exists())
+        prefbox.pack_end(classic_daemon_btn, False, False, 10)
+        daemonbox.pack_start(prefbox, False, False, 0)
+
+        install_systemd_btn = None
+
+        if sfm.systemd_version is not None:
+            prefbox = self.make_prefbox_with_label(
+                _("Install required service file to use systemd launcher"),
+                _("This option must be set to let you manage the "
+                  "Chwall daemon with systemd"))
+            install_systemd_btn = Gtk.Switch()
+            service_installed = sfm.systemd_service_file_exists()
+            install_systemd_btn.set_active(service_installed)
+
+            prefbox.pack_end(install_systemd_btn, False, False, 10)
+            daemonbox.pack_start(prefbox, False, False, 0)
+
+            prefbox = self.make_prefbox_with_label(
+                _("Launch Chwall daemon with systemd when your session "
+                  "starts"), sfm.systemd_version)
+            enable_systemd_btn = Gtk.Switch()
+            enable_systemd_btn.set_active(
+                sfm.systemd_service_file_exists(True))
+
+            prefbox.pack_end(enable_systemd_btn, False, False, 10)
+            daemonbox.pack_start(prefbox, False, False, 0)
+
+            def on_toggle_install_systemd_state(widget, state):
+                if state:
+                    sfm.systemd_service_file(True)
+                    enable_systemd_btn.set_sensitive(True)
+                    classic_daemon_btn.set_sensitive(False)
+                else:
+                    sfm.remove_systemd_service_file()
+                    enable_systemd_btn.set_active(False)
+                    enable_systemd_btn.set_sensitive(False)
+                    classic_daemon_btn.set_sensitive(True)
+
+            def on_toggle_systemd_state(widget, state):
+                sfm.systemd_service_toggle(state)
+
+            install_systemd_btn.connect(
+                "state-set", on_toggle_install_systemd_state)
+            enable_systemd_btn.connect("state-set", on_toggle_systemd_state)
+
+            if service_installed:
+                classic_daemon_btn.set_sensitive(False)
+            else:
+                enable_systemd_btn.set_sensitive(False)
+
+        def on_toggle_state_set(widget, state):
+            if state:
+                sfm.xdg_autostart_file(_("Chwall daemon"),
+                                       _("Start chwall daemon"))
+            else:
+                sfm.remove_xdg_autostart_file()
+            if install_systemd_btn is not None:
+                install_systemd_btn.set_sensitive(not state)
+
+        classic_daemon_btn.connect("state-set", on_toggle_state_set)
+
+        framebox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        framebox.set_spacing(10)
+        framebox.set_border_width(10)
+
+        frame = Gtk.Frame()
+        frame_label = Gtk.Label()
+        frame_label.set_markup("<b>{}</b>".format(_("Behavior")))
+        frame.set_label_widget(frame_label)
+        frame.add(genbox)
+        framebox.pack_start(frame, False, False, 0)
+
+        frame = Gtk.Frame()
+        frame_label = Gtk.Label()
+        frame_label.set_markup("<b>{}</b>".format(_("Daemon")))
+        frame.set_label_widget(frame_label)
+        frame.add(daemonbox)
+        framebox.pack_start(frame, False, False, 0)
+
+        return framebox
