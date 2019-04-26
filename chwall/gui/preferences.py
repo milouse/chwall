@@ -414,7 +414,7 @@ class PrefDialog(Gtk.Dialog):
         def on_toggle_state_set(widget, state):
             if state:
                 sfm.xdg_autostart_file(_("Chwall daemon"),
-                                       _("Start chwall daemon"))
+                                       _("Start Chwall daemon"))
             else:
                 sfm.remove_xdg_autostart_file()
             if install_systemd_btn is not None:
