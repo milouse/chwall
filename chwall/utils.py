@@ -61,7 +61,7 @@ def read_config():
     config_file = os.path.join(xdg_config_home, "chwall.yml")
     try:
         with open(config_file, "r") as f:
-            config = yaml.load(f) or {}
+            config = yaml.safe_load(f) or {}
     except FileNotFoundError:
         config = {}
     pic_cache = "{}/pictures".format(BASE_CACHE_PATH)

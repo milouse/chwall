@@ -114,7 +114,7 @@ def run_client():
         print(_("No roadmap has been created yet"), file=sys.stderr)
         sys.exit(1)
     with open(road_map, "r") as f:
-        data = yaml.load(f)
+        data = yaml.safe_load(f)
     if action == "history":
         print("\n".join(data["history"]))
     elif action == "pending":

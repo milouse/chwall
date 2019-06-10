@@ -59,7 +59,7 @@ def filter_wallpapers_list(collecs):
     try:
         with open("{}/blacklist.yml"
                   .format(BASE_CACHE_PATH), "r") as f:
-            blacklist = yaml.load(f) or []
+            blacklist = yaml.safe_load(f) or []
     except FileNotFoundError:
         blacklist = []
     for p in all_pics:
@@ -197,7 +197,7 @@ def pick_wallpaper(config, backward=False, guard=False):
     if not os.path.exists(road_map):
         build_roadmap(config)
     with open(road_map, "r") as f:
-        data = yaml.load(f)
+        data = yaml.safe_load(f)
     if backward is True:
         # Current wallpaper is the last of the history array. Thus we should go
         # back two times
@@ -238,7 +238,7 @@ def blacklist_wallpaper():
     try:
         with open("{}/blacklist.yml"
                   .format(BASE_CACHE_PATH), "r") as f:
-            blacklist = yaml.load(f) or []
+            blacklist = yaml.safe_load(f) or []
     except FileNotFoundError:
         blacklist = []
     with open("{}/current_wallpaper"
