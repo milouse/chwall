@@ -62,7 +62,8 @@ def filter_wallpapers_list(collecs):
             blacklist = yaml.safe_load(f) or []
     except FileNotFoundError:
         blacklist = []
-    for p in all_pics:
+    all_pics_copy = all_pics.copy()
+    for p in all_pics_copy:
         if p not in blacklist:
             continue
         print("Remove {} as it's in blacklist".format(p))
