@@ -81,6 +81,10 @@ def build_roadmap(config):
         yaml.dump(road_map, f, explicit_start=True, default_flow_style=False)
 
 
+def prop_setting_error_str(desktop, prop):
+    return "Error while setting {desktop} {prop} property".format(desktop=desktop, prop=prop)
+
+
 def set_mate_wallpaper(path):
     if path is None:
         raise ChwallWallpaperSetError("No wallpaper path given")
@@ -88,37 +92,32 @@ def set_mate_wallpaper(path):
                          "picture-filename", path]).returncode
     if err == 1:
         raise ChwallWallpaperSetError(
-            "Error while setting mate picture-filename property")
+            prop_setting_error_str("mate", "picture-filename"))
     err = subprocess.run(["gsettings", "set", "org.mate.background",
                          "picture-options", "zoom"]).returncode
     if err == 1:
         raise ChwallWallpaperSetError(
-            "Error while setting mate picture-options property")
+            prop_setting_error_str("mate", "picture-options"))
 
 
 def set_gnome_wallpaper(path):
     if path is None:
         raise ChwallWallpaperSetError("No wallpaper path given")
-    err = subprocess.run(["gsettings", "set", "org.gnome.desktop.background",
-                         "picture-uri", "file://{}".format(path)]).returncode
-    if err == 1:
-        raise ChwallWallpaperSetError(
-            "Error while setting gnome background picture-uri property")
-    err = subprocess.run(["gsettings", "set", "org.gnome.desktop.background",
-                         "picture-options", "zoom"]).returncode
-    if err == 1:
-        raise ChwallWallpaperSetError(
-            "Error while setting gnome background picture-options property")
-    err = subprocess.run(["gsettings", "set", "org.gnome.desktop.screensaver",
-                         "picture-uri", "file://{}".format(path)]).returncode
-    if err == 1:
-        raise ChwallWallpaperSetError(
-            "Error while setting gnome screensaver picture-uri property")
-    err = subprocess.run(["gsettings", "set", "org.gnome.desktop.screensaver",
-                         "picture-options", "zoom"]).returncode
-    if err == 1:
-        raise ChwallWallpaperSetError(
-            "Error while setting gnome screensaver picture-options property")
+    for where in ["background", "screensaver"]:
+        err = subprocess.run(
+            ["gsettings", "set", "org.gnome.desktop.{}".format(where),
+             "picture-uri", "file://{}".format(path)]).returncode
+        if err == 1:
+            raise ChwallWallpaperSetError(
+                prop_setting_error_str(
+                    "gnome", "{where} picture-uri".format(where=where)))
+        err = subprocess.run(
+            ["gsettings", "set", "org.gnome.desktop.{}".format(where),
+             "picture-options", "zoom"]).returncode
+        if err == 1:
+            raise ChwallWallpaperSetError(
+                prop_setting_error_str(
+                    "gnome", "{where} picture-options".format(where=where)))
 
 
 def set_nitrogen_wallpaper(path):
