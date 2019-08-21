@@ -181,19 +181,11 @@ def set_wallpaper(path, config):
 
 def fetch_wallpaper(collecs):
     wp = collecs["data"][collecs["pictures"][0]]
-    if wp["type"] == "local":
-        pic_file = wp["image"]
-    else:
-        m = hashlib.md5()
-        m.update(wp["image"].encode())
-        pic_file = "{}/pictures/{}-{}".format(
-            BASE_CACHE_PATH, wp["type"], m.hexdigest())
-    # screen_config = get_screen_config()
+    current_wall = clean_wallpaper_info(wp)
     with open("{}/current_wallpaper".format(BASE_CACHE_PATH), "w") as f:
-        f.write(wp["image"])
-        f.write("\n{copy}\n{url}\n{source}\n{local_path}".format(
-            copy=wp["copyright"], url=wp["url"], source=wp["type"],
-            local_path=pic_file))
+        for line in current_wall:
+            f.write(line + "\n")
+    pic_file = current_wall[-1]
     if os.path.exists(pic_file):
         return pic_file, wp["image"]
     with open(pic_file, "wb") as f:
@@ -263,6 +255,22 @@ def blacklist_wallpaper():
               .format(BASE_CACHE_PATH), "w") as f:
         yaml.dump(blacklist, f, explicit_start=True,
                   default_flow_style=False)
+
+
+def clean_wallpaper_info(data):
+    """Return the information array for a wallpaper
+
+    The returned array is ready to be saved in current_wallpaper file.
+    """
+    if data["type"] == "local":
+        pic_file = data["image"]
+    else:
+        m = hashlib.md5()
+        m.update(data["image"].encode())
+        pic_file = "{}/pictures/{}-{}".format(
+            BASE_CACHE_PATH, data["type"], m.hexdigest())
+    return [data["image"], data["copyright"], data["url"],
+            data["type"], pic_file]
 
 
 def current_wallpaper_info():

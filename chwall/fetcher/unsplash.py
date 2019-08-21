@@ -43,7 +43,7 @@ def fetch_pictures(config):
             label = _("Picture")
         else:
             # Avoid descriptions to be on several lines
-            label = p["description"].replace("\n", " ")
+            label = p["description"]
             # Avoid long descriptions
             if len(label) > 200:
                 label = label[0:200] + "…"
