@@ -1,19 +1,25 @@
-ROOT = /
-DEST = $(ROOT)usr
+DESTDIR =
+
+prefix = $(DESTDIR)/usr
+datarootdir = $(prefix)/share
+
+exec_prefix = $(prefix)
+bindir = $(exec_prefix)/bin
+libdir = $(exec_prefix)/lib
 
 VERSION = $(shell python -c "from chwall.utils import VERSION;print(VERSION)")
 
 ICON       = data/icon_800.png
 ICON_SIZE  = 128 64 48 32 24 16
-DEST_ICONS = $(foreach z,$(ICON_SIZE),$(DEST)/share/icons/hicolor/$(z)x$(z)/apps/chwall.png)
+DEST_ICONS = $(foreach z,$(ICON_SIZE),$(datarootdir)/icons/hicolor/$(z)x$(z)/apps/chwall.png)
 
 PY_VERSION = $(shell python -c "import sys;v=sys.version_info;print('{}.{}'.format(v.major, v.minor))")
-PY_SITE    = $(ROOT)usr/lib/python$(PY_VERSION)/site-packages
+PY_SITE    = $(libdir)/python$(PY_VERSION)/site-packages
 
 L10N_LANGS   = fr es
 PO_FILES     = $(L10N_LANGS:%=locale/%/LC_MESSAGES/chwall.po)
 MO_FILES     = $(PO_FILES:%.po=%.mo)
-DEST_MO      = $(L10N_LANGS:%=$(DEST)/share/locale/%/LC_MESSAGES/chwall.mo)
+DEST_MO      = $(L10N_LANGS:%=$(datarootdir)/locale/%/LC_MESSAGES/chwall.mo)
 TRANSLATABLE = chwall/gui/shared.py chwall/gui/icon.py chwall/gui/app.py \
 	chwall/gui/preferences.py chwall/daemon.py chwall/client.py \
 	chwall/fetcher/bing.py chwall/fetcher/deviantart.py \
@@ -26,36 +32,36 @@ TRANSLATABLE = chwall/gui/shared.py chwall/gui/icon.py chwall/gui/app.py \
 .INTERMEDIATE: chwall-app.desktop
 
 dist: $(DEST_ICONS) $(DEST_MO) chwall-app.desktop
-	python setup.py install --root=$(ROOT)
+	python setup.py install --root=$(DESTDIR)/
 	@rm -rf build chwall.egg-info
-	install -d -m755 $(DEST)/share/applications
-	install -d -m755 $(DEST)/share/licenses/chwall
-	install -d -m755 $(DEST)/share/bash-completion/completions
-	install -d -m755 $(DEST)/share/zsh/site-functions
-	install -D -m644 chwall-app.desktop $(DEST)/share/applications/chwall-app.desktop
-	install -D -m644 LICENSE $(DEST)/share/licenses/chwall/LICENSE
-	install -D -m644 data/chwall-completions $(DEST)/share/bash-completion/completions/chwall
-	install -D -m644 data/_chwall $(DEST)/share/zsh/site-functions/_chwall
+	install -d -m755 $(datarootdir)/applications
+	install -d -m755 $(datarootdir)/licenses/chwall
+	install -d -m755 $(datarootdir)/bash-completion/completions
+	install -d -m755 $(datarootdir)/zsh/site-functions
+	install -D -m644 chwall-app.desktop $(datarootdir)/applications/chwall-app.desktop
+	install -D -m644 LICENSE $(datarootdir)/licenses/chwall/LICENSE
+	install -D -m644 data/chwall-completions $(datarootdir)/bash-completion/completions/chwall
+	install -D -m644 data/_chwall $(datarootdir)/zsh/site-functions/_chwall
 
 install: dist
-	@update-desktop-database $(DEST)/share/applications
-	@gtk-update-icon-cache $(DEST)/share/icons/hicolor
+	@update-desktop-database $(datarootdir)/applications
+	@gtk-update-icon-cache $(datarootdir)/icons/hicolor
 
 uninstall:
 	rm -rf $(PY_SITE)/chwall $(PY_SITE)/chwall-$(VERSION)-py$(PY_VERSION).egg-info
-	rm -rf $(DEST)/share/licenses/chwall
+	rm -rf $(datarootdir)/licenses/chwall
 	rm -f $(DEST_ICONS)
-	@gtk-update-icon-cache $(DEST)/share/icons/hicolor
+	@gtk-update-icon-cache $(datarootdir)/icons/hicolor
 	rm -f $(DEST_MO)
-	rm -f $(DEST)/share/bash-completion/completions/chwall
-	rm -f $(DEST)/share/zsh/site-functions/_chwall
-	rm -f $(DEST)/bin/chwall $(DEST)/bin/chwall-daemon $(DEST)/bin/chwall-icon $(DEST)/bin/chwall-app
-	rm -f $(DEST)/share/applications/chwall-app.desktop
+	rm -f $(datarootdir)/bash-completion/completions/chwall
+	rm -f $(datarootdir)/zsh/site-functions/_chwall
+	rm -f $(bindir)/chwall $(bindir)/chwall-daemon $(bindir)/chwall-icon $(bindir)/chwall-app
+	rm -f $(datarootdir)/applications/chwall-app.desktop
 
 chwall-app.desktop:
-	python chwall.py desktop $(DEST)/share/locale
+	python chwall.py desktop $(datarootdir)/locale
 
-$(DEST)/share/icons/hicolor/%/apps/chwall.png: data/icon_%.png
+$(datarootdir)/icons/hicolor/%/apps/chwall.png: data/icon_%.png
 	install -d -m755 $(@:%/chwall.png=%)
 	install -D -m644 $< $@
 
@@ -81,7 +87,7 @@ locale/chwall.pot:
 locale/%/LC_MESSAGES/chwall.mo: locale/%/LC_MESSAGES/chwall.po
 	msgfmt -o $@ $<
 
-$(DEST)/share/locale/%/LC_MESSAGES/chwall.mo: locale/%/LC_MESSAGES/chwall.mo
+$(datarootdir)/locale/%/LC_MESSAGES/chwall.mo: locale/%/LC_MESSAGES/chwall.mo
 	install -D -m644 $< $@
 
 lang: $(PO_FILES)
