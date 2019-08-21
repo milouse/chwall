@@ -1,13 +1,6 @@
 import requests
 from lxml import html
 
-import gettext
-# Uncomment the following line during development.
-# Please, be cautious to NOT commit the following line uncommented.
-# gettext.bindtextdomain("chwall", "./locale")
-gettext.textdomain("chwall")
-_ = gettext.gettext
-
 
 def fetch_pictures(config):
     collecs = {}
@@ -32,11 +25,9 @@ def fetch_pictures(config):
         link = item.getparent()
         collecs[url] = {
             "image": url,
-            "type": "powder",
+            "type": "Powder",
             "url": "https://www.powder.com" + link.attrib["href"],
-            "copyright": (_("{title} by {author} (on {source})")
-                          .format(title=_("Picture"), source="Powder",
-                                  author=link.attrib["title"]))
+            "author": link.attrib["title"]
         }
     return collecs
 
@@ -49,8 +40,7 @@ def preferences():
                 "type": "int",
                 "widget": "select",
                 "values": [320, 640, 970, 1920],
-                "default": 1920,
-                "label": _("Wallpaper width")
+                "default": 1920
             }
         }
     }

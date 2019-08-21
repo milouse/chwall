@@ -2,13 +2,6 @@ import re
 import time
 import requests
 
-import gettext
-# Uncomment the following line during development.
-# Please, be cautious to NOT commit the following line uncommented.
-# gettext.bindtextdomain("chwall", "./locale")
-gettext.textdomain("chwall")
-_ = gettext.gettext
-
 
 def fetch_pictures(config):
     collecs = {}
@@ -29,21 +22,20 @@ def fetch_pictures(config):
         url = "https://apod.nasa.gov/apod/{}".format(m[1])
         collecs[url] = {
             "image": url,
-            "type": "nasa",
+            "type": "NASA",
             "url": pic_page,
-            "copyright": _("NASA Astronomy Picture Of The Day")
+            "copyright": "Astronomy Picture Of The Day"
         }
     return collecs
 
 
 def preferences():
     return {
-        "name": _("NASA Astronomy Picture Of The Day"),
+        "name": "NASA Astronomy Picture Of The Day",
         "options": {
             "count": {
                 "widget": "number",
-                "default": 10,
-                "label": _("Number of item to retrieve")
+                "default": 10
             }
         }
     }

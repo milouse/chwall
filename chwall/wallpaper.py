@@ -269,7 +269,15 @@ def clean_wallpaper_info(data):
         m.update(data["image"].encode())
         pic_file = "{}/pictures/{}-{}".format(
             BASE_CACHE_PATH, data["type"], m.hexdigest())
-    return [data["image"], data["copyright"], data["url"],
+    rights = data.get("copyright")
+    if rights is None or rights == "":
+        rights = _("{title} by {author}").format(
+            title=data.get("description", "Picture"),
+            author=data.get("author", "unknown"))
+    description = _("{title} (on {source})").format(
+        title=rights.replace("\n", " "),
+        source=data["type"])
+    return [data["image"], description, data["url"],
             data["type"], pic_file]
 
 

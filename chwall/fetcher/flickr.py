@@ -3,13 +3,6 @@ import requests
 from lxml import html
 from xml.etree import ElementTree
 
-import gettext
-# Uncomment the following line during development.
-# Please, be cautious to NOT commit the following line uncommented.
-# gettext.bindtextdomain("chwall", "./locale")
-gettext.textdomain("chwall")
-_ = gettext.gettext
-
 
 def fetch_pictures(config):
     if "flickr" in config and "tags" in config["flickr"]:
@@ -37,11 +30,10 @@ def fetch_pictures(config):
 
         collecs[pic_url] = {
             "image": pic_url,
-            "type": "flickr",
+            "type": "Flickr",
             "url": pic_page,
-            "copyright": (_("{title} by {author} (on {source})")
-                          .format(title=title, author=author,
-                                  source="Flickr"))
+            "description": title,
+            "author": author
         }
     return collecs
 

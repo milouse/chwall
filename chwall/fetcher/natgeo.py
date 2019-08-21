@@ -1,13 +1,6 @@
 import requests
 from datetime import date
 
-import gettext
-# Uncomment the following line during development.
-# Please, be cautious to NOT commit the following line uncommented.
-# gettext.bindtextdomain("chwall", "./locale")
-gettext.textdomain("chwall")
-_ = gettext.gettext
-
 
 def fetch_pictures(config):
     collecs = {}
@@ -23,21 +16,21 @@ def fetch_pictures(config):
     for p in data["items"]:
         if p["url"] == "https://yourshot.nationalgeographic.com":
             px = p["sizes"]["%d" % width]
-            purl = p["full-path-url"]
-            pcredit = (_("{title} by {author} (on {source})")
-                       .format(title=p["altText"], author=p["credit"],
-                               source="National Geographic"))
+            collecs[px] = {
+                "image": px,
+                "description": p["altText"],
+                "author": p["credit"],
+                "url": p["full-path-url"],
+                "type": "National Geographic"
+            }
         else:
             px = p["url"]
-            purl = p["pageUrl"]
-            pcredit = ("{}. {} (on National Geographic)"
-                       .format(p["altText"], p["credit"]))
-        collecs[px] = {
-            "image": px,
-            "copyright": pcredit,
-            "url": purl,
-            "type": "natgeo"
-        }
+            collecs[px] = {
+                "image": px,
+                "copyright": "{}. {}".format(p["altText"], p["credit"]),
+                "url": p["pageUrl"],
+                "type": "National Geographic"
+            }
     return collecs
 
 
@@ -49,8 +42,7 @@ def preferences():
                 "type": "int",
                 "widget": "select",
                 "values": [240, 320, 500, 640, 800, 1024, 1600, 2048],
-                "default": 1600,
-                "label": _("Wallpaper width")
+                "default": 1600
             }
         }
     }

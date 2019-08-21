@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chwall 0.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-26 12:48+0200\n"
-"PO-Revision-Date: 2019-04-26 12:50+0200\n"
+"POT-Creation-Date: 2019-08-21 09:59+0200\n"
+"PO-Revision-Date: 2019-08-21 10:00+0200\n"
 "Last-Translator: Étienne Deparis <etienne@depar.is>\n"
 "Language-Team: none\n"
 "Language: fr\n"
@@ -18,49 +18,27 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 2.2.1\n"
 
-#: chwall/gui/shared.py:79
-#, python-brace-format
-msgid "{number} broken cache entry has been removed"
-msgstr "{number} entrée cassée du cache a été supprimée"
-
-#: chwall/gui/shared.py:81
-#, python-brace-format
-msgid "{number} broken cache entries have been removed"
-msgstr "{number} entrées cassées du cache ont été supprimées"
-
-#: chwall/gui/shared.py:85
-msgid "Cache cleanup"
-msgstr "Nettoyage du cache"
-
-#: chwall/gui/shared.py:102 chwall/gui/icon.py:130 chwall/gui/app.py:212
-msgid "Wallpaper Changer"
-msgstr "Changeur de papier-peint"
-
-#: chwall/gui/shared.py:104
-msgid "Chwall is released under the WTFPL"
-msgstr "Chwall est publié selon les termes de la WTFPL"
-
-#: chwall/gui/icon.py:41 chwall/gui/app.py:178
+#: chwall/gui/icon.py:41 chwall/gui/app.py:190
 msgid "Start daemon"
 msgstr "Démarrer le service"
 
-#: chwall/gui/icon.py:54 chwall/gui/app.py:102
+#: chwall/gui/icon.py:54 chwall/gui/app.py:112
 msgid "Current wallpaper is not managed by Chwall"
 msgstr "Le papier-peint actuel n'est pas géré par Chwall"
 
-#: chwall/gui/icon.py:69 chwall/gui/app.py:72 chwall/gui/app.py:220
+#: chwall/gui/icon.py:69 chwall/gui/app.py:73 chwall/gui/app.py:237
 msgid "Next wallpaper"
 msgstr "Papier-peint suivant"
 
-#: chwall/gui/icon.py:74 chwall/gui/app.py:61 chwall/gui/app.py:224
+#: chwall/gui/icon.py:74 chwall/gui/app.py:61 chwall/gui/app.py:241
 msgid "Previous wallpaper"
 msgstr "Papier-peint précédent"
 
-#: chwall/gui/icon.py:79 chwall/gui/app.py:83
+#: chwall/gui/icon.py:79 chwall/gui/app.py:93
 msgid "Blacklist"
 msgstr "Mettre en liste noire"
 
-#: chwall/gui/icon.py:84 chwall/gui/app.py:135
+#: chwall/gui/icon.py:84 chwall/gui/app.py:145
 msgid "Cleanup broken entries in cache"
 msgstr "Nettoyer les entrées cassées du cache"
 
@@ -76,7 +54,11 @@ msgstr "Toujours afficher cette icône"
 msgid "Report a bug"
 msgstr "Signaler un bogue"
 
-#: chwall/gui/app.py:38 chwall/gui/app.py:147 chwall/gui/preferences.py:23
+#: chwall/gui/icon.py:130 chwall/gui/app.py:229 chwall/gui/shared.py:105
+msgid "Wallpaper Changer"
+msgstr "Changeur de papier-peint"
+
+#: chwall/gui/app.py:38 chwall/gui/app.py:157 chwall/gui/preferences.py:23
 msgid "Preferences"
 msgstr "Préférences"
 
@@ -89,19 +71,23 @@ msgstr ""
 "peut prendre quelques temps si vous avez beaucoup de sources activées. Merci "
 "pour votre patience."
 
-#: chwall/gui/app.py:143
+#: chwall/gui/app.py:82
+msgid "Stop daemon and erase pending list"
+msgstr "Arrêter le service et effacer la liste d'attente"
+
+#: chwall/gui/app.py:153
 msgid "Display notification icon"
 msgstr "Afficher une icône dans la zone de notification"
 
-#: chwall/gui/app.py:151
+#: chwall/gui/app.py:161
 msgid "About Chwall"
 msgstr "À propos de Chwall"
 
-#: chwall/gui/app.py:174
+#: chwall/gui/app.py:185
 msgid "Stop daemon"
 msgstr "Arrêter le service"
 
-#: chwall/gui/app.py:216
+#: chwall/gui/app.py:233
 msgid "Main window of the Chwall wallpaper changer"
 msgstr "Fenêtre principale du changeur de papier-peint Chwall"
 
@@ -113,81 +99,209 @@ msgstr "Général"
 msgid "Pictures sources"
 msgstr "Sources des images"
 
-#: chwall/gui/preferences.py:100
+#: chwall/gui/preferences.py:59
+msgid "Wallpaper width"
+msgstr "Largeur du papier-peint"
+
+#: chwall/gui/preferences.py:61
+msgid "Number of item to retrieve"
+msgstr "Nombre d'élément à récupérer"
+
+#: chwall/gui/preferences.py:63
+msgid "Collections"
+msgstr "Collections"
+
+#: chwall/gui/preferences.py:106
 msgid "Enable"
 msgstr "Activer"
 
-#: chwall/gui/preferences.py:275
+#: chwall/gui/preferences.py:281
 msgid "Remove"
 msgstr "Supprimer"
 
-#: chwall/gui/preferences.py:280
+#: chwall/gui/preferences.py:286
 msgid "Add"
 msgstr "Ajouter"
 
-#: chwall/gui/preferences.py:294
+#: chwall/gui/preferences.py:300
 msgid "LightDM shared background path"
 msgstr "Chemin vers le papier-peint partagé avec LightDM"
 
-#: chwall/gui/preferences.py:296
+#: chwall/gui/preferences.py:302
 msgid "Select a file"
 msgstr "Sélectionner un fichier"
 
-#: chwall/gui/preferences.py:329
+#: chwall/gui/preferences.py:335
 msgid "Display notification when wallpaper changes"
 msgstr "Montrer une notification lorsque le papier-peint est changé"
 
-#: chwall/gui/preferences.py:334
+#: chwall/gui/preferences.py:340
 msgid "Time between each wallpaper change"
 msgstr "Délai entre chaque changement de papier-peint"
 
-#: chwall/gui/preferences.py:339
+#: chwall/gui/preferences.py:345
 msgid "Use Nitrogen application"
 msgstr "Utiliser l'application Nitrogen"
 
-#: chwall/gui/preferences.py:341
+#: chwall/gui/preferences.py:347
 msgid "Desktop environment"
 msgstr "Environnement de bureau"
 
-#: chwall/gui/preferences.py:360
+#: chwall/gui/preferences.py:366
 msgid "Launch Chwall daemon when your session starts"
 msgstr "Démarrer le service de Chwall lorsque votre session démarre"
 
-#: chwall/gui/preferences.py:361
+#: chwall/gui/preferences.py:367
 msgid "This use XDG autostart mechanism"
 msgstr "Ceci utilise le mécanisme de démarrage XDG"
 
-#: chwall/gui/preferences.py:371
+#: chwall/gui/preferences.py:377
 msgid "Install required service file to use systemd launcher"
 msgstr "Installer le fichier requis pour permettre le démarrage avec systemd"
 
-#: chwall/gui/preferences.py:372
+#: chwall/gui/preferences.py:378
 msgid ""
 "This option must be set to let you manage the Chwall daemon with systemd"
 msgstr ""
 "Cette option doit être sélectionnée pour que vous puissiez gérer le service "
 "de Chwall avec systemd"
 
-#: chwall/gui/preferences.py:382
+#: chwall/gui/preferences.py:388
 msgid "Launch Chwall daemon with systemd when your session starts"
 msgstr ""
 "Démarrer le service de Chwall avec systemd lorsque votre session démarre"
 
-#: chwall/gui/preferences.py:416
+#: chwall/gui/preferences.py:422
 msgid "Chwall daemon"
 msgstr "Service en tâche de fond de Chwall"
 
-#: chwall/gui/preferences.py:417
+#: chwall/gui/preferences.py:423
 msgid "Start Chwall daemon"
 msgstr "Démarrer le service de Chwall"
 
-#: chwall/gui/preferences.py:431
+#: chwall/gui/preferences.py:437
 msgid "Behavior"
 msgstr "Comportement"
 
-#: chwall/gui/preferences.py:438
+#: chwall/gui/preferences.py:444
 msgid "Daemon"
 msgstr "Tâche de fond"
+
+#: chwall/gui/shared.py:82
+#, python-brace-format
+msgid "{number} broken cache entry has been removed"
+msgstr "{number} entrée cassée du cache a été supprimée"
+
+#: chwall/gui/shared.py:84
+#, python-brace-format
+msgid "{number} broken cache entries have been removed"
+msgstr "{number} entrées cassées du cache ont été supprimées"
+
+#: chwall/gui/shared.py:88
+msgid "Cache cleanup"
+msgstr "Nettoyage du cache"
+
+#: chwall/gui/shared.py:107
+msgid "Chwall is released under the WTFPL"
+msgstr "Chwall est publié selon les termes de la WTFPL"
+
+#: chwall/wallpaper.py:31
+msgid "Fetching pictures addresses…"
+msgstr "Récupération des adresses des images…"
+
+#: chwall/wallpaper.py:45
+#, python-brace-format
+msgid ""
+"Catch {error} exception while retrieving images from {module}. Wait {time} "
+"seconds before retrying."
+msgstr ""
+"Récupération de l’exception {error} durant la récupération des images pour "
+"{module}. Attente de {time} secondes avant de réessayer."
+
+#: chwall/wallpaper.py:55
+#, python-brace-format
+msgid "Retry NOW to connect to {module}"
+msgstr "Essaye MAINTENANT de se connecter à {module}"
+
+#: chwall/wallpaper.py:58
+msgid "Switch to next picture provider or exit"
+msgstr "Passe au fournisseur d'images suivant ou quitte"
+
+#: chwall/wallpaper.py:76
+#, python-brace-format
+msgid "Remove {picture} as it's in blacklist"
+msgstr "Supprime {picture} comme elle est dans la liste noire"
+
+#: chwall/wallpaper.py:94
+#, python-brace-format
+msgid "Error while setting {desktop} {prop} property"
+msgstr "Erreur durant la configuration de la propriété {prop} de {desktop}"
+
+#: chwall/wallpaper.py:100 chwall/wallpaper.py:115
+msgid "No wallpaper path given"
+msgstr "Aucun chemin vers un papier-peint donné"
+
+#: chwall/wallpaper.py:117
+#, python-brace-format
+msgid "background {prop}"
+msgstr "{prop} du papier-peint"
+
+#: chwall/wallpaper.py:118
+#, python-brace-format
+msgid "screensaver {prop}"
+msgstr "{prop} de l'écran de veille"
+
+#: chwall/wallpaper.py:158
+msgid "Error while calling nitrogen for multihead display"
+msgstr "Erreur lors de l'appel à nitrogen pour un affichage multi écran"
+
+#: chwall/wallpaper.py:162
+msgid "Error while calling nitrogen for single display"
+msgstr ""
+"Erreur lors de l'appel à nitrogen pour un affichage sur un unique écran"
+
+#: chwall/wallpaper.py:274
+#, python-brace-format
+msgid "{title} by {author}"
+msgstr "{title} de {author}"
+
+#: chwall/wallpaper.py:277
+#, python-brace-format
+msgid "{title} (on {source})"
+msgstr "{title} (sur {source})"
+
+#: chwall/fetcher/local.py:27
+msgid "Local wallpaper"
+msgstr "Papier-peint local"
+
+#: chwall/fetcher/local.py:34
+msgid "Local files"
+msgstr "Fichiers locaux"
+
+#: chwall/fetcher/local.py:38
+msgid "Wallpaper repositories"
+msgstr "Dossiers de papiers-peints"
+
+#: chwall/fetcher/unsplash.py:43
+msgid "Picture"
+msgstr "Image"
+
+#: chwall/fetcher/unsplash.py:51
+#, python-brace-format
+msgid "{desc}, taken in {location}"
+msgstr "{desc}, prise à {location}"
+
+#: chwall/fetcher/unsplash.py:77
+msgid "API access_key"
+msgstr "Clé d'accès API (access_key)"
+
+#: chwall/fetcher/unsplash.py:81
+msgid "Complementary query"
+msgstr "Requête complémentaire"
+
+#: chwall/fetcher/bing.py:47
+msgid "Locales"
+msgstr "Langues"
 
 #: chwall/daemon.py:65
 #, python-brace-format
@@ -264,63 +378,5 @@ msgstr ""
 msgid "No roadmap has been created yet"
 msgstr "Aucune liste d'attente n'a encore été définie"
 
-#: chwall/fetcher/bing.py:33
-#, python-brace-format
-msgid "{title} (on {source})"
-msgstr "{title} (sur {source})"
-
-#: chwall/fetcher/bing.py:48
-msgid "Locales"
-msgstr "Langues"
-
-#: chwall/fetcher/deviantart.py:35 chwall/fetcher/natgeo.py:27
-#: chwall/fetcher/powder.py:37 chwall/fetcher/unsplash.py:50
-#, python-brace-format
-msgid "{title} by {author} (on {source})"
-msgstr "{title} de {author} (sur {source})"
-
-#: chwall/fetcher/deviantart.py:48 chwall/fetcher/unsplash.py:89
-msgid "Collections"
-msgstr "Collections"
-
-#: chwall/fetcher/local.py:27
-msgid "Local wallpaper"
-msgstr "Papier-peint local"
-
-#: chwall/fetcher/local.py:34
-msgid "Local files"
-msgstr "Fichiers locaux"
-
-#: chwall/fetcher/local.py:38
-msgid "Wallpaper repositories"
-msgstr "Dossiers de papiers-peints"
-
-#: chwall/fetcher/nasa.py:34 chwall/fetcher/nasa.py:41
-msgid "NASA Astronomy Picture Of The Day"
-msgstr "Image astronomique du jour de la NASA"
-
-#: chwall/fetcher/nasa.py:46 chwall/fetcher/unsplash.py:77
-msgid "Number of item to retrieve"
-msgstr "Nombre d'élément à récupérer"
-
-#: chwall/fetcher/natgeo.py:53 chwall/fetcher/powder.py:53
-#: chwall/fetcher/unsplash.py:72
-msgid "Wallpaper width"
-msgstr "Largeur du papier-peint"
-
-#: chwall/fetcher/powder.py:38 chwall/fetcher/unsplash.py:43
-msgid "Picture"
-msgstr "Image"
-
-#: chwall/fetcher/unsplash.py:54
-#, python-brace-format
-msgid "{desc}, taken in {location}"
-msgstr "{desc}, prise à {location}"
-
-#: chwall/fetcher/unsplash.py:81
-msgid "API access_key"
-msgstr "Clé d'accès API (access_key)"
-
-#: chwall/fetcher/unsplash.py:85
-msgid "Complementary query"
-msgstr "Requête complémentaire"
+#~ msgid "NASA Astronomy Picture Of The Day"
+#~ msgstr "Image astronomique du jour de la NASA"

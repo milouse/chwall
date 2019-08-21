@@ -47,17 +47,15 @@ def fetch_pictures(config):
             # Avoid long descriptions
             if len(label) > 200:
                 label = label[0:200] + "…"
-        label = (_("{title} by {author} (on {source})")
-                 .format(title=label, author=p["user"]["name"],
-                         source="Unsplash"))
         if "location" in p and p["location"]["title"] is not None:
             label = (_("{desc}, taken in {location}")
                      .format(desc=label, location=p["location"]["title"]))
         collecs[px] = {
             "image": px,
-            "copyright": label,
+            "description": label,
+            "author": p["user"]["name"],
             "url": p["links"]["html"],
-            "type": "unsplash"
+            "type": "Unsplash"
         }
     return collecs
 
@@ -68,13 +66,11 @@ def preferences():
         "options": {
             "width": {
                 "widget": "number",
-                "default": 1600,
-                "label": _("Wallpaper width")
+                "default": 1600
             },
             "count": {
                 "widget": "number",
-                "default": 10,
-                "label": _("Number of item to retrieve")
+                "default": 10
             },
             "access_key": {
                 "widget": "text",
@@ -85,8 +81,7 @@ def preferences():
                 "label": _("Complementary query")
             },
             "collections": {
-                "widget": "list",
-                "label": _("Collections")
+                "widget": "list"
             }
         }
     }

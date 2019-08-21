@@ -51,17 +51,25 @@ class PrefDialog(Gtk.Dialog):
             return
         if fetcher_name not in self.config:
             self.config[fetcher_name] = {}
+
+        def translate_label(label, default):
+            if label is not None:
+                return label
+            if default == "width":
+                return _("Wallpaper width")
+            elif default == "count":
+                return _("Number of item to retrieve")
+            elif default == "collections":
+                return _("Collections")
+            return default.capitalize()
+
         for opt in fprefs["options"]:
             if "widget" not in fprefs["options"][opt]:
                 continue
             options = fprefs["options"][opt]
             prefbox = None
-            label = opt.capitalize()
-            if "label" in options:
-                label = options["label"]
-            defval = None
-            if "default" in options:
-                defval = options["default"]
+            label = translate_label(options.get("label"), opt)
+            defval = options.get("default")
             if options["widget"] == "select":
                 values = []
                 for v in options["values"]:
@@ -86,10 +94,8 @@ class PrefDialog(Gtk.Dialog):
         frame = Gtk.Frame()
         fetcher_label = Gtk.Label()
         cap_name = fetcher_name.capitalize()
-        if "name" in fprefs:
-            fetcher_label.set_markup("<b>{}</b>".format(fprefs["name"]))
-        else:
-            fetcher_label.set_markup("<b>{}</b>".format(cap_name))
+        fetcher_label.set_markup(
+            "<b>{}</b>".format(fprefs.get("name", cap_name)))
         frame.set_label_widget(fetcher_label)
         sourceprefbox.set_border_width(10)
         frame.add(sourceprefbox)
