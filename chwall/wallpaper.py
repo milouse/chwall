@@ -12,6 +12,13 @@ from importlib import import_module
 # chwall imports
 from chwall.utils import BASE_CACHE_PATH, get_screen_config, get_wall_config
 
+import gettext
+# Uncomment the following line during development.
+# Please, be cautious to NOT commit the following line uncommented.
+# gettext.bindtextdomain("chwall", "./locale")
+gettext.textdomain("chwall")
+_ = gettext.gettext
+
 
 class ChwallWallpaperSetError(Exception):
     pass
@@ -21,7 +28,7 @@ WAIT_ERROR = 10
 
 
 def build_wallpapers_list(config):
-    print("Fetching pictures addresses…")
+    print(_("Fetching pictures addresses…"))
     collecs = {}
     for module_name in config["general"]["sources"]:
         try_again = 5
@@ -35,20 +42,20 @@ def build_wallpapers_list(config):
             except (requests.exceptions.ConnectionError,
                     requests.exceptions.HTTPError,
                     requests.exceptions.Timeout) as e:
-                print("Catch {error} exception while retrieving "
-                      "images from {module}. Wait {time} seconds "
-                      "before retrying.".format(
-                        error=type(e).__name__, module=module_name,
-                        time=WAIT_ERROR),
+                print(_("Catch {error} exception while retrieving "
+                        "images from {module}. Wait {time} seconds "
+                        "before retrying.").format(
+                            error=type(e).__name__, module=module_name,
+                            time=WAIT_ERROR),
                       file=sys.stderr)
                 try_again -= 1
                 try:
                     time.sleep(WAIT_ERROR)
                 except KeyboardInterrupt:
-                    print("Retry NOW to connect to {}"
-                          .format(module_name))
+                    print(_("Retry NOW to connect to {module}")
+                          .format(module=module_name))
             except KeyboardInterrupt:
-                print("Switch to next picture provider or exit")
+                print(_("Switch to next picture provider or exit"))
                 try_again = 0
         collecs.update(ll)
     return collecs
@@ -66,7 +73,8 @@ def filter_wallpapers_list(collecs):
     for p in all_pics_copy:
         if p not in blacklist:
             continue
-        print("Remove {} as it's in blacklist".format(p))
+        print(_("Remove {picture} as it's in blacklist")
+              .format(picture=p))
         all_pics.remove(p)
         collecs.pop(p)
     return (all_pics, collecs)
@@ -82,12 +90,14 @@ def build_roadmap(config):
 
 
 def prop_setting_error_str(desktop, prop):
-    return "Error while setting {desktop} {prop} property".format(desktop=desktop, prop=prop)
+    return _(
+        "Error while setting {desktop} {prop} property"
+    ).format(desktop=desktop, prop=prop)
 
 
 def set_mate_wallpaper(path):
     if path is None:
-        raise ChwallWallpaperSetError("No wallpaper path given")
+        raise ChwallWallpaperSetError(_("No wallpaper path given"))
     err = subprocess.run(["gsettings", "set", "org.mate.background",
                          "picture-filename", path]).returncode
     if err == 1:
@@ -102,7 +112,11 @@ def set_mate_wallpaper(path):
 
 def set_gnome_wallpaper(path):
     if path is None:
-        raise ChwallWallpaperSetError("No wallpaper path given")
+        raise ChwallWallpaperSetError(_("No wallpaper path given"))
+    err_msg = {
+        "background": _("background {prop}"),
+        "screensaver": _("screensaver {prop}")
+    }
     for where in ["background", "screensaver"]:
         err = subprocess.run(
             ["gsettings", "set", "org.gnome.desktop.{}".format(where),
@@ -110,14 +124,14 @@ def set_gnome_wallpaper(path):
         if err == 1:
             raise ChwallWallpaperSetError(
                 prop_setting_error_str(
-                    "gnome", "{where} picture-uri".format(where=where)))
+                    "gnome", err_msg[where].format(prop="picture-uri")))
         err = subprocess.run(
             ["gsettings", "set", "org.gnome.desktop.{}".format(where),
              "picture-options", "zoom"]).returncode
         if err == 1:
             raise ChwallWallpaperSetError(
                 prop_setting_error_str(
-                    "gnome", "{where} picture-options".format(where=where)))
+                    "gnome", err_msg[where].format(prop="picture-options")))
 
 
 def set_nitrogen_wallpaper(path):
@@ -141,11 +155,11 @@ def set_nitrogen_wallpaper(path):
         if err == 0:
             return
         raise ChwallWallpaperSetError(
-            "Error while calling nitrogen for multihead display")
+            _("Error while calling nitrogen for multihead display"))
     err = subprocess.run(cmd + [path]).returncode
     if err != 0:
         raise ChwallWallpaperSetError(
-            "Error while calling nitrogen for single display")
+            _("Error while calling nitrogen for single display"))
 
 
 def set_wallpaper(path, config):
