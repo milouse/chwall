@@ -253,6 +253,40 @@ def blacklist_wallpaper():
 
 
 def current_wallpaper_info():
+    """Return a dictionnary containing the current wallpaper info.
+
+    The returned dictionnary is built upon the content of the
+    ``~/.cache/chwall/current_wallpaper`` file. This file is expected to
+    respect the following format:
+
+    :Example:
+
+    line 0 contains wallpaper uri
+    line 1 contains description
+    line 2 contains remote page in case of remote wallpaper
+    line 3 contains wallpaper type/origin
+    line 4 contains wallpaper local path
+
+    If the current wallpaper file is not found, or contains broken values, the
+    following dictionnary is returned by default:
+
+    :Example:
+
+    wallinfo = {
+        "remote-picture-uri": None,
+        "description": None,
+        "remote-uri": None,
+        "type": None,
+        "local-picture-path": None
+    }
+
+    That way, a complete dictionnary is **always** returned, and only its inner
+    value may be ``None``.
+
+
+    :return: current wallpaper information
+    :rtype: dictionnary
+    """
     curwall = []
     wallinfo = {
         "remote-picture-uri": None,
@@ -261,19 +295,19 @@ def current_wallpaper_info():
         "type": None,
         "local-picture-path": None
     }
-    # line 0 contains wallpaper uri
-    # line 1 contains description
-    # line 2 contains remote page in case of remote wallpaper
-    # line 3 contains wallpaper type/origin
-    # line 4 contains wallpaper local path
     curfile = "{}/current_wallpaper".format(BASE_CACHE_PATH)
     if not os.path.isfile(curfile):
         return wallinfo
     with open(curfile, "r") as f:
         curwall = f.readlines()
+    if len(curwall) != 5:
+        return wallinfo
+    local_file = curwall[4].strip()
+    if not os.path.isfile(local_file):
+        return wallinfo
     wallinfo["remote-picture-uri"] = curwall[0].strip()
     wallinfo["description"] = curwall[1].strip()
     wallinfo["remote-uri"] = curwall[2].strip()
     wallinfo["type"] = curwall[3].strip()
-    wallinfo["local-picture-path"] = curwall[4].strip()
+    wallinfo["local-picture-path"] = local_file
     return wallinfo
