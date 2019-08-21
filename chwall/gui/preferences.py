@@ -97,7 +97,7 @@ class PrefDialog(Gtk.Dialog):
 
     def make_fetcher_toggle_pref(self, fetcher, fprefs):
         prefbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        label = Gtk.Label(_("Enable"))
+        label = Gtk.Label(label=_("Enable"))
         prefbox.pack_start(label, False, False, 10)
         button = Gtk.Switch()
         button.set_active(fetcher in self.config["general"]["sources"])
