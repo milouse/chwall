@@ -67,6 +67,12 @@ class ChwallGui:
         else:
             subprocess.run(["chwall", "detach", component])
 
+    def is_chwall_component_started(self, component):
+        retcode = subprocess.run(
+            ["pgrep", "-f", "chwall.+{}".format(component)],
+            stdout=subprocess.DEVNULL).returncode
+        return retcode == 0
+
     def get_flags_if_app(self):
         if self.app is not None:
             # flags 3 = MODAL | DESTROY_WITH_PARENT
