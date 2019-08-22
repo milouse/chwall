@@ -15,7 +15,7 @@ def fetch_pictures(config):
         i18n_src = config["bing"]
     else:
         i18n_src = ["en-US", "fr-FR"]
-    collecs = {}
+    pictures = {}
     already_done = []
     url = "https://www.bing.com/HPImageArchive.aspx?format=js&idx=0" \
           "&n=10&mkt={}"
@@ -28,13 +28,13 @@ def fetch_pictures(config):
                 continue
             already_done.append(ad)
             px = "https://www.bing.com{}".format(p["url"])
-            collecs[px] = {
+            pictures[px] = {
                 "image": px,
                 "copyright": p["copyright"],
                 "url": p["copyrightlink"],
                 "type": "Bing"
             }
-    return collecs
+    return pictures
 
 
 def preferences():

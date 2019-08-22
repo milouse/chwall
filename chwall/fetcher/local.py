@@ -14,19 +14,19 @@ def fetch_pictures(config):
         return {}
     if "pathes" not in config["local"]:
         return {}
-    collecs = {}
+    pictures = {}
     for path in config["local"]["pathes"]:
         path = os.path.expanduser(path)
         for ext in ["jpg", "jpeg", "png"]:
             for f in glob.iglob("{}/*.{}".format(path, ext),
                                 recursive=True):
-                collecs[f] = {
+                pictures[f] = {
                     "image": f,
                     "type": "local",
                     "url": f,
                     "copyright": _("Local wallpaper")
                 }
-    return collecs
+    return pictures
 
 
 def preferences():

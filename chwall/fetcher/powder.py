@@ -3,7 +3,7 @@ from lxml import html
 
 
 def fetch_pictures(config):
-    collecs = {}
+    pictures = {}
     width = 1920
     if "powder" in config and "width" in config["powder"] and \
        config["powder"]["width"] in [320, 640, 970, 1920]:
@@ -23,13 +23,13 @@ def fetch_pictures(config):
         if url == "":
             continue
         link = item.getparent()
-        collecs[url] = {
+        pictures[url] = {
             "image": url,
             "type": "Powder",
             "url": "https://www.powder.com" + link.attrib["href"],
             "author": link.attrib["title"]
         }
-    return collecs
+    return pictures
 
 
 def preferences():

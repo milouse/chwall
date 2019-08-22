@@ -4,7 +4,7 @@ import requests
 
 
 def fetch_pictures(config):
-    collecs = {}
+    pictures = {}
     nb_pic = 10
     if "nasa" in config and "count" in config["nasa"]:
         nb_pic = config["nasa"]["count"]
@@ -20,13 +20,13 @@ def fetch_pictures(config):
         if m is None:
             continue
         url = "https://apod.nasa.gov/apod/{}".format(m[1])
-        collecs[url] = {
+        pictures[url] = {
             "image": url,
             "type": "NASA",
             "url": pic_page,
             "copyright": "Astronomy Picture Of The Day"
         }
-    return collecs
+    return pictures
 
 
 def preferences():

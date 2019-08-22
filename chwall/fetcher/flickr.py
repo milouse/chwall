@@ -12,7 +12,7 @@ def fetch_pictures(config):
         return {}
     url = "https://api.flickr.com/services/feeds/photos_public.gne?" \
           "tagmode=any&tags={tags}&format=rss_200_enc".format(tags=tags)
-    collecs = {}
+    pictures = {}
     data = ElementTree.fromstring(requests.get(url).text)
     for item in data[0].findall("item"):
         title = item.find("title").text
@@ -28,14 +28,14 @@ def fetch_pictures(config):
             if re.search("_{}\\.jpg$".format(size), pic_url) is not None:
                 break
 
-        collecs[pic_url] = {
+        pictures[pic_url] = {
             "image": pic_url,
             "type": "Flickr",
             "url": pic_page,
             "description": title,
             "author": author
         }
-    return collecs
+    return pictures
 
 
 def preferences():

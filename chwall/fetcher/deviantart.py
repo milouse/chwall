@@ -8,7 +8,7 @@ def fetch_pictures(config):
         return {}
     if "collections" not in config["deviantart"]:
         return {}
-    collecs = {}
+    pictures = {}
     url = "https://backend.deviantart.com/rss.xml?type=deviation&q={}"
     for q in config["deviantart"]["collections"]:
         data = ElementTree.fromstring(requests.get(url.format(q)).text)
@@ -21,14 +21,14 @@ def fetch_pictures(config):
             meta = scrap.xpath('//meta[@property="og:image"]')[0]
             pic_data = meta.attrib.get("content").split("/v1/fill/")
             pic_url = pic_data[0]
-            collecs[pic_url] = {
+            pictures[pic_url] = {
                 "image": pic_url,
                 "type": "Deviantart",
                 "url": pic_page,
                 "description": title,
                 "author": author
             }
-    return collecs
+    return pictures
 
 
 def preferences():

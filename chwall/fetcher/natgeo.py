@@ -3,7 +3,7 @@ from datetime import date
 
 
 def fetch_pictures(config):
-    collecs = {}
+    pictures = {}
     width = 1600
     if "natgeo" in config and "width" in config["natgeo"] and \
        config["natgeo"]["width"] in [240, 320, 500, 640, 800,
@@ -16,7 +16,7 @@ def fetch_pictures(config):
     for p in data["items"]:
         if p["url"] == "https://yourshot.nationalgeographic.com":
             px = p["sizes"]["%d" % width]
-            collecs[px] = {
+            pictures[px] = {
                 "image": px,
                 "description": p["altText"],
                 "author": p["credit"],
@@ -25,13 +25,13 @@ def fetch_pictures(config):
             }
         else:
             px = p["url"]
-            collecs[px] = {
+            pictures[px] = {
                 "image": px,
                 "copyright": "{}. {}".format(p["altText"], p["credit"]),
                 "url": p["pageUrl"],
                 "type": "National Geographic"
             }
-    return collecs
+    return pictures
 
 
 def preferences():

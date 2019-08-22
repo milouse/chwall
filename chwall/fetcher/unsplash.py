@@ -34,7 +34,7 @@ def fetch_pictures(config):
     params.append("count=%d" % nb_pic)
     url = "https://api.unsplash.com/photos/random"
     params.append("client_id=" + client_id)
-    collecs = {}
+    pictures = {}
     final_uri = "{}?{}".format(url, "&".join(params))
     data = requests.get(final_uri).json()
     for p in data:
@@ -50,14 +50,14 @@ def fetch_pictures(config):
         if "location" in p and p["location"]["title"] is not None:
             label = (_("{desc}, taken in {location}")
                      .format(desc=label, location=p["location"]["title"]))
-        collecs[px] = {
+        pictures[px] = {
             "image": px,
             "description": label,
             "author": p["user"]["name"],
             "url": p["links"]["html"],
             "type": "Unsplash"
         }
-    return collecs
+    return pictures
 
 
 def preferences():
