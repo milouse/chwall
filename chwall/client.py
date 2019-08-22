@@ -31,8 +31,8 @@ def display_wallpaper_info(config):
     print("".join(infos))
     dinfo = daemon_info(config)
     print(dinfo["last-change-label"])
-    if len(sys.argv) > 2 and sys.argv[2] == "open" and \
-       len(infos) >= 2:
+    if len(sys.argv) > 2 and sys.argv[2] == "open" \
+       and len(infos) >= 2:
         url = infos[1].strip()
         if url != "":
             subprocess.run(["gio", "open", url])

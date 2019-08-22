@@ -204,8 +204,8 @@ def pick_wallpaper(config, backward=False, guard=False):
         build_roadmap(config)
     with open(road_map, "r") as f:
         data = yaml.safe_load(f)
-    if data is None or \
-       (len(data.get("pictures", [])) == 0 and backward is False):
+    must_advance = len(data.get("pictures", [])) == 0 and backward is False
+    if must_advance or data is None:
         # Woops, no picture left. Removing current roadmap.
         os.unlink(road_map)
         if guard is True:
