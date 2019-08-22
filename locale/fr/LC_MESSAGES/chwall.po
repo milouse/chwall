@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chwall 0.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-21 09:59+0200\n"
-"PO-Revision-Date: 2019-08-21 10:00+0200\n"
+"POT-Creation-Date: 2019-08-22 20:51+0200\n"
+"PO-Revision-Date: 2019-08-22 20:53+0200\n"
 "Last-Translator: Étienne Deparis <etienne@depar.is>\n"
 "Language-Team: none\n"
 "Language: fr\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 2.2.1\n"
 
-#: chwall/gui/icon.py:41 chwall/gui/app.py:190
+#: chwall/gui/icon.py:41 chwall/gui/app.py:193
 msgid "Start daemon"
 msgstr "Démarrer le service"
 
@@ -26,11 +26,11 @@ msgstr "Démarrer le service"
 msgid "Current wallpaper is not managed by Chwall"
 msgstr "Le papier-peint actuel n'est pas géré par Chwall"
 
-#: chwall/gui/icon.py:69 chwall/gui/app.py:73 chwall/gui/app.py:237
+#: chwall/gui/icon.py:69 chwall/gui/app.py:73 chwall/gui/app.py:240
 msgid "Next wallpaper"
 msgstr "Papier-peint suivant"
 
-#: chwall/gui/icon.py:74 chwall/gui/app.py:61 chwall/gui/app.py:241
+#: chwall/gui/icon.py:74 chwall/gui/app.py:61 chwall/gui/app.py:244
 msgid "Previous wallpaper"
 msgstr "Papier-peint précédent"
 
@@ -46,19 +46,19 @@ msgstr "Nettoyer les entrées cassées du cache"
 msgid "Open main window"
 msgstr "Ouvrir la fenêtre principale"
 
-#: chwall/gui/icon.py:96
+#: chwall/gui/icon.py:99
 msgid "Always display this icon"
 msgstr "Toujours afficher cette icône"
 
-#: chwall/gui/icon.py:106
+#: chwall/gui/icon.py:109
 msgid "Report a bug"
 msgstr "Signaler un bogue"
 
-#: chwall/gui/icon.py:130 chwall/gui/app.py:229 chwall/gui/shared.py:105
+#: chwall/gui/icon.py:133 chwall/gui/app.py:232 chwall/gui/shared.py:111
 msgid "Wallpaper Changer"
 msgstr "Changeur de papier-peint"
 
-#: chwall/gui/app.py:38 chwall/gui/app.py:157 chwall/gui/preferences.py:23
+#: chwall/gui/app.py:38 chwall/gui/app.py:160 chwall/gui/preferences.py:23
 msgid "Preferences"
 msgstr "Préférences"
 
@@ -79,15 +79,15 @@ msgstr "Arrêter le service et effacer la liste d'attente"
 msgid "Display notification icon"
 msgstr "Afficher une icône dans la zone de notification"
 
-#: chwall/gui/app.py:161
+#: chwall/gui/app.py:164
 msgid "About Chwall"
 msgstr "À propos de Chwall"
 
-#: chwall/gui/app.py:185
+#: chwall/gui/app.py:188
 msgid "Stop daemon"
 msgstr "Arrêter le service"
 
-#: chwall/gui/app.py:233
+#: chwall/gui/app.py:236
 msgid "Main window of the Chwall wallpaper changer"
 msgstr "Fenêtre principale du changeur de papier-peint Chwall"
 
@@ -187,21 +187,21 @@ msgstr "Comportement"
 msgid "Daemon"
 msgstr "Tâche de fond"
 
-#: chwall/gui/shared.py:82
+#: chwall/gui/shared.py:88
 #, python-brace-format
 msgid "{number} broken cache entry has been removed"
 msgstr "{number} entrée cassée du cache a été supprimée"
 
-#: chwall/gui/shared.py:84
+#: chwall/gui/shared.py:90
 #, python-brace-format
 msgid "{number} broken cache entries have been removed"
 msgstr "{number} entrées cassées du cache ont été supprimées"
 
-#: chwall/gui/shared.py:88
+#: chwall/gui/shared.py:94
 msgid "Cache cleanup"
 msgstr "Nettoyage du cache"
 
-#: chwall/gui/shared.py:107
+#: chwall/gui/shared.py:113
 msgid "Chwall is released under the WTFPL"
 msgstr "Chwall est publié selon les termes de la WTFPL"
 
@@ -270,101 +270,110 @@ msgstr "{title} de {author}"
 msgid "{title} (on {source})"
 msgstr "{title} (sur {source})"
 
-#: chwall/fetcher/local.py:27
+#: chwall/fetcher/local.py:26
 msgid "Local wallpaper"
 msgstr "Papier-peint local"
 
-#: chwall/fetcher/local.py:34
+#: chwall/fetcher/local.py:33
 msgid "Local files"
 msgstr "Fichiers locaux"
 
-#: chwall/fetcher/local.py:38
+#: chwall/fetcher/local.py:37
 msgid "Wallpaper repositories"
 msgstr "Dossiers de papiers-peints"
 
-#: chwall/fetcher/unsplash.py:43
+#: chwall/fetcher/unsplash.py:34
 msgid "Picture"
 msgstr "Image"
 
-#: chwall/fetcher/unsplash.py:51
+#: chwall/fetcher/unsplash.py:42
 #, python-brace-format
 msgid "{desc}, taken in {location}"
 msgstr "{desc}, prise à {location}"
 
-#: chwall/fetcher/unsplash.py:77
+#: chwall/fetcher/unsplash.py:68
 msgid "API access_key"
 msgstr "Clé d'accès API (access_key)"
 
-#: chwall/fetcher/unsplash.py:81
+#: chwall/fetcher/unsplash.py:72
 msgid "Complementary query"
 msgstr "Requête complémentaire"
+
+#: chwall/fetcher/reddit.py:30
+#, python-brace-format
+msgid "{title}, picked on {subreddit}"
+msgstr "{title}, prise sur {subreddit}"
+
+#: chwall/fetcher/reddit.py:46
+msgid "Fetcher for Reddit"
+msgstr "Récupérateur pour Reddit"
 
 #: chwall/fetcher/bing.py:47
 msgid "Locales"
 msgstr "Langues"
 
-#: chwall/daemon.py:65
+#: chwall/daemon.py:66
 #, python-brace-format
 msgid "Last change was 1 minute and {seconds}s ago"
 msgstr "Le dernier changement a eu lieu il y a 1 minute et {seconds}s"
 
-#: chwall/daemon.py:69
+#: chwall/daemon.py:70
 #, python-brace-format
 msgid "Last change was {minutes} minutes and {seconds}s ago"
 msgstr "Le dernier changement a eu lieu il y a {minutes} minutes et {seconds}s"
 
-#: chwall/daemon.py:72
+#: chwall/daemon.py:73
 #, python-brace-format
 msgid "Last change was {seconds}s ago"
 msgstr "Le dernier changement a eu lieu il y a {seconds}s"
 
-#: chwall/daemon.py:79
+#: chwall/daemon.py:80
 #, python-brace-format
 msgid "Next change in 1 minute and {seconds}s"
 msgstr "Prochain changement dans 1 minute et {seconds}s"
 
-#: chwall/daemon.py:83
+#: chwall/daemon.py:84
 #, python-brace-format
 msgid "Next change in {minutes} minutes and {seconds}s"
 msgstr "Prochain changement dans {minutes} minutes et {seconds}s"
 
-#: chwall/daemon.py:86
+#: chwall/daemon.py:87
 #, python-brace-format
 msgid "Next change in {seconds}s"
 msgstr "Prochain changement dans {seconds}s"
 
-#: chwall/daemon.py:95
+#: chwall/daemon.py:96
 msgid "Daemon stopped"
 msgstr "Service arrêté"
 
-#: chwall/daemon.py:103
+#: chwall/daemon.py:104
 msgid "Daemon started"
 msgstr "Service démarré"
 
-#: chwall/daemon.py:115
+#: chwall/daemon.py:116
 #, python-brace-format
 msgid "{daemon_state} (disabled)"
 msgstr "{daemon_state} (désactivé)"
 
-#: chwall/daemon.py:138
+#: chwall/daemon.py:139
 #, python-brace-format
 msgid "Kill process {pid}"
 msgstr "Tuer le processus {pid}"
 
-#: chwall/daemon.py:140 chwall/daemon.py:160
+#: chwall/daemon.py:141 chwall/daemon.py:161
 #, python-brace-format
 msgid "Sending process {pid} signal {sid}"
 msgstr "Envoi du signal {sid} au processus {pid}"
 
-#: chwall/daemon.py:199
+#: chwall/daemon.py:200
 msgid "Exit signal received"
 msgstr "Signal d'extinction reçu"
 
-#: chwall/daemon.py:204
+#: chwall/daemon.py:205
 msgid "Cleaning up…"
 msgstr "Nettoyage…"
 
-#: chwall/daemon.py:238
+#: chwall/daemon.py:239
 msgid "Start loop"
 msgstr "Démarrage de la boucle"
 

@@ -23,7 +23,8 @@ DEST_MO      = $(L10N_LANGS:%=$(datarootdir)/locale/%/LC_MESSAGES/chwall.mo)
 TRANSLATABLE = chwall/gui/icon.py chwall/gui/app.py \
 	chwall/gui/preferences.py chwall/gui/shared.py chwall/wallpaper.py \
 	chwall/fetcher/local.py chwall/fetcher/unsplash.py \
-	chwall/fetcher/bing.py chwall/daemon.py chwall/client.py
+	chwall/fetcher/reddit.py chwall/fetcher/bing.py chwall/daemon.py \
+	chwall/client.py
 
 .PHONY: dist install lang uninstall uplang
 
