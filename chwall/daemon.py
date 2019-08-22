@@ -44,9 +44,10 @@ def kill_daemon(_signo, _stack_frame):
 
 def last_wallpaper_change():
     pid_file = "{}/chwall_pid".format(BASE_CACHE_PATH)
-    if not os.path.exists(pid_file):
+    change_file = "{}/last_change".format(BASE_CACHE_PATH)
+    if not os.path.exists(pid_file) or not os.path.exists(change_file):
         return -1
-    with open("{}/last_change".format(BASE_CACHE_PATH), "r") as f:
+    with open(change_file, "r") as f:
         try:
             last_change = int(time.time()) - int(f.read().strip())
         except ValueError:
