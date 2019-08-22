@@ -10,12 +10,11 @@ _ = gettext.gettext
 
 
 def fetch_pictures(config):
-    if "local" not in config:
-        return {}
-    if "pathes" not in config["local"]:
+    pathes = config.get("local", {}).get("pathes", [])
+    if len(pathes) == 0:
         return {}
     pictures = {}
-    for path in config["local"]["pathes"]:
+    for path in pathes:
         path = os.path.expanduser(path)
         for ext in ["jpg", "jpeg", "png"]:
             for f in glob.iglob("{}/*.{}".format(path, ext),

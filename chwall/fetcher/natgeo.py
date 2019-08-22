@@ -4,11 +4,9 @@ from datetime import date
 
 def fetch_pictures(config):
     pictures = {}
-    width = 1600
-    if "natgeo" in config and "width" in config["natgeo"] and \
-       config["natgeo"]["width"] in [240, 320, 500, 640, 800,
-                                     1024, 1600, 2048]:
-        width = config["natgeo"]["width"]
+    width = config.get("natgeo", {}).get("width", 1600)
+    if width not in [240, 320, 500, 640, 800, 1024, 1600, 2048]:
+        width = 1600
     url = "https://www.nationalgeographic.com/photography/photo-of-the-day/" \
           "_jcr_content/.gallery.{}-{}.json"
     t = date.today()

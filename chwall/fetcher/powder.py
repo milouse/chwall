@@ -4,10 +4,9 @@ from lxml import html
 
 def fetch_pictures(config):
     pictures = {}
-    width = 1920
-    if "powder" in config and "width" in config["powder"] and \
-       config["powder"]["width"] in [320, 640, 970, 1920]:
-        width = config["powder"]["width"]
+    width = config.get("powder", {}).get("width", 1920)
+    if width not in [320, 640, 970, 1920]:
+        width = 1920
     data = html.fromstring(
         requests.get("https://www.powder.com/photo-of-the-day/").text)
     for item in data.cssselect("article.hentry img.entry-image"):

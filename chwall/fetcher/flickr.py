@@ -5,11 +5,10 @@ from xml.etree import ElementTree
 
 
 def fetch_pictures(config):
-    if "flickr" in config and "tags" in config["flickr"]:
-        tags = ",".join(list(map(lambda x: x.strip(),
-                                 config["flickr"]["tags"])))
-    else:
+    tag_list = config.get("flickr", {}).get("tags", [])
+    if len(tag_list) == 0:
         return {}
+    tags = ",".join(list(map(lambda x: x.strip(), tag_list)))
     url = "https://api.flickr.com/services/feeds/photos_public.gne?" \
           "tagmode=any&tags={tags}&format=rss_200_enc".format(tags=tags)
     pictures = {}

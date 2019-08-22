@@ -10,9 +10,9 @@ _ = gettext.gettext
 
 
 def fetch_pictures(config):
-    if "bing" in config and "locales" in config["bing"] and \
-       len(config["bing"]["locales"]) > 0:
-        i18n_src = config["bing"]
+    bing_conf = config.get("bing", {}).get("locales", [])
+    if len(bing_conf) > 0:
+        i18n_src = bing_conf
     else:
         i18n_src = ["en-US", "fr-FR"]
     pictures = {}

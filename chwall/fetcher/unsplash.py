@@ -10,28 +10,19 @@ _ = gettext.gettext
 
 
 def fetch_pictures(config):
-    width = 1600
-    nb_pic = 10
-    params = ["w=1600"]
-    client_id = None
-    if "unsplash" in config:
-        if "width" in config["unsplash"]:
-            width = config["unsplash"]["width"]
-            params[0] = "w=%d" % width
-        if "access_key" in config["unsplash"]:
-            client_id = config["unsplash"]["access_key"]
-        if "count" in config["unsplash"]:
-            nb_pic = config["unsplash"]["count"]
-        if "query" in config["unsplash"]:
-            params.append("query=" + config["unsplash"]["query"])
-        if "collections" in config["unsplash"]:
-            params.append(
-                "collections=" + ",".join(config["unsplash"]["collections"]))
+    us_conf = config.get("unsplash", {})
+    client_id = us_conf.get("access_key")
     if client_id is None:
         print("WARNING: Unsplash has discontinued their RSS feed. Thus "
               "an `access_key' param is now required.", file=sys.stderr)
         return {}
-    params.append("count=%d" % nb_pic)
+    width = us_conf.get("width", 1600)
+    nb_pic = us_conf.get("count", 10)
+    params = ["w=%d" % width, "count=%d" % nb_pic]
+    if "query" in us_conf:
+        params.append("query=" + us_conf["query"])
+    if "collections" in us_conf:
+        params.append("collections=" + ",".join(us_conf["collections"]))
     url = "https://api.unsplash.com/photos/random"
     params.append("client_id=" + client_id)
     pictures = {}

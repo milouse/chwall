@@ -5,9 +5,7 @@ import requests
 
 def fetch_pictures(config):
     pictures = {}
-    nb_pic = 10
-    if "nasa" in config and "count" in config["nasa"]:
-        nb_pic = config["nasa"]["count"]
+    nb_pic = config.get("nasa", {}).get("count", 10)
     curday = time.time()
     for i in range(nb_pic):
         pic_page = "https://apod.nasa.gov/apod/ap{}.html".format(
