@@ -17,8 +17,7 @@ def fetch_pictures(config):
         i18n_src = ["en-US", "fr-FR"]
     pictures = {}
     already_done = []
-    url = "https://www.bing.com/HPImageArchive.aspx?format=js&idx=0" \
-          "&n=10&mkt={}"
+    url = "https://www.bing.com/HPImageArchive.aspx?format=js&n=8&mkt={}"
     for l in i18n_src:
         lu = "{}[0-9]{{10}}".format(l.upper())
         data = requests.get(url.format(l)).json()
