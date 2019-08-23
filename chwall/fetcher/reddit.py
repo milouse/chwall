@@ -27,10 +27,11 @@ def fetch_pictures(config):
         px = p["data"].get("url")
         if px is None:
             continue
+        title = re.sub(r"\[[^]]*\]", "", p["data"]["title"]).strip()
+        if len(title) > 200:
+            title = title[0:200] + "…"
         desc = _("{title}, picked on {subreddit}").format(
-            title=re.sub(r"\[[^]]*\]", "", p["data"]["title"]).strip(),
-            subreddit=p["data"]["subreddit_name_prefixed"]
-        )
+            title=title, subreddit=p["data"]["subreddit_name_prefixed"])
         pictures[px] = {
             "image": px,
             "description": desc,
