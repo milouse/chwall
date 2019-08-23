@@ -38,9 +38,10 @@ def fetch_pictures(config):
             # Avoid long descriptions
             if len(label) > 200:
                 label = label[0:200] + "…"
-        if "location" in p and p["location"]["title"] is not None:
+        location = p.get("location", {}).get("title", "")
+        if location != "":
             label = (_("{desc}, taken in {location}")
-                     .format(desc=label, location=p["location"]["title"]))
+                     .format(desc=label, location=location))
         pictures[px] = {
             "image": px,
             "description": label,
