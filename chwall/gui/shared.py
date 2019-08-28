@@ -26,28 +26,35 @@ class ChwallGui:
     def daemon_info(self):
         return daemon_info(self.config)
 
+    def start_in_thread_if_needed(self, function, args):
+        if self.app is None:
+            # Coming from the icon, directly call the daemon to avoid
+            # system-tray icon disapearance
+            function(*args)
+        else:
+            # Coming from the app, call through an intermediate thread to
+            # avoid ugly UI freeze
+            t = threading.Thread(target=function, args=args)
+            t.daemon = True
+            t.start()
+
     def on_change_wallpaper(self, _widget, direction=False, threaded=True):
         def change_wall_thread_target(direction, config):
             pick_wallpaper(config, direction)
             notify_daemon_if_any()
             notify_app_if_any()
 
-        if threaded:
-            t = threading.Thread(target=change_wall_thread_target,
-                                 args=(direction, self.config))
-            t.daemon = True
-            t.start()
-        else:
+        if not threaded:
             change_wall_thread_target(direction, self.config)
+        else:
+            self.start_in_thread_if_needed(change_wall_thread_target,
+                                           (direction, self.config))
 
     def on_blacklist_wallpaper(self, _widget):
         def blacklist_wall_thread_target():
             blacklist_wallpaper()
             self.on_change_wallpaper(None, threaded=False)
-
-        t = threading.Thread(target=blacklist_wall_thread_target)
-        t.daemon = True
-        t.start()
+        self.start_in_thread_if_needed(blacklist_wall_thread_target)
 
     def run_chwall_component(self, _widget, component):
         def start_daemon_from_thread(config):
@@ -60,17 +67,8 @@ class ChwallGui:
             subprocess.run(["chwall-daemon"])
 
         if component == "daemon":
-            if self.app is None:
-                # Coming from the icon, directly call the daemon to avoid
-                # system-tray icon disapearance
-                start_daemon_from_thread(self.config)
-            else:
-                # Coming from the app, call through an intermediate thread to
-                # avoid ugly UI freeze
-                t = threading.Thread(target=start_daemon_from_thread,
-                                     args=(self.config,))
-                t.daemon = True
-                t.start()
+            self.start_in_thread_if_needed(start_daemon_from_thread,
+                                           (self.config,))
         else:
             subprocess.run(["chwall", "detach", component])
 
