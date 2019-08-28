@@ -60,10 +60,17 @@ class ChwallGui:
             subprocess.run(["chwall-daemon"])
 
         if component == "daemon":
-            t = threading.Thread(target=start_daemon_from_thread,
-                                 args=(self.config,))
-            t.daemon = True
-            t.start()
+            if self.app is None:
+                # Coming from the icon, directly call the daemon to avoid
+                # system-tray icon disapearance
+                start_daemon_from_thread(self.config)
+            else:
+                # Coming from the app, call through an intermediate thread to
+                # avoid ugly UI freeze
+                t = threading.Thread(target=start_daemon_from_thread,
+                                     args=(self.config,))
+                t.daemon = True
+                t.start()
         else:
             subprocess.run(["chwall", "detach", component])
 
