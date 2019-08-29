@@ -26,7 +26,7 @@ class ChwallGui:
     def daemon_info(self):
         return daemon_info(self.config)
 
-    def start_in_thread_if_needed(self, function, args):
+    def start_in_thread_if_needed(self, function, *args):
         if self.app is None:
             # Coming from the icon, directly call the daemon to avoid
             # system-tray icon disapearance
@@ -48,7 +48,7 @@ class ChwallGui:
             change_wall_thread_target(direction, self.config)
         else:
             self.start_in_thread_if_needed(change_wall_thread_target,
-                                           (direction, self.config))
+                                           direction, self.config)
 
     def on_blacklist_wallpaper(self, _widget):
         def blacklist_wall_thread_target():
@@ -68,7 +68,7 @@ class ChwallGui:
 
         if component == "daemon":
             self.start_in_thread_if_needed(start_daemon_from_thread,
-                                           (self.config,))
+                                           self.config)
         else:
             subprocess.run(["chwall", "detach", component])
 
