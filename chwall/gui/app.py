@@ -116,7 +116,7 @@ class ChwallApp(ChwallGui):
 
         label_str = "<a href=\"{link}\">{text}</a>".format(
             link=html.escape(wallinfo["remote-uri"]),
-            text=wallinfo["description"])
+            text=wallinfo["description"].replace("&", "&amp;"))
         self.walldesc.set_markup(label_str)
         self.walldesc.grab_focus()
         # Show it now to reserve correct size
