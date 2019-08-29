@@ -241,6 +241,21 @@ def pick_wallpaper(config, backward=False, guard=False):
     return set_wallpaper(lp, config)
 
 
+def remove_wallpaper_from_roadmap(wp):
+    road_map = "{}/roadmap".format(BASE_CACHE_PATH)
+    with open(road_map, "r") as f:
+        data = yaml.safe_load(f)
+    if wp in data.get("pictures", []):
+        data["pictures"].remove(wp)
+    if wp in data.get("history", []):
+        data["history"].remove(wp)
+    if wp in data.get("data", {}):
+        del data["data"][wp]
+    with open(road_map, "w") as f:
+        yaml.dump(data, f, explicit_start=True,
+                  default_flow_style=False)
+
+
 def blacklist_wallpaper():
     try:
         with open("{}/blacklist.yml"
@@ -250,11 +265,13 @@ def blacklist_wallpaper():
         blacklist = []
     with open("{}/current_wallpaper"
               .format(BASE_CACHE_PATH), "r") as f:
-        blacklist.append(f.readlines()[0].strip())
+        blacklisted_pix = f.readlines()[0].strip()
+    blacklist.append(blacklisted_pix)
     with open("{}/blacklist.yml"
               .format(BASE_CACHE_PATH), "w") as f:
         yaml.dump(blacklist, f, explicit_start=True,
                   default_flow_style=False)
+    remove_wallpaper_from_roadmap(blacklisted_pix)
 
 
 def clean_wallpaper_info(data):
