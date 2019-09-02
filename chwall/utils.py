@@ -49,7 +49,7 @@ def is_list(obj):
 
 def migrate_config(config):
     if "local" in config and is_list(config["local"]):
-        config["local"] = {"pathes": config["local"]}
+        config["local"] = {"paths": config["local"]}
     if "bing" in config and is_list(config["bing"]):
         config["bing"] = {"locales": config["bing"]}
     if "deviantart" in config and is_list(config["deviantart"]):

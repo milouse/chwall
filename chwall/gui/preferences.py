@@ -242,8 +242,8 @@ class PrefDialog(Gtk.Dialog):
             s = treeview.get_selection()
             if s is None:
                 return
-            model, storepathes = s.get_selected_rows()
-            for p in storepathes:
+            model, storepaths = s.get_selected_rows()
+            for p in storepaths:
                 model.remove(model.get_iter(p))
             save_model_in_config()
             if len(liststore) > 0:

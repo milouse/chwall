@@ -10,11 +10,11 @@ _ = gettext.gettext
 
 
 def fetch_pictures(config):
-    pathes = config.get("local", {}).get("pathes", [])
-    if len(pathes) == 0:
+    paths = config.get("local", {}).get("paths", [])
+    if len(paths) == 0:
         return {}
     pictures = {}
-    for path in pathes:
+    for path in paths:
         path = os.path.expanduser(path)
         for ext in ["jpg", "jpeg", "png"]:
             for f in glob.iglob("{}/*.{}".format(path, ext),
@@ -32,7 +32,7 @@ def preferences():
     return {
         "name": _("Local files"),
         "options": {
-            "pathes": {
+            "paths": {
                 "widget": "list",
                 "label": _("Wallpaper repositories")
             }

@@ -73,14 +73,14 @@ general:
 
 In order to display wallpaper from your own local collection, just add
 the top level key =local= to the =chwall.yml= file. This variable must
-contains an option named =pathes=, which must contain an array listing
+contains an option named =paths=, which must contain an array listing
 folder path. you can use =*= or =**= as placeholder. See [[https://docs.python.org/3/library/glob.html#glob.glob][python glob
-documentation]] to know more how to write your folder pathes.
+documentation]] to know more how to write your folder paths.
 
 #+begin_src yaml
 ---
 local:
-  pathes:
+  paths:
     - ~/Pictures/mywall/*
     - /usr/share/wallpapers/**
 #+end_src
