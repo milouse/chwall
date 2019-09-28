@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chwall 0.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-22 20:51+0200\n"
+"POT-Creation-Date: 2019-09-28 18:33+0200\n"
 "PO-Revision-Date: 2019-08-21 09:50+0200\n"
 "Last-Translator: haitch <vruztablet@gmail.com>\n"
 "Language-Team: Spanish <https://translations.umaneti.net/projects/chwall/"
@@ -55,7 +55,7 @@ msgstr "Mostrar siempre este ícono"
 msgid "Report a bug"
 msgstr "Reportar un bug"
 
-#: chwall/gui/icon.py:133 chwall/gui/app.py:232 chwall/gui/shared.py:111
+#: chwall/gui/icon.py:133 chwall/gui/app.py:232 chwall/gui/shared.py:116
 msgid "Wallpaper Changer"
 msgstr "Seleccionador de fondo de pantalla"
 
@@ -182,21 +182,21 @@ msgstr ""
 msgid "Daemon"
 msgstr "Servicio"
 
-#: chwall/gui/shared.py:88
+#: chwall/gui/shared.py:93
 #, python-brace-format
 msgid "{number} broken cache entry has been removed"
 msgstr "{number} entrada corrupta en cache ha sido eliminada"
 
-#: chwall/gui/shared.py:90
+#: chwall/gui/shared.py:95
 #, python-brace-format
 msgid "{number} broken cache entries have been removed"
 msgstr "{number} entradas corruptas en cache han sido eliminadas"
 
-#: chwall/gui/shared.py:94
+#: chwall/gui/shared.py:99
 msgid "Cache cleanup"
 msgstr "Limpiar cache"
 
-#: chwall/gui/shared.py:113
+#: chwall/gui/shared.py:118
 msgid "Chwall is released under the WTFPL"
 msgstr "Chwall es publicado bajo los términos de la licencia WTFPL"
 
@@ -252,12 +252,12 @@ msgstr ""
 msgid "Error while calling nitrogen for single display"
 msgstr ""
 
-#: chwall/wallpaper.py:274
+#: chwall/wallpaper.py:291
 #, python-brace-format
 msgid "{title} by {author}"
 msgstr ""
 
-#: chwall/wallpaper.py:277
+#: chwall/wallpaper.py:294
 #, python-brace-format
 msgid "{title} (on {source})"
 msgstr ""
@@ -278,29 +278,29 @@ msgstr ""
 msgid "Picture"
 msgstr "Imagen"
 
-#: chwall/fetcher/unsplash.py:42
+#: chwall/fetcher/unsplash.py:43
 #, python-brace-format
 msgid "{desc}, taken in {location}"
 msgstr ""
 
-#: chwall/fetcher/unsplash.py:68
+#: chwall/fetcher/unsplash.py:69
 msgid "API access_key"
 msgstr ""
 
-#: chwall/fetcher/unsplash.py:72
+#: chwall/fetcher/unsplash.py:73
 msgid "Complementary query"
 msgstr ""
 
-#: chwall/fetcher/reddit.py:30
+#: chwall/fetcher/reddit.py:33
 #, python-brace-format
 msgid "{title}, picked on {subreddit}"
 msgstr ""
 
-#: chwall/fetcher/reddit.py:46
+#: chwall/fetcher/reddit.py:47
 msgid "Fetcher for Reddit"
 msgstr ""
 
-#: chwall/fetcher/bing.py:47
+#: chwall/fetcher/bing.py:46
 msgid "Locales"
 msgstr ""
 

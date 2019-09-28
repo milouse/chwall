@@ -5,7 +5,7 @@ import subprocess
 from xdg.BaseDirectory import xdg_cache_home, xdg_config_home
 
 
-VERSION = "0.4.4"
+VERSION = "0.4.5"
 BASE_CACHE_PATH = "{}/chwall".format(xdg_cache_home)
 
 
