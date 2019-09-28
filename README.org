@@ -33,6 +33,16 @@ You can also install it system-wide with the provided =Makefile=
 
 * Customize
 
+** With the preferences window
+
+All options are accessible through the preferences window, which can be
+opened from the main application or the system tray icon.
+
+Preferences are stored in the [[http://yaml.org/][YAML]] file =~/.config/chwall.yml=. You can
+manually edit it too. See the following section for more information.
+
+** Manually
+
 Put the =chwall.yml.example= file in =~/.config/= and tune it as you
 want. This file is not mandatary.
 
@@ -69,7 +79,7 @@ general:
     - local
 #+end_src
 
-** Add local folders to inspect
+*** Add local folders to inspect
 
 In order to display wallpaper from your own local collection, just add
 the top level key =local= to the =chwall.yml= file. This variable must
@@ -85,7 +95,7 @@ local:
     - /usr/share/wallpapers/**
 #+end_src
 
-** Set the Bing region to fetch picture from
+*** Set the Bing region to fetch picture from
 
 Add the top level key =bing= to your =chwall.yml= file, containing an
 option named =locales=, which must list locale names. See the
@@ -103,7 +113,7 @@ bing:
     - ja-JP
 #+end_src
 
-** Set the picture resolution for National Geographic
+*** Set the picture resolution for National Geographic
 
 Add the top level key =natgeo= to your =chwall.yml= file. Then, add a
 subkey named =width= under it, with one of the following value: =240=,
@@ -116,7 +126,7 @@ natgeo:
   width: 2048
 #+end_src
 
-** Set the picture resolution for Unsplash
+*** Set the picture resolution for Unsplash
 
 Add the top level key =unsplash= to your =chwall.yml= file. Then, add a
 subkey named =width= under it, with the value of your choice. This value
@@ -128,7 +138,7 @@ unsplash:
   width: 1920
 #+end_src
 
-** Retrieve pictures from an Unsplash collection
+*** Retrieve pictures from an Unsplash collection
 
 To do so, you must [[https://unsplash.com/developers][register an application on Unsplash]] in order to
 consume their API. Once this is done, you must add the subkey
@@ -159,7 +169,7 @@ unsplash:
 #+end_src
 
 
-** Add Deviantart RSS Feeds
+*** Add Deviantart RSS Feeds
 
 Deviantart RSS feeds follow the same URL pattern:
 https://backend.deviantart.com/rss.xml?q=[REQUEST]&type=deviation
