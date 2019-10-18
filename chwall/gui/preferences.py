@@ -73,7 +73,10 @@ class PrefDialog(Gtk.Dialog):
             if options["widget"] == "select":
                 values = []
                 for v in options["values"]:
-                    values.append((str(v), str(v)))
+                    if isinstance(v, tuple):
+                        values.append(v)
+                    else:
+                        values.append((str(v), str(v)))
                 prefbox = self.make_select_pref(
                     fetcher_name, opt, label, values, str(defval),
                     options.get("type"))
