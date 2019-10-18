@@ -76,7 +76,7 @@ class PrefDialog(Gtk.Dialog):
                     values.append((str(v), str(v)))
                 prefbox = self.make_select_pref(
                     fetcher_name, opt, label, values, str(defval),
-                    options["type"])
+                    options.get("type"))
             elif options["widget"] == "text":
                 prefbox = self.make_text_pref(fetcher_name, opt, label)
             elif options["widget"] == "number":
