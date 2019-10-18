@@ -223,6 +223,26 @@ msgstr ""
 msgid "Fetcher for Reddit"
 msgstr ""
 
+#: chwall/fetcher/smashing.py:86
+msgid "Select wallpapers with or without calendar"
+msgstr ""
+
+#: chwall/fetcher/smashing.py:89
+msgid "Both"
+msgstr ""
+
+#: chwall/fetcher/smashing.py:90
+msgid "With"
+msgstr ""
+
+#: chwall/fetcher/smashing.py:91
+msgid "Without"
+msgstr ""
+
+#: chwall/fetcher/smashing.py:96
+msgid "Select only wallpapers for current month"
+msgstr ""
+
 #: chwall/fetcher/unsplash.py:34
 msgid "Picture"
 msgstr ""

@@ -230,6 +230,26 @@ msgstr "{title}, prise sur {subreddit}"
 msgid "Fetcher for Reddit"
 msgstr "Récupérateur pour Reddit"
 
+#: chwall/fetcher/smashing.py:86
+msgid "Select wallpapers with or without calendar"
+msgstr "Sélectionner les papiers-peints avec ou sans calendrier"
+
+#: chwall/fetcher/smashing.py:89
+msgid "Both"
+msgstr "Tous"
+
+#: chwall/fetcher/smashing.py:90
+msgid "With"
+msgstr "Avec"
+
+#: chwall/fetcher/smashing.py:91
+msgid "Without"
+msgstr "Sans"
+
+#: chwall/fetcher/smashing.py:96
+msgid "Select only wallpapers for current month"
+msgstr "Sélectionner seulement les papiers-peints du mois courant"
+
 #: chwall/fetcher/unsplash.py:34
 msgid "Picture"
 msgstr "Image"
