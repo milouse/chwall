@@ -1,0 +1,153 @@
+#+title: Configuration
+
+
+Preferences are stored in the [[http://yaml.org/][YAML]] file =~/.config/chwall.yml=. You can
+edit it through the preferences window, which can be opened from the
+main application or the system tray icon. You can manually edit it
+too. The following sections will help you to do so.
+
+* General structure
+
+Put the =chwall.yml.example= file in =~/.config/= and tune it as you
+want. This file is not mandatary.
+
+The =chwall.yml= config file is a [[http://yaml.org/][YAML]] file with several top level
+objects:
+
+- =general= will contains preferences, which are used by chwall to
+  operate as intended.
+- one key for each activated (or not) picture sources.
+
+
+=general= may contains the following subkeys:
+
+- =lightdm_wall= the path to a writable file, which will always contains
+  the last set wallpaper. This is usefull to display the same wallpaper
+  on lightdm than on your desktop, without having to open too widely
+  your home folder. Use something in =/var/cache= for exemple.
+- =sources= is an array containing the activated pictures sources. By
+  default, only =bing= and =natgeo= are activated. The sources must be
+  one or more of: =bing=, =natgeo= (for the National Geographic picture
+  of the day), =nasa= (for the NASA astronomical picture of the day),
+  =unsplash=, =deviantart=, or =local= (for your local folders).
+
+#+begin_src yaml
+---
+general:
+  lightdm_wall: /var/cache/last-wall
+  sources:
+    - bing
+    - natgeo
+    - nasa
+    - deviantart
+    - unsplash
+    - local
+#+end_src
+
+* Sources options
+
+** Add local folders to inspect
+
+In order to display wallpaper from your own local collection, just add
+the top level key =local= to the =chwall.yml= file. This variable must
+contains an option named =paths=, which must contain an array listing
+folder path. you can use =*= or =**= as placeholder. See [[https://docs.python.org/3/library/glob.html#glob.glob][python glob
+documentation]] to know more how to write your folder paths.
+
+#+begin_src yaml
+---
+local:
+  paths:
+    - ~/Pictures/mywall/*
+    - /usr/share/wallpapers/**
+#+end_src
+
+** Set the Bing region to fetch picture from
+
+Add the top level key =bing= to your =chwall.yml= file, containing an
+option named =locales=, which must list locale names. See the
+[[https://www.bing.com/account/general?#region-section][appropriate Bing page]] to know more about the available regions. If you
+add more than one locale (at least one is required!), duplicate pictures
+won't be add to the pending list.
+
+#+begin_src yaml
+---
+bing:
+  locales:
+    - fr-FR
+    - en-US
+    - de-DE
+    - ja-JP
+#+end_src
+
+** Set the picture resolution for National Geographic
+
+Add the top level key =natgeo= to your =chwall.yml= file. Then, add a
+subkey named =width= under it, with one of the following value: =240=,
+=320=, =500=, =640=, =800=, =1024=, =1600=, or =2048=. The default value
+is =1600=.
+
+#+begin_src yaml
+---
+natgeo:
+  width: 2048
+#+end_src
+
+** Set the picture resolution for Unsplash
+
+Add the top level key =unsplash= to your =chwall.yml= file. Then, add a
+subkey named =width= under it, with the value of your choice. This value
+should be the width of your screen. The default value is =1600=.
+
+#+begin_src yaml
+---
+unsplash:
+  width: 1920
+#+end_src
+
+** Retrieve pictures from an Unsplash collection
+
+To do so, you must [[https://unsplash.com/developers][register an application on Unsplash]] in order to
+consume their API. Once this is done, you must add the subkey
+=access_key= under the =unsplash= key in your =chwall.yml= config file.
+
+Then, you have access to the =collections= subkey, which let you specify
+one or more public collections IDs. If you don't give any, pictures will
+be retrieved randomly from all the Unsplash website.
+
+#+begin_src yaml
+---
+unsplash:
+  width: 1920
+  access_key: [your access key]
+  collections:
+    - 1510726
+#+end_src
+
+The =count= subkey let you choose how many pictures you want to retrieve
+from Unsplash. You are limited to 30 by the API, and the default is 20.
+
+#+begin_src yaml
+---
+unsplash:
+  width: 1920
+  access_key: [your access key]
+  count: 10
+#+end_src
+
+** Add Deviantart RSS Feeds
+
+Deviantart RSS feeds follow the same URL pattern:
+https://backend.deviantart.com/rss.xml?q=[REQUEST]&type=deviation
+
+All you have to do is to add the top level key =deviantart= to your
+=chwall.yml= file, containing an option named =collections=, which must
+list =[REQUEST]= items.
+
+#+begin_src yaml
+---
+deviantart:
+  collections:
+    - in%3Acustomization%2Fwallpaper+1440x900
+    - gallery%3Amattahan%2F59801
+#+end_src
