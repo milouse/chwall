@@ -24,12 +24,22 @@ sources:
 
 * Install
 
+** Locally in a virtualenv
+
 #+begin_src bash
 pip install -r requirements.txt
 python setup.py install
 #+end_src
 
-You can also install it system-wide with the provided =Makefile=
+** System-wide
+
+#+begin_src bash
+sudo make install
+#+end_src
+
+There is also two AUR packages for archlinux:
+- [[https://aur.archlinux.org/packages/chwall][chwall]] (stable version)
+- [[https://aur.archlinux.org/packages/chwall-git][chwall-git]] (unstable version)
 
 * Contributing
 
