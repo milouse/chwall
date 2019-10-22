@@ -21,6 +21,8 @@ sources:
 - NASA astronomical pictures of the day
 - deviantart RSS feeds
 - Unsplash random API (requires a free account to access their API)
+- Reddit
+- Smashing Magazine monthly wallpaper collection
 
 * Install
 
