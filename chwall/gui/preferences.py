@@ -73,10 +73,13 @@ class PrefDialog(Gtk.Dialog):
             if options["widget"] == "select":
                 values = []
                 for v in options["values"]:
-                    values.append((str(v), str(v)))
+                    if isinstance(v, tuple):
+                        values.append(v)
+                    else:
+                        values.append((str(v), str(v)))
                 prefbox = self.make_select_pref(
                     fetcher_name, opt, label, values, str(defval),
-                    options["type"])
+                    options.get("type"))
             elif options["widget"] == "text":
                 prefbox = self.make_text_pref(fetcher_name, opt, label)
             elif options["widget"] == "number":
@@ -84,8 +87,11 @@ class PrefDialog(Gtk.Dialog):
                     fetcher_name, opt, label,
                     Gtk.Adjustment(defval or 0, 0, 100000, 1))
             elif options["widget"] == "list":
-                prefbox = self.make_list_pref(fetcher_name, opt, label,
-                                              defval or [])
+                prefbox = self.make_list_pref(
+                    fetcher_name, opt, label, defval or [])
+            elif options["widget"] == "toggle":
+                prefbox = self.make_toggle_pref(
+                    fetcher_name, opt, label, defval)
             if prefbox is not None:
                 sourceprefbox.pack_start(prefbox, False, False, 0)
         self.make_source_frame(fetcher_name, fprefs, sourceprefbox)
@@ -128,11 +134,13 @@ class PrefDialog(Gtk.Dialog):
         prefbox.pack_start(preflabel, False, False, 10)
         return prefbox
 
-    def make_toggle_pref(self, path, opt, label):
+    def make_toggle_pref(self, path, opt, label, default=None):
         prefbox = self.make_prefbox_with_label(label)
         button = Gtk.Switch()
         if opt in self.config[path]:
             button.set_active(self.config[path][opt])
+        elif default is not None:
+            button.set_active(default)
 
         def on_toggle_state_set(widget, state):
             self.config[path][opt] = state
