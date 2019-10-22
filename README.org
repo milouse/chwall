@@ -43,6 +43,33 @@ There is also two AUR packages for archlinux:
 - [[https://aur.archlinux.org/packages/chwall][chwall]] (stable version)
 - [[https://aur.archlinux.org/packages/chwall-git][chwall-git]] (unstable version)
 
+* Usage
+
+Chwall is organized around 4 components:
+
+- chwall-app
+- chwall-icon
+- chwall
+- chwall-daemon
+
+The ~chwall-app~ and ~chwall-icon~ are alternative graphical interface
+to the simple ~chwall~ command line client. These 3 programs are here to
+drive the ~chwall-daemon~ component, which is responsible to change the
+wallpaper at given interval of time.
+
+After a system-wide installation, you should find a icon among your
+other programs, which starts ~chwall-app~. From there, you'll be able to
+access the preferences window to customize the behavior of chwall.
+
+You can also interact with the daemon through the system tray icon
+~chwall-icon~, which also let you customize Chwall with the preferences
+window.
+
+In the case, where you want a totally headless experience, you should
+try the simple ~chwall~ command line client. If you don't want (or
+cannot) use the preferences window, you should read the [[./CONFIG.org][configuration
+help]] document to know more about the chwall config file.
+
 * Contributing
 
 ** Translations
