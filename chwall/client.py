@@ -7,7 +7,8 @@ import subprocess
 
 # chwall imports
 from chwall.daemon import notify_daemon_if_any, daemon_info, daemonize
-from chwall.utils import BASE_CACHE_PATH, read_config, ServiceFileManager
+from chwall.utils import VERSION, BASE_CACHE_PATH, read_config, \
+                         ServiceFileManager
 from chwall.wallpaper import blacklist_wallpaper, pick_wallpaper
 from chwall.gui.preferences import PrefDialog
 
@@ -19,107 +20,189 @@ gettext.textdomain("chwall")
 _ = gettext.gettext
 
 
-chwall_commands = ["blacklist", "current", "detach", "history", "info",
-                   "next", "once", "options", "pending", "preferences",
-                   "previous", "purge", "quit", "status", "systemd"]
+SUBCOMMAND_ALIASES = {
+    "preferences": "options",
+    "current": "status",
+    "info": "status",
+    "once": "next"
+}
 
 
-def display_wallpaper_info(config):
-    with open("{}/current_wallpaper"
-              .format(BASE_CACHE_PATH), "r") as f:
-        infos = f.readlines()[1:]
-    print("".join(infos))
-    dinfo = daemon_info(config)
-    print(dinfo["last-change-label"])
-    if len(sys.argv) > 2 and sys.argv[2] == "open" \
-       and len(infos) >= 2:
-        url = infos[1].strip()
-        if url != "":
-            subprocess.run(["gio", "open", url])
+class ChwallClient:
+    def __init__(self):
+        if len(sys.argv) > 1 and self._run():
+            sys.exit()
+        self.cmd_help("__from_error__")
+        sys.exit(1)
 
+    def _parse_argv(self):
+        action = None
+        opts = []
+        for a in sys.argv[1:]:
+            arg = a.lower()
+            if arg in ["help", "--help", "-h"]:
+                if action == "help":
+                    continue
+                if action is not None:
+                    opts.insert(0, action)
+                action = "help"
+                continue
+            elif arg in ["version", "--version", "-v"]:
+                return "version", []
+            if action is None:
+                action = arg
+            else:
+                opts.append(arg)
+        return action, opts
 
-def print_help():
-    filtered_cmd = chwall_commands.copy()
-    filtered_cmd.remove("systemd")
-    filtered_cmd.remove("info")
-    filtered_cmd.remove("current")
-    filtered_cmd.remove("status")
-    filtered_cmd.remove("detach")
-    print("Usage: {} ( {} )".format(sys.argv[0], " | ".join(filtered_cmd)),
-          file=sys.stderr)
-    print("       {} ( current | info | status ) [ open ]".format(sys.argv[0]),
-          file=sys.stderr)
-    print("       {} systemd".format(sys.argv[0]), file=sys.stderr)
+    def _run(self):
+        action, opts = self._parse_argv()
+        if action is None:
+            return False
+        action = SUBCOMMAND_ALIASES.get(action, action)
+        if action == "help":
+            if len(opts) == 0:
+                self.cmd_help()
+                return True
+            subcmd = SUBCOMMAND_ALIASES.get(opts[0], opts[0])
+            action = getattr(self, "help_{}".format(subcmd), None)
+            if action is None:
+                self.help_generic(subcmd)
+                return True
+            opts = []
+        else:
+            action = getattr(self, "cmd_{}".format(action), None)
+            if action is None:
+                return False
+        action(*opts)
+        # By default, return success. It's up to each method to exit with error
+        # sooner when something goes wrong
+        return True
+
+    def cmd_version(self, *opts):
+        print(VERSION)
+
+    def help_generic(self, subcmd):
+        print(_("Usage: {}").format(sys.argv[0] + " " + subcmd))
+        print(_("""
+Sadly, no specific help message for this subcommand yet.
+"""))
+
+    def cmd_help(self, *opts):
+        out = sys.stdout
+        if len(opts) != 0 and opts[0] == "__from_error__":
+            out = sys.stderr
+        print(_("USAGE"), file=out)
+        print("       {} <command>".format(sys.argv[0]), file=out)
+        print("       {} help [ <command> ]".format(sys.argv[0]), file=out)
+        print("", file=out)
+        print(_("COMMANDS"), file=out)
+        for cmd in dir(self):
+            if cmd != "cmd_help" and cmd.startswith("cmd_"):
+                print("       " + cmd.split("_")[1], file=out)
+
+    def help_systemd(self):
+        print(_("Usage: {}").format(sys.argv[0] + " systemd"))
+        print(_("""
+Display a systemd service file exemple, which can be used to
+automatically start chwall daemon when your user session starts.
+"""))
+
+    def cmd_systemd(self, *opts):
+        sfm = ServiceFileManager()
+        sfm.systemd_service_file()
+
+    def cmd_options(self, *opts):
+        prefwin = PrefDialog(None, 0, read_config())
+        prefwin.run()
+        prefwin.destroy()
+
+    def help_detach(self):
+        print(_("Usage: {}").format(sys.argv[0] + " detach [ app | icon ]"))
+        print(_("""
+Detach from terminal and start either the main app or the system tray icon.
+
+By default, this command will start the main app if no argument is given.
+"""))
+
+    def cmd_detach(self, *opts):
+        if len(opts) != 1 or opts[0] == "":
+            opts = ["app"]
+        elif opts[0] not in ["app", "icon"]:
+            sys.exit(1)
+        daemonize()
+        cmd = "chwall-{}".format(opts[0])
+        os.execl("/usr/bin/{}".format(cmd), cmd)
+
+    def help_status(self):
+        print(_("Usage: {}").format(sys.argv[0] + " status [ open ]"))
+        print(_("""
+Display the current wallpaper information.
+
+If the optional `open' keyword is given, the original resource will be opened,
+using the best dedicated tool for it (web browser, picture viewer...).
+"""))
+
+    def cmd_status(self, *opts):
+        with open("{}/current_wallpaper"
+                  .format(BASE_CACHE_PATH), "r") as f:
+            infos = f.readlines()[1:]
+        print("".join(infos))
+        dinfo = daemon_info(read_config())
+        print(dinfo["last-change-label"])
+        if len(opts) != 0 and opts[0] == "open" and len(infos) >= 2:
+            url = infos[1].strip()
+            if url != "":
+                subprocess.run(["gio", "open", url])
+
+    def cmd_blacklist(self, *opts):
+        blacklist_wallpaper()
+        self.cmd_next()
+
+    def _pick_wall(self, direction=False):
+        if pick_wallpaper(read_config(), direction) is None:
+            print(_("Unable to pick wallpaper this time. Please, try again."),
+                  file=sys.stderr)
+            self.cmd_quit()
+        else:
+            notify_daemon_if_any()
+
+    def cmd_next(self, *opts):
+        self._pick_wall()
+
+    def cmd_previous(self, *opts):
+        self._pick_wall(True)
+
+    def cmd_quit(self, *opts):
+        # 15 == signal.SIGTERM
+        notify_daemon_if_any(15)
+
+    def cmd_purge(self, *opts):
+        road_map = "{}/roadmap".format(BASE_CACHE_PATH)
+        if os.path.exists(road_map):
+            os.unlink(road_map)
+
+    def _road_map(self):
+        road_map = "{}/roadmap".format(BASE_CACHE_PATH)
+        if not os.path.exists(road_map):
+            print(_("No roadmap has been created yet"), file=sys.stderr)
+            sys.exit(1)
+        data = {}
+        with open(road_map, "r") as f:
+            data = yaml.safe_load(f)
+        return data
+
+    def cmd_history(self, *opts):
+        data = self._road_map()
+        print("\n".join(data["history"]))
+
+    def cmd_pending(self, *opts):
+        data = self._road_map()
+        print("\n".join(data["pictures"]))
 
 
 def run_client():
-    if len(sys.argv) == 1:
-        print_help()
-        sys.exit(1)
-    config = read_config()
-    if sys.argv[1] not in chwall_commands:
-        print_help()
-        sys.exit(1)
-
-    action = sys.argv[1]
-    if action == "systemd":
-        sfm = ServiceFileManager()
-        sfm.systemd_service_file()
-        sys.exit(0)
-    elif action in ["options", "preferences"]:
-        prefwin = PrefDialog(None, 0, config)
-        prefwin.run()
-        prefwin.destroy()
-        sys.exit(0)
-    elif action == "detach":
-        if len(sys.argv) < 3:
-            sys.exit(1)
-        comp = sys.argv[2].strip()
-        if comp == "" or comp not in ["app", "icon"]:
-            sys.exit(1)
-        daemonize()
-        cmd = "chwall-{}".format(comp)
-        os.execl("/usr/bin/{}".format(cmd), cmd)
-        # Subprocess has now replaced current process, thus no need to exit or
-        # return from here.
-    elif action in ["current", "info", "status"]:
-        display_wallpaper_info(config)
-        sys.exit(0)
-
-    if action == "blacklist":
-        blacklist_wallpaper()
-        action = "next"
-    if action in ["next", "once", "previous"]:
-        direction = False
-        if action == "previous":
-            direction = True
-        if pick_wallpaper(config, direction) is None:
-            print(_("Unable to pick wallpaper this time. Please, try again."),
-                  file=sys.stderr)
-            action = "quit"
-        else:
-            notify_daemon_if_any()
-            sys.exit(0)
-    if action == "quit":
-        # 15 == signal.SIGTERM
-        return notify_daemon_if_any(15)
-
-    data = {}
-    road_map = "{}/roadmap".format(BASE_CACHE_PATH)
-    if action == "purge":
-        if os.path.exists(road_map):
-            os.unlink(road_map)
-        sys.exit(0)
-    if not os.path.exists(road_map):
-        print(_("No roadmap has been created yet"), file=sys.stderr)
-        sys.exit(1)
-    with open(road_map, "r") as f:
-        data = yaml.safe_load(f)
-    if action == "history":
-        print("\n".join(data["history"]))
-    elif action == "pending":
-        print("\n".join(data["pictures"]))
-    sys.exit(0)
+    return ChwallClient()
 
 
 if __name__ == "__main__":
