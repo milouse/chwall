@@ -56,8 +56,6 @@ def last_wallpaper_change():
 
 
 def daemon_change_label(last_change, next_change):
-    last_change_label = None
-    next_change_label = None
     if last_change > 60:
         last_change_m = int(last_change / 60)
         last_change_s = last_change % 60
@@ -98,7 +96,7 @@ def daemon_info(config):
     daemon_type = "standalone"
 
     last_change = last_wallpaper_change()
-    change_labels = (None, None)
+    change_labels = (_("Daemon stopped"), _("Daemon stopped"))
     if last_change != -1:
         daemon_state = "started"
         daemon_state_label = _("Daemon started")
