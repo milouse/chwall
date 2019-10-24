@@ -28,8 +28,9 @@ TRANSLATABLE = chwall/gui/*.py chwall/fetcher/*.py \
 .INTERMEDIATE: chwall-app.desktop
 
 dist: $(DEST_ICONS) $(DEST_MO) chwall-app.desktop
+	rm -rf $(PY_SITE)/chwall-*-py$(PY_VERSION).egg-info
 	python setup.py install --root=$(DESTDIR)/
-	@rm -rf build chwall.egg-info
+	rm -rf build chwall.egg-info
 	install -d -m755 $(datarootdir)/applications
 	install -d -m755 $(datarootdir)/licenses/chwall
 	install -d -m755 $(datarootdir)/bash-completion/completions
@@ -40,14 +41,14 @@ dist: $(DEST_ICONS) $(DEST_MO) chwall-app.desktop
 	install -D -m644 data/_chwall $(datarootdir)/zsh/site-functions/_chwall
 
 install: dist
-	@update-desktop-database $(datarootdir)/applications
-	@gtk-update-icon-cache $(datarootdir)/icons/hicolor
+	update-desktop-database $(datarootdir)/applications
+	gtk-update-icon-cache $(datarootdir)/icons/hicolor
 
 uninstall:
-	rm -rf $(PY_SITE)/chwall $(PY_SITE)/chwall-$(VERSION)-py$(PY_VERSION).egg-info
+	rm -rf $(PY_SITE)/chwall $(PY_SITE)/chwall-*-py$(PY_VERSION).egg-info
 	rm -rf $(datarootdir)/licenses/chwall
 	rm -f $(DEST_ICONS)
-	@gtk-update-icon-cache $(datarootdir)/icons/hicolor
+	gtk-update-icon-cache $(datarootdir)/icons/hicolor
 	rm -f $(DEST_MO)
 	rm -f $(datarootdir)/bash-completion/completions/chwall
 	rm -f $(datarootdir)/zsh/site-functions/_chwall
@@ -91,6 +92,6 @@ lang: $(PO_FILES)
 %.po~:
 	msgmerge --lang $(@:locale/%/LC_MESSAGES/chwall.po~=%) \
 		-o $@ $(@:%~=%) locale/chwall.pot
-	@cp $@ $(@:%~=%) && rm $@
+	cp $@ $(@:%~=%) && rm $@
 
 uplang: $(PO_FILES:%=%~)
