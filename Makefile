@@ -56,7 +56,7 @@ uninstall:
 	rm -f $(datarootdir)/applications/chwall-app.desktop
 
 chwall-app.desktop:
-	python chwall.py desktop $(datarootdir)/locale
+	python -m chwall.client desktop $(datarootdir)/locale
 
 $(datarootdir)/icons/hicolor/%/apps/chwall.png: data/icon_%.png
 	install -d -m755 $(@:%/chwall.png=%)

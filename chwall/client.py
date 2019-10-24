@@ -10,6 +10,7 @@ from chwall.daemon import notify_daemon_if_any, daemon_info, daemonize
 from chwall.utils import VERSION, BASE_CACHE_PATH, read_config, \
                          ServiceFileManager
 from chwall.wallpaper import blacklist_wallpaper, pick_wallpaper
+from chwall.gui.app import generate_desktop_file
 from chwall.gui.preferences import PrefDialog
 
 import gettext
@@ -112,6 +113,9 @@ automatically start chwall daemon when your user session starts.
         sfm = ServiceFileManager()
         sfm.systemd_service_file()
 
+    def cmd_desktop(self, *opts):
+        generate_desktop_file(*opts)
+
     def cmd_options(self, *opts):
         prefwin = PrefDialog(None, 0, read_config())
         prefwin.run()
@@ -201,9 +205,5 @@ using the best dedicated tool for it (web browser, picture viewer...).
         print("\n".join(data["pictures"]))
 
 
-def run_client():
-    return ChwallClient()
-
-
 if __name__ == "__main__":
-    run_client()
+    ChwallClient()
