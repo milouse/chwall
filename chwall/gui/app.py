@@ -212,15 +212,18 @@ class ChwallApp(ChwallGui):
         self.decorate_play_pause_button(True)
 
 
-def generate_desktop_file(localedir="./locale"):
+def generate_desktop_file(localedir="./locale", out="chwall-app.desktop"):
     lng_attrs = {
         "gname": [],
         "comment": [],
         "next_name": [],
         "prev_name": []
     }
-    for lng in os.listdir("locale"):
+    for lng in os.listdir(localedir):
         if lng in ["chwall.pot", "en"]:
+            continue
+        domain_file = os.path.join(localedir, lng, "LC_MESSAGES", "chwall.mo")
+        if not os.path.exists(domain_file):
             continue
         glng = gettext.translation(
             "chwall", localedir=localedir,
@@ -269,8 +272,11 @@ Actions=Next;Previous;
         actions.append(line)
     df_content += "\n".join(actions)
 
-    with open("chwall-app.desktop", "w") as f:
-        f.write(df_content)
+    if out == "print":
+        print(df_content)
+    else:
+        with open(out, "w") as f:
+            f.write(df_content)
 
 
 def start_app():
