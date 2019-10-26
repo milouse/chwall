@@ -37,7 +37,7 @@ class ChwallIcon(ChwallGui):
         daemon_state_btn.set_sensitive(False)
         menu.append(daemon_state_btn)
 
-        if dinfo["next-change-label"] is None:
+        if dinfo["next-change"] == -1:
             run_btn = Gtk.MenuItem.new_with_label(_("Start daemon"))
             run_btn.connect("activate", self.run_chwall_component, "daemon")
             menu.append(run_btn)
