@@ -128,9 +128,13 @@ class ChwallApp(ChwallGui):
         width = size_data[1].width
         if width < 800:
             width = 800
-        pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(
-            wallinfo["local-picture-path"], width, 600, True)
-        self.wallpaper.set_from_pixbuf(pixbuf)
+        try:
+            pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(
+                wallinfo["local-picture-path"], width, 600, True)
+            self.wallpaper.set_from_pixbuf(pixbuf)
+        except gi.repository.GLib.Error:
+            self.wallpaper.set_from_icon_name(
+                "image-missing", Gtk.IconSize.DIALOG)
         self.wallpaper.show()
 
         self.app.resize(width, size_data[1].height)
