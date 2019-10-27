@@ -25,6 +25,7 @@ class ChwallApp(ChwallGui):
         super().__init__()
         self.app = Gtk.Window(title="Chwall")
         self.app.set_icon_name("chwall")
+        self.app.set_position(Gtk.WindowPosition.CENTER_ALWAYS)
         self.app.set_resizable(False)
         self.app.connect("destroy", self.kthxbye)
 
