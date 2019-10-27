@@ -4,6 +4,7 @@ import os
 import sys
 import yaml
 import subprocess
+from xdg.BaseDirectory import xdg_data_home
 
 # chwall imports
 from chwall.daemon import notify_daemon_if_any, daemon_info, daemonize
@@ -111,10 +112,24 @@ automatically start chwall daemon when your user session starts.
 
     def cmd_systemd(self, *opts):
         sfm = ServiceFileManager()
-        sfm.systemd_service_file()
+        write = False
+        if len(opts) != 0 and opts[0] == "write":
+            write = True
+        sfm.systemd_service_file(write)
 
     def cmd_desktop(self, *opts):
-        generate_desktop_file(*opts)
+        out = "print"
+        if len(opts) >= 1:
+            if opts[0] == "write":
+                out = os.path.join(xdg_data_home, "applications",
+                                   "chwall-app.desktop")
+            else:
+                out = opts[0].strip()
+        if len(opts) == 2:
+            localedir = opts[1]
+        else:
+            localedir = gettext.bindtextdomain("chwall")
+        generate_desktop_file(localedir, out)
 
     def cmd_options(self, *opts):
         prefwin = PrefDialog(None, 0, read_config())

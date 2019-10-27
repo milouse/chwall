@@ -25,7 +25,7 @@ TRANSLATABLE = chwall/gui/*.py chwall/fetcher/*.py \
 
 .PHONY: dist install lang uninstall uplang
 
-.INTERMEDIATE: chwall-app.desktop
+.INTERMEDIATE: chwall-app.desktop $(MO_FILES)
 
 dist: $(DEST_ICONS) $(DEST_MO) chwall-app.desktop
 	rm -rf $(PY_SITE)/chwall-*-py$(PY_VERSION).egg-info
@@ -55,8 +55,8 @@ uninstall:
 	rm -f $(bindir)/chwall $(bindir)/chwall-daemon $(bindir)/chwall-icon $(bindir)/chwall-app
 	rm -f $(datarootdir)/applications/chwall-app.desktop
 
-chwall-app.desktop:
-	python -m chwall.client desktop $(datarootdir)/locale
+chwall-app.desktop: $(MO_FILES)
+	python -m chwall.client desktop chwall-app.desktop ./locale
 
 $(datarootdir)/icons/hicolor/%/apps/chwall.png: data/icon_%.png
 	install -d -m755 $(@:%/chwall.png=%)
