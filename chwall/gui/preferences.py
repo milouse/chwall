@@ -19,9 +19,8 @@ _ = gettext.gettext
 class PrefDialog(Gtk.Dialog):
     def __init__(self, opener, flags, config):
         self.config = config
-        super().__init__(
-            _("Preferences"), opener, flags,
-            (Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE))
+        super().__init__(_("Preferences"), opener, flags)
+        self.add_button(Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE)
         self.set_icon_name("stock-preferences")
 
         stack = Gtk.Stack()
