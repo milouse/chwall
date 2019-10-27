@@ -116,8 +116,27 @@ class ChwallGui:
         about_dialog.set_comments(_("Wallpaper Changer"))
         about_dialog.set_version(VERSION)
         about_dialog.set_copyright(_("Chwall is released under the WTFPL"))
+        about_dialog.set_license("""
+http://www.wtfpl.net/about/
+
+DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+Version 2, December 2004
+
+Copyright (C) 2004 Sam Hocevar <sam@hocevar.net>
+
+Everyone is permitted to copy and distribute verbatim or modified
+copies of this license document, and changing it is allowed as long
+as the name is changed.
+
+TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+
+0. You just DO WHAT THE FUCK YOU WANT TO.
+""")
         about_dialog.set_authors(["Étienne Deparis <etienne@depar.is>"])
         about_dialog.set_logo_icon_name("chwall")
+        about_dialog.set_translator_credits(
+            _("translator-credits https://translations.umaneti.net/engage/chwall/")  # noqa
+        )
         about_dialog.run()
         about_dialog.destroy()
 
