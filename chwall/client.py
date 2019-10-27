@@ -84,8 +84,18 @@ class ChwallClient:
     def cmd_version(self, *opts):
         print(VERSION)
 
+    def _print_usage(self, *subcmd):
+        label = _("Usage:")
+        print(" ".join([label, sys.argv[0], subcmd[0]]))
+        if len(subcmd) < 2:
+            return
+        pad = len(label)
+        or_word = (_("or") + " ").rjust(pad)
+        for other in subcmd[1:]:
+            print(" ".join([or_word, sys.argv[0], other]))
+
     def help_generic(self, subcmd):
-        print(_("Usage: {}").format(sys.argv[0] + " " + subcmd))
+        self._print_usage(subcmd)
         print(_("""
 Sadly, no specific help message for this subcommand yet.
 """))
@@ -104,10 +114,13 @@ Sadly, no specific help message for this subcommand yet.
                 print("       " + cmd.split("_")[1], file=out)
 
     def help_systemd(self):
-        print(_("Usage: {}").format(sys.argv[0] + " systemd"))
+        self._print_usage("systemd [ write ]")
         print(_("""
 Display a systemd service file exemple, which can be used to
 automatically start chwall daemon when your user session starts.
+
+If `write' is passed as second parameter, the resulting systemd service file
+will be saved in .config/systemd/user/
 """))
 
     def cmd_systemd(self, *opts):
@@ -116,6 +129,16 @@ automatically start chwall daemon when your user session starts.
         if len(opts) != 0 and opts[0] == "write":
             write = True
         sfm.systemd_service_file(write)
+
+    def help_desktop(self):
+        self._print_usage("desktop [ write ]")
+        print(_("""
+Display a launcher file example for your desktop, which can be used to start
+chwall main app from your desktop applications menu.
+
+If `write' is passed as second parameter, the resulting desktop file
+will be saved in .local/share/applications/
+"""))
 
     def cmd_desktop(self, *opts):
         out = "print"
@@ -131,13 +154,19 @@ automatically start chwall daemon when your user session starts.
             localedir = gettext.bindtextdomain("chwall")
         generate_desktop_file(localedir, out)
 
+    def help_options(self):
+        self._print_usage("options", "preferences")
+        print(_("""
+Directly open the chwall preferences window.
+"""))
+
     def cmd_options(self, *opts):
         prefwin = PrefDialog(None, 0, read_config())
         prefwin.run()
         prefwin.destroy()
 
     def help_detach(self):
-        print(_("Usage: {}").format(sys.argv[0] + " detach [ app | icon ]"))
+        self._print_usage("detach [ app | icon ]")
         print(_("""
 Detach from terminal and start either the main app or the system tray icon.
 
@@ -154,7 +183,8 @@ By default, this command will start the main app if no argument is given.
         os.execl("/usr/bin/{}".format(cmd), cmd)
 
     def help_status(self):
-        print(_("Usage: {}").format(sys.argv[0] + " status [ open ]"))
+        self._print_usage("status [ open ]", "current [ open ]",
+                          "info [ open ]")
         print(_("""
 Display the current wallpaper information.
 
@@ -174,6 +204,13 @@ using the best dedicated tool for it (web browser, picture viewer...).
             if url != "":
                 subprocess.run(["gio", "open", url])
 
+    def help_blacklist(self):
+        self._print_usage("blacklist")
+        print(_("""
+Add the current wallpaper to the blacklist to avoid it to be shown ever again
+and switch to the next wallpaper.
+"""))
+
     def cmd_blacklist(self, *opts):
         blacklist_wallpaper()
         self.cmd_next()
@@ -186,15 +223,43 @@ using the best dedicated tool for it (web browser, picture viewer...).
         else:
             notify_daemon_if_any()
 
+    def help_next(self):
+        self._print_usage("next", "once")
+        print(_("""
+Switch to the next wallpaper.
+
+This command may be used, even if the daemon is not started to manually change
+the wallpaper.
+"""))
+
     def cmd_next(self, *opts):
         self._pick_wall()
+
+    def help_previous(self):
+        self._print_usage("previous")
+        print(_("""
+Switch to the previous wallpaper.
+"""))
 
     def cmd_previous(self, *opts):
         self._pick_wall(True)
 
+    def help_quit(self):
+        self._print_usage("quit")
+        print(_("""
+Stop the chwall daemon.
+"""))
+
     def cmd_quit(self, *opts):
         # 15 == signal.SIGTERM
         notify_daemon_if_any(15)
+
+    def help_purge(self):
+        self._print_usage("purge")
+        print(_("""
+Empty the current pending list to force chwall to fetch a new wallpapers list
+the next time it will change.
+"""))
 
     def cmd_purge(self, *opts):
         road_map = "{}/roadmap".format(BASE_CACHE_PATH)
@@ -211,9 +276,26 @@ using the best dedicated tool for it (web browser, picture viewer...).
             data = yaml.safe_load(f)
         return data
 
+    def help_history(self):
+        self._print_usage("history")
+        print(_("""
+Display the last displayed wallpapers. The most recent one is at the bottom.
+
+This command display only the upstream url of each wallpaper.
+"""))
+
     def cmd_history(self, *opts):
         data = self._road_map()
         print("\n".join(data["history"]))
+
+    def help_pending(self):
+        self._print_usage("pending")
+        print(_("""
+Display the next wallpapers, which will be shown in the future. The next one is
+at the top of the list.
+
+This command display only the upstream url of each wallpaper.
+"""))
 
     def cmd_pending(self, *opts):
         data = self._road_map()
