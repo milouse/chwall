@@ -2,7 +2,7 @@ import threading
 import subprocess
 
 from chwall.daemon import notify_daemon_if_any, notify_app_if_any, daemon_info
-from chwall.utils import VERSION, read_config, cleanup_cache
+from chwall.utils import VERSION, read_config
 from chwall.wallpaper import blacklist_wallpaper, pick_wallpaper
 from chwall.gui.preferences import PrefDialog
 
@@ -78,32 +78,13 @@ class ChwallGui:
             stdout=subprocess.DEVNULL).returncode
         return retcode == 0
 
-    def get_flags_if_app(self):
-        if self.app is not None:
-            # flags 3 = MODAL | DESTROY_WITH_PARENT
-            return 3
-        return 0
-
-    def reset_pending_list(self):
-        subprocess.run(["chwall", "purge"])
-
-    def on_cleanup_cache(self, _widget):
-        deleted = cleanup_cache()
-        if deleted < 2:
-            message = _("{number} broken cache entry has been removed")
-        else:
-            message = _("{number} broken cache entries have been removed")
-        # flags 3 = MODAL | DESTROY_WITH_PARENT
-        dialog = Gtk.MessageDialog(self.app, self.get_flags_if_app(),
-                                   Gtk.MessageType.INFO, Gtk.ButtonsType.OK,
-                                   _("Cache cleanup"))
-        dialog.set_icon_name("chwall")
-        dialog.format_secondary_text(message.format(number=deleted))
-        dialog.run()
-        dialog.destroy()
-
     def show_preferences_dialog(self, widget):
-        prefwin = PrefDialog(self.app, self.get_flags_if_app(), self.config)
+        if self.app is None:
+            flags = 0
+            # flags 3 = MODAL | DESTROY_WITH_PARENT
+        else:
+            flags = 3
+        prefwin = PrefDialog(self.app, flags, self.config)
         prefwin.run()
         prefwin.destroy()
 

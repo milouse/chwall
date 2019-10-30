@@ -7,6 +7,7 @@ import signal
 from chwall.gui.shared import ChwallGui
 from chwall.wallpaper import current_wallpaper_info
 from chwall.daemon import notify_daemon_if_any
+from chwall.utils import reset_pending_list
 
 import gi
 gi.require_version("Gtk", "3.0")  # noqa: E402
@@ -147,14 +148,6 @@ class ChwallApp(ChwallGui):
         menu = Gtk.Menu()
 
         item = Gtk.MenuItem.new_with_label(
-            _("Cleanup broken entries in cache"))
-        item.connect("activate", self.on_cleanup_cache)
-        menu.append(item)
-
-        sep = Gtk.SeparatorMenuItem()
-        menu.append(sep)
-
-        item = Gtk.MenuItem.new_with_label(
             _("Display notification icon"))
         if self.is_chwall_component_started("icon"):
             item.set_sensitive(False)
@@ -213,7 +206,7 @@ class ChwallApp(ChwallGui):
 
     def on_stop_clicked(self, widget):
         notify_daemon_if_any(15)
-        self.reset_pending_list()
+        reset_pending_list()
         self.decorate_play_pause_button(True)
 
 

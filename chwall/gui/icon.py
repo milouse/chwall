@@ -80,11 +80,6 @@ class ChwallIcon(ChwallGui):
         blackbtn.connect("activate", self.on_blacklist_wallpaper)
         menu.append(blackbtn)
 
-        item = Gtk.MenuItem.new_with_label(
-            _("Cleanup broken entries in cache"))
-        item.connect("activate", self.on_cleanup_cache)
-        menu.append(item)
-
         sep = Gtk.SeparatorMenuItem()
         menu.append(sep)
 

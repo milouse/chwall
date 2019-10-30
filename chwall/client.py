@@ -9,7 +9,7 @@ from xdg.BaseDirectory import xdg_data_home
 # chwall imports
 from chwall.daemon import notify_daemon_if_any, daemon_info, daemonize
 from chwall.utils import VERSION, BASE_CACHE_PATH, read_config, \
-                         ServiceFileManager
+                         reset_pending_list, ServiceFileManager
 from chwall.wallpaper import blacklist_wallpaper, pick_wallpaper
 from chwall.gui.app import generate_desktop_file
 from chwall.gui.preferences import PrefDialog
@@ -262,9 +262,7 @@ the next time it will change.
 """))
 
     def cmd_empty(self, *opts):
-        road_map = "{}/roadmap".format(BASE_CACHE_PATH)
-        if os.path.exists(road_map):
-            os.unlink(road_map)
+        reset_pending_list()
 
     def _road_map(self):
         road_map = "{}/roadmap".format(BASE_CACHE_PATH)
