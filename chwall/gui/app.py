@@ -147,6 +147,15 @@ class ChwallApp(ChwallGui):
 
         menu = Gtk.Menu()
 
+        dinfo = self.daemon_info()
+        if dinfo["next-change"] != -1:
+            item = Gtk.MenuItem.new_with_label(
+                dinfo["next-change-label"])
+            item.set_sensitive(False)
+            menu.append(item)
+            item = Gtk.SeparatorMenuItem()
+            menu.append(item)
+
         item = Gtk.MenuItem.new_with_label(
             _("Display notification icon"))
         if self.is_chwall_component_started("icon"):
