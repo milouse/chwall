@@ -6,7 +6,6 @@ import signal
 
 from chwall.gui.shared import ChwallGui
 from chwall.wallpaper import current_wallpaper_info
-from chwall.daemon import notify_daemon_if_any
 from chwall.utils import reset_pending_list
 
 import gi
@@ -205,8 +204,7 @@ class ChwallApp(ChwallGui):
         # we should actually kill the daemon if the *current_state* is
         # *stopped*.
         if self.decorate_play_pause_button() == "stopped":
-            # 15 == signal.SIGTERM
-            notify_daemon_if_any(15)
+            self.stop_daemon()
             return
         # Else we should start the server
         self.notif_reset.show()
@@ -214,7 +212,7 @@ class ChwallApp(ChwallGui):
         self.run_chwall_component(widget, "daemon")
 
     def on_stop_clicked(self, widget):
-        notify_daemon_if_any(15)
+        self.stop_daemon()
         reset_pending_list()
         self.decorate_play_pause_button(True)
 

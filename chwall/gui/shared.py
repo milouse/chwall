@@ -26,6 +26,11 @@ class ChwallGui:
     def daemon_info(self):
         return daemon_info(self.config)
 
+    # May be called from as a widget action, hence the variable arguments list
+    def stop_daemon(self, *opts):
+        # 15 == signal.SIGTERM
+        notify_daemon_if_any(15)
+
     def start_in_thread_if_needed(self, function, *args):
         if self.app is None:
             # Coming from the icon, directly call the daemon to avoid

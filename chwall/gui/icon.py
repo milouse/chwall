@@ -29,23 +29,22 @@ class ChwallIcon(ChwallGui):
         self.must_autostart = self.sfm.xdg_autostart_file_exists("icon")
 
     def display_menu(self, _icon, event_button, event_time):
-        menu = Gtk.Menu()
-
         dinfo = self.daemon_info()
-        daemon_state_btn = Gtk.MenuItem.new_with_label(
-            dinfo["daemon-state-label"])
-        daemon_state_btn.set_sensitive(False)
-        menu.append(daemon_state_btn)
-
+        daemon_state_label = dinfo["daemon-state-label"]
         if dinfo["next-change"] == -1:
             run_btn = Gtk.MenuItem.new_with_label(_("Start daemon"))
             run_btn.connect("activate", self.run_chwall_component, "daemon")
-            menu.append(run_btn)
         else:
-            next_change_btn = Gtk.MenuItem.new_with_label(
-                dinfo["next-change-label"])
-            next_change_btn.set_sensitive(False)
-            menu.append(next_change_btn)
+            run_btn = Gtk.MenuItem.new_with_label(_("Stop daemon"))
+            run_btn.connect("activate", self.stop_daemon)
+            daemon_state_label += " - " + dinfo["next-change-label"]
+
+        daemon_state_btn = Gtk.MenuItem.new_with_label(daemon_state_label)
+        daemon_state_btn.set_sensitive(False)
+
+        menu = Gtk.Menu()
+        menu.append(daemon_state_btn)
+        menu.append(run_btn)
 
         current_wall_info = Gtk.MenuItem()
         wallinfo = current_wallpaper_info()
