@@ -26,7 +26,8 @@ SUBCOMMAND_ALIASES = {
     "preferences": "options",
     "current": "status",
     "info": "status",
-    "once": "next"
+    "once": "next",
+    "kill": "quit"
 }
 
 
@@ -245,7 +246,7 @@ Switch to the previous wallpaper.
         self._pick_wall(True)
 
     def help_quit(self):
-        self._print_usage("quit")
+        self._print_usage("quit", "kill")
         print(_("""
 Stop the chwall daemon.
 """))
