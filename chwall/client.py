@@ -87,13 +87,13 @@ class ChwallClient:
 
     def _print_usage(self, *subcmd):
         label = _("Usage:")
-        print(" ".join([label, sys.argv[0], subcmd[0]]))
+        print(" ".join([label, "chwall", subcmd[0]]))
         if len(subcmd) < 2:
             return
         pad = len(label)
         or_word = (_("or") + " ").rjust(pad)
         for other in subcmd[1:]:
-            print(" ".join([or_word, sys.argv[0], other]))
+            print(" ".join([or_word, "chwall", other]))
 
     def help_generic(self, subcmd):
         self._print_usage(subcmd)
@@ -106,9 +106,8 @@ Sadly, no specific help message for this subcommand yet.
         if len(opts) != 0 and opts[0] == "__from_error__":
             out = sys.stderr
         print(_("USAGE"), file=out)
-        print("       {} <command>".format(sys.argv[0]), file=out)
-        print("       {} help [ <command> ]".format(sys.argv[0]), file=out)
-        print("", file=out)
+        print("       chwall <command>", file=out)
+        print("       chwall help [ <command> ]\n", file=out)
         print(_("COMMANDS"), file=out)
         for cmd in dir(self):
             if cmd != "cmd_help" and cmd.startswith("cmd_"):
