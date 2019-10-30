@@ -215,7 +215,8 @@ def generate_desktop_file(localedir="./locale", out="chwall-app.desktop"):
         "gname": [],
         "comment": [],
         "next_name": [],
-        "prev_name": []
+        "prev_name": [],
+        "blacklst_name": []
     }
     for lng in os.listdir(localedir):
         if lng in ["chwall.pot", "en"]:
@@ -243,6 +244,10 @@ def generate_desktop_file(localedir="./locale", out="chwall-app.desktop"):
             "Name[{lang}]={key}".format(
                 lang=lng,
                 key=_("Previous wallpaper")))
+        lng_attrs["blacklst_name"].append(
+            "Name[{lang}]={key}".format(
+                lang=lng,
+                key=_("Blacklist")))
     df_content = ["[Desktop Entry]"]
     df_content.append("Name=Chwall")
     df_content.append("GenericName=Wallpaper Changer")
@@ -267,6 +272,10 @@ Actions=Next;Previous;
     actions += ["", "[Desktop Action Previous]", "Exec=chwall previous",
                 "Name=Previous wallpaper"]
     for line in lng_attrs["prev_name"]:
+        actions.append(line)
+    actions += ["", "[Desktop Action Blacklist]", "Exec=chwall blacklist",
+                "Name=Blacklist"]
+    for line in lng_attrs["blacklst_name"]:
         actions.append(line)
     df_content += "\n".join(actions)
 
