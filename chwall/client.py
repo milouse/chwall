@@ -254,14 +254,14 @@ Stop the chwall daemon.
         # 15 == signal.SIGTERM
         notify_daemon_if_any(15)
 
-    def help_purge(self):
-        self._print_usage("purge")
+    def help_empty(self):
+        self._print_usage("empty")
         print(_("""
 Empty the current pending list to force chwall to fetch a new wallpapers list
 the next time it will change.
 """))
 
-    def cmd_purge(self, *opts):
+    def cmd_empty(self, *opts):
         road_map = "{}/roadmap".format(BASE_CACHE_PATH)
         if os.path.exists(road_map):
             os.unlink(road_map)
