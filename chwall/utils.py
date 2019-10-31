@@ -43,16 +43,12 @@ def get_wall_config(path):
     return size_t
 
 
-def is_list(obj):
-    return type(obj).__name__ == "list"
-
-
 def migrate_config(config):
-    if "local" in config and is_list(config["local"]):
+    if "local" in config and isinstance(config["local"], list):
         config["local"] = {"paths": config["local"]}
-    if "bing" in config and is_list(config["bing"]):
+    if "bing" in config and isinstance(config["bing"], list):
         config["bing"] = {"locales": config["bing"]}
-    if "deviantart" in config and is_list(config["deviantart"]):
+    if "deviantart" in config and isinstance(config["deviantart"], list):
         config["deviantart"] = {"collections": config["deviantart"]}
     return config
 
