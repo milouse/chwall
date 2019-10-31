@@ -24,7 +24,6 @@ def fetch_pictures(config):
         month_re = "(?P<month>{month}-{year})".format(
             month=month_array[tdy.month - 1], year=(tdy.year - 2000)
         )
-        print(month_re)
     else:
         month_re = "(?P<month>[a-z]{3}-[0-9]{2})"
     size_re = "(?P<size>[0-9]+x[0-9]+)"
