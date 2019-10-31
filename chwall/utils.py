@@ -44,8 +44,11 @@ def get_wall_config(path):
 
 
 def migrate_config(config):
-    if "local" in config and isinstance(config["local"], list):
-        config["local"] = {"paths": config["local"]}
+    if "local" in config:
+        if isinstance(config["local"], list):
+            config["local"] = {"paths": config["local"]}
+        elif "pathes" in config["local"]:
+            config["local"] = {"paths": config["local"]["pathes"]}
     if "bing" in config and isinstance(config["bing"], list):
         config["bing"] = {"locales": config["bing"]}
     if "deviantart" in config and isinstance(config["deviantart"], list):
