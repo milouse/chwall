@@ -36,6 +36,8 @@ def build_wallpapers_list(config):
         m = import_module("chwall.fetcher.{}".format(module_name))
 
         while try_again > 0:
+            print(_("Fetching pictures list from {name} - Attempt {number}")
+                  .format(name=module_name, number=(6 - try_again)))
             try:
                 ll = m.fetch_pictures(config)
                 try_again = 0
@@ -57,6 +59,10 @@ def build_wallpapers_list(config):
             except KeyboardInterrupt:
                 print(_("Switch to next picture provider or exit"))
                 try_again = 0
+            except Exception as e:
+                print("{} in {}: {}".format(type(e).__name__, module_name, e),
+                      file=sys.stderr)
+                break
         collecs.update(ll)
     return collecs
 

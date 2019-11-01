@@ -2,7 +2,8 @@ import os
 import pkgutil
 from importlib import import_module
 
-from chwall.utils import write_config, ServiceFileManager
+from chwall.utils import write_config, reset_pending_list, \
+                         ServiceFileManager, BASE_CACHE_PATH
 
 import gi
 gi.require_version("Gtk", "3.0")  # noqa: E402
@@ -19,9 +20,8 @@ _ = gettext.gettext
 class PrefDialog(Gtk.Dialog):
     def __init__(self, opener, flags, config):
         self.config = config
-        super().__init__(
-            _("Preferences"), opener, flags,
-            (Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE))
+        super().__init__(_("Preferences"), opener, flags)
+        self.add_button(Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE)
         self.set_icon_name("stock-preferences")
 
         stack = Gtk.Stack()
@@ -29,6 +29,8 @@ class PrefDialog(Gtk.Dialog):
                          _("General"))
         stack.add_titled(self.make_sources_pane(), "sources",
                          _("Pictures sources"))
+        stack.add_titled(self.make_advanced_pane(), "advanced",
+                         _("Advanced"))
 
         box = self.get_content_area()
         box.set_spacing(10)
@@ -73,10 +75,13 @@ class PrefDialog(Gtk.Dialog):
             if options["widget"] == "select":
                 values = []
                 for v in options["values"]:
-                    values.append((str(v), str(v)))
+                    if isinstance(v, tuple):
+                        values.append(v)
+                    else:
+                        values.append((str(v), str(v)))
                 prefbox = self.make_select_pref(
                     fetcher_name, opt, label, values, str(defval),
-                    options["type"])
+                    options.get("type"))
             elif options["widget"] == "text":
                 prefbox = self.make_text_pref(fetcher_name, opt, label)
             elif options["widget"] == "number":
@@ -84,8 +89,11 @@ class PrefDialog(Gtk.Dialog):
                     fetcher_name, opt, label,
                     Gtk.Adjustment(defval or 0, 0, 100000, 1))
             elif options["widget"] == "list":
-                prefbox = self.make_list_pref(fetcher_name, opt, label,
-                                              defval or [])
+                prefbox = self.make_list_pref(
+                    fetcher_name, opt, label, defval or [])
+            elif options["widget"] == "toggle":
+                prefbox = self.make_toggle_pref(
+                    fetcher_name, opt, label, defval)
             if prefbox is not None:
                 sourceprefbox.pack_start(prefbox, False, False, 0)
         self.make_source_frame(fetcher_name, fprefs, sourceprefbox)
@@ -128,11 +136,13 @@ class PrefDialog(Gtk.Dialog):
         prefbox.pack_start(preflabel, False, False, 10)
         return prefbox
 
-    def make_toggle_pref(self, path, opt, label):
+    def make_toggle_pref(self, path, opt, label, default=None):
         prefbox = self.make_prefbox_with_label(label)
         button = Gtk.Switch()
         if opt in self.config[path]:
             button.set_active(self.config[path][opt])
+        elif default is not None:
+            button.set_active(default)
 
         def on_toggle_state_set(widget, state):
             self.config[path][opt] = state
@@ -292,7 +302,7 @@ class PrefDialog(Gtk.Dialog):
         return prefbox
 
     def lightdm_option_pref(self, genbox):
-        def update_lightdm_wall(widget):
+        def on_update_lightdm_wall(widget):
             self.config["general"]["desktop"] = widget.get_filename()
             write_config(self.config)
 
@@ -302,7 +312,7 @@ class PrefDialog(Gtk.Dialog):
             _("Select a file"), Gtk.FileChooserAction.OPEN)
         if "lightdm_wall" in self.config["general"]:
             button.set_filename(self.config["general"]["lightdm_wall"])
-        button.connect("file-set", update_lightdm_wall)
+        button.connect("file-set", on_update_lightdm_wall)
         prefbox.pack_end(button, False, False, 10)
         genbox.pack_start(prefbox, False, False, 0)
 
@@ -444,6 +454,123 @@ class PrefDialog(Gtk.Dialog):
         frame_label.set_markup("<b>{}</b>".format(_("Daemon")))
         frame.set_label_widget(frame_label)
         frame.add(daemonbox)
+        framebox.pack_start(frame, False, False, 0)
+
+        return framebox
+
+    def make_button_row(self, label, button_label, action, style=None, *opts):
+        prefbox = self.make_prefbox_with_label(label)
+        button = Gtk.Button()
+        button.set_label(button_label)
+        if style is not None:
+            button.get_style_context().add_class(style)
+        button.connect("clicked", action, *opts)
+        prefbox.pack_end(button, False, False, 10)
+        return prefbox
+
+    def make_advanced_pane(self):
+        pic_cache = "{}/pictures".format(BASE_CACHE_PATH)
+
+        genbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        genbox.set_border_width(10)
+        genbox.set_spacing(10)
+
+        prefbox = self.make_button_row(
+            _("Fetch a new wallpapers list the next time wallpaper change"),
+            _("Empty current pending list"),
+            reset_pending_list
+        )
+        genbox.pack_start(prefbox, False, False, 0)
+
+        def on_cleanup_cache(widget, update_label, clear_all=False):
+            deleted = 0
+            if os.path.exists(pic_cache):
+                for pic in os.scandir(pic_cache):
+                    if clear_all or pic.stat().st_size == 0:
+                        os.unlink(pic.path)
+                        deleted += 1
+            if deleted == 0:
+                return
+            if deleted < 2:
+                message = _("{number} cache entry has been removed.")
+            else:
+                message = _("{number} cache entries have been removed.")
+
+            widget.get_parent().foreach(update_label)
+
+            # flags 3 = MODAL | DESTROY_WITH_PARENT
+            dialog = Gtk.MessageDialog(
+                self, 3, Gtk.MessageType.INFO, Gtk.ButtonsType.OK,
+                _("Cache cleanup")
+            )
+            dialog.set_icon_name("chwall")
+            dialog.format_secondary_text(message.format(number=deleted))
+            dialog.run()
+            dialog.destroy()
+
+        broken_files = 0
+        if os.path.exists(pic_cache):
+            for pic in os.scandir(pic_cache):
+                if pic.stat().st_size == 0:
+                    broken_files += 1
+        if broken_files < 2:
+            label = _("{number} broken picture currently in cache")
+        else:
+            label = _("{number} broken pictures currently in cache")
+
+        def _update_broken_label(sibling, *opts):
+            if isinstance(sibling, Gtk.Label):
+                sibling.set_label(
+                    _("{number} broken picture currently in cache")
+                    .format(number="0")
+                )
+
+        prefbox = self.make_button_row(
+            label.format(number=broken_files),
+            _("Clear broken pictures"),
+            on_cleanup_cache,
+            "destructive-action",
+            _update_broken_label
+        )
+        genbox.pack_start(prefbox, False, False, 0)
+
+        cache_total = 0
+        if os.path.exists(pic_cache):
+            for pic in os.scandir(pic_cache):
+                cache_total += pic.stat().st_size
+        cache_total = cache_total / 1000
+        if cache_total > 1000000:
+            cache_size = "{} GB".format(str(round(cache_total/1000000, 2)))
+        elif cache_total > 1000:
+            cache_size = "{} MB".format(str(round(cache_total/1000, 2)))
+        else:
+            cache_size = "{} KB".format(str(round(cache_total, 2)))
+
+        def _update_empty_label(sibling, *opts):
+            if isinstance(sibling, Gtk.Label):
+                sibling.set_label(
+                    _("Picture cache use {size}").format(size="0.0 KB")
+                )
+
+        prefbox = self.make_button_row(
+            _("Picture cache use {size}").format(size=cache_size),
+            _("Clear picture cache"),
+            on_cleanup_cache,
+            "destructive-action",
+            _update_empty_label,
+            True
+        )
+        genbox.pack_start(prefbox, False, False, 0)
+
+        framebox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        framebox.set_spacing(10)
+        framebox.set_border_width(10)
+
+        frame = Gtk.Frame()
+        frame_label = Gtk.Label()
+        frame_label.set_markup("<b>{}</b>".format(_("Cache management")))
+        frame.set_label_widget(frame_label)
+        frame.add(genbox)
         framebox.pack_start(frame, False, False, 0)
 
         return framebox

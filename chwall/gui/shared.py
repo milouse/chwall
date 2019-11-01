@@ -2,7 +2,7 @@ import threading
 import subprocess
 
 from chwall.daemon import notify_daemon_if_any, notify_app_if_any, daemon_info
-from chwall.utils import VERSION, read_config, cleanup_cache
+from chwall.utils import VERSION, read_config
 from chwall.wallpaper import blacklist_wallpaper, pick_wallpaper
 from chwall.gui.preferences import PrefDialog
 
@@ -25,6 +25,11 @@ class ChwallGui:
 
     def daemon_info(self):
         return daemon_info(self.config)
+
+    # May be called from as a widget action, hence the variable arguments list
+    def stop_daemon(self, *opts):
+        # 15 == signal.SIGTERM
+        notify_daemon_if_any(15)
 
     def start_in_thread_if_needed(self, function, *args):
         if self.app is None:
@@ -78,32 +83,13 @@ class ChwallGui:
             stdout=subprocess.DEVNULL).returncode
         return retcode == 0
 
-    def get_flags_if_app(self):
-        if self.app is not None:
-            # flags 3 = MODAL | DESTROY_WITH_PARENT
-            return 3
-        return 0
-
-    def reset_pending_list(self):
-        subprocess.run(["chwall", "purge"])
-
-    def on_cleanup_cache(self, _widget):
-        deleted = cleanup_cache()
-        if deleted < 2:
-            message = _("{number} broken cache entry has been removed")
-        else:
-            message = _("{number} broken cache entries have been removed")
-        # flags 3 = MODAL | DESTROY_WITH_PARENT
-        dialog = Gtk.MessageDialog(self.app, self.get_flags_if_app(),
-                                   Gtk.MessageType.INFO, Gtk.ButtonsType.OK,
-                                   _("Cache cleanup"))
-        dialog.set_icon_name("chwall")
-        dialog.format_secondary_text(message.format(number=deleted))
-        dialog.run()
-        dialog.destroy()
-
     def show_preferences_dialog(self, widget):
-        prefwin = PrefDialog(self.app, self.get_flags_if_app(), self.config)
+        if self.app is None:
+            flags = 0
+            # flags 3 = MODAL | DESTROY_WITH_PARENT
+        else:
+            flags = 3
+        prefwin = PrefDialog(self.app, flags, self.config)
         prefwin.run()
         prefwin.destroy()
 
@@ -116,8 +102,27 @@ class ChwallGui:
         about_dialog.set_comments(_("Wallpaper Changer"))
         about_dialog.set_version(VERSION)
         about_dialog.set_copyright(_("Chwall is released under the WTFPL"))
+        about_dialog.set_license("""
+http://www.wtfpl.net/about/
+
+DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+Version 2, December 2004
+
+Copyright (C) 2004 Sam Hocevar <sam@hocevar.net>
+
+Everyone is permitted to copy and distribute verbatim or modified
+copies of this license document, and changing it is allowed as long
+as the name is changed.
+
+TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+
+0. You just DO WHAT THE FUCK YOU WANT TO.
+""")
         about_dialog.set_authors(["Étienne Deparis <etienne@depar.is>"])
         about_dialog.set_logo_icon_name("chwall")
+        about_dialog.set_translator_credits(
+            _("translator-credits https://translations.umaneti.net/engage/chwall/")  # noqa
+        )
         about_dialog.run()
         about_dialog.destroy()
 

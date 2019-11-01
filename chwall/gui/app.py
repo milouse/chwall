@@ -6,7 +6,7 @@ import signal
 
 from chwall.gui.shared import ChwallGui
 from chwall.wallpaper import current_wallpaper_info
-from chwall.daemon import notify_daemon_if_any
+from chwall.utils import reset_pending_list
 
 import gi
 gi.require_version("Gtk", "3.0")  # noqa: E402
@@ -25,6 +25,7 @@ class ChwallApp(ChwallGui):
         super().__init__()
         self.app = Gtk.Window(title="Chwall")
         self.app.set_icon_name("chwall")
+        self.app.set_position(Gtk.WindowPosition.CENTER_ALWAYS)
         self.app.set_resizable(False)
         self.app.connect("destroy", self.kthxbye)
 
@@ -128,9 +129,13 @@ class ChwallApp(ChwallGui):
         width = size_data[1].width
         if width < 800:
             width = 800
-        pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(
-            wallinfo["local-picture-path"], width, 600, True)
-        self.wallpaper.set_from_pixbuf(pixbuf)
+        try:
+            pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(
+                wallinfo["local-picture-path"], width, 600, True)
+            self.wallpaper.set_from_pixbuf(pixbuf)
+        except gi.repository.GLib.Error:
+            self.wallpaper.set_from_icon_name(
+                "image-missing", Gtk.IconSize.DIALOG)
         self.wallpaper.show()
 
         self.app.resize(width, size_data[1].height)
@@ -141,13 +146,14 @@ class ChwallApp(ChwallGui):
 
         menu = Gtk.Menu()
 
-        item = Gtk.MenuItem.new_with_label(
-            _("Cleanup broken entries in cache"))
-        item.connect("activate", self.on_cleanup_cache)
-        menu.append(item)
-
-        sep = Gtk.SeparatorMenuItem()
-        menu.append(sep)
+        dinfo = self.daemon_info()
+        if dinfo["next-change"] != -1:
+            item = Gtk.MenuItem.new_with_label(
+                dinfo["next-change-label"])
+            item.set_sensitive(False)
+            menu.append(item)
+            item = Gtk.SeparatorMenuItem()
+            menu.append(item)
 
         item = Gtk.MenuItem.new_with_label(
             _("Display notification icon"))
@@ -198,8 +204,7 @@ class ChwallApp(ChwallGui):
         # we should actually kill the daemon if the *current_state* is
         # *stopped*.
         if self.decorate_play_pause_button() == "stopped":
-            # 15 == signal.SIGTERM
-            notify_daemon_if_any(15)
+            self.stop_daemon()
             return
         # Else we should start the server
         self.notif_reset.show()
@@ -207,20 +212,24 @@ class ChwallApp(ChwallGui):
         self.run_chwall_component(widget, "daemon")
 
     def on_stop_clicked(self, widget):
-        notify_daemon_if_any(15)
-        self.reset_pending_list()
+        self.stop_daemon()
+        reset_pending_list()
         self.decorate_play_pause_button(True)
 
 
-def generate_desktop_file(localedir="./locale"):
+def generate_desktop_file(localedir="./locale", out="chwall-app.desktop"):
     lng_attrs = {
         "gname": [],
         "comment": [],
         "next_name": [],
-        "prev_name": []
+        "prev_name": [],
+        "blacklst_name": []
     }
-    for lng in os.listdir("locale"):
+    for lng in os.listdir(localedir):
         if lng in ["chwall.pot", "en"]:
+            continue
+        domain_file = os.path.join(localedir, lng, "LC_MESSAGES", "chwall.mo")
+        if not os.path.exists(domain_file):
             continue
         glng = gettext.translation(
             "chwall", localedir=localedir,
@@ -242,6 +251,10 @@ def generate_desktop_file(localedir="./locale"):
             "Name[{lang}]={key}".format(
                 lang=lng,
                 key=_("Previous wallpaper")))
+        lng_attrs["blacklst_name"].append(
+            "Name[{lang}]={key}".format(
+                lang=lng,
+                key=_("Blacklist")))
     df_content = ["[Desktop Entry]"]
     df_content.append("Name=Chwall")
     df_content.append("GenericName=Wallpaper Changer")
@@ -267,10 +280,17 @@ Actions=Next;Previous;
                 "Name=Previous wallpaper"]
     for line in lng_attrs["prev_name"]:
         actions.append(line)
+    actions += ["", "[Desktop Action Blacklist]", "Exec=chwall blacklist",
+                "Name=Blacklist"]
+    for line in lng_attrs["blacklst_name"]:
+        actions.append(line)
     df_content += "\n".join(actions)
 
-    with open("chwall-app.desktop", "w") as f:
-        f.write(df_content)
+    if out == "print":
+        print(df_content)
+    else:
+        with open(out, "w") as f:
+            f.write(df_content)
 
 
 def start_app():

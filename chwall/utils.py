@@ -43,16 +43,15 @@ def get_wall_config(path):
     return size_t
 
 
-def is_list(obj):
-    return type(obj).__name__ == "list"
-
-
 def migrate_config(config):
-    if "local" in config and is_list(config["local"]):
-        config["local"] = {"paths": config["local"]}
-    if "bing" in config and is_list(config["bing"]):
+    if "local" in config:
+        if isinstance(config["local"], list):
+            config["local"] = {"paths": config["local"]}
+        elif "pathes" in config["local"]:
+            config["local"] = {"paths": config["local"]["pathes"]}
+    if "bing" in config and isinstance(config["bing"], list):
         config["bing"] = {"locales": config["bing"]}
-    if "deviantart" in config and is_list(config["deviantart"]):
+    if "deviantart" in config and isinstance(config["deviantart"], list):
         config["deviantart"] = {"collections": config["deviantart"]}
     return config
 
@@ -85,22 +84,12 @@ def write_config(config):
                           explicit_start=True))
 
 
-def cleanup_cache():
-    pic_cache = "{}/pictures".format(BASE_CACHE_PATH)
-    if not os.path.exists(pic_cache):
-        return 0
-    try:
-        files_data = subprocess.run(
-            ["find", pic_cache, "-type", "f", "-size", "0"],
-            check=True, stdout=subprocess.PIPE)
-    except subprocess.CalledProcessError:
-        return 0
-    empty_files = files_data.stdout.decode().strip()
-    if empty_files == "":
-        return 0
-    for ref in empty_files.split("\n"):
-        os.unlink(ref.strip())
-    return len(empty_files)
+# This function may be called from a gui app and pass a widget or other stuff
+# as arguments
+def reset_pending_list(*opts):
+    road_map = "{}/roadmap".format(BASE_CACHE_PATH)
+    if os.path.exists(road_map):
+        os.unlink(road_map)
 
 
 def chwall_daemon_binary_path(component="daemon"):

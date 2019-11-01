@@ -20,19 +20,17 @@ L10N_LANGS   = fr es
 PO_FILES     = $(L10N_LANGS:%=locale/%/LC_MESSAGES/chwall.po)
 MO_FILES     = $(PO_FILES:%.po=%.mo)
 DEST_MO      = $(L10N_LANGS:%=$(datarootdir)/locale/%/LC_MESSAGES/chwall.mo)
-TRANSLATABLE = chwall/gui/icon.py chwall/gui/app.py \
-	chwall/gui/preferences.py chwall/gui/shared.py chwall/wallpaper.py \
-	chwall/fetcher/local.py chwall/fetcher/unsplash.py \
-	chwall/fetcher/reddit.py chwall/fetcher/bing.py chwall/daemon.py \
-	chwall/client.py
+TRANSLATABLE = chwall/gui/*.py chwall/fetcher/*.py \
+	chwall/wallpaper.py chwall/daemon.py chwall/client.py
 
 .PHONY: dist install lang uninstall uplang
 
-.INTERMEDIATE: chwall-app.desktop
+.INTERMEDIATE: chwall-app.desktop $(MO_FILES)
 
 dist: $(DEST_ICONS) $(DEST_MO) chwall-app.desktop
+	rm -rf $(PY_SITE)/chwall-*-py$(PY_VERSION).egg-info
 	python setup.py install --root=$(DESTDIR)/
-	@rm -rf build chwall.egg-info
+	rm -rf build chwall.egg-info
 	install -d -m755 $(datarootdir)/applications
 	install -d -m755 $(datarootdir)/licenses/chwall
 	install -d -m755 $(datarootdir)/bash-completion/completions
@@ -43,22 +41,22 @@ dist: $(DEST_ICONS) $(DEST_MO) chwall-app.desktop
 	install -D -m644 data/_chwall $(datarootdir)/zsh/site-functions/_chwall
 
 install: dist
-	@update-desktop-database $(datarootdir)/applications
-	@gtk-update-icon-cache $(datarootdir)/icons/hicolor
+	update-desktop-database $(datarootdir)/applications
+	gtk-update-icon-cache $(datarootdir)/icons/hicolor
 
 uninstall:
-	rm -rf $(PY_SITE)/chwall $(PY_SITE)/chwall-$(VERSION)-py$(PY_VERSION).egg-info
+	rm -rf $(PY_SITE)/chwall $(PY_SITE)/chwall-*-py$(PY_VERSION).egg-info
 	rm -rf $(datarootdir)/licenses/chwall
 	rm -f $(DEST_ICONS)
-	@gtk-update-icon-cache $(datarootdir)/icons/hicolor
+	gtk-update-icon-cache $(datarootdir)/icons/hicolor
 	rm -f $(DEST_MO)
 	rm -f $(datarootdir)/bash-completion/completions/chwall
 	rm -f $(datarootdir)/zsh/site-functions/_chwall
 	rm -f $(bindir)/chwall $(bindir)/chwall-daemon $(bindir)/chwall-icon $(bindir)/chwall-app
 	rm -f $(datarootdir)/applications/chwall-app.desktop
 
-chwall-app.desktop:
-	python chwall.py desktop $(datarootdir)/locale
+chwall-app.desktop: $(MO_FILES)
+	python -m chwall.client desktop chwall-app.desktop ./locale
 
 $(datarootdir)/icons/hicolor/%/apps/chwall.png: data/icon_%.png
 	install -d -m755 $(@:%/chwall.png=%)
@@ -94,6 +92,6 @@ lang: $(PO_FILES)
 %.po~:
 	msgmerge --lang $(@:locale/%/LC_MESSAGES/chwall.po~=%) \
 		-o $@ $(@:%~=%) locale/chwall.pot
-	@cp $@ $(@:%~=%) && rm $@
+	cp $@ $(@:%~=%) && rm $@
 
 uplang: $(PO_FILES:%=%~)
