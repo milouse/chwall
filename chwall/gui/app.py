@@ -270,7 +270,7 @@ Terminal=false
 Type=Application
 Categories=GTK;GNOME;Utility;
 StartupNotify=false
-Actions=Next;Previous;
+Actions=Next;Previous;Blacklist;
 """
     actions = ["", "[Desktop Action Next]", "Exec=chwall next",
                "Name=Next wallpaper"]
