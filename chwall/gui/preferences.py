@@ -17,12 +17,27 @@ gettext.textdomain("chwall")
 _ = gettext.gettext
 
 
+def do_for_widget_by_name(name, callback, parent):
+    if not callable(callback) or parent is None:
+        return
+
+    def _check_in_children(sibling, name, callback):
+        if sibling.get_name() == name:
+            callback(sibling)
+        elif isinstance(sibling, Gtk.Container):
+            do_for_widget_by_name(name, callback, sibling)
+
+    parent.foreach(_check_in_children, name, callback)
+
+
 class PrefDialog(Gtk.Dialog):
     def __init__(self, opener, flags, config):
         self.config = config
         super().__init__(_("Preferences"), opener, flags)
         self.add_button(Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE)
         self.set_icon_name("stock-preferences")
+
+        self.sfm = ServiceFileManager()
 
         stack = Gtk.Stack()
         stack.add_titled(self.make_general_pane(), "general",
@@ -128,11 +143,9 @@ class PrefDialog(Gtk.Dialog):
         prefbox.pack_end(button, False, False, 10)
         return prefbox
 
-    def make_prefbox_with_label(self, label, tooltip=None):
+    def make_prefbox_with_label(self, label):
         prefbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         preflabel = Gtk.Label(label)
-        if tooltip is not None:
-            preflabel.set_tooltip_text(tooltip)
         prefbox.pack_start(preflabel, False, False, 10)
         return prefbox
 
@@ -156,6 +169,7 @@ class PrefDialog(Gtk.Dialog):
     def make_select_pref(self, path, opt, label, values, **kwargs):
         default = kwargs.get("default")
         coerc = kwargs.get("coerc")
+        callback = kwargs.get("callback")
         prefbox = self.make_prefbox_with_label(label)
         button = Gtk.ComboBoxText()
         for key, val in values:
@@ -172,6 +186,8 @@ class PrefDialog(Gtk.Dialog):
             else:
                 self.config[path][opt] = val
             write_config(self.config)
+            if callback is not None and callable(callback):
+                callback(self.config[path][opt])
 
         button.connect("changed", on_select_changed)
         prefbox.pack_end(button, False, False, 10)
@@ -309,6 +325,16 @@ class PrefDialog(Gtk.Dialog):
         prefbox.pack_end(listbox, True, True, 0)
         return prefbox
 
+    def make_button_row(self, label, button_label, action, style=None, *opts):
+        prefbox = self.make_prefbox_with_label(label)
+        button = Gtk.Button()
+        button.set_label(button_label)
+        if style is not None:
+            button.get_style_context().add_class(style)
+        button.connect("clicked", action, *opts)
+        prefbox.pack_end(button, False, False, 10)
+        return prefbox
+
     def lightdm_option_pref(self, genbox):
         def on_update_lightdm_wall(widget):
             self.config["general"]["desktop"] = widget.get_filename()
@@ -378,73 +404,91 @@ class PrefDialog(Gtk.Dialog):
         daemonbox.set_border_width(10)
         daemonbox.set_spacing(10)
 
-        sfm = ServiceFileManager()
-
-        prefbox = self.make_prefbox_with_label(
-            _("Launch Chwall daemon when your session starts"),
-            _("This use XDG autostart mechanism"))
-        classic_daemon_btn = Gtk.Switch()
-        classic_daemon_btn.set_active(sfm.xdg_autostart_file_exists())
-        prefbox.pack_end(classic_daemon_btn, False, False, 10)
-        daemonbox.pack_start(prefbox, False, False, 0)
-
-        install_systemd_btn = None
-
-        if sfm.systemd_version is not None:
+        if self.sfm.systemd_version is not None:
             prefbox = self.make_prefbox_with_label(
-                _("Install required service file to use systemd launcher"),
-                _("This option must be set to let you manage the "
-                  "Chwall daemon with systemd"))
-            install_systemd_btn = Gtk.Switch()
-            service_installed = sfm.systemd_service_file_exists()
-            install_systemd_btn.set_active(service_installed)
+                _("""
+You have two options to launch Chwall daemon when your user session starts:
+  - with an XDG autostart application file;
+  - with a systemd service file (you need to install it first).
 
-            prefbox.pack_end(install_systemd_btn, False, False, 10)
+If you don't know what to do, XDG autostart should be the safest choice,
+as it is the more classical way of doing so.
+""").strip())
             daemonbox.pack_start(prefbox, False, False, 0)
 
-            prefbox = self.make_prefbox_with_label(
-                _("Launch Chwall daemon with systemd when your session "
-                  "starts"), sfm.systemd_version)
-            enable_systemd_btn = Gtk.Switch()
-            enable_systemd_btn.set_active(
-                sfm.systemd_service_file_exists(True))
+        classic_daemon_box = self.make_prefbox_with_label(
+            _("Launch Chwall daemon when your session starts with XDG "
+              "autostart"))
+        button = Gtk.Switch()
+        button.set_active(self.sfm.xdg_autostart_file_exists())
 
-            prefbox.pack_end(enable_systemd_btn, False, False, 10)
+        def on_toggle_classic_set(widget, state):
+            if state:
+                self.sfm.xdg_autostart_file(_("Chwall daemon"),
+                                            _("Start Chwall daemon"))
+            else:
+                self.sfm.remove_xdg_autostart_file()
+            do_for_widget_by_name(
+                "systemd-enable",
+                lambda w: w.set_sensitive(not state),
+                self)
+
+        button.connect("state-set", on_toggle_classic_set)
+        classic_daemon_box.pack_end(button, False, False, 10)
+        daemonbox.pack_start(classic_daemon_box, False, False, 0)
+        classic_daemon_box.set_name("xdg-autostart-install")
+
+        if self.sfm.systemd_version is not None:
+            service_installed = self.sfm.systemd_service_file_exists()
+
+            def on_create_systemd_service(widget):
+                self.sfm.systemd_service_file(True)
+                parent = widget.get_parent()
+                parent.set_no_show_all(True)
+                parent.hide()
+
+                def _show_systemd_widget(widget):
+                    widget.set_no_show_all(False)
+                    widget.show_all()
+
+                do_for_widget_by_name(
+                    "systemd-enable", _show_systemd_widget,
+                    parent.get_parent())
+                do_for_widget_by_name(
+                    "systemd-remove", _show_systemd_widget, self)
+
+            prefbox = self.make_button_row(
+                _("Install the systemd service file before using it "
+                  "to start Chwall daemon"),
+                _("Create"),
+                on_create_systemd_service
+            )
             daemonbox.pack_start(prefbox, False, False, 0)
-
-            def on_toggle_install_systemd_state(widget, state):
-                if state:
-                    sfm.systemd_service_file(True)
-                    enable_systemd_btn.set_sensitive(True)
-                    classic_daemon_btn.set_sensitive(False)
-                else:
-                    sfm.remove_systemd_service_file()
-                    enable_systemd_btn.set_active(False)
-                    enable_systemd_btn.set_sensitive(False)
-                    classic_daemon_btn.set_sensitive(True)
-
-            def on_toggle_systemd_state(widget, state):
-                sfm.systemd_service_toggle(state)
-
-            install_systemd_btn.connect(
-                "state-set", on_toggle_install_systemd_state)
-            enable_systemd_btn.connect("state-set", on_toggle_systemd_state)
+            prefbox.set_name("systemd-install")
 
             if service_installed:
-                classic_daemon_btn.set_sensitive(False)
-            else:
-                enable_systemd_btn.set_sensitive(False)
+                prefbox.set_no_show_all(True)
 
-        def on_toggle_state_set(widget, state):
-            if state:
-                sfm.xdg_autostart_file(_("Chwall daemon"),
-                                       _("Start Chwall daemon"))
-            else:
-                sfm.remove_xdg_autostart_file()
-            if install_systemd_btn is not None:
-                install_systemd_btn.set_sensitive(not state)
+            service_enabled = self.sfm.systemd_service_file_exists(True)
+            if service_enabled:
+                classic_daemon_box.set_sensitive(False)
 
-        classic_daemon_btn.connect("state-set", on_toggle_state_set)
+            prefbox = self.make_prefbox_with_label(
+                _("Launch Chwall daemon with systemd when your "
+                  "session starts"))
+            enable_systemd_btn = Gtk.Switch()
+            enable_systemd_btn.set_active(service_enabled)
+
+            def on_toggle_systemd_state(widget, state):
+                self.sfm.systemd_service_toggle(state)
+                classic_daemon_box.set_sensitive(not state)
+
+            enable_systemd_btn.connect(
+                "state-set", on_toggle_systemd_state)
+            prefbox.pack_end(enable_systemd_btn, False, False, 10)
+            daemonbox.pack_start(prefbox, False, False, 0)
+            prefbox.set_name("systemd-enable")
+            prefbox.set_no_show_all(not service_installed)
 
         framebox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         framebox.set_spacing(10)
@@ -465,16 +509,6 @@ class PrefDialog(Gtk.Dialog):
         framebox.pack_start(frame, False, False, 0)
 
         return framebox
-
-    def make_button_row(self, label, button_label, action, style=None, *opts):
-        prefbox = self.make_prefbox_with_label(label)
-        button = Gtk.Button()
-        button.set_label(button_label)
-        if style is not None:
-            button.get_style_context().add_class(style)
-        button.connect("clicked", action, *opts)
-        prefbox.pack_end(button, False, False, 10)
-        return prefbox
 
     def make_advanced_pane(self):
         pic_cache = "{}/pictures".format(BASE_CACHE_PATH)
@@ -526,7 +560,7 @@ class PrefDialog(Gtk.Dialog):
         else:
             label = _("{number} broken pictures currently in cache")
 
-        def _update_broken_label(sibling, *opts):
+        def _update_broken_label(sibling):
             if isinstance(sibling, Gtk.Label):
                 sibling.set_label(
                     _("{number} broken picture currently in cache")
@@ -554,7 +588,7 @@ class PrefDialog(Gtk.Dialog):
         else:
             cache_size = "{} KB".format(str(round(cache_total, 2)))
 
-        def _update_empty_label(sibling, *opts):
+        def _update_empty_label(sibling):
             if isinstance(sibling, Gtk.Label):
                 sibling.set_label(
                     _("Picture cache use {size}").format(size="0.0 KB")
@@ -577,6 +611,40 @@ class PrefDialog(Gtk.Dialog):
         prefbox = self.make_text_pref(
             "general", "display", _("X Display in use"), default=":0")
         daemonbox.pack_start(prefbox, False, False, 0)
+
+        def on_remove_systemd_service(widget):
+            self.sfm.remove_systemd_service_file()
+            widget.get_parent().set_visible(False)
+            do_for_widget_by_name(
+                "xdg-autostart-install",
+                lambda w: w.set_sensitive(True),
+                self)
+
+            def _hide_systemd_enable(widget):
+                widget.set_no_show_all(True)
+                widget.hide()
+
+            do_for_widget_by_name(
+                "systemd-enable", _hide_systemd_enable, self)
+
+            def _show_systemd_install(widget):
+                widget.set_no_show_all(False)
+                widget.show_all()
+
+            do_for_widget_by_name(
+                "systemd-install", _show_systemd_install, self)
+
+        prefbox = self.make_button_row(
+            _("Remove systemd service file"),
+            _("Remove"),
+            on_remove_systemd_service,
+            "destructive-action"
+        )
+        daemonbox.pack_start(prefbox, False, False, 0)
+        prefbox.set_name("systemd-remove")
+        prefbox.set_no_show_all(
+            self.sfm.systemd_version is None
+            or not self.sfm.systemd_service_file_exists())
 
         framebox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         framebox.set_spacing(10)
