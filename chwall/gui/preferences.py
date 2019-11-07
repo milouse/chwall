@@ -80,20 +80,20 @@ class PrefDialog(Gtk.Dialog):
                     else:
                         values.append((str(v), str(v)))
                 prefbox = self.make_select_pref(
-                    fetcher_name, opt, label, values, str(defval),
-                    options.get("type"))
+                    fetcher_name, opt, label, values,
+                    default=str(defval), coerc=options.get("type"))
             elif options["widget"] == "text":
                 prefbox = self.make_text_pref(fetcher_name, opt, label)
             elif options["widget"] == "number":
                 prefbox = self.make_number_pref(
                     fetcher_name, opt, label,
-                    Gtk.Adjustment(defval or 0, 0, 100000, 1))
+                    adj=Gtk.Adjustment(defval or 0, 0, 100000, 1))
             elif options["widget"] == "list":
                 prefbox = self.make_list_pref(
-                    fetcher_name, opt, label, defval or [])
+                    fetcher_name, opt, label, default=defval)
             elif options["widget"] == "toggle":
                 prefbox = self.make_toggle_pref(
-                    fetcher_name, opt, label, defval)
+                    fetcher_name, opt, label, default=defval)
             if prefbox is not None:
                 sourceprefbox.pack_start(prefbox, False, False, 0)
         self.make_source_frame(fetcher_name, fprefs, sourceprefbox)
@@ -136,7 +136,8 @@ class PrefDialog(Gtk.Dialog):
         prefbox.pack_start(preflabel, False, False, 10)
         return prefbox
 
-    def make_toggle_pref(self, path, opt, label, default=None):
+    def make_toggle_pref(self, path, opt, label, **kwargs):
+        default = kwargs.get("default")
         prefbox = self.make_prefbox_with_label(label)
         button = Gtk.Switch()
         if opt in self.config[path]:
@@ -152,8 +153,9 @@ class PrefDialog(Gtk.Dialog):
         prefbox.pack_end(button, False, False, 10)
         return prefbox
 
-    def make_select_pref(self, path, opt, label, values,
-                         default=None, coerc=None):
+    def make_select_pref(self, path, opt, label, values, **kwargs):
+        default = kwargs.get("default")
+        coerc = kwargs.get("coerc")
         prefbox = self.make_prefbox_with_label(label)
         button = Gtk.ComboBoxText()
         for key, val in values:
@@ -175,7 +177,7 @@ class PrefDialog(Gtk.Dialog):
         prefbox.pack_end(button, False, False, 10)
         return prefbox
 
-    def make_text_pref(self, path, opt, label):
+    def make_text_pref(self, path, opt, label, **kwargs):
         prefbox = self.make_prefbox_with_label(label)
         button = Gtk.Entry()
         if opt in self.config[path]:
@@ -192,7 +194,9 @@ class PrefDialog(Gtk.Dialog):
         prefbox.pack_end(button, True, True, 10)
         return prefbox
 
-    def make_number_pref(self, path, opt, label, adj=None, factor=1):
+    def make_number_pref(self, path, opt, label, **kwargs):
+        adj = kwargs.get("adj")
+        factor = kwargs.get("factor", 1)
         prefbox = self.make_prefbox_with_label(label)
         button = Gtk.SpinButton()
         if adj is not None:
@@ -211,7 +215,8 @@ class PrefDialog(Gtk.Dialog):
         prefbox.pack_end(button, False, False, 10)
         return prefbox
 
-    def make_list_pref(self, path, opt, label, defaults=None):
+    def make_list_pref(self, path, opt, label, **kwargs):
+        defaults = kwargs.get("default", [])
         prefbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         liststore = Gtk.ListStore(str)
         if opt in self.config[path]:
@@ -348,14 +353,14 @@ class PrefDialog(Gtk.Dialog):
         sleep_time = int(self.config["general"]["sleep"] / 60)
         prefbox = self.make_number_pref(
             "general", "sleep", _("Time between each wallpaper change"),
-            Gtk.Adjustment(sleep_time, 5, 120, 1), 60)
+            adj=Gtk.Adjustment(sleep_time, 5, 120, 1), factor=60)
         genbox.pack_start(prefbox, False, False, 0)
 
         environments = [("gnome", "Gnome, Budgie, …"), ("mate", "Mate"),
                         ("nitrogen", _("Use Nitrogen application"))]
         prefbox = self.make_select_pref(
             "general", "desktop", _("Desktop environment"),
-            environments, "gnome")
+            environments, default="gnome")
         genbox.pack_start(prefbox, False, False, 0)
 
         ldmfound = False
