@@ -7,7 +7,7 @@ import signal
 import subprocess
 
 # chwall imports
-from chwall.utils import BASE_CACHE_PATH, read_config
+from chwall.utils import BASE_CACHE_PATH, read_config, cleanup_cache
 from chwall.wallpaper import pick_wallpaper, ChwallWallpaperSetError, \
                              current_wallpaper_info
 
@@ -204,6 +204,8 @@ def daemon_loop():
         pid_file = "{}/chwall_pid".format(BASE_CACHE_PATH)
         if os.path.isfile(pid_file):
             os.unlink(pid_file)
+        # Try to keep cache as clean as possible
+        cleanup_cache()
         if error_code == 0:
             print("Kthxbye!")
         return error_code

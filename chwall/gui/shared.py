@@ -3,7 +3,7 @@ import subprocess
 
 from chwall import __version__
 from chwall.daemon import notify_daemon_if_any, notify_app_if_any, daemon_info
-from chwall.utils import read_config
+from chwall.utils import read_config, cleanup_cache
 from chwall.wallpaper import blacklist_wallpaper, pick_wallpaper
 from chwall.gui.preferences import PrefDialog
 
@@ -23,6 +23,8 @@ class ChwallGui:
     def __init__(self):
         self.config = read_config()
         self.app = None
+        # Try to keep cache as clean as possible
+        cleanup_cache()
 
     def daemon_info(self):
         return daemon_info(self.config)

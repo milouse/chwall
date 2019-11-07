@@ -3,7 +3,8 @@ import pkgutil
 from importlib import import_module
 
 from chwall.utils import write_config, reset_pending_list, \
-                         ServiceFileManager, BASE_CACHE_PATH
+                         cleanup_cache, ServiceFileManager, \
+                         BASE_CACHE_PATH
 
 import gi
 gi.require_version("Gtk", "3.0")  # noqa: E402
@@ -511,8 +512,6 @@ as it is the more classical way of doing so.
         return framebox
 
     def make_advanced_pane(self):
-        pic_cache = "{}/pictures".format(BASE_CACHE_PATH)
-
         genbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         genbox.set_border_width(10)
         genbox.set_spacing(10)
@@ -525,12 +524,7 @@ as it is the more classical way of doing so.
         genbox.pack_start(prefbox, False, False, 0)
 
         def on_cleanup_cache(widget, update_label, clear_all=False):
-            deleted = 0
-            if os.path.exists(pic_cache):
-                for pic in os.scandir(pic_cache):
-                    if clear_all or pic.stat().st_size == 0:
-                        os.unlink(pic.path)
-                        deleted += 1
+            deleted = cleanup_cache(clear_all)
             if deleted == 0:
                 return
             if deleted < 2:
@@ -550,6 +544,7 @@ as it is the more classical way of doing so.
             dialog.run()
             dialog.destroy()
 
+        pic_cache = "{}/pictures".format(BASE_CACHE_PATH)
         broken_files = 0
         if os.path.exists(pic_cache):
             for pic in os.scandir(pic_cache):

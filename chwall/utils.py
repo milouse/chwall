@@ -91,6 +91,18 @@ def reset_pending_list(*opts):
         os.unlink(road_map)
 
 
+def cleanup_cache(clear_all=False):
+    pic_cache = "{}/pictures".format(BASE_CACHE_PATH)
+    if not os.path.exists(pic_cache):
+        return 0
+    deleted = 0
+    for pic in os.scandir(pic_cache):
+        if clear_all or pic.stat().st_size == 0:
+            os.unlink(pic.path)
+            deleted += 1
+    return deleted
+
+
 def chwall_daemon_binary_path(component="daemon"):
     comp = "/usr/bin/chwall-{}".format(component)
     # Is it an installed version?
