@@ -178,10 +178,13 @@ class PrefDialog(Gtk.Dialog):
         return prefbox
 
     def make_text_pref(self, path, opt, label, **kwargs):
+        default = kwargs.get("default")
         prefbox = self.make_prefbox_with_label(label)
         button = Gtk.Entry()
         if opt in self.config[path]:
             button.set_text(self.config[path][opt])
+        elif default is not None:
+            button.set_text(default)
 
         def on_text_edited(widget, _event):
             self.config[path][opt] = widget.get_text().strip()
@@ -567,6 +570,14 @@ class PrefDialog(Gtk.Dialog):
         )
         genbox.pack_start(prefbox, False, False, 0)
 
+        daemonbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        daemonbox.set_border_width(10)
+        daemonbox.set_spacing(10)
+
+        prefbox = self.make_text_pref(
+            "general", "display", _("X Display in use"), default=":0")
+        daemonbox.pack_start(prefbox, False, False, 0)
+
         framebox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         framebox.set_spacing(10)
         framebox.set_border_width(10)
@@ -576,6 +587,13 @@ class PrefDialog(Gtk.Dialog):
         frame_label.set_markup("<b>{}</b>".format(_("Cache management")))
         frame.set_label_widget(frame_label)
         frame.add(genbox)
+        framebox.pack_start(frame, False, False, 0)
+
+        frame = Gtk.Frame()
+        frame_label = Gtk.Label()
+        frame_label.set_markup("<b>{}</b>".format(_("Daemon")))
+        frame.set_label_widget(frame_label)
+        frame.add(daemonbox)
         framebox.pack_start(frame, False, False, 0)
 
         return framebox

@@ -134,6 +134,8 @@ class ServiceFileManager:
 
     def systemd_service_file(self, write=False):
         chwall_cmd = chwall_daemon_binary_path()
+        config = read_config()
+        display = config["general"].get("display", ":0")
         file_content = """
 [Unit]
 Description = Simple wallpaper changer
@@ -141,11 +143,12 @@ After=network.target
 
 [Service]
 Type=simple
+Environment=DISPLAY={display}
 ExecStart={command} -D
 
 [Install]
 WantedBy=default.target
-""".strip().format(command=chwall_cmd)
+""".strip().format(display=display, command=chwall_cmd)
         if write is False:
             print(file_content)
             return
