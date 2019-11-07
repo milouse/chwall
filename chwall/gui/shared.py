@@ -1,8 +1,9 @@
 import threading
 import subprocess
 
+from chwall import __version__
 from chwall.daemon import notify_daemon_if_any, notify_app_if_any, daemon_info
-from chwall.utils import VERSION, read_config
+from chwall.utils import read_config
 from chwall.wallpaper import blacklist_wallpaper, pick_wallpaper
 from chwall.gui.preferences import PrefDialog
 
@@ -100,7 +101,7 @@ class ChwallGui:
         about_dialog.set_name("Chwall")
         about_dialog.set_website("https://git.deparis.io/chwall/about")
         about_dialog.set_comments(_("Wallpaper Changer"))
-        about_dialog.set_version(VERSION)
+        about_dialog.set_version(__version__)
         about_dialog.set_copyright(_("Chwall is released under the WTFPL"))
         about_dialog.set_license("""
 http://www.wtfpl.net/about/

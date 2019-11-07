@@ -7,8 +7,9 @@ import subprocess
 from xdg.BaseDirectory import xdg_data_home
 
 # chwall imports
+from chwall import __version__
 from chwall.daemon import notify_daemon_if_any, daemon_info, daemonize
-from chwall.utils import VERSION, BASE_CACHE_PATH, read_config, \
+from chwall.utils import BASE_CACHE_PATH, read_config, \
                          reset_pending_list, ServiceFileManager
 from chwall.wallpaper import blacklist_wallpaper, pick_wallpaper
 from chwall.gui.app import generate_desktop_file
@@ -83,7 +84,7 @@ class ChwallClient:
         return True
 
     def cmd_version(self, *opts):
-        print(VERSION)
+        print(__version__)
 
     def _print_usage(self, *subcmd):
         label = _("Usage:")

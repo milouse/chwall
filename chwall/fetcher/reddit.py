@@ -1,7 +1,7 @@
 import re
 import requests
 
-from ..utils import VERSION
+from chwall import __version__
 
 import gettext
 # Uncomment the following line during development.
@@ -18,7 +18,8 @@ def fetch_pictures(config):
     pictures = {}
     url = "https://www.reddit.com/r/{}.json?raw_json=1".format(
         "+".join(list(map(lambda x: x.strip(), subreds))))
-    uagent = "python:Chwall:v{version} (by /u/milouse)".format(version=VERSION)
+    uagent = "python:Chwall:v{version} (by /u/milouse)".format(
+        version=__version__)
     data = requests.get(url, headers={"user-agent": uagent}).json()
     collecs = data.get("data", {}).get("children", [])
     for p in collecs:
