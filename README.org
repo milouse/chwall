@@ -28,14 +28,14 @@ sources:
 
 ** Locally in a virtualenv
 
-#+begin_src bash
+#+begin_src shell
 pip install -r requirements.txt
 python setup.py install
 #+end_src
 
 ** System-wide
 
-#+begin_src bash
+#+begin_src shell
 sudo make install
 #+end_src
 
