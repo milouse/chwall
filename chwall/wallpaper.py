@@ -141,7 +141,7 @@ def set_gnome_wallpaper(path):
 
 
 def set_nitrogen_wallpaper(path):
-    cmd = ["nitrogen", "--set-zoom-fill"]
+    cmd = ["nitrogen", "--set-zoom-fill", "--set-color=#000000", "--save"]
     # screen_info = (scr_number, scr_width, scr_height, scr_ratio, display)
     screen_info = get_screen_config()
     # wall_info = (wall_width, wall_height, wall_ratio)
