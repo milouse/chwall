@@ -142,10 +142,8 @@ def set_gnome_wallpaper(path):
 
 def set_nitrogen_wallpaper(path):
     cmd = ["nitrogen", "--set-auto"]
-    # screen_info = (scr_number, scr_width, scr_height, scr_ratio)
+    # screen_info = (scr_number, scr_width, scr_height, scr_ratio, display)
     screen_info = get_screen_config()
-    if screen_info is None:
-        screen_info = (1, 0, 0, 1)
     # wall_info = (wall_width, wall_height, wall_ratio)
     wall_info = get_wall_config(path)
     if wall_info is None:

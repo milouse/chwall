@@ -9,11 +9,12 @@ BASE_CACHE_PATH = "{}/chwall".format(xdg_cache_home)
 
 
 def get_screen_config():
+    display = read_config()["general"].get("display", ":0")
     try:
-        screen_data = subprocess.run(["xrandr", "-q", "-d", ":0"],
+        screen_data = subprocess.run(["xrandr", "-q", "-d", display],
                                      check=True, stdout=subprocess.PIPE)
     except subprocess.CalledProcessError:
-        return None
+        return (1, 0, 0, 1, display)
     screen_info = screen_data.stdout.decode()
     s = re.match(".*, current ([0-9]+) x ([0-9]+).*", screen_info)
     if s is None:
@@ -22,7 +23,7 @@ def get_screen_config():
         width = int(s[1])
         height = int(s[2])
         ratio = round(width / height, 2)
-    return (screen_info.count("*"), width, height, ratio)
+    return (screen_info.count("*"), width, height, ratio, display)
 
 
 def get_wall_config(path):
@@ -146,8 +147,7 @@ class ServiceFileManager:
 
     def systemd_service_file(self, write=False):
         chwall_cmd = chwall_daemon_binary_path()
-        config = read_config()
-        display = config["general"].get("display", ":0")
+        display = read_config()["general"].get("display", ":0")
         file_content = """
 [Unit]
 Description = Simple wallpaper changer
