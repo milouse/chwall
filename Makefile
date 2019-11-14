@@ -13,7 +13,7 @@ ICON       = data/icon_800.png
 ICON_SIZE  = 128 64 48 32 24 16
 DEST_ICONS = $(foreach z,$(ICON_SIZE),$(datarootdir)/icons/hicolor/$(z)x$(z)/apps/chwall.png)
 
-PY_VERSION = $(shell python -c "import sys;v=sys.version_info;print('.'.join([v.major, v.minor]))")
+PY_VERSION = $(shell python -c "import sys;v=sys.version_info;print('{}.{}'.format(v.major, v.minor))")
 PY_SITE    = $(libdir)/python$(PY_VERSION)/site-packages
 
 L10N_LANGS   = fr es
