@@ -5,10 +5,12 @@ function _chwall() {
     local prev=${COMP_WORDS[1]}
 
     case "$prev" in
-        info)
+        current|info|status)
             commands=open
             ;;
-        *) commands="blacklist history info next once pending previous systemd" ;;
+        *)
+            commands="blacklist current empty help history info kill next once previous pending quit status"
+            ;;
     esac
 
     COMPREPLY=( $(compgen -o nospace -W "$commands" "$cur") )
