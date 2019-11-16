@@ -21,13 +21,12 @@ _ = gettext.gettext
 
 class ChwallGui:
     def __init__(self):
-        self.config = read_config()
         self.app = None
         # Try to keep cache as clean as possible
         cleanup_cache()
 
     def daemon_info(self):
-        return daemon_info(self.config)
+        return daemon_info()
 
     # May be called from as a widget action, hence the variable arguments list
     def stop_daemon(self, *opts):
@@ -47,16 +46,16 @@ class ChwallGui:
             t.start()
 
     def on_change_wallpaper(self, _widget, direction=False, threaded=True):
-        def change_wall_thread_target(direction, config):
-            pick_wallpaper(config, direction)
+        def change_wall_thread_target(direction):
+            pick_wallpaper(read_config(), direction)
             notify_daemon_if_any()
             notify_app_if_any()
 
         if not threaded:
-            change_wall_thread_target(direction, self.config)
+            change_wall_thread_target(direction)
         else:
             self.start_in_thread_if_needed(change_wall_thread_target,
-                                           direction, self.config)
+                                           direction)
 
     def on_blacklist_wallpaper(self, _widget):
         def blacklist_wall_thread_target():
@@ -65,18 +64,17 @@ class ChwallGui:
         self.start_in_thread_if_needed(blacklist_wall_thread_target)
 
     def run_chwall_component(self, _widget, component):
-        def start_daemon_from_thread(config):
+        def start_daemon_from_thread():
             # At the difference of the daemon itself, it's expected than a
             # service start from inside the app or the icon will immediatly
             # change the current wallpaper.
-            pick_wallpaper(config)
+            pick_wallpaper(read_config())
             notify_app_if_any()
             # No need to fork, daemon already do that
             subprocess.run(["chwall-daemon"])
 
         if component == "daemon":
-            self.start_in_thread_if_needed(start_daemon_from_thread,
-                                           self.config)
+            self.start_in_thread_if_needed(start_daemon_from_thread)
         else:
             subprocess.run(["chwall", "detach", component])
 
@@ -92,7 +90,7 @@ class ChwallGui:
             # flags 3 = MODAL | DESTROY_WITH_PARENT
         else:
             flags = 3
-        prefwin = PrefDialog(self.app, flags, self.config)
+        prefwin = PrefDialog(self.app, flags)
         prefwin.run()
         prefwin.destroy()
 

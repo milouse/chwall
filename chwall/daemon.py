@@ -87,7 +87,8 @@ def daemon_change_label(last_change, next_change):
     return last_change_label, next_change_label
 
 
-def daemon_info(config):
+def daemon_info():
+    config = read_config()
     last_change = -1
     next_change = -1
     daemon_state = "stopped"

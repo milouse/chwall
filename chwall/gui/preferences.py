@@ -2,9 +2,8 @@ import os
 import pkgutil
 from importlib import import_module
 
-from chwall.utils import write_config, reset_pending_list, \
-                         cleanup_cache, ServiceFileManager, \
-                         BASE_CACHE_PATH
+from chwall.utils import read_config, write_config, reset_pending_list, \
+                         cleanup_cache, ServiceFileManager, BASE_CACHE_PATH
 
 import gi
 gi.require_version("Gtk", "3.0")  # noqa: E402
@@ -32,8 +31,8 @@ def do_for_widget_by_name(name, callback, parent):
 
 
 class PrefDialog(Gtk.Dialog):
-    def __init__(self, opener, flags, config):
-        self.config = config
+    def __init__(self, opener, flags):
+        self.config = read_config()
         super().__init__(_("Preferences"), opener, flags)
         self.add_button(Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE)
         self.set_icon_name("stock-preferences")
