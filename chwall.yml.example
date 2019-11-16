@@ -7,12 +7,10 @@ bing:
   - en-US
   - de-DE
   - ja-JP
-unsplash:
-  width: 1920
 general:
   lightdm_wall: /var/cache/last-wall
   sources:
     - bing
     - nasa
-    - unsplash
+    - natgeo
     - local
