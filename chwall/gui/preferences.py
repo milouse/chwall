@@ -30,9 +30,86 @@ def do_for_widget_by_name(name, callback, parent):
     parent.foreach(_check_in_children, name, callback)
 
 
+class ConfigWrapper:
+    def __init__(self):
+        self.config = read_config()
+
+    def __dir__(self):
+        return dir(self.config)
+
+    def __str__(self):
+        return str(self.config)
+
+    def __repr__(self):
+        return repr(self.config)
+
+    def __len__(self):
+        return len(self.config)
+
+    def __getitem__(self, key):
+        return self.config[key]
+
+    def __setitem__(self, key, value):
+        self.config[key] = value
+
+    def __delitem__(self, key):
+        del self.config[key]
+
+    def __iter__(self):
+        return iter(self.config)
+
+    def __contains__(self, key):
+        return key in self.config
+
+    def read_config_opt(self, path, opt, default=None):
+        conf = self.config.copy()
+        for p in path.split("."):
+            conf = conf.get(p, {})
+        return conf.get(opt, default)
+
+    def write_config_opt(self, path, opt, value):
+        def _browse_and_write_config_opt(config, path, opt, value):
+            if path == "":
+                # Last element, we can directly put opt in config
+                config[opt] = value
+                return config
+            pe = path.split(".")
+            p = pe.pop(0)
+            config.setdefault(p, {})
+            config[p] = _browse_and_write_config_opt(
+                config[p], ".".join(pe), opt, value)
+            return config
+
+        self.config = _browse_and_write_config_opt(
+            self.config.copy(), path, opt, value)
+        self.write()
+
+    def delete_config_opt(self, path, opt):
+        def _browse_and_delete_config_opt(config, path, opt):
+            if path == "":
+                # Last element, we can directly delete put
+                if opt in config:
+                    del config[opt]
+                return config
+            pe = path.split(".")
+            p = pe.pop(0)
+            if p not in config:
+                return config
+            config[p] = _browse_and_delete_config_opt(
+                config[p], ".".join(pe), opt)
+            return config
+
+        self.config = _browse_and_delete_config_opt(
+            self.config.copy(), path, opt)
+        self.write()
+
+    def write(self):
+        write_config(self.config)
+
+
 class PrefDialog(Gtk.Dialog):
     def __init__(self, opener, flags):
-        self.config = read_config()
+        self.config = ConfigWrapper()
         super().__init__(_("Preferences"), opener, flags)
         self.add_button(Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE)
         self.set_icon_name("stock-preferences")
@@ -134,10 +211,10 @@ class PrefDialog(Gtk.Dialog):
         def on_toggle_fetcher_set(widget, state, fetcher):
             if state and fetcher not in self.config["general"]["sources"]:
                 self.config["general"]["sources"].append(fetcher)
-                write_config(self.config)
+                self.config.write()
             elif not state and fetcher in self.config["general"]["sources"]:
                 self.config["general"]["sources"].remove(fetcher)
-                write_config(self.config)
+                self.config.write()
 
         button.connect("state-set", on_toggle_fetcher_set, fetcher)
         prefbox.pack_end(button, False, False, 10)
@@ -185,7 +262,7 @@ class PrefDialog(Gtk.Dialog):
                 self.config[path][opt] = int(val)
             else:
                 self.config[path][opt] = val
-            write_config(self.config)
+            self.config.write()
             if callback is not None and callable(callback):
                 callback(self.config[path][opt])
 
@@ -206,7 +283,7 @@ class PrefDialog(Gtk.Dialog):
             self.config[path][opt] = widget.get_text().strip()
             if self.config[path][opt] == "":
                 del self.config[path][opt]
-            write_config(self.config)
+            self.config.write()
 
         button.connect("activate", on_text_edited)
         button.connect("focus-out-event", on_text_edited)
@@ -262,7 +339,7 @@ class PrefDialog(Gtk.Dialog):
                 self.config[path][opt] = vals
             elif opt in self.config[path]:
                 del self.config[path][opt]
-            write_config(self.config)
+            self.config.write()
 
         def on_cell_edited(widget, storepath, text):
             if text.strip() != "":
@@ -335,20 +412,21 @@ class PrefDialog(Gtk.Dialog):
         prefbox.pack_end(button, False, False, 10)
         return prefbox
 
-    def lightdm_option_pref(self, genbox):
-        def on_update_lightdm_wall(widget):
-            self.config["general"]["lightdm_wall"] = widget.get_filename()
-            write_config(self.config)
+    def shared_wall_option_pref(self):
+        def on_update_shared_wall(widget):
+            ld_path = widget.get_filename()
+            self.config.write_config_opt("general.shared", "path", ld_path)
 
         prefbox = self.make_prefbox_with_label(
-            _("LightDM shared background path"))
+            _("Shared background path"))
         button = Gtk.FileChooserButton.new(
             _("Select a file"), Gtk.FileChooserAction.OPEN)
-        if "lightdm_wall" in self.config["general"]:
-            button.set_filename(self.config["general"]["lightdm_wall"])
-        button.connect("file-set", on_update_lightdm_wall)
+        ld_path = self.config.read_config_opt("general.shared", "path")
+        if ld_path is not None and ld_path != "":
+            button.set_filename(ld_path)
+        button.connect("file-set", on_update_shared_wall)
         prefbox.pack_end(button, False, False, 10)
-        genbox.pack_start(prefbox, False, False, 0)
+        return prefbox
 
     def make_sources_pane(self):
         self.sources_stack = Gtk.Stack()
@@ -392,13 +470,8 @@ class PrefDialog(Gtk.Dialog):
             environments, default="gnome")
         genbox.pack_start(prefbox, False, False, 0)
 
-        ldmfound = False
-        for bintest in ["/usr/bin/lightdm", "/bin/lightdm", "/sbin/lightdm"]:
-            if os.path.exists(bintest):
-                ldmfound = True
-                break
-        if ldmfound:
-            self.lightdm_option_pref(genbox)
+        prefbox = self.shared_wall_option_pref()
+        genbox.pack_start(prefbox, False, False, 0)
 
         daemonbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         daemonbox.set_border_width(10)

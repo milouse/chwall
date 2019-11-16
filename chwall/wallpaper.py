@@ -174,9 +174,9 @@ def set_wallpaper(path, config):
         globals()[method](path)
     else:
         set_gnome_wallpaper(path)
-    if "lightdm_wall" in config["general"]:
-        ld_path = os.path.expanduser(
-            config["general"]["lightdm_wall"])
+    ld_path = config["general"].get("shared", {}).get("path")
+    if ld_path is not None and ld_path != "":
+        ld_path = os.path.expanduser(ld_path)
         shutil.copy(path, ld_path)
     return path
 

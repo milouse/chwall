@@ -53,6 +53,10 @@ def migrate_config(config):
         config["bing"] = {"locales": config["bing"]}
     if "deviantart" in config and isinstance(config["deviantart"], list):
         config["deviantart"] = {"collections": config["deviantart"]}
+    ld_path = config["general"].get("lightdm_wall")
+    if ld_path is not None and ld_path != "":
+        del config["general"]["lightdm_wall"]
+        config["general"]["shared"] = {"path": ld_path}
     return config
 
 
