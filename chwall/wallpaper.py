@@ -7,6 +7,7 @@ import shutil
 import hashlib
 import requests
 import subprocess
+from PIL import Image, ImageFilter
 from importlib import import_module
 
 # chwall imports
@@ -177,7 +178,13 @@ def set_wallpaper(path, config):
     ld_path = config["general"].get("shared", {}).get("path")
     if ld_path is not None and ld_path != "":
         ld_path = os.path.expanduser(ld_path)
-        shutil.copy(path, ld_path)
+        if config["general"]["shared"].get("blur", False):
+            radius = config["general"]["shared"].get("blur_radius", 20)
+            with Image.open(path) as im:
+                im_blurred = im.filter(ImageFilter.GaussianBlur(radius))
+                im_blurred.save(ld_path, im.format)
+        else:
+            shutil.copy(path, ld_path)
     return path
 
 

@@ -230,14 +230,12 @@ class PrefDialog(Gtk.Dialog):
         default = kwargs.get("default")
         prefbox = self.make_prefbox_with_label(label)
         button = Gtk.Switch()
-        if opt in self.config[path]:
-            button.set_active(self.config[path][opt])
-        elif default is not None:
-            button.set_active(default)
+        current_value = self.config.read_config_opt(path, opt, default)
+        if current_value is not None:
+            button.set_active(current_value)
 
         def on_toggle_state_set(widget, state):
-            self.config[path][opt] = state
-            write_config(self.config)
+            self.config.write_config_opt(path, opt, state)
 
         button.connect("state-set", on_toggle_state_set)
         prefbox.pack_end(button, False, False, 10)
@@ -295,17 +293,18 @@ class PrefDialog(Gtk.Dialog):
         factor = kwargs.get("factor", 1)
         prefbox = self.make_prefbox_with_label(label)
         button = Gtk.SpinButton()
+        current_value = self.config.read_config_opt(
+            path, opt, kwargs.get("default"))
         if adj is not None:
             button.set_adjustment(adj)
-        elif opt in self.config[path]:
-            button.set_adjustment(
-                Gtk.Adjustment(self.config[path][opt], 0, 100000, 1))
+        elif current_value is not None:
+            button.set_adjustment(Gtk.Adjustment(current_value, 0, 100000, 1))
         button.set_numeric(True)
         button.set_update_policy(Gtk.SpinButtonUpdatePolicy.IF_VALID)
 
         def on_spin_value_changed(widget):
-            self.config[path][opt] = widget.get_value_as_int() * factor
-            write_config(self.config)
+            new_val = widget.get_value_as_int() * factor
+            self.config.write_config_opt(path, opt, new_val)
 
         button.connect("value-changed", on_spin_value_changed)
         prefbox.pack_end(button, False, False, 10)
@@ -471,6 +470,11 @@ class PrefDialog(Gtk.Dialog):
         genbox.pack_start(prefbox, False, False, 0)
 
         prefbox = self.shared_wall_option_pref()
+        genbox.pack_start(prefbox, False, False, 0)
+
+        prefbox = self.make_toggle_pref(
+            "general.shared", "blur", _("Blur shared background"),
+            default=False)
         genbox.pack_start(prefbox, False, False, 0)
 
         daemonbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
@@ -671,6 +675,14 @@ as it is the more classical way of doing so.
         )
         genbox.pack_start(prefbox, False, False, 0)
 
+        sharedbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        sharedbox.set_border_width(10)
+        sharedbox.set_spacing(10)
+
+        prefbox = self.make_number_pref(
+            "general.shared", "blur_radius", _("Blur radius"), default=20)
+        sharedbox.pack_start(prefbox, False, False, 0)
+
         daemonbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         daemonbox.set_border_width(10)
         daemonbox.set_spacing(10)
@@ -722,6 +734,13 @@ as it is the more classical way of doing so.
         frame_label.set_markup("<b>{}</b>".format(_("Cache management")))
         frame.set_label_widget(frame_label)
         frame.add(genbox)
+        framebox.pack_start(frame, False, False, 0)
+
+        frame = Gtk.Frame()
+        frame_label = Gtk.Label()
+        frame_label.set_markup("<b>{}</b>".format(_("Shared background")))
+        frame.set_label_widget(frame_label)
+        frame.add(sharedbox)
         framebox.pack_start(frame, False, False, 0)
 
         frame = Gtk.Frame()
