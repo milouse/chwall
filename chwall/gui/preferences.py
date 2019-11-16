@@ -338,7 +338,7 @@ class PrefDialog(Gtk.Dialog):
 
     def lightdm_option_pref(self, genbox):
         def on_update_lightdm_wall(widget):
-            self.config["general"]["desktop"] = widget.get_filename()
+            self.config["general"]["lightdm_wall"] = widget.get_filename()
             write_config(self.config)
 
         prefbox = self.make_prefbox_with_label(
