@@ -96,6 +96,9 @@ lang: $(PO_FILES)
 %.po~:
 	msgmerge --lang $(@:locale/%/LC_MESSAGES/chwall.po~=%) \
 		-o $@ $(@:%~=%) locale/chwall.pot
+	sed -i -e "s|Copyright (C) [0-9]*|Copyright (C) $(shell date +%Y)|" \
+		-e "s|Id-Version: Chwall [0-9.]*|Id-Version: Chwall $(VERSION)|" \
+		$@
 	cp $@ $(@:%~=%) && rm $@
 
 uplang: $(PO_FILES:%=%~)
