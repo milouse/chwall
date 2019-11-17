@@ -494,8 +494,8 @@ as it is the more classical way of doing so.
             daemonbox.pack_start(prefbox, False, False, 0)
 
         classic_daemon_box = self.make_prefbox_with_label(
-            _("Launch Chwall daemon when your session starts with XDG "
-              "autostart"))
+            _("Launch Chwall daemon with an XDG autostart file "
+              "when your session starts"))
         button = Gtk.Switch()
         button.set_active(self.sfm.xdg_autostart_file_exists())
 
