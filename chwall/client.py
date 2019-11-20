@@ -162,7 +162,7 @@ Directly open the chwall preferences window.
 """))
 
     def cmd_options(self, *opts):
-        prefwin = PrefDialog(None, 0, read_config())
+        prefwin = PrefDialog(None, 0)
         prefwin.run()
         prefwin.destroy()
 
@@ -198,7 +198,7 @@ using the best dedicated tool for it (web browser, picture viewer...).
                   .format(BASE_CACHE_PATH), "r") as f:
             infos = f.readlines()[1:]
         print("".join(infos))
-        dinfo = daemon_info(read_config())
+        dinfo = daemon_info()
         print(dinfo["last-change-label"])
         if len(opts) != 0 and opts[0] == "open" and len(infos) >= 2:
             url = infos[1].strip()

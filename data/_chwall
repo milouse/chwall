@@ -2,28 +2,36 @@
 #autoload
 
 _chwall () {
-	local cmd
-	if (( CURRENT > 2)); then
-		cmd=${words[2]}
-		case "${cmd}" in
-            info)
+    local cmd
+    if (( CURRENT > 2)); then
+        cmd=${words[2]}
+        case "${cmd}" in
+            current|info|status)
                 _values 'Open in browser' open
                 ;;
-		esac
-	else
-		local -a subcommands
-		subcommands=(
+            *)
+                _values 'Display help for this command' help
+                ;;
+        esac
+    else
+        local -a subcommands
+        subcommands=(
             "blacklist:Never use the current wallpaper any more and switch next"
-			"history:Display last used wallpapers"
+            "current:Display information about the current wallpaper"
+            "empty:Empty the current pending list to force its rebuild"
+            "help:Display Chwall help"
+            "history:Display last used wallpapers"
             "info:Display information about the current wallpaper"
+            "kill:Stop current running daemon, if any"
             "next:Switch to next wallpaper"
-            "previous:Switch to previous wallpaper"
             "once:Just set one wallpaper"
+            "previous:Switch to previous wallpaper"
             "pending:Display the upcoming wallpapers"
-            "systemd:Display an exemple service file"
-		)
-		_describe -t commands 'chwall' subcommands
-	fi
+            "quit:Stop current running daemon, if any"
+            "status:Display information about the current wallpaper"
+        )
+        _describe -t commands 'chwall' subcommands
+    fi
 }
 
 _chwall

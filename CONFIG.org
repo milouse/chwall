@@ -21,10 +21,12 @@ objects:
 
 ~general~ may contains the following subkeys:
 
-- ~lightdm_wall~ the path to a writable file, which will always contains
-  the last set wallpaper. This is usefull to display the same wallpaper
-  on lightdm than on your desktop, without having to open too widely
-  your home folder. Use something in ~/var/cache~ for exemple.
+- ~shared~, which is an object containing at least another subkey:
+  ~path~. This must be the path to a writable file, which will always
+  contains the last set wallpaper. This is usefull to display the same
+  wallpaper on lightdm and on your desktop, without having to set wide
+  open permissions to your home folder. Use something in ~/var/cache~
+  for exemple.
 - ~sources~ is an array containing the activated pictures sources. By
   default, only ~bing~ and ~natgeo~ are activated. The sources must be
   one or more of: ~bing~, ~natgeo~ (for the National Geographic picture
@@ -34,7 +36,8 @@ objects:
 #+begin_src yaml
 ---
 general:
-  lightdm_wall: /var/cache/last-wall
+  shared:
+    path: /var/cache/last-wall
   sources:
     - bing
     - natgeo
