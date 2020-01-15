@@ -258,6 +258,7 @@ def generate_desktop_file(localedir="./locale", out="chwall-app.desktop"):
     df_content = ["[Desktop Entry]"]
     df_content.append("Name=Chwall")
     df_content.append("GenericName=Wallpaper Changer")
+    df_content.append("Comment=Main window of the Chwall wallpaper changer")
     for line in lng_attrs["gname"]:
         df_content.append(line)
     for line in lng_attrs["comment"]:
