@@ -108,17 +108,6 @@ def cleanup_cache(clear_all=False):
     return deleted
 
 
-def chwall_daemon_binary_path(component="daemon"):
-    comp = "/usr/bin/chwall-{}".format(component)
-    # Is it an installed version?
-    if os.path.exists(comp):
-        return comp
-    local_path = os.path.realpath(
-        os.path.join(os.path.dirname(__file__), ".."))
-    local_comp = "{}/chwall.py".format(local_path)
-    if component != "daemon":
-        local_comp = "{} {}".format(local_comp, component)
-    return "{0}\nWorkingDirectory={1}".format(local_comp, local_path)
 
 
 class ServiceFileManager:
@@ -130,6 +119,29 @@ class ServiceFileManager:
         self.systemd_service_file_path = os.path.join(
             self.systemd_base_path, "chwall.service")
         self.autostart_dir = os.path.join(xdg_config_home, "autostart")
+
+    def chwall_daemon_binary_path(self, component="daemon", no_daemon=False,
+                                  target_type="systemd"):
+        comp = "/usr/bin/chwall-{}".format(component)
+        # Is it an installed version?
+        if not os.path.exists(comp):
+            if component == "daemon" and no_daemon:
+                comp += " -D"
+            return comp
+        local_path = os.path.realpath(
+            os.path.join(os.path.dirname(__file__), ".."))
+        if component == "daemon":
+            module = "chwall.daemon"
+            if no_daemon:
+                module += " -D"
+        else:
+            module = "chwall.gui." + component
+        if target_type == "xdg":
+            workdirkey = "Path"
+        else:
+            # Systemd is the default
+            workdirkey = "WorkingDirectory"
+        return "python -m {0}\n{1}={2}".format(module, workdirkey, local_path)
 
     def detect_systemd(self):
         try:
@@ -150,7 +162,7 @@ class ServiceFileManager:
         return os.path.isfile(self.systemd_service_file_path)
 
     def systemd_service_file(self, write=False):
-        chwall_cmd = chwall_daemon_binary_path()
+        chwall_cmd = self.chwall_daemon_binary_path(no_daemon=True)
         display = read_config()["general"].get("display", ":0")
         file_content = """
 [Unit]
@@ -160,7 +172,7 @@ After=network.target
 [Service]
 Type=simple
 Environment=DISPLAY={display}
-ExecStart={command} -D
+ExecStart={command}
 
 [Install]
 WantedBy=default.target
@@ -208,7 +220,7 @@ WantedBy=default.target
         self.remove_systemd_service_file()
         if not os.path.isdir(self.autostart_dir):
             os.makedirs(self.autostart_dir)
-        chwall_cmd = chwall_daemon_binary_path(component)
+        chwall_cmd = self.chwall_daemon_binary_path(component)
         file_content = """\
 [Desktop Entry]
 Name={app_name}
