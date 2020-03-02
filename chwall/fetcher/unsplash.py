@@ -1,6 +1,8 @@
 import sys
 import requests
 
+from chwall.utils import get_logger
+
 import gettext
 # Uncomment the following line during development.
 # Please, be cautious to NOT commit the following line uncommented.
@@ -8,13 +10,17 @@ import gettext
 gettext.textdomain("chwall")
 _ = gettext.gettext
 
+logger = get_logger(__name__)
+
 
 def fetch_pictures(config):
     us_conf = config.get("unsplash", {})
     client_id = us_conf.get("access_key")
     if client_id is None:
-        print("WARNING: Unsplash has discontinued their RSS feed. Thus "
-              "an `access_key' param is now required.", file=sys.stderr)
+        logger.error(
+            _("Unsplash has discontinued their RSS feed. Thus "
+              "an `access_key' param is now required.")
+        )
         return {}
     width = us_conf.get("width", 1600)
     nb_pic = us_conf.get("count", 10)

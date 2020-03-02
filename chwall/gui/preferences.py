@@ -725,6 +725,13 @@ as it is the more classical way of doing so.
             self.sfm.systemd_version is None
             or not self.sfm.systemd_service_file_exists())
 
+        prefbox = self.make_select_pref(
+            "general", "log_level", _("Log level"),
+            [(level, level)
+             for level in ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]],
+            default="WARNING")
+        daemonbox.pack_start(prefbox, False, False, 0)
+
         framebox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         framebox.set_spacing(10)
         framebox.set_border_width(10)

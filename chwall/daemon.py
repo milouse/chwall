@@ -7,7 +7,8 @@ import signal
 import subprocess
 
 # chwall imports
-from chwall.utils import BASE_CACHE_PATH, read_config, cleanup_cache
+from chwall.utils import BASE_CACHE_PATH, read_config, cleanup_cache, \
+                         get_logger
 from chwall.wallpaper import pick_wallpaper, ChwallWallpaperSetError, \
                              current_wallpaper_info
 
@@ -18,6 +19,8 @@ import gettext
 # gettext.bindtextdomain("chwall", "./locale")
 gettext.textdomain("chwall")
 _ = gettext.gettext
+
+logger = get_logger(__name__)
 
 
 class ChwallRestartTimer(Exception):
@@ -135,10 +138,10 @@ def notify_daemon_if_any(sig=signal.SIGUSR1):
     with open(pid_file, "r") as f:
         pid = f.read().strip()
     if sig == signal.SIGTERM:
-        print(_("Kill process {pid}").format(pid=pid))
+        logger.warning(_("Kill process {pid}").format(pid=pid))
     else:
-        print(_("Sending process {pid} signal {sid}")
-              .format(pid=pid, sid=sig))
+        logger.debug(_("Sending process {pid} signal {sid}")
+                     .format(pid=pid, sid=sig))
     try:
         os.kill(int(pid), sig)
     except ValueError:
@@ -157,8 +160,8 @@ def notify_app_if_any():
         pid = int(pid_data.stdout.decode().strip())
     except ValueError:
         return False
-    print(_("Sending process {pid} signal {sid}")
-          .format(pid=pid, sid=signal.SIGUSR1))
+    logger.debug(_("Sending process {pid} signal {sid}")
+                 .format(pid=pid, sid=signal.SIGUSR1))
     os.kill(pid, signal.SIGUSR1)
     return True
 
@@ -196,19 +199,19 @@ def daemon_loop():
         while True:
             daemon_step()
     except (KeyboardInterrupt, SystemExit):
-        print(_("Exit signal received"))
+        logger.warning(_("Exit signal received"))
     except Exception as e:
-        print("{}: {}".format(type(e).__name__, e), file=sys.stderr)
+        logger.error("{}: {}".format(type(e).__name__, e))
         error_code = 1
     finally:
-        print(_("Cleaning up…"))
+        logger.info(_("Cleaning up…"))
         pid_file = "{}/chwall_pid".format(BASE_CACHE_PATH)
         if os.path.isfile(pid_file):
             os.unlink(pid_file)
         # Try to keep cache as clean as possible
         cleanup_cache()
         if error_code == 0:
-            print("Kthxbye!")
+            logger.info("Kthxbye!")
         return error_code
 
 
@@ -237,7 +240,7 @@ def start_daemon():
         daemonize()
     with open("{}/chwall_pid".format(BASE_CACHE_PATH), "w") as f:
         f.write(str(os.getpid()))
-    print(_("Start loop"))
+    logger.info(_("Start loop"))
     sys.exit(daemon_loop())
 
 

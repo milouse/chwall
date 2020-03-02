@@ -1,6 +1,7 @@
 import os
 import re
 import yaml
+import logging
 import subprocess
 from xdg.BaseDirectory import xdg_cache_home, xdg_config_home
 
@@ -108,6 +109,16 @@ def cleanup_cache(clear_all=False):
     return deleted
 
 
+def get_logger(name):
+    if name == "__main__":
+        name = "chwall"
+    level_str = read_config()["general"].get("log_level", "WARNING")
+    level = getattr(logging, level_str.upper(), None)
+    logging.basicConfig(
+        level=level,
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    )
+    return logging.getLogger(name)
 
 
 class ServiceFileManager:

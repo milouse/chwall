@@ -11,7 +11,8 @@ from PIL import Image, ImageFilter
 from importlib import import_module
 
 # chwall imports
-from chwall.utils import BASE_CACHE_PATH, get_screen_config, get_wall_config
+from chwall.utils import BASE_CACHE_PATH, get_screen_config, get_wall_config, \
+                         get_logger
 
 import gettext
 # Uncomment the following line during development.
@@ -19,6 +20,8 @@ import gettext
 # gettext.bindtextdomain("chwall", "./locale")
 gettext.textdomain("chwall")
 _ = gettext.gettext
+
+logger = get_logger(__name__)
 
 
 class ChwallWallpaperSetError(Exception):
@@ -29,7 +32,7 @@ WAIT_ERROR = 10
 
 
 def build_wallpapers_list(config):
-    print(_("Fetching pictures addresses…"))
+    logger.info(_("Fetching pictures addresses…"))
     collecs = {}
     for module_name in config["general"]["sources"]:
         try_again = 5
@@ -37,32 +40,39 @@ def build_wallpapers_list(config):
         m = import_module("chwall.fetcher.{}".format(module_name))
 
         while try_again > 0:
-            print(_("Fetching pictures list from {name} - Attempt {number}")
-                  .format(name=module_name, number=(6 - try_again)))
+            logger.info(
+                _("Fetching pictures list from {name} - Attempt {number}")
+                .format(name=module_name, number=(6 - try_again))
+            )
             try:
                 ll = m.fetch_pictures(config)
                 try_again = 0
             except (requests.exceptions.ConnectionError,
                     requests.exceptions.HTTPError,
                     requests.exceptions.Timeout) as e:
-                print(_("Catch {error} exception while retrieving "
-                        "images from {module}. Wait {time} seconds "
-                        "before retrying.").format(
-                            error=type(e).__name__, module=module_name,
-                            time=WAIT_ERROR),
-                      file=sys.stderr)
+                logger.error(
+                    _("Catch {error} exception while retrieving "
+                      "images from {module}. Wait {time} seconds "
+                      "before retrying.")
+                    .format(
+                        error=type(e).__name__, module=module_name,
+                        time=WAIT_ERROR
+                    )
+                )
+
                 try_again -= 1
                 try:
                     time.sleep(WAIT_ERROR)
                 except KeyboardInterrupt:
-                    print(_("Retry NOW to connect to {module}")
-                          .format(module=module_name))
+                    logger.warning(_("Retry NOW to connect to {module}")
+                                   .format(module=module_name))
             except KeyboardInterrupt:
-                print(_("Switch to next picture provider or exit"))
+                logger.warning(_("Switch to next picture provider or exit"))
                 try_again = 0
             except Exception as e:
-                print("{} in {}: {}".format(type(e).__name__, module_name, e),
-                      file=sys.stderr)
+                logger.error(
+                    "{} in {}: {}".format(type(e).__name__, module_name, e)
+                )
                 break
         collecs.update(ll)
     return collecs
@@ -80,8 +90,9 @@ def filter_wallpapers_list(collecs):
     for p in all_pics_copy:
         if p not in blacklist:
             continue
-        print(_("Remove {picture} as it's in blacklist")
-              .format(picture=p))
+        logger.warning(
+            _("Remove {picture} as it's in blacklist").format(picture=p)
+        )
         all_pics.remove(p)
         collecs.pop(p)
     return (all_pics, collecs)
