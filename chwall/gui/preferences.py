@@ -501,8 +501,10 @@ as it is the more classical way of doing so.
 
         def on_toggle_classic_set(widget, state):
             if state:
-                self.sfm.xdg_autostart_file(_("Chwall daemon"),
-                                            _("Start Chwall daemon"))
+                self.sfm.xdg_autostart_file(
+                    "daemon", _("Chwall daemon"),
+                    _("Start Chwall daemon"), True
+                )
             else:
                 self.sfm.remove_xdg_autostart_file()
             do_for_widget_by_name(

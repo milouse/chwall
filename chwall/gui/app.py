@@ -6,7 +6,7 @@ import signal
 
 from chwall.gui.shared import ChwallGui
 from chwall.wallpaper import current_wallpaper_info
-from chwall.utils import reset_pending_list
+from chwall.utils import get_binary_path, reset_pending_list
 
 import gi
 gi.require_version("Gtk", "3.0")  # noqa: E402
@@ -217,15 +217,15 @@ class ChwallApp(ChwallGui):
         self.decorate_play_pause_button(True)
 
 
-def generate_desktop_file(localedir="./locale", out="chwall-app.desktop"):
+def _build_translations_for_desktop_file(localedir):
     lng_attrs = {
         "gname": [],
         "comment": [],
         "next_name": [],
-        "prev_name": [],
-        "blacklst_name": []
+        "previous_name": [],
+        "blacklist_name": []
     }
-    for lng in os.listdir(localedir):
+    for lng in sorted(os.listdir(localedir)):
         if lng in ["chwall.pot", "en"]:
             continue
         domain_file = os.path.join(localedir, lng, "LC_MESSAGES", "chwall.mo")
@@ -247,44 +247,52 @@ def generate_desktop_file(localedir="./locale", out="chwall-app.desktop"):
             "Name[{lang}]={key}".format(
                 lang=lng,
                 key=_("Next wallpaper")))
-        lng_attrs["prev_name"].append(
+        lng_attrs["previous_name"].append(
             "Name[{lang}]={key}".format(
                 lang=lng,
                 key=_("Previous wallpaper")))
-        lng_attrs["blacklst_name"].append(
+        lng_attrs["blacklist_name"].append(
             "Name[{lang}]={key}".format(
                 lang=lng,
                 key=_("Blacklist")))
+    return lng_attrs
+
+
+def _build_action_block(name, lng_attrs):
+    label = name.capitalize()
+    block_cmd = get_binary_path("client", "xdg", name)
+    block = ["", "[Desktop Action {name}]".format(name=label),
+             "Exec={app_exec}".format(app_exec=block_cmd),
+             "Name={name} wallpaper".format(name=label)]
+    for line in lng_attrs[name + "_name"]:
+        block.append(line)
+    return block
+
+
+def generate_desktop_file(localedir="./locale", out="chwall-app.desktop"):
+    lng_attrs = _build_translations_for_desktop_file(localedir)
     df_content = ["[Desktop Entry]"]
     df_content.append("Name=Chwall")
     df_content.append("GenericName=Wallpaper Changer")
-    df_content.append("Comment=Main window of the Chwall wallpaper changer")
     for line in lng_attrs["gname"]:
         df_content.append(line)
+    df_content.append("Comment=Main window of the Chwall wallpaper changer")
     for line in lng_attrs["comment"]:
         df_content.append(line)
     df_content = "\n".join(df_content)
     df_content += """
-Exec=chwall-app
+Exec={app_exec}
 Icon=chwall
 Terminal=false
 Type=Application
 Categories=GTK;GNOME;Utility;
 StartupNotify=false
 Actions=Next;Previous;Blacklist;
-"""
-    actions = ["", "[Desktop Action Next]", "Exec=chwall next",
-               "Name=Next wallpaper"]
-    for line in lng_attrs["next_name"]:
-        actions.append(line)
-    actions += ["", "[Desktop Action Previous]", "Exec=chwall previous",
-                "Name=Previous wallpaper"]
-    for line in lng_attrs["prev_name"]:
-        actions.append(line)
-    actions += ["", "[Desktop Action Blacklist]", "Exec=chwall blacklist",
-                "Name=Blacklist"]
-    for line in lng_attrs["blacklst_name"]:
-        actions.append(line)
+""".format(app_exec=get_binary_path("app", "xdg"))
+
+    actions = _build_action_block("next", lng_attrs) \
+        + _build_action_block("previous", lng_attrs) \
+        + _build_action_block("blacklist", lng_attrs)
     df_content += "\n".join(actions)
 
     if out == "print":

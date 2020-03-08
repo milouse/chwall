@@ -1,0 +1,12 @@
+[Unit]
+Description = Simple wallpaper changer
+After=network.target
+
+[Service]
+Type=simple
+Environment=DISPLAY=:0
+ExecStart=python -m chwall.daemon -D
+WorkingDirectory={path}
+
+[Install]
+WantedBy=default.target

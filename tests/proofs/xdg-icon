@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=TEST ICON
+Comment=TEST DESC
+Exec=/usr/bin/chwall-icon
+Icon=chwall
+Terminal=false
+Type=Application
+X-MATE-Autostart-enabled=true
+X-GNOME-Autostart-enabled=false
+NotShowIn=GNOME
+Categories=GTK;TrayIcon;Utility;

@@ -1,0 +1,27 @@
+[Desktop Entry]
+Name=Chwall
+GenericName=Wallpaper Changer
+Comment=Main window of the Chwall wallpaper changer
+Exec=python -m chwall.gui.app
+Path={path}
+Icon=chwall
+Terminal=false
+Type=Application
+Categories=GTK;GNOME;Utility;
+StartupNotify=false
+Actions=Next;Previous;Blacklist;
+
+[Desktop Action Next]
+Exec=python -m chwall.client next
+Path={path}
+Name=Next wallpaper
+
+[Desktop Action Previous]
+Exec=python -m chwall.client previous
+Path={path}
+Name=Previous wallpaper
+
+[Desktop Action Blacklist]
+Exec=python -m chwall.client blacklist
+Path={path}
+Name=Blacklist wallpaper

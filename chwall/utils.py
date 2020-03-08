@@ -121,6 +121,35 @@ def get_logger(name):
     return logging.getLogger(name)
 
 
+def get_binary_path(component, target_type="systemd", arguments=""):
+    if component == "client":
+        comp = "/usr/bin/chwall"
+        module = "chwall.client"
+    elif component == "daemon":
+        comp = "/usr/bin/chwall-daemon"
+        module = "chwall.daemon"
+    else:
+        comp = "/usr/bin/chwall-{}".format(component)
+        module = "chwall.gui." + component
+    # Is it an installed version?
+    test_env = os.getenv("CHWALL_FAKE_INSTALL", "pass")
+    if (test_env == "pass" and os.path.exists(comp)) or test_env == "exists":
+        if arguments != "":
+            comp += " " + arguments
+        return comp
+    if arguments != "":
+        module += " " + arguments
+    if target_type == "xdg":
+        workdirkey = "Path"
+    else:
+        # Systemd is the default
+        workdirkey = "WorkingDirectory"
+    local_path = os.path.realpath(
+        os.path.join(os.path.dirname(__file__), "..")
+    )
+    return "python -m {0}\n{1}={2}".format(module, workdirkey, local_path)
+
+
 class ServiceFileManager:
     def __init__(self):
         self.systemd_version = None
@@ -130,29 +159,6 @@ class ServiceFileManager:
         self.systemd_service_file_path = os.path.join(
             self.systemd_base_path, "chwall.service")
         self.autostart_dir = os.path.join(xdg_config_home, "autostart")
-
-    def chwall_daemon_binary_path(self, component="daemon", no_daemon=False,
-                                  target_type="systemd"):
-        comp = "/usr/bin/chwall-{}".format(component)
-        # Is it an installed version?
-        if not os.path.exists(comp):
-            if component == "daemon" and no_daemon:
-                comp += " -D"
-            return comp
-        local_path = os.path.realpath(
-            os.path.join(os.path.dirname(__file__), ".."))
-        if component == "daemon":
-            module = "chwall.daemon"
-            if no_daemon:
-                module += " -D"
-        else:
-            module = "chwall.gui." + component
-        if target_type == "xdg":
-            workdirkey = "Path"
-        else:
-            # Systemd is the default
-            workdirkey = "WorkingDirectory"
-        return "python -m {0}\n{1}={2}".format(module, workdirkey, local_path)
 
     def detect_systemd(self):
         try:
@@ -173,9 +179,8 @@ class ServiceFileManager:
         return os.path.isfile(self.systemd_service_file_path)
 
     def systemd_service_file(self, write=False):
-        chwall_cmd = self.chwall_daemon_binary_path(no_daemon=True)
         display = read_config()["general"].get("display", ":0")
-        file_content = """
+        file_content = """\
 [Unit]
 Description = Simple wallpaper changer
 After=network.target
@@ -183,13 +188,13 @@ After=network.target
 [Service]
 Type=simple
 Environment=DISPLAY={display}
-ExecStart={command}
+ExecStart={app_exec}
 
 [Install]
 WantedBy=default.target
-""".strip().format(display=display, command=chwall_cmd)
+""".format(display=display, app_exec=get_binary_path("daemon", arguments="-D"))
         if write is False:
-            print(file_content)
+            print(file_content, end="")
             return
         if self.systemd_service_file_exists():
             return
@@ -223,15 +228,8 @@ WantedBy=default.target
         if file_yet_exists:
             os.remove(autostart_file)
 
-    def xdg_autostart_file(self, app_name, app_desc, component="daemon"):
-        autostart_file = os.path.join(
-            self.autostart_dir, "chwall-{}.desktop".format(component))
-        if os.path.isfile(autostart_file):
-            return
-        self.remove_systemd_service_file()
-        if not os.path.isdir(self.autostart_dir):
-            os.makedirs(self.autostart_dir)
-        chwall_cmd = self.chwall_daemon_binary_path(component)
+    def xdg_autostart_file(self, component, app_name, app_desc, write=False):
+        chwall_cmd = get_binary_path(component, target_type="xdg")
         file_content = """\
 [Desktop Entry]
 Name={app_name}
@@ -240,21 +238,30 @@ Exec={app_exec}
 Icon=chwall
 Terminal=false
 Type=Application
-X-MATE-Autostart-enabled=true""".format(app_name=app_name,
-                                        app_desc=app_desc,
-                                        app_exec=chwall_cmd)
+X-MATE-Autostart-enabled=true
+""".format(app_name=app_name, app_desc=app_desc, app_exec=chwall_cmd)
         if component == "daemon":
-            file_content += """
+            file_content += """\
 X-GNOME-Autostart-enabled=true
 Categories=Utility;
 StartupNotify=false
 """
         elif component == "icon":
-            file_content += """
+            file_content += """\
 X-GNOME-Autostart-enabled=false
 NotShowIn=GNOME
 Categories=GTK;TrayIcon;Utility;
 """
+        if write is False:
+            print(file_content, end="")
+            return
+        autostart_file = os.path.join(
+            self.autostart_dir, "chwall-{}.desktop".format(component))
+        if os.path.isfile(autostart_file):
+            return
+        self.remove_systemd_service_file()
+        if not os.path.isdir(self.autostart_dir):
+            os.makedirs(self.autostart_dir)
         with open(autostart_file, "w") as f:
             f.write(file_content)
 
