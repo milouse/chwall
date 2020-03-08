@@ -1,4 +1,3 @@
-import sys
 import requests
 
 from chwall.utils import get_logger
