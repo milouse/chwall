@@ -1,7 +1,11 @@
 [Desktop Entry]
 Name=Chwall
 GenericName=Wallpaper Changer
+GenericName[es]=Seleccionador de fondo de pantalla
+GenericName[fr]=Changeur de fond d'écran
 Comment=Main window of the Chwall wallpaper changer
+Comment[es]=Ventana principal del seleccionador de fondos Chwall
+Comment[fr]=Fenêtre principale du changeur de fond d'écran Chwall
 Exec=/usr/bin/chwall-app
 Icon=chwall
 Terminal=false
@@ -13,11 +17,17 @@ Actions=Next;Previous;Blacklist;
 [Desktop Action Next]
 Exec=/usr/bin/chwall next
 Name=Next wallpaper
+Name[es]=Próximo fondo
+Name[fr]=Fond d'écran suivant
 
 [Desktop Action Previous]
 Exec=/usr/bin/chwall previous
 Name=Previous wallpaper
+Name[es]=Fondo anterior
+Name[fr]=Fond d'écran précédent
 
 [Desktop Action Blacklist]
 Exec=/usr/bin/chwall blacklist
 Name=Blacklist wallpaper
+Name[es]=Poner en lista negra
+Name[fr]=Mettre en liste noire

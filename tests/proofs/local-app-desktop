@@ -1,7 +1,11 @@
 [Desktop Entry]
 Name=Chwall
 GenericName=Wallpaper Changer
+GenericName[es]=Seleccionador de fondo de pantalla
+GenericName[fr]=Changeur de fond d'écran
 Comment=Main window of the Chwall wallpaper changer
+Comment[es]=Ventana principal del seleccionador de fondos Chwall
+Comment[fr]=Fenêtre principale du changeur de fond d'écran Chwall
 Exec=python -m chwall.gui.app
 Path={path}
 Icon=chwall
@@ -15,13 +19,19 @@ Actions=Next;Previous;Blacklist;
 Exec=python -m chwall.client next
 Path={path}
 Name=Next wallpaper
+Name[es]=Próximo fondo
+Name[fr]=Fond d'écran suivant
 
 [Desktop Action Previous]
 Exec=python -m chwall.client previous
 Path={path}
 Name=Previous wallpaper
+Name[es]=Fondo anterior
+Name[fr]=Fond d'écran précédent
 
 [Desktop Action Blacklist]
 Exec=python -m chwall.client blacklist
 Path={path}
 Name=Blacklist wallpaper
+Name[es]=Poner en lista negra
+Name[fr]=Mettre en liste noire

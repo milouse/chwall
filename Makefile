@@ -102,3 +102,6 @@ lang: $(PO_FILES)
 	cp $@ $(@:%~=%) && rm $@
 
 uplang: $(PO_FILES:%=%~)
+
+test: $(MO_FILES)
+	python -m unittest
