@@ -28,7 +28,6 @@ TRANSLATABLE = chwall/gui/*.py chwall/fetcher/*.py \
 .INTERMEDIATE: chwall-app.desktop $(MO_FILES)
 
 dist: $(DEST_ICONS) $(DEST_MO) chwall-app.desktop
-	rm -rf $(PY_SITE)/chwall-*-py$(PY_VERSION).egg-info
 	python setup.py install --root=$(DESTDIR)/
 	rm -rf build chwall.egg-info
 	install -d -m755 $(datarootdir)/applications
@@ -40,7 +39,7 @@ dist: $(DEST_ICONS) $(DEST_MO) chwall-app.desktop
 	install -D -m644 data/chwall-completions $(datarootdir)/bash-completion/completions/chwall
 	install -D -m644 data/_chwall $(datarootdir)/zsh/site-functions/_chwall
 
-install: dist
+install: uninstall dist
 	update-desktop-database $(datarootdir)/applications
 	gtk-update-icon-cache $(datarootdir)/icons/hicolor
 
