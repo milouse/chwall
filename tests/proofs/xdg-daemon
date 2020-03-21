@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=TEST DAEMON
+Comment=TEST DESC
+Exec=/usr/bin/chwall-daemon
+Icon=chwall
+Terminal=false
+Type=Application
+X-MATE-Autostart-enabled=true
+X-GNOME-Autostart-enabled=true
+Categories=Utility;
+StartupNotify=false

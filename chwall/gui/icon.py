@@ -124,8 +124,9 @@ class ChwallIcon(ChwallGui):
     def toggle_must_autostart(self, widget):
         self.must_autostart = widget.get_active()
         if self.must_autostart:
-            self.sfm.xdg_autostart_file("Chwall", _("Wallpaper Changer"),
-                                        "icon")
+            self.sfm.xdg_autostart_file(
+                "icon", "Chwall", _("Wallpaper Changer"), True
+            )
         else:
             self.sfm.remove_xdg_autostart_file("icon")
 

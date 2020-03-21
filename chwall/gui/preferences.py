@@ -501,8 +501,10 @@ as it is the more classical way of doing so.
 
         def on_toggle_classic_set(widget, state):
             if state:
-                self.sfm.xdg_autostart_file(_("Chwall daemon"),
-                                            _("Start Chwall daemon"))
+                self.sfm.xdg_autostart_file(
+                    "daemon", _("Chwall daemon"),
+                    _("Start Chwall daemon"), True
+                )
             else:
                 self.sfm.remove_xdg_autostart_file()
             do_for_widget_by_name(
@@ -653,16 +655,16 @@ as it is the more classical way of doing so.
                 cache_total += pic.stat().st_size
         cache_total = cache_total / 1000
         if cache_total > 1000000:
-            cache_size = "{} GB".format(str(round(cache_total/1000000, 2)))
+            cache_size = "{} Go".format(str(round(cache_total/1000000, 2)))
         elif cache_total > 1000:
-            cache_size = "{} MB".format(str(round(cache_total/1000, 2)))
+            cache_size = "{} Mo".format(str(round(cache_total/1000, 2)))
         else:
-            cache_size = "{} KB".format(str(round(cache_total, 2)))
+            cache_size = "{} ko".format(str(round(cache_total, 2)))
 
         def _update_empty_label(sibling):
             if isinstance(sibling, Gtk.Label):
                 sibling.set_label(
-                    _("Picture cache use {size}").format(size="0.0 KB")
+                    _("Picture cache use {size}").format(size="0.0 ko")
                 )
 
         prefbox = self.make_button_row(
@@ -724,6 +726,13 @@ as it is the more classical way of doing so.
         prefbox.set_no_show_all(
             self.sfm.systemd_version is None
             or not self.sfm.systemd_service_file_exists())
+
+        prefbox = self.make_select_pref(
+            "general", "log_level", _("Log level"),
+            [(level, level)
+             for level in ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]],
+            default="WARNING")
+        daemonbox.pack_start(prefbox, False, False, 0)
 
         framebox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         framebox.set_spacing(10)

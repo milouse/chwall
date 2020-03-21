@@ -33,8 +33,9 @@ SUBCOMMAND_ALIASES = {
 
 
 class ChwallClient:
-    def __init__(self):
-        if len(sys.argv) > 1 and self._run():
+    def __init__(self, opts=sys.argv[1:]):
+        self.argv = opts
+        if len(self.argv) > 0 and self._run():
             sys.exit()
         self.cmd_help("__from_error__")
         sys.exit(1)
@@ -42,7 +43,7 @@ class ChwallClient:
     def _parse_argv(self):
         action = None
         opts = []
-        for a in sys.argv[1:]:
+        for a in self.argv:
             arg = a.lower()
             if arg in ["help", "--help", "-h"]:
                 if action == "help":
