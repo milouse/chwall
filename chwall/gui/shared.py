@@ -98,12 +98,13 @@ class ChwallGui:
         about_dialog = Gtk.AboutDialog()
         about_dialog.set_destroy_with_parent(True)
         about_dialog.set_icon_name("chwall")
-        about_dialog.set_name("Chwall")
+        about_dialog.set_logo_icon_name("chwall")
+        about_dialog.set_program_name("Chwall")
         about_dialog.set_website("https://git.deparis.io/chwall/about")
         about_dialog.set_comments(_("Wallpaper Changer"))
         about_dialog.set_version(__version__)
         about_dialog.set_copyright(_("Chwall is released under the WTFPL"))
-        about_dialog.set_license("""
+        about_dialog.set_license("""\
 http://www.wtfpl.net/about/
 
 DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
@@ -120,7 +121,6 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 0. You just DO WHAT THE FUCK YOU WANT TO.
 """)
         about_dialog.set_authors(["Étienne Deparis <etienne@depar.is>"])
-        about_dialog.set_logo_icon_name("chwall")
         about_dialog.set_translator_credits(
             _("translator-credits https://translations.umaneti.net/engage/chwall/")  # noqa
         )
