@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chwall 0.5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-21 15:31+0100\n"
+"POT-Creation-Date: 2020-04-04 17:29+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -63,7 +63,7 @@ msgstr ""
 msgid "Start daemon"
 msgstr ""
 
-#: chwall/gui/app.py:241 chwall/gui/icon.py:128 chwall/gui/shared.py:103
+#: chwall/gui/app.py:241 chwall/gui/icon.py:128 chwall/gui/shared.py:104
 msgid "Wallpaper Changer"
 msgstr ""
 
@@ -260,7 +260,7 @@ msgstr ""
 msgid "Shared background"
 msgstr ""
 
-#: chwall/gui/shared.py:105
+#: chwall/gui/shared.py:106
 msgid "Chwall is released under the WTFPL"
 msgstr ""
 
@@ -393,12 +393,17 @@ msgstr ""
 msgid "Error while calling nitrogen for single display"
 msgstr ""
 
-#: chwall/wallpaper.py:310
+#: chwall/wallpaper.py:186
+#, python-brace-format
+msgid "Converting non RGB picture {picture}"
+msgstr ""
+
+#: chwall/wallpaper.py:328
 #, python-brace-format
 msgid "{title} by {author}"
 msgstr ""
 
-#: chwall/wallpaper.py:313
+#: chwall/wallpaper.py:331
 #, python-brace-format
 msgid "{title} (on {source})"
 msgstr ""

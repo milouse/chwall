@@ -175,6 +175,26 @@ def set_nitrogen_wallpaper(path):
             _("Error while calling nitrogen for single display"))
 
 
+def blur_picture(path, ld_path, radius):
+    try:
+        with Image.open(path) as im:
+            # Save file format before possible conversion as format will be
+            # lost by any picture operation.
+            ext = im.format
+            if im.mode != "RGB":
+                logger.warning(
+                    _("Converting non RGB picture {picture}")
+                    .format(picture=path)
+                )
+                im = im.convert("RGB")
+            im_blurred = im.filter(ImageFilter.GaussianBlur(radius))
+            im_blurred.save(ld_path, ext)
+    except ValueError as e:
+        logger.error("{}: {}".format(path, e))
+        # Copy original image if blurring fails.
+        shutil.copy(path, ld_path)
+
+
 def set_wallpaper(path, config):
     if "desktop" in config["general"]:
         desktop = config["general"]["desktop"]
@@ -190,9 +210,7 @@ def set_wallpaper(path, config):
         ld_path = os.path.expanduser(ld_path)
         if config["general"]["shared"].get("blur", False):
             radius = config["general"]["shared"].get("blur_radius", 20)
-            with Image.open(path) as im:
-                im_blurred = im.filter(ImageFilter.GaussianBlur(radius))
-                im_blurred.save(ld_path, im.format)
+            blur_picture(path, ld_path, radius)
         else:
             shutil.copy(path, ld_path)
     return path

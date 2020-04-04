@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chwall 0.5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-21 15:31+0100\n"
-"PO-Revision-Date: 2020-03-02 20:35+0100\n"
+"POT-Creation-Date: 2020-04-04 17:29+0200\n"
+"PO-Revision-Date: 2020-04-04 17:30+0200\n"
 "Last-Translator: Étienne Deparis <etienne@depar.is>\n"
 "Language-Team: none\n"
 "Language: fr\n"
@@ -67,7 +67,7 @@ msgstr "Arrêter le service"
 msgid "Start daemon"
 msgstr "Démarrer le service"
 
-#: chwall/gui/app.py:241 chwall/gui/icon.py:128 chwall/gui/shared.py:103
+#: chwall/gui/app.py:241 chwall/gui/icon.py:128 chwall/gui/shared.py:104
 msgid "Wallpaper Changer"
 msgstr "Changeur de fond d'écran"
 
@@ -279,7 +279,7 @@ msgstr "Gestion du cache"
 msgid "Shared background"
 msgstr "Fond d'écran partagé"
 
-#: chwall/gui/shared.py:105
+#: chwall/gui/shared.py:106
 msgid "Chwall is released under the WTFPL"
 msgstr "Chwall est publié selon les termes de la WTFPL"
 
@@ -417,12 +417,17 @@ msgid "Error while calling nitrogen for single display"
 msgstr ""
 "Erreur lors de l'appel à nitrogen pour un affichage sur un unique écran"
 
-#: chwall/wallpaper.py:310
+#: chwall/wallpaper.py:186
+#, python-brace-format
+msgid "Converting non RGB picture {picture}"
+msgstr "Conversion de l'image non RGB {picture}"
+
+#: chwall/wallpaper.py:328
 #, python-brace-format
 msgid "{title} by {author}"
 msgstr "{title} de {author}"
 
-#: chwall/wallpaper.py:313
+#: chwall/wallpaper.py:331
 #, python-brace-format
 msgid "{title} (on {source})"
 msgstr "{title} (sur {source})"
