@@ -225,8 +225,28 @@ def fetch_wallpaper(collecs):
     pic_file = current_wall[-1]
     if os.path.exists(pic_file):
         return pic_file, wp["image"]
-    with open(pic_file, "wb") as f:
-        f.write(requests.get(wp["image"]).content)
+    try_again = 5
+    while try_again > 0:
+        try:
+            pic_data = requests.get(wp["image"]).content
+            with open(pic_file, "wb") as f:
+                f.write(pic_data)
+            break
+        except (requests.exceptions.ConnectionError,
+                requests.exceptions.HTTPError,
+                requests.exceptions.Timeout) as e:
+            logger.error(
+                _("Catch {error} exception while downloading {picture}. "
+                  "Wait {time} seconds before retrying.")
+                .format(error=type(e).__name__, picture=wp["image"],
+                        time=WAIT_ERROR)
+            )
+            try_again -= 1
+            try:
+                time.sleep(WAIT_ERROR)
+            except KeyboardInterrupt:
+                logger.warning(_("Retry NOW to download {picture}")
+                               .format(picture=wp["image"]))
     if os.path.getsize(pic_file) == 0:
         # Do not keep empty files. It may be caused by a network error or
         # something else, which may be resolved later.
