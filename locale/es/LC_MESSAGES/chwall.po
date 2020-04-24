@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chwall 0.5.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-13 13:37+0200\n"
-"PO-Revision-Date: 2019-11-17 17:41+0100\n"
-"Last-Translator: Étienne Deparis <etienne@depar.is>\n"
+"POT-Creation-Date: 2020-03-21 15:31+0100\n"
+"PO-Revision-Date: 2020-05-02 12:28+0000\n"
+"Last-Translator: ruko <ruko@null.net>\n"
 "Language-Team: Spanish <https://translations.umaneti.net/projects/chwall/"
 "translations/es/>\n"
 "Language: es\n"
@@ -17,17 +17,20 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Poedit 2.2.4\n"
+"X-Generator: Weblate 3.8\n"
 
 #: chwall/gui/app.py:39 chwall/gui/app.py:166 chwall/gui/preferences.py:113
 msgid "Preferences"
 msgstr "Preferencias"
 
 #: chwall/gui/app.py:50
+#, fuzzy
 msgid ""
 "Wallpapers list may be built again. It may take a long time if you have a "
 "lot of sources enabled. Please be patient."
 msgstr ""
+"La lista de fondos de escritorio puede ser reconstruida. Puede llevar mucho "
+"tiempo si tienes muchas fuentes habilitadas. Por favor, sé paciente."
 
 #: chwall/gui/app.py:62 chwall/gui/app.py:253 chwall/gui/icon.py:73
 msgid "Previous wallpaper"
@@ -35,11 +38,12 @@ msgstr "Fondo anterior"
 
 #: chwall/gui/app.py:74 chwall/gui/app.py:249 chwall/gui/icon.py:68
 msgid "Next wallpaper"
-msgstr "Próximo fondo"
+msgstr "Siguiente fondo"
 
 #: chwall/gui/app.py:83
+#, fuzzy
 msgid "Stop daemon and erase pending list"
-msgstr ""
+msgstr "Parar el daemon y eliminar la lista pendiente"
 
 #: chwall/gui/app.py:94 chwall/gui/app.py:257 chwall/gui/icon.py:78
 msgid "Blacklist"
@@ -47,15 +51,15 @@ msgstr "Poner en lista negra"
 
 #: chwall/gui/app.py:113 chwall/gui/icon.py:53
 msgid "Current wallpaper is not managed by Chwall"
-msgstr ""
+msgstr "El fondo de pantalla actual no está gestionado por Chwall"
 
 #: chwall/gui/app.py:159
 msgid "Display notification icon"
-msgstr "Mostrar un ícono en el área de notificación"
+msgstr "Mostrar un icono en el área de notificación"
 
 #: chwall/gui/app.py:170
 msgid "About Chwall"
-msgstr ""
+msgstr "Acerca de Chwall"
 
 #: chwall/gui/app.py:194 chwall/gui/icon.py:38
 msgid "Stop daemon"
@@ -71,7 +75,7 @@ msgstr "Seleccionador de fondo de pantalla"
 
 #: chwall/gui/app.py:245
 msgid "Main window of the Chwall wallpaper changer"
-msgstr "Ventana principal del seleccionador de fondos Chwall"
+msgstr "Ventana principal del gestor de fondos Chwall"
 
 #: chwall/gui/icon.py:85
 msgid "Open main window"
@@ -79,7 +83,7 @@ msgstr "Abrir ventana principal"
 
 #: chwall/gui/icon.py:93
 msgid "Always display this icon"
-msgstr "Mostrar siempre este ícono"
+msgstr "Mostrar siempre este icono"
 
 #: chwall/gui/icon.py:103
 msgid "Report a bug"
@@ -87,47 +91,51 @@ msgstr "Reportar un bug"
 
 #: chwall/gui/preferences.py:121
 msgid "General"
-msgstr ""
+msgstr "General"
 
 #: chwall/gui/preferences.py:123
+#, fuzzy
 msgid "Pictures sources"
-msgstr ""
+msgstr "Fuentes de las imágenes"
 
 #: chwall/gui/preferences.py:125
 msgid "Advanced"
-msgstr ""
+msgstr "Avanzado"
 
 #: chwall/gui/preferences.py:153
+#, fuzzy
 msgid "Wallpaper width"
-msgstr ""
+msgstr "Ancho del fondo de pantalla"
 
 #: chwall/gui/preferences.py:155
+#, fuzzy
 msgid "Number of item to retrieve"
-msgstr ""
+msgstr "Número del objeto a recuperar"
 
 #: chwall/gui/preferences.py:157
 msgid "Collections"
-msgstr ""
+msgstr "Colecciones"
 
 #: chwall/gui/preferences.py:206
 msgid "Enable"
-msgstr ""
+msgstr "Activar"
 
 #: chwall/gui/preferences.py:391 chwall/gui/preferences.py:727
 msgid "Remove"
-msgstr ""
+msgstr "Eliminar"
 
 #: chwall/gui/preferences.py:396
 msgid "Add"
-msgstr ""
+msgstr "Añadir"
 
 #: chwall/gui/preferences.py:420
+#, fuzzy
 msgid "Shared background path"
-msgstr ""
+msgstr "Directorio compartido del fondo de pantalla"
 
 #: chwall/gui/preferences.py:422
 msgid "Select a file"
-msgstr ""
+msgstr "Selecciona un archivo"
 
 #: chwall/gui/preferences.py:456
 msgid "Display notification when wallpaper changes"
