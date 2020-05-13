@@ -7,6 +7,7 @@ import signal
 import subprocess
 
 # chwall imports
+from chwall import __version__
 from chwall.utils import BASE_CACHE_PATH, read_config, cleanup_cache, \
                          get_logger
 from chwall.wallpaper import pick_wallpaper, ChwallWallpaperSetError, \
@@ -240,7 +241,8 @@ def start_daemon():
         daemonize()
     with open("{}/chwall_pid".format(BASE_CACHE_PATH), "w") as f:
         f.write(str(os.getpid()))
-    logger.info(_("Start loop"))
+    logger.info(_("Starting Chwall Daemon v{version}…")
+                .format(version=__version__))
     sys.exit(daemon_loop())
 
 

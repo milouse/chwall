@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chwall 0.5.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-15 19:17+0200\n"
+"POT-Creation-Date: 2020-05-13 13:21+0200\n"
 "PO-Revision-Date: 2019-11-17 17:41+0100\n"
 "Last-Translator: Étienne Deparis <etienne@depar.is>\n"
 "Language-Team: Spanish <https://translations.umaneti.net/projects/chwall/"
@@ -412,80 +412,81 @@ msgstr ""
 msgid "Retry NOW to download {picture}"
 msgstr ""
 
-#: chwall/wallpaper.py:348
+#: chwall/wallpaper.py:358
 #, python-brace-format
 msgid "{title} by {author}"
 msgstr ""
 
-#: chwall/wallpaper.py:351
+#: chwall/wallpaper.py:361
 #, python-brace-format
 msgid "{title} (on {source})"
 msgstr ""
 
-#: chwall/daemon.py:67
+#: chwall/daemon.py:68
 #, python-brace-format
 msgid "Last change was 1 minute and {seconds}s ago"
 msgstr ""
 
-#: chwall/daemon.py:71
+#: chwall/daemon.py:72
 #, python-brace-format
 msgid "Last change was {minutes} minutes and {seconds}s ago"
 msgstr ""
 
-#: chwall/daemon.py:74
+#: chwall/daemon.py:75
 #, python-brace-format
 msgid "Last change was {seconds}s ago"
 msgstr "El último cambio ocurrió hace {seconds}s"
 
-#: chwall/daemon.py:81
+#: chwall/daemon.py:82
 #, python-brace-format
 msgid "Next change in 1 minute and {seconds}s"
 msgstr ""
 
-#: chwall/daemon.py:85
+#: chwall/daemon.py:86
 #, python-brace-format
 msgid "Next change in {minutes} minutes and {seconds}s"
 msgstr ""
 
-#: chwall/daemon.py:88
+#: chwall/daemon.py:89
 #, python-brace-format
 msgid "Next change in {seconds}s"
 msgstr "Próximo cambio en {seconds}s"
 
-#: chwall/daemon.py:98 chwall/daemon.py:103
+#: chwall/daemon.py:99 chwall/daemon.py:104
 msgid "Daemon stopped"
 msgstr "Servicio detenido"
 
-#: chwall/daemon.py:106
+#: chwall/daemon.py:107
 msgid "Daemon started"
 msgstr "Servicio iniciado"
 
-#: chwall/daemon.py:118
+#: chwall/daemon.py:119
 #, python-brace-format
 msgid "{daemon_state} (disabled)"
 msgstr "{daemon_state} (inactivo)"
 
-#: chwall/daemon.py:141
+#: chwall/daemon.py:142
 #, python-brace-format
 msgid "Kill process {pid}"
 msgstr "Detener proceso {pid}"
 
-#: chwall/daemon.py:143 chwall/daemon.py:163
+#: chwall/daemon.py:144 chwall/daemon.py:164
 #, python-brace-format
 msgid "Sending process {pid} signal {sid}"
 msgstr "Enviando la señal {sid} al proceso {pid}"
 
-#: chwall/daemon.py:202
+#: chwall/daemon.py:203
 msgid "Exit signal received"
 msgstr "Se recibió la señal de salida"
 
-#: chwall/daemon.py:207
+#: chwall/daemon.py:208
 msgid "Cleaning up…"
 msgstr "Limpiando…"
 
-#: chwall/daemon.py:243
-msgid "Start loop"
-msgstr "Iniciar bucle"
+#: chwall/daemon.py:244
+#, fuzzy, python-brace-format
+msgid "Starting Chwall Daemon v{version}…"
+msgstr "Iniciar Chwall servicio"
 
 #: chwall/client.py:91
 msgid "Usage:"
@@ -622,6 +623,9 @@ msgid ""
 "\n"
 "This command display only the upstream url of each wallpaper.\n"
 msgstr ""
+
+#~ msgid "Start loop"
+#~ msgstr "Iniciar bucle"
 
 #~ msgid "About"
 #~ msgstr "Acerca de"
