@@ -307,6 +307,9 @@ def remove_wallpaper_from_roadmap(wp):
     if wp in data.get("history", []):
         data["history"].remove(wp)
     if wp in data.get("data", {}):
+        wallinfo = clean_wallpaper_info(data["data"][wp])
+        if wallinfo[3] != "local" and os.path.exists(wallinfo[4]):
+            os.unlink(wallinfo[4])
         del data["data"][wp]
     with open(road_map, "w") as f:
         yaml.dump(data, f, explicit_start=True,
