@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chwall 0.5.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-13 13:21+0200\n"
-"PO-Revision-Date: 2020-05-13 13:23+0200\n"
+"POT-Creation-Date: 2020-05-13 13:37+0200\n"
+"PO-Revision-Date: 2020-05-13 13:40+0200\n"
 "Last-Translator: Étienne Deparis <etienne@depar.is>\n"
 "Language-Team: none\n"
 "Language: fr\n"
@@ -115,7 +115,7 @@ msgstr "Collections"
 msgid "Enable"
 msgstr "Activer"
 
-#: chwall/gui/preferences.py:391 chwall/gui/preferences.py:720
+#: chwall/gui/preferences.py:391 chwall/gui/preferences.py:727
 msgid "Remove"
 msgstr "Supprimer"
 
@@ -205,7 +205,7 @@ msgstr ""
 msgid "Behavior"
 msgstr "Comportement"
 
-#: chwall/gui/preferences.py:585 chwall/gui/preferences.py:757
+#: chwall/gui/preferences.py:585 chwall/gui/preferences.py:764
 msgid "Daemon"
 msgstr "Tâche de fond"
 
@@ -218,64 +218,58 @@ msgstr ""
 msgid "Empty current pending list"
 msgstr "Vider la liste d'attente courante"
 
-#: chwall/gui/preferences.py:609
+#: chwall/gui/preferences.py:610
 #, python-brace-format
 msgid "{number} cache entry has been removed."
-msgstr "{number} entrée du cache a été supprimée."
+msgid_plural "{number} cache entries have been removed."
+msgstr[0] "{number} entrée du cache a été supprimée."
+msgstr[1] "{number} entrées du cache ont été supprimées."
 
-#: chwall/gui/preferences.py:611
-#, python-brace-format
-msgid "{number} cache entries have been removed."
-msgstr "{number} entrées du cache ont été supprimées."
-
-#: chwall/gui/preferences.py:618
+#: chwall/gui/preferences.py:620
 msgid "Cache cleanup"
 msgstr "Nettoyage du cache"
 
-#: chwall/gui/preferences.py:632 chwall/gui/preferences.py:639
+#: chwall/gui/preferences.py:635 chwall/gui/preferences.py:644
 #, python-brace-format
 msgid "{number} broken picture currently in cache"
-msgstr "{number} image cassée actuellement dans le cache"
+msgid_plural "{number} broken pictures currently in cache"
+msgstr[0] "{number} image cassée actuellement dans le cache"
+msgstr[1] "{number} images cassées actuellement dans le cache"
 
-#: chwall/gui/preferences.py:634
-#, python-brace-format
-msgid "{number} broken pictures currently in cache"
-msgstr "{number} images cassées actuellement dans le cache"
-
-#: chwall/gui/preferences.py:645
+#: chwall/gui/preferences.py:652
 msgid "Clear broken pictures"
 msgstr "Nettoyer les entrées cassées du cache"
 
-#: chwall/gui/preferences.py:667 chwall/gui/preferences.py:671
+#: chwall/gui/preferences.py:674 chwall/gui/preferences.py:678
 #, python-brace-format
 msgid "Picture cache use {size}"
 msgstr "Le cache des images utilise {size}"
 
-#: chwall/gui/preferences.py:672
+#: chwall/gui/preferences.py:679
 msgid "Clear picture cache"
 msgstr "Vider le cache des images"
 
-#: chwall/gui/preferences.py:685
+#: chwall/gui/preferences.py:692
 msgid "Blur radius"
 msgstr "Rayon de floutage"
 
-#: chwall/gui/preferences.py:693
+#: chwall/gui/preferences.py:700
 msgid "X Display in use"
 msgstr "Affichage X à utiliser"
 
-#: chwall/gui/preferences.py:719
+#: chwall/gui/preferences.py:726
 msgid "Remove systemd service file"
 msgstr "Supprimer le fichier de service systemd"
 
-#: chwall/gui/preferences.py:731
+#: chwall/gui/preferences.py:738
 msgid "Log level"
 msgstr "Niveau de journalisation"
 
-#: chwall/gui/preferences.py:743
+#: chwall/gui/preferences.py:750
 msgid "Cache management"
 msgstr "Gestion du cache"
 
-#: chwall/gui/preferences.py:750
+#: chwall/gui/preferences.py:757
 msgid "Shared background"
 msgstr "Fond d'écran partagé"
 
@@ -446,68 +440,64 @@ msgstr "{title} de {author}"
 msgid "{title} (on {source})"
 msgstr "{title} (sur {source})"
 
-#: chwall/daemon.py:68
+#: chwall/daemon.py:67
 #, python-brace-format
-msgid "Last change was 1 minute and {seconds}s ago"
-msgstr "Le dernier changement a eu lieu il y a 1 minute et {seconds}s"
+msgid "Last change was {minutes} minute and {seconds}s ago"
+msgid_plural "Last change was {minutes} minutes and {seconds}s ago"
+msgstr[0] ""
+"Le dernier changement a eu lieu il y a {minutes} minute et {seconds}s"
+msgstr[1] ""
+"Le dernier changement a eu lieu il y a {minutes} minutes et {seconds}s"
 
 #: chwall/daemon.py:72
-#, python-brace-format
-msgid "Last change was {minutes} minutes and {seconds}s ago"
-msgstr "Le dernier changement a eu lieu il y a {minutes} minutes et {seconds}s"
-
-#: chwall/daemon.py:75
 #, python-brace-format
 msgid "Last change was {seconds}s ago"
 msgstr "Le dernier changement a eu lieu il y a {seconds}s"
 
-#: chwall/daemon.py:82
+#: chwall/daemon.py:78
 #, python-brace-format
-msgid "Next change in 1 minute and {seconds}s"
-msgstr "Prochain changement dans 1 minute et {seconds}s"
+msgid "Next change in {minutes} minute and {seconds}s"
+msgid_plural "Next change in {minutes} minutes and {seconds}s"
+msgstr[0] "Prochain changement dans {minutes} minute et {seconds}s"
+msgstr[1] "Prochain changement dans {minutes} minutes et {seconds}s"
 
-#: chwall/daemon.py:86
-#, python-brace-format
-msgid "Next change in {minutes} minutes and {seconds}s"
-msgstr "Prochain changement dans {minutes} minutes et {seconds}s"
-
-#: chwall/daemon.py:89
+#: chwall/daemon.py:83
 #, python-brace-format
 msgid "Next change in {seconds}s"
 msgstr "Prochain changement dans {seconds}s"
 
-#: chwall/daemon.py:99 chwall/daemon.py:104
+#: chwall/daemon.py:93 chwall/daemon.py:98
 msgid "Daemon stopped"
 msgstr "Service arrêté"
 
-#: chwall/daemon.py:107
+#: chwall/daemon.py:101
 msgid "Daemon started"
 msgstr "Service démarré"
 
-#: chwall/daemon.py:119
+#: chwall/daemon.py:113
 #, python-brace-format
 msgid "{daemon_state} (disabled)"
 msgstr "{daemon_state} (désactivé)"
 
-#: chwall/daemon.py:142
+#: chwall/daemon.py:136
 #, python-brace-format
 msgid "Kill process {pid}"
 msgstr "Tuer le processus {pid}"
 
-#: chwall/daemon.py:144 chwall/daemon.py:164
+#: chwall/daemon.py:138 chwall/daemon.py:158
 #, python-brace-format
 msgid "Sending process {pid} signal {sid}"
 msgstr "Envoi du signal {sid} au processus {pid}"
 
-#: chwall/daemon.py:203
+#: chwall/daemon.py:197
 msgid "Exit signal received"
 msgstr "Signal d'extinction reçu"
 
-#: chwall/daemon.py:208
+#: chwall/daemon.py:202
 msgid "Cleaning up…"
 msgstr "Nettoyage…"
 
-#: chwall/daemon.py:244
+#: chwall/daemon.py:238
 #, python-brace-format
 msgid "Starting Chwall Daemon v{version}…"
 msgstr "Démarrage du service de Chwall v{version}…"
@@ -707,6 +697,22 @@ msgstr ""
 "\n"
 "Cette commande renvoie simplement la liste des urls d'origine de chaque\n"
 "fond d'écran.\n"
+
+#, python-brace-format
+#~ msgid "{number} cache entries have been removed."
+#~ msgstr "{number} entrées du cache ont été supprimées."
+
+#, python-brace-format
+#~ msgid "{number} broken pictures currently in cache"
+#~ msgstr "{number} images cassées actuellement dans le cache"
+
+#, python-brace-format
+#~ msgid "Last change was 1 minute and {seconds}s ago"
+#~ msgstr "Le dernier changement a eu lieu il y a 1 minute et {seconds}s"
+
+#, python-brace-format
+#~ msgid "Next change in 1 minute and {seconds}s"
+#~ msgstr "Prochain changement dans 1 minute et {seconds}s"
 
 #~ msgid "Start loop"
 #~ msgstr "Démarrage de la boucle"
