@@ -295,7 +295,14 @@ def pick_wallpaper(config, backward=False, guard=False):
     with open(road_map, "w") as f:
         yaml.dump(data, f, explicit_start=True,
                   default_flow_style=False)
-    return set_wallpaper(lp, config)
+    try:
+        lp = set_wallpaper(lp, config)
+    except OSError as e:
+        logger.error("{}: {}".format(type(e).__name__, e))
+        remove_wallpaper_from_roadmap(wp)
+        # Try again for next wallpaper
+        return pick_wallpaper(config, backward)
+    return lp
 
 
 def remove_wallpaper_from_roadmap(wp):
