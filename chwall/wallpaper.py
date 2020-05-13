@@ -155,11 +155,11 @@ def set_nitrogen_wallpaper(path):
     cmd = ["nitrogen", "--set-zoom-fill", "--set-color=#000000", "--save"]
     # screen_info = (scr_number, scr_width, scr_height, scr_ratio, display)
     screen_info = get_screen_config()
-    # wall_info = (wall_width, wall_height, wall_ratio)
-    wall_info = get_wall_config(path)
-    if wall_info is None:
-        wall_info = (0, 0, 1)
-    ratio_cmp = int(screen_info[3]) - int(wall_info[2])
+    # wall_spec = (wall_width, wall_height, wall_ratio)
+    wall_spec = get_wall_config(path)
+    if wall_spec is None:
+        wall_spec = (0, 0, 1)
+    ratio_cmp = int(screen_info[3]) - int(wall_spec[2])
     if screen_info[0] > 1 and ratio_cmp != 0:
         err = 0
         for screen_index in range(screen_info[0]):
