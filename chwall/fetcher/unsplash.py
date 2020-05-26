@@ -71,7 +71,7 @@ def preferences():
             },
             "access_key": {
                 "widget": "text",
-                "label": _("API access_key")
+                "label": _("API access key")
             },
             "query": {
                 "widget": "text",
