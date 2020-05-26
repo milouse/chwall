@@ -360,7 +360,7 @@ def clean_wallpaper_info(data):
     rights = data.get("copyright")
     if rights is None or rights == "":
         rights = _("{title} by {author}").format(
-            title=data.get("description", "Picture"),
+            title=data.get("description", _("Picture")),
             author=data.get("author", "unknown"))
     description = _("{title} (on {source})").format(
         title=rights.replace("\n", " "),
