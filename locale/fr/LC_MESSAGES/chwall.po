@@ -297,6 +297,19 @@ msgstr "Fichiers locaux"
 msgid "Wallpaper repositories"
 msgstr "Dossiers de fonds d'écran"
 
+#: chwall/fetcher/pexels.py:20
+msgid "An `access_key' param is required to fetch pictures from Pexels."
+msgstr ""
+"Un paramètre `access_key` est requis pour récupérer des images depuis Pexels."
+
+#: chwall/fetcher/pexels.py:62 chwall/fetcher/unsplash.py:74
+msgid "API access key"
+msgstr "Clé d'accès API"
+
+#: chwall/fetcher/pexels.py:66
+msgid "Search query"
+msgstr "Requête"
+
 #: chwall/fetcher/reddit.py:34
 #, python-brace-format
 msgid "{title}, picked on {subreddit}"
@@ -334,7 +347,7 @@ msgstr ""
 "Unsplash a arrêté de fournir un flux RSS. De ce fait, le paramètre "
 "`access_key` est désormais requis."
 
-#: chwall/fetcher/unsplash.py:39
+#: chwall/fetcher/unsplash.py:39 chwall/wallpaper.py:377
 msgid "Picture"
 msgstr "Image"
 
@@ -342,10 +355,6 @@ msgstr "Image"
 #, python-brace-format
 msgid "{desc}, taken in {location}"
 msgstr "{desc}, prise à {location}"
-
-#: chwall/fetcher/unsplash.py:74
-msgid "API access_key"
-msgstr "Clé d'accès API (access_key)"
 
 #: chwall/fetcher/unsplash.py:78
 msgid "Complementary query"
@@ -416,7 +425,7 @@ msgstr ""
 msgid "Converting non RGB picture {picture}"
 msgstr "Conversion de l'image non RGB {picture}"
 
-#: chwall/wallpaper.py:239
+#: chwall/wallpaper.py:243
 #, python-brace-format
 msgid ""
 "Catch {error} exception while downloading {picture}. Wait {time} seconds "
@@ -425,17 +434,33 @@ msgstr ""
 "Récupération de l’exception {error} durant le téléchargement de {picture}. "
 "Attente de {time} secondes avant de réessayer."
 
-#: chwall/wallpaper.py:248
+#: chwall/wallpaper.py:252
 #, python-brace-format
 msgid "Retry NOW to download {picture}"
 msgstr "Essaye MAINTENANT de télécharger {picture}"
 
-#: chwall/wallpaper.py:358
+#: chwall/wallpaper.py:283
+msgid ""
+"Impossible to build a new road map. It may be caused by a temporarily "
+"network error. Please try again later."
+msgstr ""
+"Impossible de construire une nouvelle liste d'attente. Cela peut être dû à "
+"une erreur temporaire de réseau. Merci de réessayer ultérieurement."
+
+#: chwall/wallpaper.py:306
+msgid ""
+"Impossible to get any picture at this time. It may be caused by a "
+"temporarily network error. Please try again later."
+msgstr ""
+"Impossible de récupérer une image pour l'instant. Cela peut être dû à une "
+"erreur temporaire de réseau. Merci de réessayer ultérieurement."
+
+#: chwall/wallpaper.py:376
 #, python-brace-format
 msgid "{title} by {author}"
 msgstr "{title} de {author}"
 
-#: chwall/wallpaper.py:361
+#: chwall/wallpaper.py:379
 #, python-brace-format
 msgid "{title} (on {source})"
 msgstr "{title} (sur {source})"

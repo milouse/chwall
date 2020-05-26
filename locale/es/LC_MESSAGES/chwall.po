@@ -280,6 +280,18 @@ msgstr ""
 msgid "Wallpaper repositories"
 msgstr ""
 
+#: chwall/fetcher/pexels.py:20
+msgid "An `access_key' param is required to fetch pictures from Pexels."
+msgstr ""
+
+#: chwall/fetcher/pexels.py:62 chwall/fetcher/unsplash.py:74
+msgid "API access key"
+msgstr ""
+
+#: chwall/fetcher/pexels.py:66
+msgid "Search query"
+msgstr ""
+
 #: chwall/fetcher/reddit.py:34
 #, python-brace-format
 msgid "{title}, picked on {subreddit}"
@@ -315,17 +327,13 @@ msgid ""
 "required."
 msgstr ""
 
-#: chwall/fetcher/unsplash.py:39
+#: chwall/fetcher/unsplash.py:39 chwall/wallpaper.py:377
 msgid "Picture"
 msgstr "Imagen"
 
 #: chwall/fetcher/unsplash.py:48
 #, python-brace-format
 msgid "{desc}, taken in {location}"
-msgstr ""
-
-#: chwall/fetcher/unsplash.py:74
-msgid "API access_key"
 msgstr ""
 
 #: chwall/fetcher/unsplash.py:78
@@ -394,24 +402,36 @@ msgstr ""
 msgid "Converting non RGB picture {picture}"
 msgstr ""
 
-#: chwall/wallpaper.py:239
+#: chwall/wallpaper.py:243
 #, python-brace-format
 msgid ""
 "Catch {error} exception while downloading {picture}. Wait {time} seconds "
 "before retrying."
 msgstr ""
 
-#: chwall/wallpaper.py:248
+#: chwall/wallpaper.py:252
 #, python-brace-format
 msgid "Retry NOW to download {picture}"
 msgstr ""
 
-#: chwall/wallpaper.py:358
+#: chwall/wallpaper.py:283
+msgid ""
+"Impossible to build a new road map. It may be caused by a temporarily "
+"network error. Please try again later."
+msgstr ""
+
+#: chwall/wallpaper.py:306
+msgid ""
+"Impossible to get any picture at this time. It may be caused by a "
+"temporarily network error. Please try again later."
+msgstr ""
+
+#: chwall/wallpaper.py:376
 #, python-brace-format
 msgid "{title} by {author}"
 msgstr ""
 
-#: chwall/wallpaper.py:361
+#: chwall/wallpaper.py:379
 #, python-brace-format
 msgid "{title} (on {source})"
 msgstr ""
