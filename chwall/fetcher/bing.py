@@ -18,11 +18,11 @@ def fetch_pictures(config):
     pictures = {}
     already_done = []
     url = "https://www.bing.com/HPImageArchive.aspx?format=js&n=8&mkt={}"
-    for l in i18n_src:
-        lu = "{}[0-9]{{10}}".format(l.upper())
-        data = requests.get(url.format(l)).json()
+    for lang in i18n_src:
+        lang_url = "{}[0-9]{{10}}".format(lang.upper())
+        data = requests.get(url.format(lang)).json()
         for p in data["images"]:
-            ad = re.sub(lu, "", p["url"])
+            ad = re.sub(lang_url, "", p["url"])
             if ad in already_done:
                 continue
             already_done.append(ad)
