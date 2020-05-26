@@ -44,7 +44,7 @@ def fetch_pictures(config):
             if len(label) > 200:
                 label = label[0:200] + "…"
         location = p.get("location", {}).get("title", "")
-        if location != "":
+        if location is not None and location != "":
             label = (_("{desc}, taken in {location}")
                      .format(desc=label, location=location))
         pictures[px] = {
