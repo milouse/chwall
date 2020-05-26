@@ -216,19 +216,23 @@ def set_wallpaper(path, config):
     return path
 
 
-def fetch_wallpaper(collecs):
-    wp = collecs["data"][collecs["pictures"][0]]
-    current_wall = clean_wallpaper_info(wp)
-    with open("{}/current_wallpaper".format(BASE_CACHE_PATH), "w") as f:
-        for line in current_wall:
-            f.write(line + "\n")
-    pic_file = current_wall[-1]
+def fetch_wallpaper(wp_data):
+    current_wall = clean_wallpaper_info(wp_data)
+    pic_file = current_wall[4]
+
+    def _write_current_wallpaper_info(current_wall):
+        with open("{}/current_wallpaper".format(BASE_CACHE_PATH), "w") as f:
+            for line in current_wall:
+                f.write(line + "\n")
+
     if os.path.exists(pic_file):
-        return pic_file, wp["image"]
+        _write_current_wallpaper_info(current_wall)
+        return pic_file, current_wall[0]
+
     try_again = 5
     while try_again > 0:
         try:
-            pic_data = requests.get(wp["image"]).content
+            pic_data = requests.get(current_wall[0]).content
             with open(pic_file, "wb") as f:
                 f.write(pic_data)
             break
@@ -238,7 +242,7 @@ def fetch_wallpaper(collecs):
             logger.error(
                 _("Catch {error} exception while downloading {picture}. "
                   "Wait {time} seconds before retrying.")
-                .format(error=type(e).__name__, picture=wp["image"],
+                .format(error=type(e).__name__, picture=current_wall[0],
                         time=WAIT_ERROR)
             )
             try_again -= 1
@@ -246,7 +250,8 @@ def fetch_wallpaper(collecs):
                 time.sleep(WAIT_ERROR)
             except KeyboardInterrupt:
                 logger.warning(_("Retry NOW to download {picture}")
-                               .format(picture=wp["image"]))
+                               .format(picture=current_wall[0]))
+
     if not os.path.exists(pic_file):
         # We probably went here because of a network error. Thus do nothing yet
         # and move back without anything.
@@ -256,7 +261,9 @@ def fetch_wallpaper(collecs):
         # something else, which may be resolved later.
         os.unlink(pic_file)
         return None, None
-    return pic_file, wp["image"]
+
+    _write_current_wallpaper_info(current_wall)
+    return pic_file, current_wall[0]
 
 
 def pick_wallpaper(config, backward=False, guard=False):
@@ -265,13 +272,18 @@ def pick_wallpaper(config, backward=False, guard=False):
         build_roadmap(config)
     with open(road_map, "r") as f:
         data = yaml.safe_load(f)
-    must_advance = len(data.get("pictures", [])) == 0 and backward is False
-    if must_advance or data is None:
+    no_pic_left = len(data.get("pictures", [])) == 0 and backward is False
+    if no_pic_left or data is None:
         # Woops, no picture left. Removing current roadmap.
         os.unlink(road_map)
         if guard is True:
             # Wow, we already try to reload once, it's very bad to be
             # there. Maybe a little network error. Be patient
+            logger.error(
+                _("Impossible to build a new road map. It may be "
+                  "caused by a temporarily network error. Please "
+                  "try again later.")
+            )
             return None
         # List is empty. Maybe it was the last picture of the current list?
         # Thus, try again now. Backward is always false because at this point,
@@ -286,13 +298,15 @@ def pick_wallpaper(config, backward=False, guard=False):
             # Previous one
             data["pictures"].insert(0, data["history"].pop())
             # Now we are good to do a fake "forward" move
-    lp, wp = fetch_wallpaper(data)
+    lp, wp = fetch_wallpaper(data["data"][data["pictures"][0]])
     if lp is None:
         # Something goes wrong, thus do nothing. It may be because of a
         # networking error or something else.
-        # In any case, we remove the current roadmap file to force its
-        # recomputing the next time pick_wallpaper is called.
-        os.unlink(road_map)
+        logger.error(
+            _("Impossible to get any picture at this time. It may be "
+              "caused by a temporarily network error. Please try again "
+              "later.")
+        )
         return None
     data["pictures"].remove(wp)
     data["history"].append(wp)
