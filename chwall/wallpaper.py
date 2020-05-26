@@ -247,6 +247,10 @@ def fetch_wallpaper(collecs):
             except KeyboardInterrupt:
                 logger.warning(_("Retry NOW to download {picture}")
                                .format(picture=wp["image"]))
+    if not os.path.exists(pic_file):
+        # We probably went here because of a network error. Thus do nothing yet
+        # and move back without anything.
+        return None, None
     if os.path.getsize(pic_file) == 0:
         # Do not keep empty files. It may be caused by a network error or
         # something else, which may be resolved later.
