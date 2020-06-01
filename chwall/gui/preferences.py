@@ -605,10 +605,12 @@ as it is the more classical way of doing so.
             deleted = cleanup_cache(clear_all)
             if deleted == 0:
                 return
-            if deleted < 2:
-                message = _("{number} cache entry has been removed.")
-            else:
-                message = _("{number} cache entries have been removed.")
+
+            message = gettext.ngettext(
+                "{number} cache entry has been removed.",
+                "{number} cache entries have been removed.",
+                deleted
+            ).format(number=deleted)
 
             widget.get_parent().foreach(update_label)
 
@@ -618,7 +620,7 @@ as it is the more classical way of doing so.
                 _("Cache cleanup")
             )
             dialog.set_icon_name("chwall")
-            dialog.format_secondary_text(message.format(number=deleted))
+            dialog.format_secondary_text(message)
             dialog.run()
             dialog.destroy()
 
@@ -628,20 +630,25 @@ as it is the more classical way of doing so.
             for pic in os.scandir(pic_cache):
                 if pic.stat().st_size == 0:
                     broken_files += 1
-        if broken_files < 2:
-            label = _("{number} broken picture currently in cache")
-        else:
-            label = _("{number} broken pictures currently in cache")
+
+        label = gettext.ngettext(
+                "{number} broken picture currently in cache",
+                "{number} broken pictures currently in cache",
+                broken_files
+        ).format(number=broken_files)
 
         def _update_broken_label(sibling):
             if isinstance(sibling, Gtk.Label):
                 sibling.set_label(
-                    _("{number} broken picture currently in cache")
-                    .format(number="0")
+                    gettext.ngettext(
+                        "{number} broken picture currently in cache",
+                        "{number} broken pictures currently in cache",
+                        0
+                    ).format(number=0)
                 )
 
         prefbox = self.make_button_row(
-            label.format(number=broken_files),
+            label,
             _("Clear broken pictures"),
             on_cleanup_cache,
             "destructive-action",

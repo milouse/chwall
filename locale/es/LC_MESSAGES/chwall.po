@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Chwall 0.5.3\n"
+"Project-Id-Version: Chwall 0.5.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-05 13:15+0200\n"
+"POT-Creation-Date: 2020-05-13 13:37+0200\n"
 "PO-Revision-Date: 2019-11-17 17:41+0100\n"
 "Last-Translator: Étienne Deparis <etienne@depar.is>\n"
 "Language-Team: Spanish <https://translations.umaneti.net/projects/chwall/"
@@ -113,7 +113,7 @@ msgstr ""
 msgid "Enable"
 msgstr ""
 
-#: chwall/gui/preferences.py:391 chwall/gui/preferences.py:720
+#: chwall/gui/preferences.py:391 chwall/gui/preferences.py:727
 msgid "Remove"
 msgstr ""
 
@@ -189,7 +189,7 @@ msgstr ""
 msgid "Behavior"
 msgstr ""
 
-#: chwall/gui/preferences.py:585 chwall/gui/preferences.py:757
+#: chwall/gui/preferences.py:585 chwall/gui/preferences.py:764
 msgid "Daemon"
 msgstr "Servicio"
 
@@ -201,64 +201,58 @@ msgstr ""
 msgid "Empty current pending list"
 msgstr ""
 
-#: chwall/gui/preferences.py:609
-#, python-brace-format
+#: chwall/gui/preferences.py:610
+#, fuzzy, python-brace-format
 msgid "{number} cache entry has been removed."
-msgstr "{number} entrada en cache ha sido eliminada."
+msgid_plural "{number} cache entries have been removed."
+msgstr[0] "{number} entrada en cache ha sido eliminada."
+msgstr[1] "{number} entrada en cache ha sido eliminada."
 
-#: chwall/gui/preferences.py:611
-#, python-brace-format
-msgid "{number} cache entries have been removed."
-msgstr "{number} entradas en cache han sido eliminadas."
-
-#: chwall/gui/preferences.py:618
+#: chwall/gui/preferences.py:620
 msgid "Cache cleanup"
 msgstr "Limpiar cache"
 
-#: chwall/gui/preferences.py:632 chwall/gui/preferences.py:639
+#: chwall/gui/preferences.py:635 chwall/gui/preferences.py:644
 #, python-brace-format
 msgid "{number} broken picture currently in cache"
-msgstr ""
+msgid_plural "{number} broken pictures currently in cache"
+msgstr[0] ""
+msgstr[1] ""
 
-#: chwall/gui/preferences.py:634
-#, python-brace-format
-msgid "{number} broken pictures currently in cache"
-msgstr ""
-
-#: chwall/gui/preferences.py:645
+#: chwall/gui/preferences.py:652
 msgid "Clear broken pictures"
 msgstr ""
 
-#: chwall/gui/preferences.py:667 chwall/gui/preferences.py:671
+#: chwall/gui/preferences.py:674 chwall/gui/preferences.py:678
 #, python-brace-format
 msgid "Picture cache use {size}"
 msgstr ""
 
-#: chwall/gui/preferences.py:672
+#: chwall/gui/preferences.py:679
 msgid "Clear picture cache"
 msgstr ""
 
-#: chwall/gui/preferences.py:685
+#: chwall/gui/preferences.py:692
 msgid "Blur radius"
 msgstr ""
 
-#: chwall/gui/preferences.py:693
+#: chwall/gui/preferences.py:700
 msgid "X Display in use"
 msgstr ""
 
-#: chwall/gui/preferences.py:719
+#: chwall/gui/preferences.py:726
 msgid "Remove systemd service file"
 msgstr ""
 
-#: chwall/gui/preferences.py:731
+#: chwall/gui/preferences.py:738
 msgid "Log level"
 msgstr ""
 
-#: chwall/gui/preferences.py:743
+#: chwall/gui/preferences.py:750
 msgid "Cache management"
 msgstr ""
 
-#: chwall/gui/preferences.py:750
+#: chwall/gui/preferences.py:757
 msgid "Shared background"
 msgstr ""
 
@@ -284,6 +278,18 @@ msgstr ""
 
 #: chwall/fetcher/local.py:37
 msgid "Wallpaper repositories"
+msgstr ""
+
+#: chwall/fetcher/pexels.py:20
+msgid "An `access_key' param is required to fetch pictures from Pexels."
+msgstr ""
+
+#: chwall/fetcher/pexels.py:62 chwall/fetcher/unsplash.py:74
+msgid "API access key"
+msgstr ""
+
+#: chwall/fetcher/pexels.py:66
+msgid "Search query"
 msgstr ""
 
 #: chwall/fetcher/reddit.py:34
@@ -321,17 +327,13 @@ msgid ""
 "required."
 msgstr ""
 
-#: chwall/fetcher/unsplash.py:39
+#: chwall/fetcher/unsplash.py:39 chwall/wallpaper.py:377
 msgid "Picture"
 msgstr "Imagen"
 
 #: chwall/fetcher/unsplash.py:48
 #, python-brace-format
 msgid "{desc}, taken in {location}"
-msgstr ""
-
-#: chwall/fetcher/unsplash.py:74
-msgid "API access_key"
 msgstr ""
 
 #: chwall/fetcher/unsplash.py:78
@@ -400,80 +402,99 @@ msgstr ""
 msgid "Converting non RGB picture {picture}"
 msgstr ""
 
-#: chwall/wallpaper.py:328
+#: chwall/wallpaper.py:243
+#, python-brace-format
+msgid ""
+"Catch {error} exception while downloading {picture}. Wait {time} seconds "
+"before retrying."
+msgstr ""
+
+#: chwall/wallpaper.py:252
+#, python-brace-format
+msgid "Retry NOW to download {picture}"
+msgstr ""
+
+#: chwall/wallpaper.py:283
+msgid ""
+"Impossible to build a new road map. It may be caused by a temporarily "
+"network error. Please try again later."
+msgstr ""
+
+#: chwall/wallpaper.py:306
+msgid ""
+"Impossible to get any picture at this time. It may be caused by a "
+"temporarily network error. Please try again later."
+msgstr ""
+
+#: chwall/wallpaper.py:376
 #, python-brace-format
 msgid "{title} by {author}"
 msgstr ""
 
-#: chwall/wallpaper.py:331
+#: chwall/wallpaper.py:379
 #, python-brace-format
 msgid "{title} (on {source})"
 msgstr ""
 
 #: chwall/daemon.py:67
-#, python-brace-format
-msgid "Last change was 1 minute and {seconds}s ago"
-msgstr ""
+#, fuzzy, python-brace-format
+msgid "Last change was {minutes} minute and {seconds}s ago"
+msgid_plural "Last change was {minutes} minutes and {seconds}s ago"
+msgstr[0] "El último cambio ocurrió hace {seconds}s"
+msgstr[1] "El último cambio ocurrió hace {seconds}s"
 
-#: chwall/daemon.py:71
-#, python-brace-format
-msgid "Last change was {minutes} minutes and {seconds}s ago"
-msgstr ""
-
-#: chwall/daemon.py:74
+#: chwall/daemon.py:72
 #, python-brace-format
 msgid "Last change was {seconds}s ago"
 msgstr "El último cambio ocurrió hace {seconds}s"
 
-#: chwall/daemon.py:81
-#, python-brace-format
-msgid "Next change in 1 minute and {seconds}s"
-msgstr ""
+#: chwall/daemon.py:78
+#, fuzzy, python-brace-format
+msgid "Next change in {minutes} minute and {seconds}s"
+msgid_plural "Next change in {minutes} minutes and {seconds}s"
+msgstr[0] "Próximo cambio en {seconds}s"
+msgstr[1] "Próximo cambio en {seconds}s"
 
-#: chwall/daemon.py:85
-#, python-brace-format
-msgid "Next change in {minutes} minutes and {seconds}s"
-msgstr ""
-
-#: chwall/daemon.py:88
+#: chwall/daemon.py:83
 #, python-brace-format
 msgid "Next change in {seconds}s"
 msgstr "Próximo cambio en {seconds}s"
 
-#: chwall/daemon.py:98 chwall/daemon.py:103
+#: chwall/daemon.py:93 chwall/daemon.py:98
 msgid "Daemon stopped"
 msgstr "Servicio detenido"
 
-#: chwall/daemon.py:106
+#: chwall/daemon.py:101
 msgid "Daemon started"
 msgstr "Servicio iniciado"
 
-#: chwall/daemon.py:118
+#: chwall/daemon.py:113
 #, python-brace-format
 msgid "{daemon_state} (disabled)"
 msgstr "{daemon_state} (inactivo)"
 
-#: chwall/daemon.py:141
+#: chwall/daemon.py:136
 #, python-brace-format
 msgid "Kill process {pid}"
 msgstr "Detener proceso {pid}"
 
-#: chwall/daemon.py:143 chwall/daemon.py:163
+#: chwall/daemon.py:138 chwall/daemon.py:158
 #, python-brace-format
 msgid "Sending process {pid} signal {sid}"
 msgstr "Enviando la señal {sid} al proceso {pid}"
 
-#: chwall/daemon.py:202
+#: chwall/daemon.py:197
 msgid "Exit signal received"
 msgstr "Se recibió la señal de salida"
 
-#: chwall/daemon.py:207
+#: chwall/daemon.py:202
 msgid "Cleaning up…"
 msgstr "Limpiando…"
 
-#: chwall/daemon.py:243
-msgid "Start loop"
-msgstr "Iniciar bucle"
+#: chwall/daemon.py:238
+#, fuzzy, python-brace-format
+msgid "Starting Chwall Daemon v{version}…"
+msgstr "Iniciar Chwall servicio"
 
 #: chwall/client.py:91
 msgid "Usage:"
@@ -610,6 +631,13 @@ msgid ""
 "\n"
 "This command display only the upstream url of each wallpaper.\n"
 msgstr ""
+
+#, python-brace-format
+#~ msgid "{number} cache entries have been removed."
+#~ msgstr "{number} entradas en cache han sido eliminadas."
+
+#~ msgid "Start loop"
+#~ msgstr "Iniciar bucle"
 
 #~ msgid "About"
 #~ msgstr "Acerca de"

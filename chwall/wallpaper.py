@@ -155,11 +155,11 @@ def set_nitrogen_wallpaper(path):
     cmd = ["nitrogen", "--set-zoom-fill", "--set-color=#000000", "--save"]
     # screen_info = (scr_number, scr_width, scr_height, scr_ratio, display)
     screen_info = get_screen_config()
-    # wall_info = (wall_width, wall_height, wall_ratio)
-    wall_info = get_wall_config(path)
-    if wall_info is None:
-        wall_info = (0, 0, 1)
-    ratio_cmp = int(screen_info[3]) - int(wall_info[2])
+    # wall_spec = (wall_width, wall_height, wall_ratio)
+    wall_spec = get_wall_config(path)
+    if wall_spec is None:
+        wall_spec = (0, 0, 1)
+    ratio_cmp = int(screen_info[3]) - int(wall_spec[2])
     if screen_info[0] > 1 and ratio_cmp != 0:
         err = 0
         for screen_index in range(screen_info[0]):
@@ -216,23 +216,54 @@ def set_wallpaper(path, config):
     return path
 
 
-def fetch_wallpaper(collecs):
-    wp = collecs["data"][collecs["pictures"][0]]
-    current_wall = clean_wallpaper_info(wp)
-    with open("{}/current_wallpaper".format(BASE_CACHE_PATH), "w") as f:
-        for line in current_wall:
-            f.write(line + "\n")
-    pic_file = current_wall[-1]
+def fetch_wallpaper(wp_data):
+    current_wall = clean_wallpaper_info(wp_data)
+    pic_file = current_wall[4]
+
+    def _write_current_wallpaper_info(current_wall):
+        with open("{}/current_wallpaper".format(BASE_CACHE_PATH), "w") as f:
+            for line in current_wall:
+                f.write(line + "\n")
+
     if os.path.exists(pic_file):
-        return pic_file, wp["image"]
-    with open(pic_file, "wb") as f:
-        f.write(requests.get(wp["image"]).content)
+        _write_current_wallpaper_info(current_wall)
+        return pic_file, current_wall[0]
+
+    try_again = 5
+    while try_again > 0:
+        try:
+            pic_data = requests.get(current_wall[0]).content
+            with open(pic_file, "wb") as f:
+                f.write(pic_data)
+            break
+        except (requests.exceptions.ConnectionError,
+                requests.exceptions.HTTPError,
+                requests.exceptions.Timeout) as e:
+            logger.error(
+                _("Catch {error} exception while downloading {picture}. "
+                  "Wait {time} seconds before retrying.")
+                .format(error=type(e).__name__, picture=current_wall[0],
+                        time=WAIT_ERROR)
+            )
+            try_again -= 1
+            try:
+                time.sleep(WAIT_ERROR)
+            except KeyboardInterrupt:
+                logger.warning(_("Retry NOW to download {picture}")
+                               .format(picture=current_wall[0]))
+
+    if not os.path.exists(pic_file):
+        # We probably went here because of a network error. Thus do nothing yet
+        # and move back without anything.
+        return None, None
     if os.path.getsize(pic_file) == 0:
         # Do not keep empty files. It may be caused by a network error or
         # something else, which may be resolved later.
         os.unlink(pic_file)
         return None, None
-    return pic_file, wp["image"]
+
+    _write_current_wallpaper_info(current_wall)
+    return pic_file, current_wall[0]
 
 
 def pick_wallpaper(config, backward=False, guard=False):
@@ -241,13 +272,18 @@ def pick_wallpaper(config, backward=False, guard=False):
         build_roadmap(config)
     with open(road_map, "r") as f:
         data = yaml.safe_load(f)
-    must_advance = len(data.get("pictures", [])) == 0 and backward is False
-    if must_advance or data is None:
+    no_pic_left = len(data.get("pictures", [])) == 0 and backward is False
+    if no_pic_left or data is None:
         # Woops, no picture left. Removing current roadmap.
         os.unlink(road_map)
         if guard is True:
             # Wow, we already try to reload once, it's very bad to be
             # there. Maybe a little network error. Be patient
+            logger.error(
+                _("Impossible to build a new road map. It may be "
+                  "caused by a temporarily network error. Please "
+                  "try again later.")
+            )
             return None
         # List is empty. Maybe it was the last picture of the current list?
         # Thus, try again now. Backward is always false because at this point,
@@ -262,20 +298,29 @@ def pick_wallpaper(config, backward=False, guard=False):
             # Previous one
             data["pictures"].insert(0, data["history"].pop())
             # Now we are good to do a fake "forward" move
-    lp, wp = fetch_wallpaper(data)
+    lp, wp = fetch_wallpaper(data["data"][data["pictures"][0]])
     if lp is None:
         # Something goes wrong, thus do nothing. It may be because of a
         # networking error or something else.
-        # In any case, we remove the current roadmap file to force its
-        # recomputing the next time pick_wallpaper is called.
-        os.unlink(road_map)
+        logger.error(
+            _("Impossible to get any picture at this time. It may be "
+              "caused by a temporarily network error. Please try again "
+              "later.")
+        )
         return None
     data["pictures"].remove(wp)
     data["history"].append(wp)
     with open(road_map, "w") as f:
         yaml.dump(data, f, explicit_start=True,
                   default_flow_style=False)
-    return set_wallpaper(lp, config)
+    try:
+        lp = set_wallpaper(lp, config)
+    except OSError as e:
+        logger.error("{}: {}".format(type(e).__name__, e))
+        remove_wallpaper_from_roadmap(wp)
+        # Try again for next wallpaper
+        return pick_wallpaper(config, backward)
+    return lp
 
 
 def remove_wallpaper_from_roadmap(wp):
@@ -287,6 +332,9 @@ def remove_wallpaper_from_roadmap(wp):
     if wp in data.get("history", []):
         data["history"].remove(wp)
     if wp in data.get("data", {}):
+        wallinfo = clean_wallpaper_info(data["data"][wp])
+        if wallinfo[3] != "local" and os.path.exists(wallinfo[4]):
+            os.unlink(wallinfo[4])
         del data["data"][wp]
     with open(road_map, "w") as f:
         yaml.dump(data, f, explicit_start=True,
@@ -326,7 +374,7 @@ def clean_wallpaper_info(data):
     rights = data.get("copyright")
     if rights is None or rights == "":
         rights = _("{title} by {author}").format(
-            title=data.get("description", "Picture"),
+            title=data.get("description", _("Picture")),
             author=data.get("author", "unknown"))
     description = _("{title} (on {source})").format(
         title=rights.replace("\n", " "),

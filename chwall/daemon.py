@@ -7,6 +7,7 @@ import signal
 import subprocess
 
 # chwall imports
+from chwall import __version__
 from chwall.utils import BASE_CACHE_PATH, read_config, cleanup_cache, \
                          get_logger
 from chwall.wallpaper import pick_wallpaper, ChwallWallpaperSetError, \
@@ -62,28 +63,22 @@ def daemon_change_label(last_change, next_change):
     if last_change > 60:
         last_change_m = int(last_change / 60)
         last_change_s = last_change % 60
-        if last_change_m < 2:
-            last_change_label = (
-                _("Last change was 1 minute and {seconds}s ago")
-                .format(seconds=last_change_s))
-        else:
-            last_change_label = (
-                _("Last change was {minutes} minutes and {seconds}s ago")
-                .format(minutes=last_change_m, seconds=last_change_s))
+        last_change_label = gettext.ngettext(
+            "Last change was {minutes} minute and {seconds}s ago",
+            "Last change was {minutes} minutes and {seconds}s ago",
+            last_change_m
+        ).format(minutes=last_change_m, seconds=last_change_s)
     else:
         last_change_label = (_("Last change was {seconds}s ago")
                              .format(seconds=last_change))
     if next_change > 60:
         next_change_m = int(next_change / 60)
         next_change_s = next_change % 60
-        if next_change_m < 2:
-            next_change_label = (
-                _("Next change in 1 minute and {seconds}s")
-                .format(seconds=next_change_s))
-        else:
-            next_change_label = (
-                _("Next change in {minutes} minutes and {seconds}s")
-                .format(minutes=next_change_m, seconds=next_change_s))
+        next_change_label = gettext.ngettext(
+            "Next change in {minutes} minute and {seconds}s",
+            "Next change in {minutes} minutes and {seconds}s",
+            next_change_m
+        ).format(minutes=next_change_m, seconds=next_change_s)
     else:
         next_change_label = (_("Next change in {seconds}s")
                              .format(seconds=next_change))
@@ -240,7 +235,8 @@ def start_daemon():
         daemonize()
     with open("{}/chwall_pid".format(BASE_CACHE_PATH), "w") as f:
         f.write(str(os.getpid()))
-    logger.info(_("Start loop"))
+    logger.info(_("Starting Chwall Daemon v{version}…")
+                .format(version=__version__))
     sys.exit(daemon_loop())
 
 
