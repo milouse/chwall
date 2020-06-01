@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Chwall 0.5.4\n"
+"Project-Id-Version: Chwall 0.5.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-05-13 13:37+0200\n"
 "PO-Revision-Date: 2020-05-13 13:40+0200\n"
