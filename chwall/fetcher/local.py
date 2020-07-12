@@ -10,7 +10,12 @@ _ = gettext.gettext
 
 
 def fetch_pictures(config):
-    paths = config.get("local", {}).get("paths", [])
+    conf = config.get("local", {})
+    paths = conf.get("paths", [])
+    include_fav = conf.get("favorites", True)
+    fav_dir = config["general"]["favorites_path"]
+    if os.path.exists(fav_dir) and include_fav:
+        paths.insert(0, fav_dir)
     if len(paths) == 0:
         return {}
     pictures = {}
@@ -35,6 +40,11 @@ def preferences():
             "paths": {
                 "widget": "list",
                 "label": _("Wallpaper repositories")
+            },
+            "favorites": {
+                "label": _("Include favorites wallpapers"),
+                "widget": "toggle",
+                "default": True
             }
         }
     }

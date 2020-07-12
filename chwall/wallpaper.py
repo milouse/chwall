@@ -359,6 +359,15 @@ def blacklist_wallpaper():
     remove_wallpaper_from_roadmap(blacklisted_pix)
 
 
+def favorite_wallpaper(config):
+    fav_dir = config["general"]["favorites_path"]
+    os.makedirs(fav_dir, exist_ok=True)
+    with open("{}/current_wallpaper"
+              .format(BASE_CACHE_PATH), "r") as f:
+        curfile = f.readlines()[4].strip()
+    shutil.copy(curfile, fav_dir)
+
+
 def clean_wallpaper_info(data):
     """Return the information array for a wallpaper
 

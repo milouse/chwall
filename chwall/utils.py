@@ -76,6 +76,9 @@ def read_config():
     config["general"].setdefault("sources", ["bing", "natgeo"])
     config["general"].setdefault("sleep", 10 * 60)
     config["general"].setdefault("notify", False)
+    config["general"].setdefault(
+        "favorites_path", "{}/favorites".format(BASE_CACHE_PATH)
+    )
     return migrate_config(config)
 
 

@@ -9,7 +9,7 @@ function _chwall() {
             commands=open
             ;;
         *)
-            commands="blacklist current empty help history info kill next once previous pending quit status"
+            commands="blacklist current empty favorite help history info kill next once previous pending quit status"
             ;;
     esac
 

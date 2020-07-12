@@ -480,6 +480,13 @@ class PrefDialog(Gtk.Dialog):
             default=False)
         genbox.pack_start(prefbox, False, False, 0)
 
+        prefbox = self.make_file_chooser_pref(
+            "general", "favorites_path", _("Favorites path"),
+            button_label=_("Select a folder"),
+            button_action=Gtk.FileChooserAction.SELECT_FOLDER
+        )
+        genbox.pack_start(prefbox, False, False, 0)
+
         daemonbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         daemonbox.set_border_width(10)
         daemonbox.set_spacing(10)

@@ -11,7 +11,8 @@ from chwall import __version__
 from chwall.daemon import notify_daemon_if_any, daemon_info, daemonize
 from chwall.utils import BASE_CACHE_PATH, read_config, \
                          reset_pending_list, ServiceFileManager
-from chwall.wallpaper import blacklist_wallpaper, pick_wallpaper
+from chwall.wallpaper import blacklist_wallpaper, pick_wallpaper, \
+                             favorite_wallpaper
 from chwall.gui.app import generate_desktop_file
 from chwall.gui.preferences import PrefDialog
 
@@ -216,6 +217,16 @@ and switch to the next wallpaper.
     def cmd_blacklist(self, *opts):
         blacklist_wallpaper()
         self.cmd_next()
+
+    def help_favorite(self):
+        self._print_usage("favorite")
+        print(_("""
+Save a copy of the current wallpaper to not forget it and display it again
+later.
+"""))
+
+    def cmd_favorite(self, *opts):
+        favorite_wallpaper(read_config())
 
     def _pick_wall(self, direction=False):
         if pick_wallpaper(read_config(), direction) is None:
