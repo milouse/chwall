@@ -71,14 +71,11 @@ def read_config():
     pic_cache = "{}/pictures".format(BASE_CACHE_PATH)
     if not os.path.exists(pic_cache):
         os.makedirs(pic_cache)
-    if "general" not in config:
-        config["general"] = {}
-    if "sources" not in config["general"]:
-        config["general"]["sources"] = ["bing", "natgeo"]
-    if "sleep" not in config["general"]:
-        config["general"]["sleep"] = 10 * 60
-    if "notify" not in config["general"]:
-        config["general"]["notify"] = False
+
+    config.setdefault("general", {})
+    config["general"].setdefault("sources", ["bing", "natgeo"])
+    config["general"].setdefault("sleep", 10 * 60)
+    config["general"].setdefault("notify", False)
     return migrate_config(config)
 
 
