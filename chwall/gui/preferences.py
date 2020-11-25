@@ -6,10 +6,10 @@ from chwall.utils import read_config, write_config, reset_pending_list, \
                          cleanup_cache, ServiceFileManager, BASE_CACHE_PATH
 
 import gi
-gi.require_version("Gtk", "3.0")  # noqa: E402
-from gi.repository import Gtk
+gi.require_version("Gtk", "3.0")
+from gi.repository import Gtk  # noqa: E402
 
-import gettext
+import gettext  # noqa: E402
 # Uncomment the following line during development.
 # Please, be cautious to NOT commit the following line uncommented.
 # gettext.bindtextdomain("chwall", "./locale")

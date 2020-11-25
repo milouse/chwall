@@ -7,10 +7,10 @@ from chwall.wallpaper import current_wallpaper_info
 from chwall.utils import ServiceFileManager
 
 import gi
-gi.require_version("Gtk", "3.0")  # noqa: E402
-from gi.repository import Gtk, GLib
+gi.require_version("Gtk", "3.0")
+from gi.repository import Gtk, GLib  # noqa: E402
 
-import gettext
+import gettext  # noqa: E402
 # Uncomment the following line during development.
 # Please, be cautious to NOT commit the following line uncommented.
 # gettext.bindtextdomain("chwall", "./locale")
