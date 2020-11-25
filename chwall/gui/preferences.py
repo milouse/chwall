@@ -411,19 +411,20 @@ class PrefDialog(Gtk.Dialog):
         prefbox.pack_end(button, False, False, 10)
         return prefbox
 
-    def shared_wall_option_pref(self):
-        def on_update_shared_wall(widget):
+    def make_file_chooser_pref(self, path, opt, label, **kwargs):
+        def on_update_file_chooser(widget):
             ld_path = widget.get_filename()
-            self.config.write_config_opt("general.shared", "path", ld_path)
+            self.config.write_config_opt(path, opt, ld_path)
 
-        prefbox = self.make_prefbox_with_label(
-            _("Shared background path"))
-        button = Gtk.FileChooserButton.new(
-            _("Select a file"), Gtk.FileChooserAction.OPEN)
-        ld_path = self.config.read_config_opt("general.shared", "path")
+        button_label = kwargs.get("button_label", _("Select a file"))
+        button_action = kwargs.get("button_action", Gtk.FileChooserAction.OPEN)
+        prefbox = self.make_prefbox_with_label(label)
+        button = Gtk.FileChooserButton.new(button_label, button_action)
+
+        ld_path = self.config.read_config_opt(path, opt)
         if ld_path is not None and ld_path != "":
             button.set_filename(ld_path)
-        button.connect("file-set", on_update_shared_wall)
+        button.connect("file-set", on_update_file_chooser)
         prefbox.pack_end(button, False, False, 10)
         return prefbox
 
@@ -469,7 +470,9 @@ class PrefDialog(Gtk.Dialog):
             environments, default="gnome")
         genbox.pack_start(prefbox, False, False, 0)
 
-        prefbox = self.shared_wall_option_pref()
+        prefbox = self.make_file_chooser_pref(
+            "general.shared", "path", _("Shared background path")
+        )
         genbox.pack_start(prefbox, False, False, 0)
 
         prefbox = self.make_toggle_pref(
