@@ -116,12 +116,12 @@ def set_mate_wallpaper(path):
     if path is None:
         raise ChwallWallpaperSetError(_("No wallpaper path given"))
     err = subprocess.run(["gsettings", "set", "org.mate.background",
-                         "picture-filename", path]).returncode
+                          "picture-filename", path]).returncode
     if err == 1:
         raise ChwallWallpaperSetError(
             prop_setting_error_str("mate", "picture-filename"))
     err = subprocess.run(["gsettings", "set", "org.mate.background",
-                         "picture-options", "zoom"]).returncode
+                          "picture-options", "zoom"]).returncode
     if err == 1:
         raise ChwallWallpaperSetError(
             prop_setting_error_str("mate", "picture-options"))

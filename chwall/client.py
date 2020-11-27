@@ -122,7 +122,7 @@ Sadly, no specific help message for this subcommand yet.
 Display a systemd service file exemple, which can be used to
 automatically start chwall daemon when your user session starts.
 
-If `write' is passed as second parameter, the resulting systemd service file
+If ‘write’ is passed as second parameter, the resulting systemd service file
 will be saved in .config/systemd/user/
 """))
 
@@ -139,7 +139,7 @@ will be saved in .config/systemd/user/
 Display a launcher file example for your desktop, which can be used to start
 chwall main app from your desktop applications menu.
 
-If `write' is passed as second parameter, the resulting desktop file
+If ‘write’ is passed as second parameter, the resulting desktop file
 will be saved in .local/share/applications/
 """))
 
@@ -191,7 +191,7 @@ By default, this command will start the main app if no argument is given.
         print(_("""
 Display the current wallpaper information.
 
-If the optional `open' keyword is given, the original resource will be opened,
+If the optional ‘open’ keyword is given, the original resource will be opened,
 using the best dedicated tool for it (web browser, picture viewer...).
 """))
 

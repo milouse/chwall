@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chwall 0.5.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-27 21:34+0100\n"
+"POT-Creation-Date: 2020-11-27 21:43+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -292,7 +292,7 @@ msgid "Include favorites wallpapers"
 msgstr ""
 
 #: chwall/fetcher/pexels.py:20
-msgid "An `access_key' param is required to fetch pictures from Pexels."
+msgid "An ‘access_key’ param is required to fetch pictures from Pexels."
 msgstr ""
 
 #: chwall/fetcher/pexels.py:62 chwall/fetcher/unsplash.py:74
@@ -335,7 +335,7 @@ msgstr ""
 
 #: chwall/fetcher/unsplash.py:20
 msgid ""
-"Unsplash has discontinued their RSS feed. Thus an `access_key' param is now "
+"Unsplash has discontinued their RSS feed. Thus an ‘access_key’ param is now "
 "required."
 msgstr ""
 
@@ -353,11 +353,11 @@ msgid "Complementary query"
 msgstr ""
 
 #: chwall/fetcher/wikiart.py:21
-msgid "An `access_key' param is required to fetch pictures from Wikiart."
+msgid "An ‘access_key’ param is required to fetch pictures from Wikiart."
 msgstr ""
 
 #: chwall/fetcher/wikiart.py:28
-msgid "A `secret_key' param is required to fetch pictures from Wikiart."
+msgid "A ‘secret_key’ param is required to fetch pictures from Wikiart."
 msgstr ""
 
 #: chwall/fetcher/wikiart.py:40
@@ -554,7 +554,7 @@ msgid ""
 "Display a systemd service file exemple, which can be used to\n"
 "automatically start chwall daemon when your user session starts.\n"
 "\n"
-"If `write' is passed as second parameter, the resulting systemd service "
+"If ‘write’ is passed as second parameter, the resulting systemd service "
 "file\n"
 "will be saved in .config/systemd/user/\n"
 msgstr ""
@@ -566,7 +566,7 @@ msgid ""
 "start\n"
 "chwall main app from your desktop applications menu.\n"
 "\n"
-"If `write' is passed as second parameter, the resulting desktop file\n"
+"If ‘write’ is passed as second parameter, the resulting desktop file\n"
 "will be saved in .local/share/applications/\n"
 msgstr ""
 
@@ -589,7 +589,7 @@ msgid ""
 "\n"
 "Display the current wallpaper information.\n"
 "\n"
-"If the optional `open' keyword is given, the original resource will be "
+"If the optional ‘open’ keyword is given, the original resource will be "
 "opened,\n"
 "using the best dedicated tool for it (web browser, picture viewer...).\n"
 msgstr ""

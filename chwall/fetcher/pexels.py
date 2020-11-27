@@ -17,7 +17,7 @@ def fetch_pictures(config):
     client_id = px_conf.get("access_key")
     if client_id is None:
         logger.error(
-            _("An `access_key' param is required to fetch pictures "
+            _("An ‘access_key’ param is required to fetch pictures "
               "from Pexels.")
         )
         return {}

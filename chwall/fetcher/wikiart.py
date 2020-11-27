@@ -18,14 +18,14 @@ def fetch_pictures(config):
     access_key = wa_conf.get("access_key")
     if access_key is None:
         logger.error(
-            _("An `access_key' param is required to fetch pictures "
+            _("An ‘access_key’ param is required to fetch pictures "
               "from Wikiart.")
         )
         return {}
     secret_key = wa_conf.get("secret_key")
     if secret_key is None:
         logger.error(
-            _("A `secret_key' param is required to fetch pictures "
+            _("A ‘secret_key’ param is required to fetch pictures "
               "from Wikiart.")
         )
         return {}
