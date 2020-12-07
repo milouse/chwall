@@ -126,6 +126,12 @@ def set_mate_wallpaper(path):
         raise ChwallWallpaperSetError(
             prop_setting_error_str("mate", "picture-options"))
 
+    err = subprocess.run(["gsettings", "set", "org.mate.screensaver",
+                          "picture-filename", path]).returncode
+    if err == 1:
+        msg = _("screensaver {prop}".format(prop="picture-filename"))
+        raise ChwallWallpaperSetError(prop_setting_error_str("mate", msg))
+
 
 def set_gnome_wallpaper(path):
     if path is None:
