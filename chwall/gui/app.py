@@ -84,6 +84,15 @@ class ChwallApp(ChwallGui):
         button.connect("clicked", self.on_stop_clicked)
         control_box.pack_start(button)
 
+        button = Gtk.Separator()
+        control_box.pack_start(button)
+
+        button = Gtk.Button.new_from_icon_name(
+            "bookmark-new", Gtk.IconSize.LARGE_TOOLBAR)
+        button.set_tooltip_text(_("Save as favorite"))
+        button.connect("clicked", self.on_favorite_wallpaper)
+        control_box.pack_start(button)
+
         self.walldesc = Gtk.Label(
             hexpand=True, halign=Gtk.Align.CENTER,
             justify=Gtk.Justification.CENTER,

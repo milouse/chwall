@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chwall 0.5.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-27 21:43+0100\n"
+"POT-Creation-Date: 2020-12-12 17:06+0100\n"
 "PO-Revision-Date: 2020-05-02 12:28+0000\n"
 "Last-Translator: ruko <ruko@null.net>\n"
 "Language-Team: Spanish <https://translations.umaneti.net/projects/chwall/"
@@ -19,7 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 3.8\n"
 
-#: chwall/gui/app.py:39 chwall/gui/app.py:166 chwall/gui/preferences.py:113
+#: chwall/gui/app.py:39 chwall/gui/app.py:180 chwall/gui/preferences.py:113
 msgid "Preferences"
 msgstr "Preferencias"
 
@@ -32,11 +32,11 @@ msgstr ""
 "La lista de fondos de escritorio puede ser reconstruida. Puede llevar mucho "
 "tiempo si tienes muchas fuentes habilitadas. Por favor, sé paciente."
 
-#: chwall/gui/app.py:62 chwall/gui/app.py:253 chwall/gui/icon.py:73
+#: chwall/gui/app.py:62 chwall/gui/app.py:267 chwall/gui/icon.py:78
 msgid "Previous wallpaper"
 msgstr "Fondo anterior"
 
-#: chwall/gui/app.py:74 chwall/gui/app.py:249 chwall/gui/icon.py:68
+#: chwall/gui/app.py:74 chwall/gui/app.py:263 chwall/gui/icon.py:71
 msgid "Next wallpaper"
 msgstr "Siguiente fondo"
 
@@ -45,47 +45,51 @@ msgstr "Siguiente fondo"
 msgid "Stop daemon and erase pending list"
 msgstr "Parar el daemon y eliminar la lista pendiente"
 
-#: chwall/gui/app.py:94 chwall/gui/app.py:257 chwall/gui/icon.py:78
+#: chwall/gui/app.py:92 chwall/gui/icon.py:84
+msgid "Save as favorite"
+msgstr ""
+
+#: chwall/gui/app.py:108 chwall/gui/app.py:271 chwall/gui/icon.py:92
 msgid "Blacklist"
 msgstr "Poner en lista negra"
 
-#: chwall/gui/app.py:113 chwall/gui/icon.py:53
+#: chwall/gui/app.py:127 chwall/gui/icon.py:55
 msgid "Current wallpaper is not managed by Chwall"
 msgstr "El fondo de pantalla actual no está gestionado por Chwall"
 
-#: chwall/gui/app.py:159
+#: chwall/gui/app.py:173
 msgid "Display notification icon"
 msgstr "Mostrar un icono en el área de notificación"
 
-#: chwall/gui/app.py:170
+#: chwall/gui/app.py:184 chwall/gui/icon.py:124
 msgid "About Chwall"
 msgstr "Acerca de Chwall"
 
-#: chwall/gui/app.py:194 chwall/gui/icon.py:38
+#: chwall/gui/app.py:208 chwall/gui/icon.py:40
 msgid "Stop daemon"
 msgstr "Servicio detenido"
 
-#: chwall/gui/app.py:199 chwall/gui/icon.py:35
+#: chwall/gui/app.py:213 chwall/gui/icon.py:36
 msgid "Start daemon"
 msgstr "Iniciar servicio"
 
-#: chwall/gui/app.py:241 chwall/gui/icon.py:128 chwall/gui/shared.py:104
+#: chwall/gui/app.py:255 chwall/gui/icon.py:144 chwall/gui/shared.py:107
 msgid "Wallpaper Changer"
 msgstr "Seleccionador de fondo de pantalla"
 
-#: chwall/gui/app.py:245
+#: chwall/gui/app.py:259
 msgid "Main window of the Chwall wallpaper changer"
 msgstr "Ventana principal del gestor de fondos Chwall"
 
-#: chwall/gui/icon.py:85
+#: chwall/gui/icon.py:100
 msgid "Open main window"
 msgstr "Abrir ventana principal"
 
-#: chwall/gui/icon.py:93
+#: chwall/gui/icon.py:108
 msgid "Always display this icon"
 msgstr "Mostrar siempre este icono"
 
-#: chwall/gui/icon.py:103
+#: chwall/gui/icon.py:118
 msgid "Report a bug"
 msgstr "Reportar un bug"
 
@@ -273,11 +277,11 @@ msgstr ""
 msgid "Shared background"
 msgstr ""
 
-#: chwall/gui/shared.py:106
+#: chwall/gui/shared.py:109
 msgid "Chwall is released under the WTFPL"
 msgstr "Chwall es publicado bajo los términos de la licencia WTFPL"
 
-#: chwall/gui/shared.py:125
+#: chwall/gui/shared.py:128
 msgid "translator-credits https://translations.umaneti.net/engage/chwall/"
 msgstr "haitch https://translations.umaneti.net/engage/chwall/"
 
@@ -350,7 +354,7 @@ msgid ""
 "required."
 msgstr ""
 
-#: chwall/fetcher/unsplash.py:39 chwall/wallpaper.py:386
+#: chwall/fetcher/unsplash.py:39 chwall/wallpaper.py:392
 msgid "Picture"
 msgstr "Imagen"
 
@@ -416,63 +420,63 @@ msgstr ""
 msgid "Error while setting {desktop} {prop} property"
 msgstr ""
 
-#: chwall/wallpaper.py:117 chwall/wallpaper.py:132
+#: chwall/wallpaper.py:117 chwall/wallpaper.py:138
 msgid "No wallpaper path given"
 msgstr ""
 
-#: chwall/wallpaper.py:134
-#, python-brace-format
-msgid "background {prop}"
-msgstr ""
-
-#: chwall/wallpaper.py:135
+#: chwall/wallpaper.py:132 chwall/wallpaper.py:141
 #, python-brace-format
 msgid "screensaver {prop}"
 msgstr ""
 
-#: chwall/wallpaper.py:171
+#: chwall/wallpaper.py:140
+#, python-brace-format
+msgid "background {prop}"
+msgstr ""
+
+#: chwall/wallpaper.py:177
 msgid "Error while calling nitrogen for multihead display"
 msgstr ""
 
-#: chwall/wallpaper.py:175
+#: chwall/wallpaper.py:181
 msgid "Error while calling nitrogen for single display"
 msgstr ""
 
-#: chwall/wallpaper.py:186
+#: chwall/wallpaper.py:192
 #, python-brace-format
 msgid "Converting non RGB picture {picture}"
 msgstr ""
 
-#: chwall/wallpaper.py:243
+#: chwall/wallpaper.py:249
 #, python-brace-format
 msgid ""
 "Catch {error} exception while downloading {picture}. Wait {time} seconds "
 "before retrying."
 msgstr ""
 
-#: chwall/wallpaper.py:252
+#: chwall/wallpaper.py:258
 #, python-brace-format
 msgid "Retry NOW to download {picture}"
 msgstr ""
 
-#: chwall/wallpaper.py:283
+#: chwall/wallpaper.py:289
 msgid ""
 "Impossible to build a new road map. It may be caused by a temporarily "
 "network error. Please try again later."
 msgstr ""
 
-#: chwall/wallpaper.py:306
+#: chwall/wallpaper.py:312
 msgid ""
 "Impossible to get any picture at this time. It may be caused by a "
 "temporarily network error. Please try again later."
 msgstr ""
 
-#: chwall/wallpaper.py:385
+#: chwall/wallpaper.py:391
 #, python-brace-format
 msgid "{title} by {author}"
 msgstr ""
 
-#: chwall/wallpaper.py:388
+#: chwall/wallpaper.py:394
 #, python-brace-format
 msgid "{title} (on {source})"
 msgstr ""

@@ -80,6 +80,13 @@ class ChwallIcon(ChwallGui):
         prevbtn.connect("activate", self.on_change_wallpaper, True)
         menu.append(prevbtn)
 
+        # favorite wallpaper
+        favbtn = Gtk.ImageMenuItem.new_with_label(_("Save as favorite"))
+        favbtn.set_image(Gtk.Image.new_from_icon_name(
+            "bookmark-new", Gtk.IconSize.MENU))
+        favbtn.connect("activate", self.on_favorite_wallpaper)
+        menu.append(favbtn)
+
         # blacklist wallpaper
         blackbtn = Gtk.ImageMenuItem.new_from_stock(Gtk.STOCK_DELETE)
         blackbtn.set_label(_("Blacklist"))
