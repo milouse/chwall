@@ -32,10 +32,12 @@ class ChwallIcon(ChwallGui):
         dinfo = self.daemon_info()
         daemon_state_label = dinfo["daemon-state-label"]
         if dinfo["next-change"] == -1:
-            run_btn = Gtk.MenuItem.new_with_label(_("Start daemon"))
+            run_btn = Gtk.ImageMenuItem.new_from_stock(Gtk.STOCK_MEDIA_PLAY)
+            run_btn.set_label(_("Start daemon"))
             run_btn.connect("activate", self.run_chwall_component, "daemon")
         else:
-            run_btn = Gtk.MenuItem.new_with_label(_("Stop daemon"))
+            run_btn = Gtk.ImageMenuItem.new_from_stock(Gtk.STOCK_MEDIA_PAUSE)
+            run_btn.set_label(_("Stop daemon"))
             run_btn.connect("activate", self.stop_daemon)
             daemon_state_label += " - " + dinfo["next-change-label"]
 
@@ -65,17 +67,23 @@ class ChwallIcon(ChwallGui):
         menu.append(item)
 
         # next wallpaper
-        nextbtn = Gtk.MenuItem.new_with_label(_("Next wallpaper"))
+        nextbtn = Gtk.ImageMenuItem.new_from_stock(Gtk.STOCK_GO_FORWARD)
+        nextbtn.set_label(_("Next wallpaper"))
+        # nextbtn = Gtk.MenuItem.new_with_label(_("Next wallpaper"))
         nextbtn.connect("activate", self.on_change_wallpaper)
         menu.append(nextbtn)
 
         # previous wallpaper
-        prevbtn = Gtk.MenuItem.new_with_label(_("Previous wallpaper"))
+        prevbtn = Gtk.ImageMenuItem.new_from_stock(Gtk.STOCK_GO_BACK)
+        prevbtn.set_label(_("Previous wallpaper"))
+        # prevbtn = Gtk.MenuItem.new_with_label(_("Previous wallpaper"))
         prevbtn.connect("activate", self.on_change_wallpaper, True)
         menu.append(prevbtn)
 
         # blacklist wallpaper
-        blackbtn = Gtk.MenuItem.new_with_label(_("Blacklist"))
+        blackbtn = Gtk.ImageMenuItem.new_from_stock(Gtk.STOCK_DELETE)
+        blackbtn.set_label(_("Blacklist"))
+        # blackbtn = Gtk.MenuItem.new_with_label(_("Blacklist"))
         blackbtn.connect("activate", self.on_blacklist_wallpaper)
         menu.append(blackbtn)
 
@@ -106,6 +114,7 @@ class ChwallIcon(ChwallGui):
 
         # show about dialog
         about = Gtk.ImageMenuItem.new_from_stock(Gtk.STOCK_ABOUT)
+        about.set_label(_("About Chwall"))
         menu.append(about)
         about.connect("activate", self.show_about_dialog)
 
