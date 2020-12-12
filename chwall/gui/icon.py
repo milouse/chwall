@@ -74,7 +74,7 @@ class ChwallIcon(ChwallGui):
         prevbtn.connect("activate", self.on_change_wallpaper, True)
         menu.append(prevbtn)
 
-        # previous wallpaper
+        # blacklist wallpaper
         blackbtn = Gtk.MenuItem.new_with_label(_("Blacklist"))
         blackbtn.connect("activate", self.on_blacklist_wallpaper)
         menu.append(blackbtn)
