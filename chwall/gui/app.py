@@ -84,9 +84,14 @@ class ChwallApp(ChwallGui):
         button.connect("clicked", self.on_stop_clicked)
         control_box.pack_start(button)
 
-        self.walldesc = Gtk.Label()
-        self.walldesc.set_justify(Gtk.Justification.CENTER)
-        self.walldesc.set_line_wrap(True)
+        self.walldesc = Gtk.Label(
+            hexpand=True, halign=Gtk.Align.CENTER,
+            justify=Gtk.Justification.CENTER,
+            wrap=True, single_line_mode=True
+        )
+        self.walldesc.set_markup(
+            "<a href=\"https://git.umaneti.net/chwall/\">Chwall</a>"
+        )
         control_box.set_center_widget(self.walldesc)
 
         button = Gtk.Button.new_from_icon_name(
