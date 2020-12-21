@@ -186,7 +186,7 @@ def blur_picture(path, ld_path, radius):
         with Image.open(path) as im:
             # Save file format before possible conversion as format will be
             # lost by any picture operation.
-            ext = im.format
+            orig_format = im.format
             if im.mode != "RGB":
                 logger.warning(
                     _("Converting non RGB picture {picture}")
@@ -194,7 +194,7 @@ def blur_picture(path, ld_path, radius):
                 )
                 im = im.convert("RGB")
             im_blurred = im.filter(ImageFilter.GaussianBlur(radius))
-            im_blurred.save(ld_path, ext)
+            im_blurred.save(ld_path, orig_format)
     except ValueError as e:
         logger.error("{}: {}".format(path, e))
         # Copy original image if blurring fails.
