@@ -366,12 +366,23 @@ def blacklist_wallpaper():
 
 
 def favorite_wallpaper(config):
-    fav_dir = config["general"]["favorites_path"]
-    os.makedirs(fav_dir, exist_ok=True)
     with open("{}/current_wallpaper"
               .format(BASE_CACHE_PATH), "r") as f:
         curfile = f.readlines()[4].strip()
-    shutil.copy(curfile, fav_dir)
+    # Add file extension for better desktop integration
+    im = Image.open(curfile)
+    ext = (im.format or "").lower()
+    if ext == "jpeg":
+        ext = "jpg"
+    filename = "{name}.{ext}".format(
+        name=os.path.basename(curfile),
+        ext=ext
+    )
+    # Get favorite dir and create it if necessary
+    fav_dir = config["general"]["favorites_path"]
+    os.makedirs(fav_dir, exist_ok=True)
+    # Copy new favorite to its destination
+    shutil.copy(curfile, os.path.join(fav_dir, filename))
 
 
 def clean_wallpaper_info(data):
