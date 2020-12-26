@@ -126,38 +126,31 @@ def set_mate_wallpaper(path):
         raise ChwallWallpaperSetError(
             prop_setting_error_str("mate", "picture-options"))
 
-    err = subprocess.run(["gsettings", "set", "org.mate.screensaver",
-                          "picture-filename", path]).returncode
-    if err == 1:
-        msg = _("screensaver {prop}".format(prop="picture-filename"))
-        raise ChwallWallpaperSetError(prop_setting_error_str("mate", msg))
 
-
-def set_gnome_wallpaper(path):
+def set_gnome_wallpaper(path, where="background"):
     if path is None:
         raise ChwallWallpaperSetError(_("No wallpaper path given"))
-    err_msg = {
-        "background": _("background {prop}"),
-        "screensaver": _("screensaver {prop}")
-    }
-    for where in ["background", "screensaver"]:
-        err = subprocess.run(
-            ["gsettings", "set", "org.gnome.desktop.{}".format(where),
-             "picture-uri", "file://{}".format(path)]).returncode
-        if err == 1:
-            raise ChwallWallpaperSetError(
-                prop_setting_error_str(
-                    "gnome", err_msg[where].format(prop="picture-uri")))
-        err = subprocess.run(
-            ["gsettings", "set", "org.gnome.desktop.{}".format(where),
-             "picture-options", "zoom"]).returncode
-        if err == 1:
-            raise ChwallWallpaperSetError(
-                prop_setting_error_str(
-                    "gnome", err_msg[where].format(prop="picture-options")))
+
+    def _format_prop_error(prop):
+        return prop_setting_error_str(
+            "gnome", "{where} {prop}".format(where=where, prop=prop)
+        )
+
+    err = subprocess.run(
+        ["gsettings", "set", "org.gnome.desktop.{}".format(where),
+         "picture-uri", "file://{}".format(path)]).returncode
+    if err == 1:
+        raise ChwallWallpaperSetError(_format_prop_error("picture-uri"))
+    err = subprocess.run(
+        ["gsettings", "set", "org.gnome.desktop.{}".format(where),
+         "picture-options", "zoom"]).returncode
+    if err == 1:
+        raise ChwallWallpaperSetError(_format_prop_error("picture-options"))
 
 
 def set_nitrogen_wallpaper(path):
+    if path is None:
+        raise ChwallWallpaperSetError(_("No wallpaper path given"))
     cmd = ["nitrogen", "--set-zoom-fill", "--set-color=#000000", "--save"]
     # screen_info = (scr_number, scr_width, scr_height, scr_ratio, display)
     screen_info = get_screen_config()
@@ -181,6 +174,20 @@ def set_nitrogen_wallpaper(path):
             _("Error while calling nitrogen for single display"))
 
 
+def set_mate_screensaver(path):
+    if path is None:
+        raise ChwallWallpaperSetError(_("No wallpaper path given"))
+    err = subprocess.run(["gsettings", "set", "org.mate.screensaver",
+                          "picture-filename", path]).returncode
+    if err == 1:
+        msg = _("screensaver {prop}".format(prop="picture-filename"))
+        raise ChwallWallpaperSetError(prop_setting_error_str("mate", msg))
+
+
+def set_gnome_screensaver(path):
+    set_gnome_wallpaper(path, "screensaver")
+
+
 def blur_picture(path, ld_path, radius):
     try:
         with Image.open(path) as im:
@@ -202,23 +209,23 @@ def blur_picture(path, ld_path, radius):
 
 
 def set_wallpaper(path, config):
-    if "desktop" in config["general"]:
-        desktop = config["general"]["desktop"]
-    else:
-        desktop = "gnome"
-    method = "set_{}_wallpaper".format(desktop)
-    if method in globals():
-        globals()[method](path)
+    desktop = config["general"].get("desktop", "gnome")
+    wall_method = "set_{}_wallpaper".format(desktop)
+    if wall_method in globals():
+        globals()[wall_method](path)
     else:
         set_gnome_wallpaper(path)
-    ld_path = config["general"].get("shared", {}).get("path")
-    if ld_path is not None and ld_path != "":
-        ld_path = os.path.expanduser(ld_path)
+    shared_path = config["general"].get("shared", {}).get("path")
+    screensaver_method = "set_{}_screensaver".format(desktop)
+    if screensaver_method in globals():
+        globals()[screensaver_method](shared_path or path)
+    if shared_path is not None and shared_path != "":
+        shared_path = os.path.expanduser(shared_path)
         if config["general"]["shared"].get("blur", False):
             radius = config["general"]["shared"].get("blur_radius", 20)
-            blur_picture(path, ld_path, radius)
+            blur_picture(path, shared_path, radius)
         else:
-            shutil.copy(path, ld_path)
+            shutil.copy(path, shared_path)
     return path
 
 
