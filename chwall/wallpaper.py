@@ -106,6 +106,30 @@ def build_roadmap(config):
         yaml.dump(road_map, f, explicit_start=True, default_flow_style=False)
 
 
+def set_xfce_wallpaper(path):
+    if path is None:
+        raise ChwallWallpaperSetError(_("No wallpaper path given"))
+    wklist = subprocess.run(["xfconf-query", "-c", "xfce4-desktop",
+                             "-l", "/backdrop"],
+                            stdout=subprocess.PIPE)
+    if wklist.returncode == 1:
+        raise ChwallWallpaperSetError(
+            _("Error while retrieving XFCE workspaces list")
+        )
+    for line in wklist.stdout.decode().strip().split("\n"):
+        if not line.endswith("/last-image"):
+            continue
+        err = subprocess.run(["xfconf-query", "-c", "xfce4-desktop",
+                              "-p", line, "--set", path])
+        if err == 1:
+            raise ChwallWallpaperSetError(
+                _("Error while trying to set XFCE wallpaper in {prop}")
+                .format(prop=line))
+        zoom_line = line.replace("/last-image", "/image-style")
+        subprocess.run(["xfconf-query", "-c", "xfce4-desktop",
+                        "-p", zoom_line, "--set", "5"])
+
+
 def prop_setting_error_str(desktop, prop):
     return _(
         "Error while setting {desktop} {prop} property"
