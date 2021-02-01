@@ -405,15 +405,18 @@ def favorite_wallpaper(config):
     ext = (im.format or "").lower()
     if ext == "jpeg":
         ext = "jpg"
-    filename = "{name}.{ext}".format(
-        name=os.path.basename(curfile),
-        ext=ext
-    )
+    ext = "." + ext
+    filename = os.path.basename(curfile)
+    if not filename.endswith(ext):
+        filename += ext
     # Get favorite dir and create it if necessary
     fav_dir = config["general"]["favorites_path"]
     os.makedirs(fav_dir, exist_ok=True)
-    # Copy new favorite to its destination
-    shutil.copy(curfile, os.path.join(fav_dir, filename))
+    target_file = os.path.join(fav_dir, filename)
+    if not os.path.exists(target_file):
+        # Copy new favorite to its destination, only if it does not
+        # exist in it yet.
+        shutil.copy(curfile, target_file)
 
 
 def clean_wallpaper_info(data):
