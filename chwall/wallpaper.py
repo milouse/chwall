@@ -396,23 +396,27 @@ def blacklist_wallpaper():
     remove_wallpaper_from_roadmap(blacklisted_pix)
 
 
-def favorite_wallpaper(config):
-    with open("{}/current_wallpaper"
-              .format(BASE_CACHE_PATH), "r") as f:
-        curfile = f.readlines()[4].strip()
+def favorite_wallpaper_path(current_file, config):
     # Add file extension for better desktop integration
-    with Image.open(curfile) as im:
+    with Image.open(current_file) as im:
         ext = (im.format or "").lower()
     if ext == "jpeg":
         ext = "jpg"
     ext = "." + ext
-    filename = os.path.basename(curfile)
+    filename = os.path.basename(current_file)
     if not filename.endswith(ext):
         filename += ext
     # Get favorite dir and create it if necessary
     fav_dir = config["general"]["favorites_path"]
     os.makedirs(fav_dir, exist_ok=True)
-    target_file = os.path.join(fav_dir, filename)
+    return os.path.join(fav_dir, filename)
+
+
+def favorite_wallpaper(config):
+    with open("{}/current_wallpaper"
+              .format(BASE_CACHE_PATH), "r") as f:
+        curfile = f.readlines()[4].strip()
+    target_file = favorite_wallpaper_path(curfile, config)
     if not os.path.exists(target_file):
         # Copy new favorite to its destination, only if it does not
         # exist in it yet.

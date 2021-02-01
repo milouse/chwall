@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chwall 0.5.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-29 21:37+0100\n"
+"POT-Creation-Date: 2021-02-01 19:00+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: chwall/gui/app.py:39 chwall/gui/app.py:180 chwall/gui/preferences.py:113
+#: chwall/gui/app.py:39 chwall/gui/app.py:188 chwall/gui/preferences.py:113
 msgid "Preferences"
 msgstr ""
 
@@ -28,11 +28,11 @@ msgid ""
 "lot of sources enabled. Please be patient."
 msgstr ""
 
-#: chwall/gui/app.py:62 chwall/gui/app.py:267 chwall/gui/icon.py:78
+#: chwall/gui/app.py:62 chwall/gui/app.py:275 chwall/gui/icon.py:78
 msgid "Previous wallpaper"
 msgstr ""
 
-#: chwall/gui/app.py:74 chwall/gui/app.py:263 chwall/gui/icon.py:71
+#: chwall/gui/app.py:74 chwall/gui/app.py:271 chwall/gui/icon.py:71
 msgid "Next wallpaper"
 msgstr ""
 
@@ -40,51 +40,55 @@ msgstr ""
 msgid "Stop daemon and erase pending list"
 msgstr ""
 
-#: chwall/gui/app.py:92 chwall/gui/icon.py:84
-msgid "Save as favorite"
-msgstr ""
-
-#: chwall/gui/app.py:108 chwall/gui/app.py:271 chwall/gui/icon.py:92
+#: chwall/gui/app.py:106 chwall/gui/app.py:279 chwall/gui/icon.py:99
 msgid "Blacklist"
 msgstr ""
 
-#: chwall/gui/app.py:127 chwall/gui/icon.py:55
+#: chwall/gui/app.py:125 chwall/gui/app.py:130 chwall/gui/icon.py:55
 msgid "Current wallpaper is not managed by Chwall"
 msgstr ""
 
-#: chwall/gui/app.py:173
+#: chwall/gui/app.py:134 chwall/gui/icon.py:87 chwall/gui/shared.py:72
+msgid "Already a favorite"
+msgstr ""
+
+#: chwall/gui/app.py:137 chwall/gui/icon.py:91
+msgid "Save as favorite"
+msgstr ""
+
+#: chwall/gui/app.py:181
 msgid "Display notification icon"
 msgstr ""
 
-#: chwall/gui/app.py:184 chwall/gui/icon.py:124
+#: chwall/gui/app.py:192 chwall/gui/icon.py:131
 msgid "About Chwall"
 msgstr ""
 
-#: chwall/gui/app.py:208 chwall/gui/icon.py:40
+#: chwall/gui/app.py:216 chwall/gui/icon.py:40
 msgid "Stop daemon"
 msgstr ""
 
-#: chwall/gui/app.py:213 chwall/gui/icon.py:36
+#: chwall/gui/app.py:221 chwall/gui/icon.py:36
 msgid "Start daemon"
 msgstr ""
 
-#: chwall/gui/app.py:255 chwall/gui/icon.py:144 chwall/gui/shared.py:107
+#: chwall/gui/app.py:263 chwall/gui/icon.py:151 chwall/gui/shared.py:117
 msgid "Wallpaper Changer"
 msgstr ""
 
-#: chwall/gui/app.py:259
+#: chwall/gui/app.py:267
 msgid "Main window of the Chwall wallpaper changer"
 msgstr ""
 
-#: chwall/gui/icon.py:100
+#: chwall/gui/icon.py:107
 msgid "Open main window"
 msgstr ""
 
-#: chwall/gui/icon.py:108
+#: chwall/gui/icon.py:115
 msgid "Always display this icon"
 msgstr ""
 
-#: chwall/gui/icon.py:118
+#: chwall/gui/icon.py:125
 msgid "Report a bug"
 msgstr ""
 
@@ -267,11 +271,11 @@ msgstr ""
 msgid "Shared background"
 msgstr ""
 
-#: chwall/gui/shared.py:109
+#: chwall/gui/shared.py:119
 msgid "Chwall is released under the WTFPL"
 msgstr ""
 
-#: chwall/gui/shared.py:128
+#: chwall/gui/shared.py:138
 msgid "translator-credits https://translations.umaneti.net/engage/chwall/"
 msgstr ""
 
@@ -343,7 +347,7 @@ msgid ""
 "required."
 msgstr ""
 
-#: chwall/fetcher/unsplash.py:39 chwall/wallpaper.py:434
+#: chwall/fetcher/unsplash.py:39 chwall/wallpaper.py:441
 msgid "Picture"
 msgstr ""
 
@@ -465,12 +469,12 @@ msgid ""
 "temporarily network error. Please try again later."
 msgstr ""
 
-#: chwall/wallpaper.py:433
+#: chwall/wallpaper.py:440
 #, python-brace-format
 msgid "{title} by {author}"
 msgstr ""
 
-#: chwall/wallpaper.py:436
+#: chwall/wallpaper.py:443
 #, python-brace-format
 msgid "{title} (on {source})"
 msgstr ""

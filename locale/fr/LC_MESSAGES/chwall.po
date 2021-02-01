@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chwall 0.5.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-29 21:37+0100\n"
-"PO-Revision-Date: 2021-01-29 21:40+0100\n"
+"POT-Creation-Date: 2021-02-01 19:00+0100\n"
+"PO-Revision-Date: 2021-02-01 18:47+0100\n"
 "Last-Translator: Étienne Deparis <etienne@depar.is>\n"
 "Language-Team: none\n"
 "Language: fr\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 2.4.1\n"
 
-#: chwall/gui/app.py:39 chwall/gui/app.py:180 chwall/gui/preferences.py:113
+#: chwall/gui/app.py:39 chwall/gui/app.py:188 chwall/gui/preferences.py:113
 msgid "Preferences"
 msgstr "Préférences"
 
@@ -31,11 +31,11 @@ msgstr ""
 "prendre quelques temps si vous avez beaucoup de sources activées. Merci pour "
 "votre patience."
 
-#: chwall/gui/app.py:62 chwall/gui/app.py:267 chwall/gui/icon.py:78
+#: chwall/gui/app.py:62 chwall/gui/app.py:275 chwall/gui/icon.py:78
 msgid "Previous wallpaper"
 msgstr "Fond d’écran précédent"
 
-#: chwall/gui/app.py:74 chwall/gui/app.py:263 chwall/gui/icon.py:71
+#: chwall/gui/app.py:74 chwall/gui/app.py:271 chwall/gui/icon.py:71
 msgid "Next wallpaper"
 msgstr "Fond d’écran suivant"
 
@@ -43,51 +43,55 @@ msgstr "Fond d’écran suivant"
 msgid "Stop daemon and erase pending list"
 msgstr "Arrêter le service et effacer la liste d’attente"
 
-#: chwall/gui/app.py:92 chwall/gui/icon.py:84
-msgid "Save as favorite"
-msgstr "Enregistrer en tant que favori"
-
-#: chwall/gui/app.py:108 chwall/gui/app.py:271 chwall/gui/icon.py:92
+#: chwall/gui/app.py:106 chwall/gui/app.py:279 chwall/gui/icon.py:99
 msgid "Blacklist"
 msgstr "Mettre en liste noire"
 
-#: chwall/gui/app.py:127 chwall/gui/icon.py:55
+#: chwall/gui/app.py:125 chwall/gui/app.py:130 chwall/gui/icon.py:55
 msgid "Current wallpaper is not managed by Chwall"
 msgstr "Le fond d’écran actuel n’est pas géré par Chwall"
 
-#: chwall/gui/app.py:173
+#: chwall/gui/app.py:134 chwall/gui/icon.py:87 chwall/gui/shared.py:72
+msgid "Already a favorite"
+msgstr "Déjà dans les favoris"
+
+#: chwall/gui/app.py:137 chwall/gui/icon.py:91
+msgid "Save as favorite"
+msgstr "Enregistrer en tant que favori"
+
+#: chwall/gui/app.py:181
 msgid "Display notification icon"
 msgstr "Afficher une icône dans la zone de notification"
 
-#: chwall/gui/app.py:184 chwall/gui/icon.py:124
+#: chwall/gui/app.py:192 chwall/gui/icon.py:131
 msgid "About Chwall"
 msgstr "À propos de Chwall"
 
-#: chwall/gui/app.py:208 chwall/gui/icon.py:40
+#: chwall/gui/app.py:216 chwall/gui/icon.py:40
 msgid "Stop daemon"
 msgstr "Arrêter le service"
 
-#: chwall/gui/app.py:213 chwall/gui/icon.py:36
+#: chwall/gui/app.py:221 chwall/gui/icon.py:36
 msgid "Start daemon"
 msgstr "Démarrer le service"
 
-#: chwall/gui/app.py:255 chwall/gui/icon.py:144 chwall/gui/shared.py:107
+#: chwall/gui/app.py:263 chwall/gui/icon.py:151 chwall/gui/shared.py:117
 msgid "Wallpaper Changer"
 msgstr "Changeur de fond d’écran"
 
-#: chwall/gui/app.py:259
+#: chwall/gui/app.py:267
 msgid "Main window of the Chwall wallpaper changer"
 msgstr "Fenêtre principale du changeur de fond d’écran Chwall"
 
-#: chwall/gui/icon.py:100
+#: chwall/gui/icon.py:107
 msgid "Open main window"
 msgstr "Ouvrir la fenêtre principale"
 
-#: chwall/gui/icon.py:108
+#: chwall/gui/icon.py:115
 msgid "Always display this icon"
 msgstr "Toujours afficher cette icône"
 
-#: chwall/gui/icon.py:118
+#: chwall/gui/icon.py:125
 msgid "Report a bug"
 msgstr "Signaler un bogue"
 
@@ -285,11 +289,11 @@ msgstr "Gestion du cache"
 msgid "Shared background"
 msgstr "Fond d’écran partagé"
 
-#: chwall/gui/shared.py:109
+#: chwall/gui/shared.py:119
 msgid "Chwall is released under the WTFPL"
 msgstr "Chwall est publié selon les termes de la WTFPL"
 
-#: chwall/gui/shared.py:128
+#: chwall/gui/shared.py:138
 msgid "translator-credits https://translations.umaneti.net/engage/chwall/"
 msgstr "Étienne Deparis https://translations.umaneti.net/engage/chwall/"
 
@@ -364,7 +368,7 @@ msgstr ""
 "Unsplash a arrêté de fournir un flux RSS. De ce fait, le paramètre "
 "‘access_key’ est désormais requis."
 
-#: chwall/fetcher/unsplash.py:39 chwall/wallpaper.py:434
+#: chwall/fetcher/unsplash.py:39 chwall/wallpaper.py:441
 msgid "Picture"
 msgstr "Image"
 
@@ -501,12 +505,12 @@ msgstr ""
 "Impossible de récupérer une image pour l’instant. Cela peut être dû à une "
 "erreur temporaire de réseau. Merci de réessayer ultérieurement."
 
-#: chwall/wallpaper.py:433
+#: chwall/wallpaper.py:440
 #, python-brace-format
 msgid "{title} by {author}"
 msgstr "{title} de {author}"
 
-#: chwall/wallpaper.py:436
+#: chwall/wallpaper.py:443
 #, python-brace-format
 msgid "{title} (on {source})"
 msgstr "{title} (sur {source})"

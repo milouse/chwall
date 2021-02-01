@@ -87,11 +87,9 @@ class ChwallApp(ChwallGui):
         button = Gtk.Separator()
         control_box.pack_start(button)
 
-        button = Gtk.Button.new_from_icon_name(
+        self.favorite_button = Gtk.Button.new_from_icon_name(
             "bookmark-new", Gtk.IconSize.LARGE_TOOLBAR)
-        button.set_tooltip_text(_("Save as favorite"))
-        button.connect("clicked", self.on_favorite_wallpaper)
-        control_box.pack_start(button)
+        control_box.pack_start(self.favorite_button)
 
         self.walldesc = Gtk.Label(
             hexpand=True, halign=Gtk.Align.CENTER,
@@ -127,7 +125,17 @@ class ChwallApp(ChwallGui):
                 _("Current wallpaper is not managed by Chwall")))
             self.wallpaper.set_from_icon_name(
                 "preferences-desktop-wallpaper-symbolic", Gtk.IconSize.DIALOG)
+            self.favorite_button.set_sensitive(False)
+            self.favorite_button.set_tooltip_text(
+                _("Current wallpaper is not managed by Chwall"))
             return
+        elif self.is_current_wall_favorite(wallinfo):
+            self.favorite_button.set_sensitive(False)
+            self.favorite_button.set_tooltip_text(_("Already a favorite"))
+        else:
+            self.favorite_button.set_sensitive(True)
+            self.favorite_button.set_tooltip_text(_("Save as favorite"))
+            self.favorite_button.connect("clicked", self.on_favorite_wallpaper)
 
         label_str = "<a href=\"{link}\">{text}</a>".format(
             link=html.escape(wallinfo["remote-uri"]),

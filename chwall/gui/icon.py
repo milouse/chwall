@@ -80,19 +80,26 @@ class ChwallIcon(ChwallGui):
         prevbtn.connect("activate", self.on_change_wallpaper, True)
         menu.append(prevbtn)
 
-        # favorite wallpaper
-        favbtn = Gtk.ImageMenuItem.new_with_label(_("Save as favorite"))
-        favbtn.set_image(Gtk.Image.new_from_icon_name(
-            "bookmark-new", Gtk.IconSize.MENU))
-        favbtn.connect("activate", self.on_favorite_wallpaper)
-        menu.append(favbtn)
+        if wallinfo["type"] is not None:
+            # favorite wallpaper
+            if self.is_current_wall_favorite(wallinfo):
+                favbtn = Gtk.ImageMenuItem.new_with_label(
+                    _("Already a favorite"))
+                favbtn.set_sensitive(False)
+            else:
+                favbtn = Gtk.ImageMenuItem.new_with_label(
+                    _("Save as favorite"))
+                favbtn.connect("activate", self.on_favorite_wallpaper)
+            favbtn.set_image(Gtk.Image.new_from_icon_name(
+                "bookmark-new", Gtk.IconSize.MENU))
+            menu.append(favbtn)
 
-        # blacklist wallpaper
-        blackbtn = Gtk.ImageMenuItem.new_from_stock(Gtk.STOCK_DELETE)
-        blackbtn.set_label(_("Blacklist"))
-        # blackbtn = Gtk.MenuItem.new_with_label(_("Blacklist"))
-        blackbtn.connect("activate", self.on_blacklist_wallpaper)
-        menu.append(blackbtn)
+            # blacklist wallpaper
+            blackbtn = Gtk.ImageMenuItem.new_from_stock(Gtk.STOCK_DELETE)
+            blackbtn.set_label(_("Blacklist"))
+            # blackbtn = Gtk.MenuItem.new_with_label(_("Blacklist"))
+            blackbtn.connect("activate", self.on_blacklist_wallpaper)
+            menu.append(blackbtn)
 
         sep = Gtk.SeparatorMenuItem()
         menu.append(sep)
