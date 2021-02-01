@@ -401,8 +401,8 @@ def favorite_wallpaper(config):
               .format(BASE_CACHE_PATH), "r") as f:
         curfile = f.readlines()[4].strip()
     # Add file extension for better desktop integration
-    im = Image.open(curfile)
-    ext = (im.format or "").lower()
+    with Image.open(curfile) as im:
+        ext = (im.format or "").lower()
     if ext == "jpeg":
         ext = "jpg"
     ext = "." + ext
