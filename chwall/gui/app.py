@@ -122,7 +122,7 @@ class ChwallApp(ChwallGui):
         self.notif_reset.set_revealed(False)
         self.notif_reset.hide()
         wallinfo = current_wallpaper_info()
-        if wallinfo["local-picture-path"] is None:
+        if wallinfo["type"] is None:
             self.walldesc.set_markup("<i>{}</i>".format(
                 _("Current wallpaper is not managed by Chwall")))
             self.wallpaper.set_from_icon_name(

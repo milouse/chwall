@@ -50,7 +50,7 @@ class ChwallIcon(ChwallGui):
 
         current_wall_info = Gtk.MenuItem()
         wallinfo = current_wallpaper_info()
-        if wallinfo["remote-uri"] is None:
+        if wallinfo["type"] is None:
             current_wall_info.set_label(
                 _("Current wallpaper is not managed by Chwall"))
             current_wall_info.set_sensitive(False)

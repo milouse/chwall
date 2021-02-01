@@ -4,7 +4,8 @@ import subprocess
 from chwall import __version__
 from chwall.daemon import notify_daemon_if_any, notify_app_if_any, daemon_info
 from chwall.utils import read_config, cleanup_cache
-from chwall.wallpaper import blacklist_wallpaper, pick_wallpaper, favorite_wallpaper
+from chwall.wallpaper import blacklist_wallpaper, pick_wallpaper, \
+    favorite_wallpaper
 from chwall.gui.preferences import PrefDialog
 
 import gi
@@ -54,8 +55,7 @@ class ChwallGui:
         if not threaded:
             change_wall_thread_target(direction)
         else:
-            self.start_in_thread_if_needed(change_wall_thread_target,
-                                           direction)
+            self.start_in_thread_if_needed(change_wall_thread_target, direction)  # noqa
 
     def on_blacklist_wallpaper(self, _widget):
         def blacklist_wall_thread_target():
