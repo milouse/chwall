@@ -106,6 +106,30 @@ def build_roadmap(config):
         yaml.dump(road_map, f, explicit_start=True, default_flow_style=False)
 
 
+def set_xfce_wallpaper(path):
+    if path is None:
+        raise ChwallWallpaperSetError(_("No wallpaper path given"))
+    wklist = subprocess.run(["xfconf-query", "-c", "xfce4-desktop",
+                             "-l", "/backdrop"],
+                            stdout=subprocess.PIPE)
+    if wklist.returncode == 1:
+        raise ChwallWallpaperSetError(
+            _("Error while retrieving XFCE workspaces list")
+        )
+    for line in wklist.stdout.decode().strip().split("\n"):
+        if not line.endswith("/last-image"):
+            continue
+        err = subprocess.run(["xfconf-query", "-c", "xfce4-desktop",
+                              "-p", line, "--set", path])
+        if err == 1:
+            raise ChwallWallpaperSetError(
+                _("Error while trying to set XFCE wallpaper in {prop}")
+                .format(prop=line))
+        zoom_line = line.replace("/last-image", "/image-style")
+        subprocess.run(["xfconf-query", "-c", "xfce4-desktop",
+                        "-p", zoom_line, "--set", "5"])
+
+
 def prop_setting_error_str(desktop, prop):
     return _(
         "Error while setting {desktop} {prop} property"
@@ -116,42 +140,41 @@ def set_mate_wallpaper(path):
     if path is None:
         raise ChwallWallpaperSetError(_("No wallpaper path given"))
     err = subprocess.run(["gsettings", "set", "org.mate.background",
-                         "picture-filename", path]).returncode
+                          "picture-filename", path]).returncode
     if err == 1:
         raise ChwallWallpaperSetError(
             prop_setting_error_str("mate", "picture-filename"))
     err = subprocess.run(["gsettings", "set", "org.mate.background",
-                         "picture-options", "zoom"]).returncode
+                          "picture-options", "zoom"]).returncode
     if err == 1:
         raise ChwallWallpaperSetError(
             prop_setting_error_str("mate", "picture-options"))
 
 
-def set_gnome_wallpaper(path):
+def set_gnome_wallpaper(path, where="background"):
     if path is None:
         raise ChwallWallpaperSetError(_("No wallpaper path given"))
-    err_msg = {
-        "background": _("background {prop}"),
-        "screensaver": _("screensaver {prop}")
-    }
-    for where in ["background", "screensaver"]:
-        err = subprocess.run(
-            ["gsettings", "set", "org.gnome.desktop.{}".format(where),
-             "picture-uri", "file://{}".format(path)]).returncode
-        if err == 1:
-            raise ChwallWallpaperSetError(
-                prop_setting_error_str(
-                    "gnome", err_msg[where].format(prop="picture-uri")))
-        err = subprocess.run(
-            ["gsettings", "set", "org.gnome.desktop.{}".format(where),
-             "picture-options", "zoom"]).returncode
-        if err == 1:
-            raise ChwallWallpaperSetError(
-                prop_setting_error_str(
-                    "gnome", err_msg[where].format(prop="picture-options")))
+
+    def _format_prop_error(prop):
+        return prop_setting_error_str(
+            "gnome", "{where} {prop}".format(where=where, prop=prop)
+        )
+
+    err = subprocess.run(
+        ["gsettings", "set", "org.gnome.desktop.{}".format(where),
+         "picture-uri", "file://{}".format(path)]).returncode
+    if err == 1:
+        raise ChwallWallpaperSetError(_format_prop_error("picture-uri"))
+    err = subprocess.run(
+        ["gsettings", "set", "org.gnome.desktop.{}".format(where),
+         "picture-options", "zoom"]).returncode
+    if err == 1:
+        raise ChwallWallpaperSetError(_format_prop_error("picture-options"))
 
 
 def set_nitrogen_wallpaper(path):
+    if path is None:
+        raise ChwallWallpaperSetError(_("No wallpaper path given"))
     cmd = ["nitrogen", "--set-zoom-fill", "--set-color=#000000", "--save"]
     # screen_info = (scr_number, scr_width, scr_height, scr_ratio, display)
     screen_info = get_screen_config()
@@ -175,12 +198,26 @@ def set_nitrogen_wallpaper(path):
             _("Error while calling nitrogen for single display"))
 
 
+def set_mate_screensaver(path):
+    if path is None:
+        raise ChwallWallpaperSetError(_("No wallpaper path given"))
+    err = subprocess.run(["gsettings", "set", "org.mate.screensaver",
+                          "picture-filename", path]).returncode
+    if err == 1:
+        msg = _("screensaver {prop}".format(prop="picture-filename"))
+        raise ChwallWallpaperSetError(prop_setting_error_str("mate", msg))
+
+
+def set_gnome_screensaver(path):
+    set_gnome_wallpaper(path, "screensaver")
+
+
 def blur_picture(path, ld_path, radius):
     try:
         with Image.open(path) as im:
             # Save file format before possible conversion as format will be
             # lost by any picture operation.
-            ext = im.format
+            orig_format = im.format
             if im.mode != "RGB":
                 logger.warning(
                     _("Converting non RGB picture {picture}")
@@ -188,7 +225,7 @@ def blur_picture(path, ld_path, radius):
                 )
                 im = im.convert("RGB")
             im_blurred = im.filter(ImageFilter.GaussianBlur(radius))
-            im_blurred.save(ld_path, ext)
+            im_blurred.save(ld_path, orig_format)
     except ValueError as e:
         logger.error("{}: {}".format(path, e))
         # Copy original image if blurring fails.
@@ -196,23 +233,23 @@ def blur_picture(path, ld_path, radius):
 
 
 def set_wallpaper(path, config):
-    if "desktop" in config["general"]:
-        desktop = config["general"]["desktop"]
-    else:
-        desktop = "gnome"
-    method = "set_{}_wallpaper".format(desktop)
-    if method in globals():
-        globals()[method](path)
+    desktop = config["general"].get("desktop", "gnome")
+    wall_method = "set_{}_wallpaper".format(desktop)
+    if wall_method in globals():
+        globals()[wall_method](path)
     else:
         set_gnome_wallpaper(path)
-    ld_path = config["general"].get("shared", {}).get("path")
-    if ld_path is not None and ld_path != "":
-        ld_path = os.path.expanduser(ld_path)
+    shared_path = config["general"].get("shared", {}).get("path")
+    screensaver_method = "set_{}_screensaver".format(desktop)
+    if screensaver_method in globals():
+        globals()[screensaver_method](shared_path or path)
+    if shared_path is not None and shared_path != "":
+        shared_path = os.path.expanduser(shared_path)
         if config["general"]["shared"].get("blur", False):
             radius = config["general"]["shared"].get("blur_radius", 20)
-            blur_picture(path, ld_path, radius)
+            blur_picture(path, shared_path, radius)
         else:
-            shutil.copy(path, ld_path)
+            shutil.copy(path, shared_path)
     return path
 
 
@@ -357,6 +394,33 @@ def blacklist_wallpaper():
         yaml.dump(blacklist, f, explicit_start=True,
                   default_flow_style=False)
     remove_wallpaper_from_roadmap(blacklisted_pix)
+
+
+def favorite_wallpaper_path(current_file, config):
+    # Add file extension for better desktop integration
+    with Image.open(current_file) as im:
+        ext = (im.format or "").lower()
+    if ext == "jpeg":
+        ext = "jpg"
+    ext = "." + ext
+    filename = os.path.basename(current_file)
+    if not filename.endswith(ext):
+        filename += ext
+    # Get favorite dir and create it if necessary
+    fav_dir = config["general"]["favorites_path"]
+    os.makedirs(fav_dir, exist_ok=True)
+    return os.path.join(fav_dir, filename)
+
+
+def favorite_wallpaper(config):
+    with open("{}/current_wallpaper"
+              .format(BASE_CACHE_PATH), "r") as f:
+        curfile = f.readlines()[4].strip()
+    target_file = favorite_wallpaper_path(curfile, config)
+    if not os.path.exists(target_file):
+        # Copy new favorite to its destination, only if it does not
+        # exist in it yet.
+        shutil.copy(curfile, target_file)
 
 
 def clean_wallpaper_info(data):

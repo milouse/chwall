@@ -9,10 +9,10 @@ from chwall.wallpaper import current_wallpaper_info
 from chwall.utils import get_binary_path, reset_pending_list
 
 import gi
-gi.require_version("Gtk", "3.0")  # noqa: E402
-from gi.repository import Gdk, GdkPixbuf, GLib, Gtk
+gi.require_version("Gtk", "3.0")
+from gi.repository import Gdk, GdkPixbuf, GLib, Gtk  # noqa: E402
 
-import gettext
+import gettext  # noqa: E402
 # Uncomment the following line during development.
 # Please, be cautious to NOT commit the following line uncommented.
 # gettext.bindtextdomain("chwall", "./locale")
@@ -84,9 +84,21 @@ class ChwallApp(ChwallGui):
         button.connect("clicked", self.on_stop_clicked)
         control_box.pack_start(button)
 
-        self.walldesc = Gtk.Label()
-        self.walldesc.set_justify(Gtk.Justification.CENTER)
-        self.walldesc.set_line_wrap(True)
+        button = Gtk.Separator()
+        control_box.pack_start(button)
+
+        self.favorite_button = Gtk.Button.new_from_icon_name(
+            "bookmark-new", Gtk.IconSize.LARGE_TOOLBAR)
+        control_box.pack_start(self.favorite_button)
+
+        self.walldesc = Gtk.Label(
+            hexpand=True, halign=Gtk.Align.CENTER,
+            justify=Gtk.Justification.CENTER,
+            wrap=True, single_line_mode=True
+        )
+        self.walldesc.set_markup(
+            "<a href=\"https://git.umaneti.net/chwall/\">Chwall</a>"
+        )
         control_box.set_center_widget(self.walldesc)
 
         button = Gtk.Button.new_from_icon_name(
@@ -108,12 +120,22 @@ class ChwallApp(ChwallGui):
         self.notif_reset.set_revealed(False)
         self.notif_reset.hide()
         wallinfo = current_wallpaper_info()
-        if wallinfo["local-picture-path"] is None:
+        if wallinfo["type"] is None:
             self.walldesc.set_markup("<i>{}</i>".format(
                 _("Current wallpaper is not managed by Chwall")))
             self.wallpaper.set_from_icon_name(
                 "preferences-desktop-wallpaper-symbolic", Gtk.IconSize.DIALOG)
+            self.favorite_button.set_sensitive(False)
+            self.favorite_button.set_tooltip_text(
+                _("Current wallpaper is not managed by Chwall"))
             return
+        elif self.is_current_wall_favorite(wallinfo):
+            self.favorite_button.set_sensitive(False)
+            self.favorite_button.set_tooltip_text(_("Already a favorite"))
+        else:
+            self.favorite_button.set_sensitive(True)
+            self.favorite_button.set_tooltip_text(_("Save as favorite"))
+            self.favorite_button.connect("clicked", self.on_favorite_wallpaper)
 
         label_str = "<a href=\"{link}\">{text}</a>".format(
             link=html.escape(wallinfo["remote-uri"]),

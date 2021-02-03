@@ -6,10 +6,10 @@ from chwall.utils import read_config, write_config, reset_pending_list, \
                          cleanup_cache, ServiceFileManager, BASE_CACHE_PATH
 
 import gi
-gi.require_version("Gtk", "3.0")  # noqa: E402
-from gi.repository import Gtk
+gi.require_version("Gtk", "3.0")
+from gi.repository import Gtk  # noqa: E402
 
-import gettext
+import gettext  # noqa: E402
 # Uncomment the following line during development.
 # Please, be cautious to NOT commit the following line uncommented.
 # gettext.bindtextdomain("chwall", "./locale")
@@ -411,19 +411,20 @@ class PrefDialog(Gtk.Dialog):
         prefbox.pack_end(button, False, False, 10)
         return prefbox
 
-    def shared_wall_option_pref(self):
-        def on_update_shared_wall(widget):
+    def make_file_chooser_pref(self, path, opt, label, **kwargs):
+        def on_update_file_chooser(widget):
             ld_path = widget.get_filename()
-            self.config.write_config_opt("general.shared", "path", ld_path)
+            self.config.write_config_opt(path, opt, ld_path)
 
-        prefbox = self.make_prefbox_with_label(
-            _("Shared background path"))
-        button = Gtk.FileChooserButton.new(
-            _("Select a file"), Gtk.FileChooserAction.OPEN)
-        ld_path = self.config.read_config_opt("general.shared", "path")
+        button_label = kwargs.get("button_label", _("Select a file"))
+        button_action = kwargs.get("button_action", Gtk.FileChooserAction.OPEN)
+        prefbox = self.make_prefbox_with_label(label)
+        button = Gtk.FileChooserButton.new(button_label, button_action)
+
+        ld_path = self.config.read_config_opt(path, opt)
         if ld_path is not None and ld_path != "":
             button.set_filename(ld_path)
-        button.connect("file-set", on_update_shared_wall)
+        button.connect("file-set", on_update_file_chooser)
         prefbox.pack_end(button, False, False, 10)
         return prefbox
 
@@ -462,19 +463,29 @@ class PrefDialog(Gtk.Dialog):
             adj=Gtk.Adjustment(sleep_time, 5, 120, 1), factor=60)
         genbox.pack_start(prefbox, False, False, 0)
 
-        environments = [("gnome", "Gnome, Budgie, …"), ("mate", "Mate"),
+        environments = [("gnome", "Gnome, Budgie, …"),
+                        ("mate", "Mate"), ("xfce", "XFCE"),
                         ("nitrogen", _("Use Nitrogen application"))]
         prefbox = self.make_select_pref(
             "general", "desktop", _("Desktop environment"),
             environments, default="gnome")
         genbox.pack_start(prefbox, False, False, 0)
 
-        prefbox = self.shared_wall_option_pref()
+        prefbox = self.make_file_chooser_pref(
+            "general.shared", "path", _("Shared background path")
+        )
         genbox.pack_start(prefbox, False, False, 0)
 
         prefbox = self.make_toggle_pref(
             "general.shared", "blur", _("Blur shared background"),
             default=False)
+        genbox.pack_start(prefbox, False, False, 0)
+
+        prefbox = self.make_file_chooser_pref(
+            "general", "favorites_path", _("Favorites path"),
+            button_label=_("Select a folder"),
+            button_action=Gtk.FileChooserAction.SELECT_FOLDER
+        )
         genbox.pack_start(prefbox, False, False, 0)
 
         daemonbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)

@@ -7,10 +7,10 @@ from chwall.wallpaper import current_wallpaper_info
 from chwall.utils import ServiceFileManager
 
 import gi
-gi.require_version("Gtk", "3.0")  # noqa: E402
-from gi.repository import Gtk, GLib
+gi.require_version("Gtk", "3.0")
+from gi.repository import Gtk, GLib  # noqa: E402
 
-import gettext
+import gettext  # noqa: E402
 # Uncomment the following line during development.
 # Please, be cautious to NOT commit the following line uncommented.
 # gettext.bindtextdomain("chwall", "./locale")
@@ -32,10 +32,12 @@ class ChwallIcon(ChwallGui):
         dinfo = self.daemon_info()
         daemon_state_label = dinfo["daemon-state-label"]
         if dinfo["next-change"] == -1:
-            run_btn = Gtk.MenuItem.new_with_label(_("Start daemon"))
+            run_btn = Gtk.ImageMenuItem.new_from_stock(Gtk.STOCK_MEDIA_PLAY)
+            run_btn.set_label(_("Start daemon"))
             run_btn.connect("activate", self.run_chwall_component, "daemon")
         else:
-            run_btn = Gtk.MenuItem.new_with_label(_("Stop daemon"))
+            run_btn = Gtk.ImageMenuItem.new_from_stock(Gtk.STOCK_MEDIA_PAUSE)
+            run_btn.set_label(_("Stop daemon"))
             run_btn.connect("activate", self.stop_daemon)
             daemon_state_label += " - " + dinfo["next-change-label"]
 
@@ -48,7 +50,7 @@ class ChwallIcon(ChwallGui):
 
         current_wall_info = Gtk.MenuItem()
         wallinfo = current_wallpaper_info()
-        if wallinfo["remote-uri"] is None:
+        if wallinfo["type"] is None:
             current_wall_info.set_label(
                 _("Current wallpaper is not managed by Chwall"))
             current_wall_info.set_sensitive(False)
@@ -65,19 +67,39 @@ class ChwallIcon(ChwallGui):
         menu.append(item)
 
         # next wallpaper
-        nextbtn = Gtk.MenuItem.new_with_label(_("Next wallpaper"))
+        nextbtn = Gtk.ImageMenuItem.new_from_stock(Gtk.STOCK_GO_FORWARD)
+        nextbtn.set_label(_("Next wallpaper"))
+        # nextbtn = Gtk.MenuItem.new_with_label(_("Next wallpaper"))
         nextbtn.connect("activate", self.on_change_wallpaper)
         menu.append(nextbtn)
 
         # previous wallpaper
-        prevbtn = Gtk.MenuItem.new_with_label(_("Previous wallpaper"))
+        prevbtn = Gtk.ImageMenuItem.new_from_stock(Gtk.STOCK_GO_BACK)
+        prevbtn.set_label(_("Previous wallpaper"))
+        # prevbtn = Gtk.MenuItem.new_with_label(_("Previous wallpaper"))
         prevbtn.connect("activate", self.on_change_wallpaper, True)
         menu.append(prevbtn)
 
-        # previous wallpaper
-        blackbtn = Gtk.MenuItem.new_with_label(_("Blacklist"))
-        blackbtn.connect("activate", self.on_blacklist_wallpaper)
-        menu.append(blackbtn)
+        if wallinfo["type"] is not None:
+            # favorite wallpaper
+            if self.is_current_wall_favorite(wallinfo):
+                favbtn = Gtk.ImageMenuItem.new_with_label(
+                    _("Already a favorite"))
+                favbtn.set_sensitive(False)
+            else:
+                favbtn = Gtk.ImageMenuItem.new_with_label(
+                    _("Save as favorite"))
+                favbtn.connect("activate", self.on_favorite_wallpaper)
+            favbtn.set_image(Gtk.Image.new_from_icon_name(
+                "bookmark-new", Gtk.IconSize.MENU))
+            menu.append(favbtn)
+
+            # blacklist wallpaper
+            blackbtn = Gtk.ImageMenuItem.new_from_stock(Gtk.STOCK_DELETE)
+            blackbtn.set_label(_("Blacklist"))
+            # blackbtn = Gtk.MenuItem.new_with_label(_("Blacklist"))
+            blackbtn.connect("activate", self.on_blacklist_wallpaper)
+            menu.append(blackbtn)
 
         sep = Gtk.SeparatorMenuItem()
         menu.append(sep)
@@ -106,6 +128,7 @@ class ChwallIcon(ChwallGui):
 
         # show about dialog
         about = Gtk.ImageMenuItem.new_from_stock(Gtk.STOCK_ABOUT)
+        about.set_label(_("About Chwall"))
         menu.append(about)
         about.connect("activate", self.show_about_dialog)
 

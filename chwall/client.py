@@ -11,7 +11,8 @@ from chwall import __version__
 from chwall.daemon import notify_daemon_if_any, daemon_info, daemonize
 from chwall.utils import BASE_CACHE_PATH, read_config, \
                          reset_pending_list, ServiceFileManager
-from chwall.wallpaper import blacklist_wallpaper, pick_wallpaper
+from chwall.wallpaper import blacklist_wallpaper, pick_wallpaper, \
+                             favorite_wallpaper
 from chwall.gui.app import generate_desktop_file
 from chwall.gui.preferences import PrefDialog
 
@@ -121,7 +122,7 @@ Sadly, no specific help message for this subcommand yet.
 Display a systemd service file exemple, which can be used to
 automatically start chwall daemon when your user session starts.
 
-If `write' is passed as second parameter, the resulting systemd service file
+If ‘write’ is passed as second parameter, the resulting systemd service file
 will be saved in .config/systemd/user/
 """))
 
@@ -138,7 +139,7 @@ will be saved in .config/systemd/user/
 Display a launcher file example for your desktop, which can be used to start
 chwall main app from your desktop applications menu.
 
-If `write' is passed as second parameter, the resulting desktop file
+If ‘write’ is passed as second parameter, the resulting desktop file
 will be saved in .local/share/applications/
 """))
 
@@ -190,7 +191,7 @@ By default, this command will start the main app if no argument is given.
         print(_("""
 Display the current wallpaper information.
 
-If the optional `open' keyword is given, the original resource will be opened,
+If the optional ‘open’ keyword is given, the original resource will be opened,
 using the best dedicated tool for it (web browser, picture viewer...).
 """))
 
@@ -216,6 +217,16 @@ and switch to the next wallpaper.
     def cmd_blacklist(self, *opts):
         blacklist_wallpaper()
         self.cmd_next()
+
+    def help_favorite(self):
+        self._print_usage("favorite")
+        print(_("""
+Save a copy of the current wallpaper to not forget it and display it again
+later.
+"""))
+
+    def cmd_favorite(self, *opts):
+        favorite_wallpaper(read_config())
 
     def _pick_wall(self, direction=False):
         if pick_wallpaper(read_config(), direction) is None:

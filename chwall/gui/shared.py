@@ -1,17 +1,19 @@
+import os
 import threading
 import subprocess
 
 from chwall import __version__
 from chwall.daemon import notify_daemon_if_any, notify_app_if_any, daemon_info
 from chwall.utils import read_config, cleanup_cache
-from chwall.wallpaper import blacklist_wallpaper, pick_wallpaper
+from chwall.wallpaper import blacklist_wallpaper, pick_wallpaper, \
+    favorite_wallpaper_path, favorite_wallpaper
 from chwall.gui.preferences import PrefDialog
 
 import gi
-gi.require_version("Gtk", "3.0")  # noqa: E402
-from gi.repository import Gtk
+gi.require_version("Gtk", "3.0")
+from gi.repository import Gtk  # noqa: E402
 
-import gettext
+import gettext  # noqa: E402
 # Uncomment the following line during development.
 # Please, be cautious to NOT commit the following line uncommented.
 # gettext.bindtextdomain("chwall", "./locale")
@@ -54,14 +56,20 @@ class ChwallGui:
         if not threaded:
             change_wall_thread_target(direction)
         else:
-            self.start_in_thread_if_needed(change_wall_thread_target,
-                                           direction)
+            self.start_in_thread_if_needed(change_wall_thread_target, direction)  # noqa
 
     def on_blacklist_wallpaper(self, _widget):
         def blacklist_wall_thread_target():
             blacklist_wallpaper()
             self.on_change_wallpaper(None, threaded=False)
         self.start_in_thread_if_needed(blacklist_wall_thread_target)
+
+    def on_favorite_wallpaper(self, _widget):
+        favorite_wallpaper(read_config())
+        if self.app is None:
+            return
+        self.favorite_button.set_sensitive(False)
+        self.favorite_button.set_tooltip_text(_("Already a favorite"))
 
     def run_chwall_component(self, _widget, component):
         def start_daemon_from_thread():
@@ -83,6 +91,11 @@ class ChwallGui:
             ["pgrep", "-f", "chwall.+{}".format(component)],
             stdout=subprocess.DEVNULL).returncode
         return retcode == 0
+
+    def is_current_wall_favorite(self, wallinfo):
+        fav_path = favorite_wallpaper_path(
+            wallinfo["local-picture-path"], read_config())
+        return os.path.exists(fav_path)
 
     def show_preferences_dialog(self, widget):
         if self.app is None:

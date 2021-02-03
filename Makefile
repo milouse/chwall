@@ -59,7 +59,7 @@ uninstall:
 	rm -f $(datarootdir)/applications/chwall-app.desktop
 
 chwall-app.desktop: $(MO_FILES)
-	CHWALL_FAKE_INSTALL=exists python -m chwall.client desktop chwall-app.desktop ./locale
+	CHWALL_FAKE_INSTALL=exists python -B -m chwall.client desktop chwall-app.desktop ./locale
 
 $(datarootdir)/icons/hicolor/%/apps/chwall.png: data/icon_%.png
 	install -d -m755 $(@:%/chwall.png=%)
@@ -103,4 +103,4 @@ lang: $(PO_FILES)
 uplang: $(PO_FILES:%=%~)
 
 test: $(MO_FILES)
-	python -m unittest
+	python -B -m unittest

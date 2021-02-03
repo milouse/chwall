@@ -18,7 +18,7 @@ def fetch_pictures(config):
     if client_id is None:
         logger.error(
             _("Unsplash has discontinued their RSS feed. Thus "
-              "an `access_key' param is now required.")
+              "an ‘access_key’ param is now required.")
         )
         return {}
     width = us_conf.get("width", 1600)
