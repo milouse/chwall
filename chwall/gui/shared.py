@@ -24,8 +24,12 @@ _ = gettext.gettext
 class ChwallGui:
     def __init__(self):
         self.app = None
+        self.reload_config()
         # Try to keep cache as clean as possible
         cleanup_cache()
+
+    def reload_config(self):
+        self.config = read_config()
 
     def daemon_info(self):
         return daemon_info()
@@ -49,7 +53,7 @@ class ChwallGui:
 
     def on_change_wallpaper(self, _widget, direction=False, threaded=True):
         def change_wall_thread_target(direction):
-            pick_wallpaper(read_config(), direction)
+            pick_wallpaper(self.config, direction)
             notify_daemon_if_any()
             notify_app_if_any()
 
@@ -65,7 +69,7 @@ class ChwallGui:
         self.start_in_thread_if_needed(blacklist_wall_thread_target)
 
     def on_favorite_wallpaper(self, _widget):
-        favorite_wallpaper(read_config())
+        favorite_wallpaper(self.config)
         if self.app is None:
             return
         self.favorite_button.set_sensitive(False)
@@ -76,7 +80,7 @@ class ChwallGui:
             # At the difference of the daemon itself, it's expected than a
             # service start from inside the app or the icon will immediatly
             # change the current wallpaper.
-            pick_wallpaper(read_config())
+            pick_wallpaper(self.config)
             notify_app_if_any()
             # No need to fork, daemon already do that
             subprocess.run(["chwall-daemon"])
@@ -94,7 +98,7 @@ class ChwallGui:
 
     def is_current_wall_favorite(self, wallinfo):
         fav_path = favorite_wallpaper_path(
-            wallinfo["local-picture-path"], read_config())
+            wallinfo["local-picture-path"], self.config)
         return os.path.exists(fav_path)
 
     def show_preferences_dialog(self, widget):
@@ -106,6 +110,7 @@ class ChwallGui:
         prefwin = PrefDialog(self.app, flags)
         prefwin.run()
         prefwin.destroy()
+        self.reload_config()
 
     def show_about_dialog(self, widget):
         about_dialog = Gtk.AboutDialog()

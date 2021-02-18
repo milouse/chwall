@@ -29,6 +29,7 @@ class ChwallIcon(ChwallGui):
         self.must_autostart = self.sfm.xdg_autostart_file_exists("icon")
 
     def display_menu(self, _icon, event_button, event_time):
+        self.reload_config()
         dinfo = self.daemon_info()
         daemon_state_label = dinfo["daemon-state-label"]
         if dinfo["next-change"] == -1:
