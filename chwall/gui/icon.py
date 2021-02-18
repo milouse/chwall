@@ -22,11 +22,23 @@ class ChwallIcon(ChwallGui):
     def __init__(self):
         super().__init__()
         self.tray = Gtk.StatusIcon()
-        self.tray.set_from_icon_name("chwall")
+        self.load_main_icon()
         self.tray.set_tooltip_text("Chwall")
         self.tray.connect("popup-menu", self.display_menu)
         self.sfm = ServiceFileManager()
         self.must_autostart = self.sfm.xdg_autostart_file_exists("icon")
+
+    def load_main_icon(self):
+        mono_icon = self.config["general"].get("mono_icon", False)
+        if mono_icon:
+            icon_name = "chwall_mono"
+        else:
+            icon_name = "chwall"
+        self.tray.set_from_icon_name(icon_name)
+
+    def show_preferences_dialog(self, widget):
+        super().show_preferences_dialog(widget)
+        self.load_main_icon()
 
     def display_menu(self, _icon, event_button, event_time):
         self.reload_config()

@@ -9,9 +9,9 @@ libdir = $(exec_prefix)/lib
 
 VERSION = $(shell python setup.py --version)
 
-ICON       = data/icon_800.png
 ICON_SIZE  = 128 64 48 32 24 16
-DEST_ICONS = $(foreach z,$(ICON_SIZE),$(datarootdir)/icons/hicolor/$(z)x$(z)/apps/chwall.png)
+DEST_ICONS = $(foreach z,$(ICON_SIZE),$(datarootdir)/icons/hicolor/$(z)x$(z)/apps/chwall.png) \
+	$(foreach z,$(ICON_SIZE),$(datarootdir)/icons/hicolor/$(z)x$(z)/apps/chwall_mono.png)
 
 PY_VERSION = $(shell python -c "import sys;v=sys.version_info;print('{}.{}'.format(v.major, v.minor))")
 PY_SITE    = $(libdir)/python$(PY_VERSION)/site-packages
@@ -65,8 +65,15 @@ $(datarootdir)/icons/hicolor/%/apps/chwall.png: data/icon_%.png
 	install -d -m755 $(@:%/chwall.png=%)
 	install -D -m644 $< $@
 
+$(datarootdir)/icons/hicolor/%/apps/chwall_mono.png: data/icon_mono_%.png
+	install -d -m755 $(@:%/chwall_mono.png=%)
+	install -D -m644 $< $@
+
 data/icon_%.png:
-	convert $(ICON) -resize $(@:data/icon_%.png=%) $@
+	convert data/icon_800.png -resize $(@:data/icon_%.png=%) $@
+
+data/icon_mono_%.png:
+	convert data/icon_mono_800.png -resize $(@:data/icon_mono_%.png=%) $@
 
 locale/chwall.pot:
 	mkdir -p locale
