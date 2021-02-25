@@ -95,16 +95,19 @@ class ChwallIcon(ChwallGui):
 
         if wallinfo["type"] is not None:
             # favorite wallpaper
-            if self.is_current_wall_favorite(wallinfo):
-                favbtn = Gtk.ImageMenuItem.new_with_label(
-                    _("Already a favorite"))
-                favbtn.set_sensitive(False)
-            else:
-                favbtn = Gtk.ImageMenuItem.new_with_label(
-                    _("Save as favorite"))
-                favbtn.connect("activate", self.on_favorite_wallpaper)
+            favbtn = Gtk.ImageMenuItem.new_with_label(_("Save as favorite"))
             favbtn.set_image(Gtk.Image.new_from_icon_name(
                 "bookmark-new", Gtk.IconSize.MENU))
+            try:
+                if self.is_current_wall_favorite(wallinfo):
+                    favbtn.set_tooltip_text(_("Already a favorite"))
+                    favbtn.set_sensitive(False)
+                else:
+                    favbtn.connect("activate", self.on_favorite_wallpaper)
+            except PermissionError:
+                favbtn.set_tooltip_text(
+                    _("Error accessing the favorites folder"))
+                favbtn.set_sensitive(False)
             menu.append(favbtn)
 
             # blacklist wallpaper

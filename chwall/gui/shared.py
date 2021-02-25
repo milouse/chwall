@@ -69,11 +69,11 @@ class ChwallGui:
         self.start_in_thread_if_needed(blacklist_wall_thread_target)
 
     def on_favorite_wallpaper(self, _widget):
-        favorite_wallpaper(self.config)
-        if self.app is None:
-            return
-        self.favorite_button.set_sensitive(False)
-        self.favorite_button.set_tooltip_text(_("Already a favorite"))
+        if favorite_wallpaper(self.config):
+            if self.app is None:
+                return
+            self.favorite_button.set_sensitive(False)
+            self.favorite_button.set_tooltip_text(_("Already a favorite"))
 
     def run_chwall_component(self, _widget, component):
         def start_daemon_from_thread():
@@ -96,6 +96,7 @@ class ChwallGui:
             stdout=subprocess.DEVNULL).returncode
         return retcode == 0
 
+    # This function may raise a PermissionError
     def is_current_wall_favorite(self, wallinfo):
         fav_path = favorite_wallpaper_path(
             wallinfo["local-picture-path"], self.config)

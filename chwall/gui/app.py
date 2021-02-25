@@ -129,13 +129,20 @@ class ChwallApp(ChwallGui):
             self.favorite_button.set_tooltip_text(
                 _("Current wallpaper is not managed by Chwall"))
             return
-        elif self.is_current_wall_favorite(wallinfo):
+
+        try:
+            if self.is_current_wall_favorite(wallinfo):
+                self.favorite_button.set_sensitive(False)
+                self.favorite_button.set_tooltip_text(_("Already a favorite"))
+            else:
+                self.favorite_button.set_sensitive(True)
+                self.favorite_button.set_tooltip_text(_("Save as favorite"))
+                self.favorite_button.connect(
+                    "clicked", self.on_favorite_wallpaper)
+        except PermissionError:
             self.favorite_button.set_sensitive(False)
-            self.favorite_button.set_tooltip_text(_("Already a favorite"))
-        else:
-            self.favorite_button.set_sensitive(True)
-            self.favorite_button.set_tooltip_text(_("Save as favorite"))
-            self.favorite_button.connect("clicked", self.on_favorite_wallpaper)
+            self.favorite_button.set_tooltip_text(
+                _("Error accessing the favorites folder"))
 
         label_str = "<a href=\"{link}\">{text}</a>".format(
             link=html.escape(wallinfo["remote-uri"]),
