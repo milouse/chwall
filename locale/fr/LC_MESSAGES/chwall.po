@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chwall 0.5.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-03 20:44+0100\n"
-"PO-Revision-Date: 2021-02-01 18:47+0100\n"
+"POT-Creation-Date: 2021-03-07 20:30+0100\n"
+"PO-Revision-Date: 2021-03-07 20:35+0100\n"
 "Last-Translator: Étienne Deparis <etienne@depar.is>\n"
 "Language-Team: none\n"
 "Language: fr\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 2.4.1\n"
 
-#: chwall/gui/app.py:39 chwall/gui/app.py:188 chwall/gui/preferences.py:113
+#: chwall/gui/app.py:39 chwall/gui/app.py:195 chwall/gui/preferences.py:113
 msgid "Preferences"
 msgstr "Préférences"
 
@@ -31,11 +31,11 @@ msgstr ""
 "prendre quelques temps si vous avez beaucoup de sources activées. Merci pour "
 "votre patience."
 
-#: chwall/gui/app.py:62 chwall/gui/app.py:275 chwall/gui/icon.py:78
+#: chwall/gui/app.py:62 chwall/gui/app.py:282 chwall/gui/icon.py:91
 msgid "Previous wallpaper"
 msgstr "Fond d’écran précédent"
 
-#: chwall/gui/app.py:74 chwall/gui/app.py:271 chwall/gui/icon.py:71
+#: chwall/gui/app.py:74 chwall/gui/app.py:278 chwall/gui/icon.py:84
 msgid "Next wallpaper"
 msgstr "Fond d’écran suivant"
 
@@ -43,55 +43,59 @@ msgstr "Fond d’écran suivant"
 msgid "Stop daemon and erase pending list"
 msgstr "Arrêter le service et effacer la liste d’attente"
 
-#: chwall/gui/app.py:106 chwall/gui/app.py:279 chwall/gui/icon.py:99
+#: chwall/gui/app.py:106 chwall/gui/app.py:286 chwall/gui/icon.py:115
 msgid "Blacklist"
 msgstr "Mettre en liste noire"
 
-#: chwall/gui/app.py:125 chwall/gui/app.py:130 chwall/gui/icon.py:55
+#: chwall/gui/app.py:125 chwall/gui/app.py:130 chwall/gui/icon.py:68
 msgid "Current wallpaper is not managed by Chwall"
 msgstr "Le fond d’écran actuel n’est pas géré par Chwall"
 
-#: chwall/gui/app.py:134 chwall/gui/icon.py:87 chwall/gui/shared.py:72
+#: chwall/gui/app.py:136 chwall/gui/icon.py:103 chwall/gui/shared.py:76
 msgid "Already a favorite"
 msgstr "Déjà dans les favoris"
 
-#: chwall/gui/app.py:137 chwall/gui/icon.py:91
+#: chwall/gui/app.py:139 chwall/gui/icon.py:98
 msgid "Save as favorite"
 msgstr "Enregistrer en tant que favori"
 
-#: chwall/gui/app.py:181
+#: chwall/gui/app.py:145 chwall/gui/icon.py:109
+msgid "Error accessing the favorites folder"
+msgstr "Erreur lors de l’accès au dossier des favoris"
+
+#: chwall/gui/app.py:188
 msgid "Display notification icon"
 msgstr "Afficher une icône dans la zone de notification"
 
-#: chwall/gui/app.py:192 chwall/gui/icon.py:131
+#: chwall/gui/app.py:199 chwall/gui/icon.py:147
 msgid "About Chwall"
 msgstr "À propos de Chwall"
 
-#: chwall/gui/app.py:216 chwall/gui/icon.py:40
+#: chwall/gui/app.py:223 chwall/gui/icon.py:53
 msgid "Stop daemon"
 msgstr "Arrêter le service"
 
-#: chwall/gui/app.py:221 chwall/gui/icon.py:36
+#: chwall/gui/app.py:228 chwall/gui/icon.py:49
 msgid "Start daemon"
 msgstr "Démarrer le service"
 
-#: chwall/gui/app.py:263 chwall/gui/icon.py:151 chwall/gui/shared.py:117
+#: chwall/gui/app.py:270 chwall/gui/icon.py:167 chwall/gui/shared.py:123
 msgid "Wallpaper Changer"
 msgstr "Changeur de fond d’écran"
 
-#: chwall/gui/app.py:267
+#: chwall/gui/app.py:274
 msgid "Main window of the Chwall wallpaper changer"
 msgstr "Fenêtre principale du changeur de fond d’écran Chwall"
 
-#: chwall/gui/icon.py:107
+#: chwall/gui/icon.py:123
 msgid "Open main window"
 msgstr "Ouvrir la fenêtre principale"
 
-#: chwall/gui/icon.py:115
+#: chwall/gui/icon.py:131
 msgid "Always display this icon"
 msgstr "Toujours afficher cette icône"
 
-#: chwall/gui/icon.py:125
+#: chwall/gui/icon.py:141
 msgid "Report a bug"
 msgstr "Signaler un bogue"
 
@@ -123,7 +127,7 @@ msgstr "Collections"
 msgid "Enable"
 msgstr "Activer"
 
-#: chwall/gui/preferences.py:391 chwall/gui/preferences.py:738
+#: chwall/gui/preferences.py:391 chwall/gui/preferences.py:746
 msgid "Remove"
 msgstr "Supprimer"
 
@@ -221,7 +225,7 @@ msgstr ""
 msgid "Behavior"
 msgstr "Comportement"
 
-#: chwall/gui/preferences.py:596 chwall/gui/preferences.py:775
+#: chwall/gui/preferences.py:596 chwall/gui/preferences.py:790
 msgid "Daemon"
 msgstr "Tâche de fond"
 
@@ -270,30 +274,38 @@ msgid "Blur radius"
 msgstr "Rayon de floutage"
 
 #: chwall/gui/preferences.py:711
+msgid "Use monochrome icon"
+msgstr "Utiliser une icône monochrome"
+
+#: chwall/gui/preferences.py:719
 msgid "X Display in use"
 msgstr "Affichage X à utiliser"
 
-#: chwall/gui/preferences.py:737
+#: chwall/gui/preferences.py:745
 msgid "Remove systemd service file"
 msgstr "Supprimer le fichier de service systemd"
 
-#: chwall/gui/preferences.py:749
+#: chwall/gui/preferences.py:757
 msgid "Log level"
 msgstr "Niveau de journalisation"
 
-#: chwall/gui/preferences.py:761
+#: chwall/gui/preferences.py:769
 msgid "Cache management"
 msgstr "Gestion du cache"
 
-#: chwall/gui/preferences.py:768
+#: chwall/gui/preferences.py:776
+msgid "Status icon"
+msgstr "Icône de statut"
+
+#: chwall/gui/preferences.py:783
 msgid "Shared background"
 msgstr "Fond d’écran partagé"
 
-#: chwall/gui/shared.py:119
+#: chwall/gui/shared.py:125
 msgid "Chwall is released under the WTFPL"
 msgstr "Chwall est publié selon les termes de la WTFPL"
 
-#: chwall/gui/shared.py:138
+#: chwall/gui/shared.py:144
 msgid "translator-credits https://translations.umaneti.net/engage/chwall/"
 msgstr "Étienne Deparis https://translations.umaneti.net/engage/chwall/"
 
@@ -301,19 +313,19 @@ msgstr "Étienne Deparis https://translations.umaneti.net/engage/chwall/"
 msgid "Locales"
 msgstr "Langues"
 
-#: chwall/fetcher/local.py:31
+#: chwall/fetcher/local.py:39
 msgid "Local wallpaper"
 msgstr "Fond d’écran local"
 
-#: chwall/fetcher/local.py:38
+#: chwall/fetcher/local.py:48
 msgid "Local files"
 msgstr "Fichiers locaux"
 
-#: chwall/fetcher/local.py:42
+#: chwall/fetcher/local.py:52
 msgid "Wallpaper repositories"
 msgstr "Dossiers de fonds d’écran"
 
-#: chwall/fetcher/local.py:45
+#: chwall/fetcher/local.py:55
 msgid "Include favorites wallpapers"
 msgstr "Inclure les fonds d’écran favoris"
 
@@ -368,7 +380,7 @@ msgstr ""
 "Unsplash a arrêté de fournir un flux RSS. De ce fait, le paramètre "
 "‘access_key’ est désormais requis."
 
-#: chwall/fetcher/unsplash.py:39 chwall/wallpaper.py:441
+#: chwall/fetcher/unsplash.py:39 chwall/wallpaper.py:448
 msgid "Picture"
 msgstr "Image"
 
@@ -505,17 +517,17 @@ msgstr ""
 "Impossible de récupérer une image pour l’instant. Cela peut être dû à une "
 "erreur temporaire de réseau. Merci de réessayer ultérieurement."
 
-#: chwall/wallpaper.py:440
+#: chwall/wallpaper.py:447
 #, python-brace-format
 msgid "{title} by {author}"
 msgstr "{title} de {author}"
 
-#: chwall/wallpaper.py:443
+#: chwall/wallpaper.py:450
 #, python-brace-format
 msgid "{title} (on {source})"
 msgstr "{title} (sur {source})"
 
-#: chwall/daemon.py:67
+#: chwall/daemon.py:72
 #, python-brace-format
 msgid "Last change was {minutes} minute and {seconds}s ago"
 msgid_plural "Last change was {minutes} minutes and {seconds}s ago"
@@ -524,55 +536,55 @@ msgstr[0] ""
 msgstr[1] ""
 "Le dernier changement a eu lieu il y a {minutes} minutes et {seconds}s"
 
-#: chwall/daemon.py:72
+#: chwall/daemon.py:77
 #, python-brace-format
 msgid "Last change was {seconds}s ago"
 msgstr "Le dernier changement a eu lieu il y a {seconds}s"
 
-#: chwall/daemon.py:78
+#: chwall/daemon.py:83
 #, python-brace-format
 msgid "Next change in {minutes} minute and {seconds}s"
 msgid_plural "Next change in {minutes} minutes and {seconds}s"
 msgstr[0] "Prochain changement dans {minutes} minute et {seconds}s"
 msgstr[1] "Prochain changement dans {minutes} minutes et {seconds}s"
 
-#: chwall/daemon.py:83
+#: chwall/daemon.py:88
 #, python-brace-format
 msgid "Next change in {seconds}s"
 msgstr "Prochain changement dans {seconds}s"
 
-#: chwall/daemon.py:93 chwall/daemon.py:98
+#: chwall/daemon.py:99 chwall/daemon.py:104
 msgid "Daemon stopped"
 msgstr "Service arrêté"
 
-#: chwall/daemon.py:101
+#: chwall/daemon.py:107
 msgid "Daemon started"
 msgstr "Service démarré"
 
-#: chwall/daemon.py:113
+#: chwall/daemon.py:118
 #, python-brace-format
 msgid "{daemon_state} (disabled)"
 msgstr "{daemon_state} (désactivé)"
 
-#: chwall/daemon.py:136
+#: chwall/daemon.py:141
 #, python-brace-format
 msgid "Kill process {pid}"
 msgstr "Tuer le processus {pid}"
 
-#: chwall/daemon.py:138 chwall/daemon.py:158
+#: chwall/daemon.py:143 chwall/daemon.py:163
 #, python-brace-format
 msgid "Sending process {pid} signal {sid}"
 msgstr "Envoi du signal {sid} au processus {pid}"
 
-#: chwall/daemon.py:197
+#: chwall/daemon.py:202
 msgid "Exit signal received"
 msgstr "Signal d’extinction reçu"
 
-#: chwall/daemon.py:202
+#: chwall/daemon.py:207
 msgid "Cleaning up…"
 msgstr "Nettoyage…"
 
-#: chwall/daemon.py:238
+#: chwall/daemon.py:243
 #, python-brace-format
 msgid "Starting Chwall Daemon v{version}…"
 msgstr "Démarrage du service de Chwall v{version}…"
@@ -782,47 +794,3 @@ msgstr ""
 "\n"
 "Cette commande renvoie simplement la liste des urls d’origine de chaque\n"
 "fond d’écran.\n"
-
-#, python-brace-format
-#~ msgid "background {prop}"
-#~ msgstr "{prop} du fond d’écran"
-
-#, python-brace-format
-#~ msgid "{number} cache entries have been removed."
-#~ msgstr "{number} entrées du cache ont été supprimées."
-
-#, python-brace-format
-#~ msgid "{number} broken pictures currently in cache"
-#~ msgstr "{number} images cassées actuellement dans le cache"
-
-#, python-brace-format
-#~ msgid "Last change was 1 minute and {seconds}s ago"
-#~ msgstr "Le dernier changement a eu lieu il y a 1 minute et {seconds}s"
-
-#, python-brace-format
-#~ msgid "Next change in 1 minute and {seconds}s"
-#~ msgstr "Prochain changement dans 1 minute et {seconds}s"
-
-#~ msgid "Start loop"
-#~ msgstr "Démarrage de la boucle"
-
-#~ msgid "Launch Chwall daemon when your session starts with XDG autostart"
-#~ msgstr ""
-#~ "Démarrer le service de Chwall avec un lanceur XDG lorsque votre session "
-#~ "démarre"
-
-#~ msgid "This use XDG autostart mechanism"
-#~ msgstr "Ceci utilise le mécanisme de démarrage XDG"
-
-#~ msgid "Install required service file to use systemd launcher"
-#~ msgstr ""
-#~ "Installer le fichier requis pour permettre le démarrage avec systemd"
-
-#~ msgid ""
-#~ "This option must be set to let you manage the Chwall daemon with systemd"
-#~ msgstr ""
-#~ "Cette option doit être sélectionnée pour que vous puissiez gérer le "
-#~ "service de Chwall avec systemd"
-
-#~ msgid "NASA Astronomy Picture Of The Day"
-#~ msgstr "Image astronomique du jour de la NASA"
