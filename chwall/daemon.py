@@ -46,7 +46,7 @@ def kill_daemon(_signo, _stack_frame):
     sys.exit(0)
 
 
-def last_wallpaper_change():
+def last_wallpaper_change(sleep_time):
     pid_file = "{}/chwall_pid".format(BASE_CACHE_PATH)
     change_file = "{}/last_change".format(BASE_CACHE_PATH)
     if not os.path.exists(pid_file) or not os.path.exists(change_file):
@@ -56,6 +56,11 @@ def last_wallpaper_change():
             last_change = int(time.time()) - int(f.read().strip())
         except ValueError:
             last_change = -1
+    if last_change > sleep_time:
+        # We are currently reading a very old last_change flag file. Certainly
+        # because the daemon has crashed without cleaning up its pid
+        # file. Assume it is stopped
+        return -1
     return last_change
 
 
@@ -87,6 +92,7 @@ def daemon_change_label(last_change, next_change):
 
 def daemon_info():
     config = read_config()
+    sleep_time = config["general"]["sleep"]
     last_change = -1
     next_change = -1
     daemon_state = "stopped"
@@ -94,12 +100,11 @@ def daemon_info():
     daemon_enabled = False
     daemon_type = "standalone"
 
-    last_change = last_wallpaper_change()
+    last_change = last_wallpaper_change(sleep_time)
     change_labels = (_("Daemon stopped"), _("Daemon stopped"))
     if last_change != -1:
         daemon_state = "started"
         daemon_state_label = _("Daemon started")
-        sleep_time = config["general"]["sleep"]
         next_change = sleep_time - last_change
         change_labels = daemon_change_label(last_change, next_change)
 

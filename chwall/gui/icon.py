@@ -22,13 +22,26 @@ class ChwallIcon(ChwallGui):
     def __init__(self):
         super().__init__()
         self.tray = Gtk.StatusIcon()
-        self.tray.set_from_icon_name("chwall")
+        self.load_main_icon()
         self.tray.set_tooltip_text("Chwall")
         self.tray.connect("popup-menu", self.display_menu)
         self.sfm = ServiceFileManager()
         self.must_autostart = self.sfm.xdg_autostart_file_exists("icon")
 
+    def load_main_icon(self):
+        mono_icon = self.config["general"].get("mono_icon", False)
+        if mono_icon:
+            icon_name = "chwall_mono"
+        else:
+            icon_name = "chwall"
+        self.tray.set_from_icon_name(icon_name)
+
+    def show_preferences_dialog(self, widget):
+        super().show_preferences_dialog(widget)
+        self.load_main_icon()
+
     def display_menu(self, _icon, event_button, event_time):
+        self.reload_config()
         dinfo = self.daemon_info()
         daemon_state_label = dinfo["daemon-state-label"]
         if dinfo["next-change"] == -1:
@@ -82,16 +95,19 @@ class ChwallIcon(ChwallGui):
 
         if wallinfo["type"] is not None:
             # favorite wallpaper
-            if self.is_current_wall_favorite(wallinfo):
-                favbtn = Gtk.ImageMenuItem.new_with_label(
-                    _("Already a favorite"))
-                favbtn.set_sensitive(False)
-            else:
-                favbtn = Gtk.ImageMenuItem.new_with_label(
-                    _("Save as favorite"))
-                favbtn.connect("activate", self.on_favorite_wallpaper)
+            favbtn = Gtk.ImageMenuItem.new_with_label(_("Save as favorite"))
             favbtn.set_image(Gtk.Image.new_from_icon_name(
                 "bookmark-new", Gtk.IconSize.MENU))
+            try:
+                if self.is_current_wall_favorite(wallinfo):
+                    favbtn.set_tooltip_text(_("Already a favorite"))
+                    favbtn.set_sensitive(False)
+                else:
+                    favbtn.connect("activate", self.on_favorite_wallpaper)
+            except PermissionError:
+                favbtn.set_tooltip_text(
+                    _("Error accessing the favorites folder"))
+                favbtn.set_sensitive(False)
             menu.append(favbtn)
 
             # blacklist wallpaper

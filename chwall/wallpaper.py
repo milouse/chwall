@@ -396,6 +396,7 @@ def blacklist_wallpaper():
     remove_wallpaper_from_roadmap(blacklisted_pix)
 
 
+# This function may raise a PermissionError
 def favorite_wallpaper_path(current_file, config):
     # Add file extension for better desktop integration
     with Image.open(current_file) as im:
@@ -416,11 +417,17 @@ def favorite_wallpaper(config):
     with open("{}/current_wallpaper"
               .format(BASE_CACHE_PATH), "r") as f:
         curfile = f.readlines()[4].strip()
-    target_file = favorite_wallpaper_path(curfile, config)
+    try:
+        target_file = favorite_wallpaper_path(curfile, config)
+    except PermissionError as e:
+        logger.error(e)
+        return False
     if not os.path.exists(target_file):
         # Copy new favorite to its destination, only if it does not
         # exist in it yet.
         shutil.copy(curfile, target_file)
+        return True
+    return False
 
 
 def clean_wallpaper_info(data):

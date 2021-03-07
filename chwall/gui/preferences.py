@@ -703,6 +703,14 @@ as it is the more classical way of doing so.
             "general.shared", "blur_radius", _("Blur radius"), default=20)
         sharedbox.pack_start(prefbox, False, False, 0)
 
+        iconbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        iconbox.set_border_width(10)
+        iconbox.set_spacing(10)
+
+        prefbox = self.make_toggle_pref(
+            "general", "mono_icon", _("Use monochrome icon"))
+        iconbox.pack_start(prefbox, False, False, 0)
+
         daemonbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         daemonbox.set_border_width(10)
         daemonbox.set_spacing(10)
@@ -761,6 +769,13 @@ as it is the more classical way of doing so.
         frame_label.set_markup("<b>{}</b>".format(_("Cache management")))
         frame.set_label_widget(frame_label)
         frame.add(genbox)
+        framebox.pack_start(frame, False, False, 0)
+
+        frame = Gtk.Frame()
+        frame_label = Gtk.Label()
+        frame_label.set_markup("<b>{}</b>".format(_("Status icon")))
+        frame.set_label_widget(frame_label)
+        frame.add(iconbox)
         framebox.pack_start(frame, False, False, 0)
 
         frame = Gtk.Frame()
