@@ -86,15 +86,9 @@ help]] document to know more about the chwall config file.
 
 ** Translations
 
-#+html: <a href="https://translations.umaneti.net/engage/chwall/?utm_source=widget">
-#+html: <img src="https://translations.umaneti.net/widgets/chwall/-/svg-badge.svg" alt="Translations state" />
-#+html: </a>
-
-Chwall is [[https://translations.umaneti.net/engage/chwall/][being translated using Weblate]], a web tool designed to ease
-translating for both developers and translators.
-
-You can also fetch the gettext files directly from the source code tree
-and send your changes as a pull request (see bellow).
+You can fetch the gettext files directly from the source code tree and
+send your changes as a pull request (see bellow) or by email, as you
+prefer.
 
 ** Code
 
