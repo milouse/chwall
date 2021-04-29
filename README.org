@@ -98,6 +98,14 @@ The canonical repository is located at
 Merge request and issues are accepted on all mirrors or by mail to the
 main author.
 
+** Support
+
+#+html: <a href="https://liberapay.com/milouse/donate"><img alt="Support using Liberapay" src="https://img.shields.io/badge/Liberapay-Support_me-yellow?logo=liberapay"/></a>
+#+html: <a href="https://paypal.me/milouse"><img alt="Support using Paypal" src="https://img.shields.io/badge/Paypal-Support_me-00457C?logo=paypal&labelColor=lightgray"/></a>
+
+You can help me a lot by giving me some tip, either through [[https://liberapay.com/milouse][Liberapay]] or
+[[https://paypal.me/milouse][Paypal]]. Thank you very much!
+
 * Credits
 
 The icon is resized [[https://openclipart.org/detail/21282/waved-horse-spring-version-2009][from the work of Bernd Wachtmeister (Touchstone)]].
