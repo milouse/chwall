@@ -1,6 +1,7 @@
 import os
 import re
 import yaml
+import hashlib
 import logging
 import subprocess
 from xdg.BaseDirectory import xdg_cache_home, xdg_config_home
@@ -112,13 +113,24 @@ def compute_cache_size():
     return "{} ko".format(str(round(cache_total, 2)))
 
 
+def is_broken_picture(picture):
+    common_sums = [
+        # reddit broken picture
+        "35a0932c61e09a8c1cad9eec75b67a03602056463ed210310d2a09cf0b002ed5"
+    ]
+    check = hashlib.sha256()
+    with open(picture, "rb") as f:
+        check.update(f.read())
+    return check.hexdigest() in common_sums
+
+
 def count_broken_pictures_in_cache():
     pic_cache = "{}/pictures".format(BASE_CACHE_PATH)
     if not os.path.exists(pic_cache):
         return 0
     broken_files = 0
     for pic in os.scandir(pic_cache):
-        if pic.stat().st_size == 0:
+        if pic.stat().st_size == 0 or is_broken_picture(pic):
             broken_files += 1
     return broken_files
 
@@ -129,7 +141,7 @@ def cleanup_cache(clear_all=False):
         return 0
     deleted = 0
     for pic in os.scandir(pic_cache):
-        if clear_all or pic.stat().st_size == 0:
+        if clear_all or pic.stat().st_size == 0 or is_broken_picture(pic):
             os.unlink(pic.path)
             deleted += 1
     return deleted
