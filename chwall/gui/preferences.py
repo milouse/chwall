@@ -1,9 +1,9 @@
-import os
 import pkgutil
 from importlib import import_module
 
 from chwall.utils import read_config, write_config, reset_pending_list, \
-                         cleanup_cache, ServiceFileManager, BASE_CACHE_PATH
+                         count_broken_pictures_in_cache, cleanup_cache, \
+                         compute_cache_size, ServiceFileManager
 
 import gi
 gi.require_version("Gtk", "3.0")
@@ -635,12 +635,7 @@ as it is the more classical way of doing so.
             dialog.run()
             dialog.destroy()
 
-        pic_cache = "{}/pictures".format(BASE_CACHE_PATH)
-        broken_files = 0
-        if os.path.exists(pic_cache):
-            for pic in os.scandir(pic_cache):
-                if pic.stat().st_size == 0:
-                    broken_files += 1
+        broken_files = count_broken_pictures_in_cache()
 
         label = gettext.ngettext(
                 "{number} broken picture currently in cache",
@@ -667,18 +662,6 @@ as it is the more classical way of doing so.
         )
         genbox.pack_start(prefbox, False, False, 0)
 
-        cache_total = 0
-        if os.path.exists(pic_cache):
-            for pic in os.scandir(pic_cache):
-                cache_total += pic.stat().st_size
-        cache_total = cache_total / 1000
-        if cache_total > 1000000:
-            cache_size = "{} Go".format(str(round(cache_total/1000000, 2)))
-        elif cache_total > 1000:
-            cache_size = "{} Mo".format(str(round(cache_total/1000, 2)))
-        else:
-            cache_size = "{} ko".format(str(round(cache_total, 2)))
-
         def _update_empty_label(sibling):
             if isinstance(sibling, Gtk.Label):
                 sibling.set_label(
@@ -686,7 +669,7 @@ as it is the more classical way of doing so.
                 )
 
         prefbox = self.make_button_row(
-            _("Picture cache use {size}").format(size=cache_size),
+            _("Picture cache use {size}").format(size=compute_cache_size()),
             _("Clear picture cache"),
             on_cleanup_cache,
             "destructive-action",
