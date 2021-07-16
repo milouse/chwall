@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Chwall 0.5.6\n"
+"Project-Id-Version: Chwall 0.5.7\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-07 20:30+0100\n"
+"POT-Creation-Date: 2021-07-16 14:13+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -124,7 +124,7 @@ msgstr ""
 msgid "Enable"
 msgstr ""
 
-#: chwall/gui/preferences.py:391 chwall/gui/preferences.py:746
+#: chwall/gui/preferences.py:391 chwall/gui/preferences.py:729
 msgid "Remove"
 msgstr ""
 
@@ -208,7 +208,7 @@ msgstr ""
 msgid "Behavior"
 msgstr ""
 
-#: chwall/gui/preferences.py:596 chwall/gui/preferences.py:790
+#: chwall/gui/preferences.py:596 chwall/gui/preferences.py:773
 msgid "Daemon"
 msgstr ""
 
@@ -231,55 +231,55 @@ msgstr[1] ""
 msgid "Cache cleanup"
 msgstr ""
 
-#: chwall/gui/preferences.py:646 chwall/gui/preferences.py:655
+#: chwall/gui/preferences.py:641 chwall/gui/preferences.py:650
 #, python-brace-format
 msgid "{number} broken picture currently in cache"
 msgid_plural "{number} broken pictures currently in cache"
 msgstr[0] ""
 msgstr[1] ""
 
-#: chwall/gui/preferences.py:663
+#: chwall/gui/preferences.py:658
 msgid "Clear broken pictures"
 msgstr ""
 
-#: chwall/gui/preferences.py:685 chwall/gui/preferences.py:689
+#: chwall/gui/preferences.py:668 chwall/gui/preferences.py:672
 #, python-brace-format
 msgid "Picture cache use {size}"
 msgstr ""
 
-#: chwall/gui/preferences.py:690
+#: chwall/gui/preferences.py:673
 msgid "Clear picture cache"
 msgstr ""
 
-#: chwall/gui/preferences.py:703
+#: chwall/gui/preferences.py:686
 msgid "Blur radius"
 msgstr ""
 
-#: chwall/gui/preferences.py:711
+#: chwall/gui/preferences.py:694
 msgid "Use monochrome icon"
 msgstr ""
 
-#: chwall/gui/preferences.py:719
+#: chwall/gui/preferences.py:702
 msgid "X Display in use"
 msgstr ""
 
-#: chwall/gui/preferences.py:745
+#: chwall/gui/preferences.py:728
 msgid "Remove systemd service file"
 msgstr ""
 
-#: chwall/gui/preferences.py:757
+#: chwall/gui/preferences.py:740
 msgid "Log level"
 msgstr ""
 
-#: chwall/gui/preferences.py:769
+#: chwall/gui/preferences.py:752
 msgid "Cache management"
 msgstr ""
 
-#: chwall/gui/preferences.py:776
+#: chwall/gui/preferences.py:759
 msgid "Status icon"
 msgstr ""
 
-#: chwall/gui/preferences.py:783
+#: chwall/gui/preferences.py:766
 msgid "Shared background"
 msgstr ""
 
@@ -315,7 +315,7 @@ msgstr ""
 msgid "An ‘access_key’ param is required to fetch pictures from Pexels."
 msgstr ""
 
-#: chwall/fetcher/pexels.py:62 chwall/fetcher/unsplash.py:74
+#: chwall/fetcher/pexels.py:62 chwall/fetcher/unsplash.py:84
 #: chwall/fetcher/wikiart.py:79
 msgid "API access key"
 msgstr ""
@@ -359,16 +359,28 @@ msgid ""
 "required."
 msgstr ""
 
-#: chwall/fetcher/unsplash.py:39 chwall/wallpaper.py:448
+#: chwall/fetcher/unsplash.py:40 chwall/wallpaper.py:462
 msgid "Picture"
 msgstr ""
 
-#: chwall/fetcher/unsplash.py:48
+#: chwall/fetcher/unsplash.py:49
 #, python-brace-format
 msgid "{desc}, taken in {location}"
 msgstr ""
 
-#: chwall/fetcher/unsplash.py:78
+#: chwall/fetcher/unsplash.py:76
+msgid "Low"
+msgstr ""
+
+#: chwall/fetcher/unsplash.py:77
+msgid "High"
+msgstr ""
+
+#: chwall/fetcher/unsplash.py:80
+msgid "Content filtering"
+msgstr ""
+
+#: chwall/fetcher/unsplash.py:88
 msgid "Complementary query"
 msgstr ""
 
@@ -469,24 +481,24 @@ msgstr ""
 msgid "Retry NOW to download {picture}"
 msgstr ""
 
-#: chwall/wallpaper.py:320
+#: chwall/wallpaper.py:330
 msgid ""
 "Impossible to build a new road map. It may be caused by a temporarily "
 "network error. Please try again later."
 msgstr ""
 
-#: chwall/wallpaper.py:343
+#: chwall/wallpaper.py:353
 msgid ""
 "Impossible to get any picture at this time. It may be caused by a "
 "temporarily network error. Please try again later."
 msgstr ""
 
-#: chwall/wallpaper.py:447
+#: chwall/wallpaper.py:461
 #, python-brace-format
 msgid "{title} by {author}"
 msgstr ""
 
-#: chwall/wallpaper.py:450
+#: chwall/wallpaper.py:464
 #, python-brace-format
 msgid "{title} (on {source})"
 msgstr ""

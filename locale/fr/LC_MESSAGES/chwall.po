@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Chwall 0.5.6\n"
+"Project-Id-Version: Chwall 0.5.7\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-07 20:30+0100\n"
-"PO-Revision-Date: 2021-03-07 20:35+0100\n"
+"POT-Creation-Date: 2021-07-16 14:13+0200\n"
+"PO-Revision-Date: 2021-07-16 14:08+0200\n"
 "Last-Translator: Étienne Deparis <etienne@depar.is>\n"
 "Language-Team: none\n"
 "Language: fr\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 2.4.1\n"
+"X-Generator: Poedit 3.0\n"
 
 #: chwall/gui/app.py:39 chwall/gui/app.py:195 chwall/gui/preferences.py:113
 msgid "Preferences"
@@ -127,7 +127,7 @@ msgstr "Collections"
 msgid "Enable"
 msgstr "Activer"
 
-#: chwall/gui/preferences.py:391 chwall/gui/preferences.py:746
+#: chwall/gui/preferences.py:391 chwall/gui/preferences.py:729
 msgid "Remove"
 msgstr "Supprimer"
 
@@ -225,7 +225,7 @@ msgstr ""
 msgid "Behavior"
 msgstr "Comportement"
 
-#: chwall/gui/preferences.py:596 chwall/gui/preferences.py:790
+#: chwall/gui/preferences.py:596 chwall/gui/preferences.py:773
 msgid "Daemon"
 msgstr "Tâche de fond"
 
@@ -249,55 +249,55 @@ msgstr[1] "{number} entrées du cache ont été supprimées."
 msgid "Cache cleanup"
 msgstr "Nettoyage du cache"
 
-#: chwall/gui/preferences.py:646 chwall/gui/preferences.py:655
+#: chwall/gui/preferences.py:641 chwall/gui/preferences.py:650
 #, python-brace-format
 msgid "{number} broken picture currently in cache"
 msgid_plural "{number} broken pictures currently in cache"
 msgstr[0] "{number} image cassée actuellement dans le cache"
 msgstr[1] "{number} images cassées actuellement dans le cache"
 
-#: chwall/gui/preferences.py:663
+#: chwall/gui/preferences.py:658
 msgid "Clear broken pictures"
 msgstr "Nettoyer les entrées cassées du cache"
 
-#: chwall/gui/preferences.py:685 chwall/gui/preferences.py:689
+#: chwall/gui/preferences.py:668 chwall/gui/preferences.py:672
 #, python-brace-format
 msgid "Picture cache use {size}"
 msgstr "Le cache des images utilise {size}"
 
-#: chwall/gui/preferences.py:690
+#: chwall/gui/preferences.py:673
 msgid "Clear picture cache"
 msgstr "Vider le cache des images"
 
-#: chwall/gui/preferences.py:703
+#: chwall/gui/preferences.py:686
 msgid "Blur radius"
 msgstr "Rayon de floutage"
 
-#: chwall/gui/preferences.py:711
+#: chwall/gui/preferences.py:694
 msgid "Use monochrome icon"
 msgstr "Utiliser une icône monochrome"
 
-#: chwall/gui/preferences.py:719
+#: chwall/gui/preferences.py:702
 msgid "X Display in use"
 msgstr "Affichage X à utiliser"
 
-#: chwall/gui/preferences.py:745
+#: chwall/gui/preferences.py:728
 msgid "Remove systemd service file"
 msgstr "Supprimer le fichier de service systemd"
 
-#: chwall/gui/preferences.py:757
+#: chwall/gui/preferences.py:740
 msgid "Log level"
 msgstr "Niveau de journalisation"
 
-#: chwall/gui/preferences.py:769
+#: chwall/gui/preferences.py:752
 msgid "Cache management"
 msgstr "Gestion du cache"
 
-#: chwall/gui/preferences.py:776
+#: chwall/gui/preferences.py:759
 msgid "Status icon"
 msgstr "Icône de statut"
 
-#: chwall/gui/preferences.py:783
+#: chwall/gui/preferences.py:766
 msgid "Shared background"
 msgstr "Fond d’écran partagé"
 
@@ -334,7 +334,7 @@ msgid "An ‘access_key’ param is required to fetch pictures from Pexels."
 msgstr ""
 "Un paramètre ‘access_key’ est requis pour récupérer des images depuis Pexels."
 
-#: chwall/fetcher/pexels.py:62 chwall/fetcher/unsplash.py:74
+#: chwall/fetcher/pexels.py:62 chwall/fetcher/unsplash.py:84
 #: chwall/fetcher/wikiart.py:79
 msgid "API access key"
 msgstr "Clé d’accès API"
@@ -380,16 +380,28 @@ msgstr ""
 "Unsplash a arrêté de fournir un flux RSS. De ce fait, le paramètre "
 "‘access_key’ est désormais requis."
 
-#: chwall/fetcher/unsplash.py:39 chwall/wallpaper.py:448
+#: chwall/fetcher/unsplash.py:40 chwall/wallpaper.py:462
 msgid "Picture"
 msgstr "Image"
 
-#: chwall/fetcher/unsplash.py:48
+#: chwall/fetcher/unsplash.py:49
 #, python-brace-format
 msgid "{desc}, taken in {location}"
 msgstr "{desc}, prise à {location}"
 
-#: chwall/fetcher/unsplash.py:78
+#: chwall/fetcher/unsplash.py:76
+msgid "Low"
+msgstr "Modéré"
+
+#: chwall/fetcher/unsplash.py:77
+msgid "High"
+msgstr "Haut"
+
+#: chwall/fetcher/unsplash.py:80
+msgid "Content filtering"
+msgstr "Filtre de contenu"
+
+#: chwall/fetcher/unsplash.py:88
 msgid "Complementary query"
 msgstr "Requête complémentaire"
 
@@ -501,7 +513,7 @@ msgstr ""
 msgid "Retry NOW to download {picture}"
 msgstr "Essaye MAINTENANT de télécharger {picture}"
 
-#: chwall/wallpaper.py:320
+#: chwall/wallpaper.py:330
 msgid ""
 "Impossible to build a new road map. It may be caused by a temporarily "
 "network error. Please try again later."
@@ -509,7 +521,7 @@ msgstr ""
 "Impossible de construire une nouvelle liste d’attente. Cela peut être dû à "
 "une erreur temporaire de réseau. Merci de réessayer ultérieurement."
 
-#: chwall/wallpaper.py:343
+#: chwall/wallpaper.py:353
 msgid ""
 "Impossible to get any picture at this time. It may be caused by a "
 "temporarily network error. Please try again later."
@@ -517,12 +529,12 @@ msgstr ""
 "Impossible de récupérer une image pour l’instant. Cela peut être dû à une "
 "erreur temporaire de réseau. Merci de réessayer ultérieurement."
 
-#: chwall/wallpaper.py:447
+#: chwall/wallpaper.py:461
 #, python-brace-format
 msgid "{title} by {author}"
 msgstr "{title} de {author}"
 
-#: chwall/wallpaper.py:450
+#: chwall/wallpaper.py:464
 #, python-brace-format
 msgid "{title} (on {source})"
 msgstr "{title} (sur {source})"
