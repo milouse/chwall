@@ -776,3 +776,9 @@ as it is the more classical way of doing so.
         framebox.pack_start(frame, False, False, 0)
 
         return framebox
+
+
+if __name__ == "__main__":
+    prefwin = PrefDialog(None, 0)
+    prefwin.run()
+    prefwin.destroy()
