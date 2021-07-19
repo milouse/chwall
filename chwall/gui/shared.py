@@ -105,8 +105,8 @@ class ChwallGui:
     def show_preferences_dialog(self, widget):
         if self.app is None:
             flags = 0
-            # flags 3 = MODAL | DESTROY_WITH_PARENT
         else:
+            # flags 3 = MODAL | DESTROY_WITH_PARENT
             flags = 3
         prefwin = PrefDialog(self.app, flags)
         prefwin.run()

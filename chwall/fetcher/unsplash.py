@@ -23,7 +23,8 @@ def fetch_pictures(config):
         return {}
     width = us_conf.get("width", 1600)
     nb_pic = us_conf.get("count", 10)
-    params = ["w=%d" % width, "count=%d" % nb_pic]
+    ct_fltr = us_conf.get("content_filter", "low")
+    params = ["count=%d" % nb_pic, "content_filter=%s" % ct_fltr]
     if "query" in us_conf:
         params.append("query=" + us_conf["query"])
     if "collections" in us_conf:
@@ -34,7 +35,7 @@ def fetch_pictures(config):
     final_uri = "{}?{}".format(url, "&".join(params))
     data = requests.get(final_uri).json()
     for p in data:
-        px = p["urls"]["custom"]
+        px = "{u}&w={w}".format(u=p["urls"]["raw"], w=width)
         if p["description"] is None:
             label = _("Picture")
         else:
@@ -68,6 +69,15 @@ def preferences():
             "count": {
                 "widget": "number",
                 "default": 10
+            },
+            "content_filter": {
+                "widget": "select",
+                "values": [
+                    ("low", _("Low")),
+                    ("high", _("High"))
+                ],
+                "default": "low",
+                "label": _("Content filtering")
             },
             "access_key": {
                 "widget": "text",

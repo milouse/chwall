@@ -11,7 +11,7 @@ from importlib import import_module
 
 # chwall imports
 from chwall.utils import BASE_CACHE_PATH, get_screen_config, get_wall_config, \
-                         get_logger
+                         get_logger, is_broken_picture
 
 import gettext
 # Uncomment the following line during development.
@@ -299,6 +299,16 @@ def fetch_wallpaper(wp_data):
         os.unlink(pic_file)
         return None, None
 
+    # Now check file with common placeholder, like broken image on reddit
+    if is_broken_picture(pic_file):
+        # Remove useless picture
+        os.unlink(pic_file)
+        # Blacklist it
+        _write_current_wallpaper_info(current_wall)
+        blacklist_wallpaper()
+        # Pick next
+        return "next", None
+
     _write_current_wallpaper_info(current_wall)
     return pic_file, current_wall[0]
 
@@ -345,6 +355,10 @@ def pick_wallpaper(config, backward=False, guard=False):
               "later.")
         )
         return None
+    if lp == "next":
+        # fetch_wallpaper already clean up thing, thus only return a new
+        # pick_wallpaper call.
+        return pick_wallpaper(config, backward)
     data["pictures"].remove(wp)
     data["history"].append(wp)
     with open(road_map, "w") as f:
