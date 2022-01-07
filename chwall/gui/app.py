@@ -252,6 +252,7 @@ def _build_translations_for_desktop_file(localedir):
         "comment": [],
         "next_name": [],
         "previous_name": [],
+        "favorite_name": [],
         "blacklist_name": []
     }
     for lng in sorted(os.listdir(localedir)):
@@ -280,6 +281,10 @@ def _build_translations_for_desktop_file(localedir):
             "Name[{lang}]={key}".format(
                 lang=lng,
                 key=_("Previous wallpaper")))
+        lng_attrs["favorite_name"].append(
+            "Name[{lang}]={key}".format(
+                lang=lng,
+                key=_("Save as favorite")))
         lng_attrs["blacklist_name"].append(
             "Name[{lang}]={key}".format(
                 lang=lng,
@@ -316,11 +321,12 @@ Terminal=false
 Type=Application
 Categories=GTK;GNOME;Utility;
 StartupNotify=false
-Actions=Next;Previous;Blacklist;
+Actions=Next;Previous;Favorite;Blacklist;
 """.format(app_exec=get_binary_path("app", "xdg"))
 
     actions = _build_action_block("next", lng_attrs) \
         + _build_action_block("previous", lng_attrs) \
+        + _build_action_block("favorite", lng_attrs) \
         + _build_action_block("blacklist", lng_attrs)
     df_content += "\n".join(actions)
 
