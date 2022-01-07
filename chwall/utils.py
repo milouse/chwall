@@ -287,7 +287,7 @@ StartupNotify=false
         elif component == "icon":
             file_content += """\
 X-GNOME-Autostart-enabled=false
-NotShowIn=GNOME;
+NotShowIn=GNOME;Pantheon;
 Categories=GTK;TrayIcon;Utility;
 """
         if write is False:
