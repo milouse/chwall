@@ -12,6 +12,7 @@ def fetch_pictures(config):
     month_idx = t.month - 2
     if month_idx == -1:
         month_idx = 11
+        year -= 1
     month = month_label[month_idx]
     final_uri = "https://www.nationalgeographic.co.uk/page-data/" \
         f"photo-of-the-day/{year}/{month}/page-data.json"

@@ -7,7 +7,7 @@ def fetch_pictures(config):
     today = datetime.date.today()
     year = today.year
     month = today.month - 1
-    if month == -1:
+    if month == 0:
         month = 12
         year -= 1
     # We get the last month meta file to have enough wallpaper to show (~30).

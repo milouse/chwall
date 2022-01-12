@@ -25,8 +25,6 @@ class ChwallGui:
     def __init__(self):
         self.app = None
         self.reload_config()
-        # Try to keep cache as clean as possible
-        cleanup_cache()
 
     def reload_config(self):
         self.config = read_config()

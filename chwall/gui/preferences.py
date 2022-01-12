@@ -463,7 +463,7 @@ class PrefDialog(Gtk.Dialog):
             adj=Gtk.Adjustment(sleep_time, 5, 120, 1), factor=60)
         genbox.pack_start(prefbox, False, False, 0)
 
-        environments = [("gnome", "Gnome, Budgie, …"),
+        environments = [("gnome", "Gnome, Pantheon, Budgie, …"),
                         ("mate", "Mate"), ("xfce", "XFCE"),
                         ("nitrogen", _("Use Nitrogen application"))]
         prefbox = self.make_select_pref(

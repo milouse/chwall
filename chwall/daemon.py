@@ -208,8 +208,6 @@ def daemon_loop():
         pid_file = "{}/chwall_pid".format(BASE_CACHE_PATH)
         if os.path.isfile(pid_file):
             os.unlink(pid_file)
-        # Try to keep cache as clean as possible
-        cleanup_cache()
         if error_code == 0:
             logger.info("Kthxbye!")
         return error_code
@@ -242,6 +240,13 @@ def start_daemon():
         f.write(str(os.getpid()))
     logger.info(_("Starting Chwall Daemon v{version}…")
                 .format(version=__version__))
+    # Try to keep cache as clean as possible
+    deleted = cleanup_cache()
+    logger.info(gettext.ngettext(
+        "{number} cache entry has been removed.",
+        "{number} cache entries have been removed.",
+        deleted
+    ).format(number=deleted))
     sys.exit(daemon_loop())
 
 
