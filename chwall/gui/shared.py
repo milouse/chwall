@@ -117,7 +117,7 @@ class ChwallGui:
         about_dialog.set_icon_name("chwall")
         about_dialog.set_logo_icon_name("chwall")
         about_dialog.set_program_name("Chwall")
-        about_dialog.set_website("https://git.deparis.io/chwall/about")
+        about_dialog.set_website("https://git.umaneti.net/chwall/about")
         about_dialog.set_comments(_("Wallpaper Changer"))
         about_dialog.set_version(__version__)
         about_dialog.set_copyright(_("Chwall is released under the WTFPL"))
@@ -138,9 +138,7 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 0. You just DO WHAT THE FUCK YOU WANT TO.
 """)
         about_dialog.set_authors(["Étienne Deparis <etienne@depar.is>"])
-        about_dialog.set_translator_credits(
-            _("translator-credits https://translations.umaneti.net/engage/chwall/")  # noqa
-        )
+        # about_dialog.set_translator_credits(_("translator-credits"))
         about_dialog.run()
         about_dialog.destroy()
 

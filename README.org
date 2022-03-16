@@ -93,7 +93,7 @@ prefer.
 ** Code
 
 The canonical repository is located at
-[[https://git.deparis.io/chwall]]. Mirror exists on [[https://framagit.org/milouse/chwall][Framagit]] and on [[https://github.com/milouse/chwall][Github]].
+[[https://git.umaneti.net/chwall]]. Mirror exists on [[https://framagit.org/milouse/chwall][Framagit]] and on [[https://github.com/milouse/chwall][Github]].
 
 Merge request and issues are accepted on all mirrors or by mail to the
 main author.
