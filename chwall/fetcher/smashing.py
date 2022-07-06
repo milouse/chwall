@@ -28,7 +28,7 @@ def fetch_pictures(config):
         month_re = "(?P<month>[a-z]{3}-[0-9]{2})"
     size_re = "(?P<size>[0-9]+x[0-9]+)"
     file_expr = re.compile(
-        "href=\"(http://files\\.smashingmagazine\\.com/wallpapers/"
+        "href=\"(https://www\\.smashingmagazine\\.com/files/wallpapers/"
         "{month_re}/(?P<slug>[^/]+)/((?:no)?cal)/"
         "(?P=month)-(?P=slug)-(?:no)?cal-{size_re}\\.png)\" "
         "title=\"(.+) - (?P=size)\">(?P=size)<".format(
