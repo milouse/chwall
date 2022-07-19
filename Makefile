@@ -28,8 +28,7 @@ TRANSLATABLE = chwall/gui/*.py chwall/fetcher/*.py \
 .INTERMEDIATE: chwall-app.desktop $(MO_FILES)
 
 dist: $(DEST_ICONS) $(DEST_MO) chwall-app.desktop
-	python setup.py install --root=$(DESTDIR)/
-	rm -rf build chwall.egg-info
+	python setup.py install --no-compile --root=$(DESTDIR)/
 	install -d -m755 $(datarootdir)/applications
 	install -d -m755 $(datarootdir)/licenses/chwall
 	install -d -m755 $(datarootdir)/bash-completion/completions
@@ -45,7 +44,8 @@ install: uninstall dist
 
 clean:
 	find . -type d -name __pycache__ | xargs rm -rf
-	rm -rf build chwall.egg-info dist
+	rm -rf build chwall.egg-info
+	rm -f chwall-app.desktop
 
 uninstall:
 	rm -rf $(PY_SITE)/chwall $(PY_SITE)/chwall-*-py$(PY_VERSION).egg-info
