@@ -23,11 +23,11 @@ DEST_MO      = $(L10N_LANGS:%=$(datarootdir)/locale/%/LC_MESSAGES/chwall.mo)
 TRANSLATABLE = chwall/gui/*.py chwall/fetcher/*.py \
 	chwall/wallpaper.py chwall/daemon.py chwall/client.py
 
-.PHONY: clean dist install lang uninstall uplang
+.PHONY: clean dist install lang uninstall
 
 .INTERMEDIATE: chwall-app.desktop $(MO_FILES)
 
-dist: $(DEST_ICONS) $(DEST_MO) chwall-app.desktop
+dist: clean $(DEST_ICONS) $(DEST_MO) chwall-app.desktop
 	python setup.py install --no-compile --root=$(DESTDIR)/
 	install -d -m755 $(datarootdir)/applications
 	install -d -m755 $(datarootdir)/licenses/chwall
@@ -43,9 +43,12 @@ install: uninstall dist
 	gtk-update-icon-cache $(datarootdir)/icons/hicolor
 
 clean:
-	find . -type d -name __pycache__ | xargs rm -rf
+	find $(PWD) -type d -name __pycache__ -print0 | \
+		xargs -0r rm -r
+	find $(PWD) -type d -empty ! -path "*/.git/*" -print0 | \
+		xargs -0r rmdir -p --ignore-fail-on-non-empty
+	rm -f $(MO_FILES) chwall-app.desktop
 	rm -rf build chwall.egg-info
-	rm -f chwall-app.desktop
 
 uninstall:
 	rm -rf $(PY_SITE)/chwall $(PY_SITE)/chwall-*-py$(PY_VERSION).egg-info
@@ -80,16 +83,23 @@ locale/chwall.pot:
 	xgettext --language=Python --keyword=_ \
 		--copyright-holder="Chwall volunteers" \
 		--package-name=Chwall --package-version=$(VERSION) \
-		--from-code=UTF-8 --output=locale/chwall.pot $(TRANSLATABLE)
+		--msgid-bugs-address=bugs@depar.is --from-code=UTF-8 \
+		--output=locale/chwall.pot $(TRANSLATABLE)
 	sed -i -e "s/SOME DESCRIPTIVE TITLE./Chwall Translation Effort/" \
 		-e "s|Content-Type: text/plain; charset=CHARSET|Content-Type: text/plain; charset=UTF-8|" \
-		-e "s|Copyright (C) YEAR|Copyright (C) $(shell date +%Y)|" \
+		-e "s|Copyright (C) YEAR|Copyright (C) 2018-$(shell date +%Y)|" \
 		locale/chwall.pot
 
 %.po: locale/chwall.pot
 	mkdir -p $(@D)
-	msginit -l $(@:locale/%/LC_MESSAGES/chwall.po=%) \
-		--no-translator -i $< -o $@
+	[ ! -f $@ ] && \
+		msginit -l $(@:locale/%/LC_MESSAGES/chwall.po=%) \
+			--no-translator -i $< -o $@ || true
+	msgmerge --lang $(@:locale/%/LC_MESSAGES/chwall.po=%) \
+		-o $@ $@ $<
+	sed -i -e "s|Copyright (C) 2018-[0-9]*|Copyright (C) 2018-$(shell date +%Y)|" \
+		-e "s|Id-Version: Chwall [0-9.]*|Id-Version: Chwall $(VERSION)|" \
+		$@
 
 locale/%/LC_MESSAGES/chwall.mo: locale/%/LC_MESSAGES/chwall.po
 	msgfmt -o $@ $<
@@ -98,16 +108,6 @@ $(datarootdir)/locale/%/LC_MESSAGES/chwall.mo: locale/%/LC_MESSAGES/chwall.mo
 	install -D -m644 $< $@
 
 lang: $(PO_FILES)
-
-%.po~:
-	msgmerge --lang $(@:locale/%/LC_MESSAGES/chwall.po~=%) \
-		-o $@ $(@:%~=%) locale/chwall.pot
-	sed -i -e "s|Copyright (C) [0-9]*|Copyright (C) $(shell date +%Y)|" \
-		-e "s|Id-Version: Chwall [0-9.]*|Id-Version: Chwall $(VERSION)|" \
-		$@
-	cp $@ $(@:%~=%) && rm $@
-
-uplang: $(PO_FILES:%=%~)
 
 test: $(MO_FILES)
 	python -B -m unittest
