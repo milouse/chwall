@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Chwall 0.5.10\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: bugs@depar.is\n"
 "POT-Creation-Date: 2022-08-06 22:40+0200\n"
 "PO-Revision-Date: 2021-07-16 14:08+0200\n"
 "Last-Translator: Étienne Deparis <etienne@depar.is>\n"
@@ -31,11 +31,11 @@ msgstr ""
 "prendre quelques temps si vous avez beaucoup de sources activées. Merci pour "
 "votre patience."
 
-#: chwall/gui/app.py:62 chwall/gui/app.py:282 chwall/gui/icon.py:91
+#: chwall/gui/app.py:62 chwall/gui/app.py:283 chwall/gui/icon.py:91
 msgid "Previous wallpaper"
 msgstr "Fond d’écran précédent"
 
-#: chwall/gui/app.py:74 chwall/gui/app.py:278 chwall/gui/icon.py:84
+#: chwall/gui/app.py:74 chwall/gui/app.py:279 chwall/gui/icon.py:84
 msgid "Next wallpaper"
 msgstr "Fond d’écran suivant"
 
@@ -43,7 +43,7 @@ msgstr "Fond d’écran suivant"
 msgid "Stop daemon and erase pending list"
 msgstr "Arrêter le service et effacer la liste d’attente"
 
-#: chwall/gui/app.py:106 chwall/gui/app.py:286 chwall/gui/icon.py:115
+#: chwall/gui/app.py:106 chwall/gui/app.py:291 chwall/gui/icon.py:115
 msgid "Blacklist"
 msgstr "Mettre en liste noire"
 
@@ -51,11 +51,11 @@ msgstr "Mettre en liste noire"
 msgid "Current wallpaper is not managed by Chwall"
 msgstr "Le fond d’écran actuel n’est pas géré par Chwall"
 
-#: chwall/gui/app.py:136 chwall/gui/icon.py:103 chwall/gui/shared.py:76
+#: chwall/gui/app.py:136 chwall/gui/icon.py:103 chwall/gui/shared.py:74
 msgid "Already a favorite"
 msgstr "Déjà dans les favoris"
 
-#: chwall/gui/app.py:139 chwall/gui/icon.py:98
+#: chwall/gui/app.py:139 chwall/gui/app.py:287 chwall/gui/icon.py:98
 msgid "Save as favorite"
 msgstr "Enregistrer en tant que favori"
 
@@ -79,11 +79,11 @@ msgstr "Arrêter le service"
 msgid "Start daemon"
 msgstr "Démarrer le service"
 
-#: chwall/gui/app.py:270 chwall/gui/icon.py:167 chwall/gui/shared.py:123
+#: chwall/gui/app.py:271 chwall/gui/icon.py:167 chwall/gui/shared.py:121
 msgid "Wallpaper Changer"
 msgstr "Changeur de fond d’écran"
 
-#: chwall/gui/app.py:274
+#: chwall/gui/app.py:275
 msgid "Main window of the Chwall wallpaper changer"
 msgstr "Fenêtre principale du changeur de fond d’écran Chwall"
 
@@ -238,7 +238,7 @@ msgstr ""
 msgid "Empty current pending list"
 msgstr "Vider la liste d’attente courante"
 
-#: chwall/gui/preferences.py:621
+#: chwall/gui/preferences.py:621 chwall/daemon.py:246
 #, python-brace-format
 msgid "{number} cache entry has been removed."
 msgid_plural "{number} cache entries have been removed."
@@ -301,13 +301,9 @@ msgstr "Icône de statut"
 msgid "Shared background"
 msgstr "Fond d’écran partagé"
 
-#: chwall/gui/shared.py:125
+#: chwall/gui/shared.py:123
 msgid "Chwall is released under the WTFPL"
 msgstr "Chwall est publié selon les termes de la WTFPL"
-
-#: chwall/gui/shared.py:144
-msgid "translator-credits https://translations.umaneti.net/engage/chwall/"
-msgstr "Étienne Deparis https://translations.umaneti.net/engage/chwall/"
 
 #: chwall/fetcher/bing.py:46 chwall/fetcher/wikiart.py:99
 msgid "Locales"
@@ -596,7 +592,7 @@ msgstr "Signal d’extinction reçu"
 msgid "Cleaning up…"
 msgstr "Nettoyage…"
 
-#: chwall/daemon.py:243
+#: chwall/daemon.py:241
 #, python-brace-format
 msgid "Starting Chwall Daemon v{version}…"
 msgstr "Démarrage du service de Chwall v{version}…"
