@@ -1,13 +1,13 @@
 # Chwall Translation Effort
-# Copyright (C) 2022 Chwall volunteers
+# Copyright (C) 2018-2022 Chwall volunteers
 # This file is distributed under the same license as the Chwall package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Chwall 0.5.9\n"
+"Project-Id-Version: Chwall 0.5.10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-16 14:13+0200\n"
+"POT-Creation-Date: 2022-08-06 22:40+0200\n"
 "PO-Revision-Date: 2020-05-02 12:28+0000\n"
 "Last-Translator: ruko <ruko@null.net>\n"
 "Language-Team: Spanish <https://translations.umaneti.net/projects/chwall/"
