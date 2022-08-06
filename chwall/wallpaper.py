@@ -160,20 +160,22 @@ def set_gnome_wallpaper(path, where="background"):
         return prop_setting_error_str(
             "gnome", "{where} {prop}".format(where=where, prop=prop)
         )
-    p = subprocess.run(
+    # Gnome 42 introduces a new background key for dark mode. We need to check
+    # if this key is present before trying to set it. Also because we use the
+    # same function to set screensaver background, which does not have a dark
+    # mode (yet?)
+    key_list = subprocess.run(
         ["gsettings", "list-keys", "org.gnome.desktop.{}".format(where)],
-        capture_output=True, text=True)
-    err2 = 0
-    if "picture-uri-dark" in p.stdout:
-        err2 = subprocess.run(
+        capture_output=True, text=True).stdout.splitlines()
+    picture_keys = ["picture-uri"]
+    if "picture-uri-dark" in key_list:
+        picture_keys.append("picture-uri-dark")
+    for key in picture_keys:
+        err = subprocess.run(
             ["gsettings", "set", "org.gnome.desktop.{}".format(where),
-             "picture-uri-dark", "file://{}".format(path)]).returncode
-    err = subprocess.run(
-        ["gsettings", "set", "org.gnome.desktop.{}".format(where),
-         "picture-uri", "file://{}".format(path)]).returncode
-    
-    if err == 1 or err2 == 1:
-        raise ChwallWallpaperSetError(_format_prop_error("picture-uri"))
+             key, "file://{}".format(path)]).returncode
+        if err == 1:
+            raise ChwallWallpaperSetError(_format_prop_error(key))
     err = subprocess.run(
         ["gsettings", "set", "org.gnome.desktop.{}".format(where),
          "picture-options", "zoom"]).returncode
