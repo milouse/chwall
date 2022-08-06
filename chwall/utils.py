@@ -13,11 +13,13 @@ BASE_CACHE_PATH = "{}/chwall".format(xdg_cache_home)
 def get_screen_config():
     display = read_config()["general"].get("display", ":0")
     try:
-        screen_data = subprocess.run(["xrandr", "-q", "-d", display],
-                                     check=True, stdout=subprocess.PIPE)
+        screen_data = subprocess.run(
+            ["xrandr", "-q", "-d", display],
+            check=True, capture_output=True, text=True
+        )
     except subprocess.CalledProcessError:
         return (1, 0, 0, 1, display)
-    screen_info = screen_data.stdout.decode()
+    screen_info = screen_data.stdout
     s = re.match(".*, current ([0-9]+) x ([0-9]+).*", screen_info)
     if s is None:
         width = 0
@@ -30,11 +32,13 @@ def get_screen_config():
 
 def get_wall_config(path):
     try:
-        size_data = subprocess.run(["identify", "-format", "%wx%h", path],
-                                   check=True, stdout=subprocess.PIPE)
+        size_data = subprocess.run(
+            ["identify", "-format", "%wx%h", path],
+            check=True, capture_output=True, text=True
+        )
     except subprocess.CalledProcessError:
         return None
-    size = size_data.stdout.decode().split("x")
+    size = size_data.stdout.split("x")
     try:
         width = int(size[0])
         height = int(size[1])
@@ -200,13 +204,15 @@ class ServiceFileManager:
 
     def detect_systemd(self):
         try:
-            sdata = subprocess.run(["systemctl", "--version"],
-                                   check=True, stdout=subprocess.PIPE)
+            sdata = subprocess.run(
+                ["systemctl", "--version"],
+                check=True, capture_output=True, text=True
+            )
         except subprocess.CalledProcessError:
             return
         except FileNotFoundError:
             return
-        self.systemd_version = sdata.stdout.decode().split("\n")[0]
+        self.systemd_version = sdata.stdout.split("\n")[0]
 
     def systemd_service_file_exists(self, check_enabled=False):
         if check_enabled:

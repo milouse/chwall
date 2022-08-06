@@ -109,14 +109,15 @@ def build_roadmap(config):
 def set_xfce_wallpaper(path):
     if path is None:
         raise ChwallWallpaperSetError(_("No wallpaper path given"))
-    wklist = subprocess.run(["xfconf-query", "-c", "xfce4-desktop",
-                             "-l", "/backdrop"],
-                            stdout=subprocess.PIPE)
+    wklist = subprocess.run(
+        ["xfconf-query", "-c", "xfce4-desktop", "-l", "/backdrop"],
+        capture_output=True, text=True
+    )
     if wklist.returncode == 1:
         raise ChwallWallpaperSetError(
             _("Error while retrieving XFCE workspaces list")
         )
-    for line in wklist.stdout.decode().strip().split("\n"):
+    for line in wklist.stdout.strip().split("\n"):
         if not line.endswith("/last-image"):
             continue
         err = subprocess.run(["xfconf-query", "-c", "xfce4-desktop",

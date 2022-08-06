@@ -154,10 +154,12 @@ def notify_daemon_if_any(sig=signal.SIGUSR1):
 
 
 def notify_app_if_any():
-    pid_data = subprocess.run(["pgrep", "-f", "chwall.+app"],
-                              stdout=subprocess.PIPE)
+    pid_data = subprocess.run(
+        ["pgrep", "-f", "chwall.+app"],
+        capture_output=True, text=True
+    )
     try:
-        pid = int(pid_data.stdout.decode().strip())
+        pid = int(pid_data.stdout.strip())
     except ValueError:
         return False
     logger.debug(_("Sending process {pid} signal {sid}")
