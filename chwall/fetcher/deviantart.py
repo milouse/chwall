@@ -16,7 +16,7 @@ def fetch_pictures(config):
             author = item.find(
                         "{http://search.yahoo.com/mrss/}credit").text
             pic_page = item.find("link").text
-            scrap = html.fromstring(requests.get(pic_page).text)
+            scrap = html.fromstring(requests.get(pic_page or "").text)
             meta = scrap.xpath('//meta[@property="og:image"]')[0]
             pic_data = meta.attrib.get("content").split("/v1/fill/")
             pic_url = pic_data[0]

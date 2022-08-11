@@ -22,11 +22,10 @@ def get_screen_config():
     screen_info = screen_data.stdout
     s = re.match(".*, current ([0-9]+) x ([0-9]+).*", screen_info)
     if s is None:
-        width = 0
-    else:
-        width = int(s[1])
-        height = int(s[2])
-        ratio = round(width / height, 2)
+        return (1, 0, 0, 1, display)
+    width = int(s[1])
+    height = int(s[2])
+    ratio = round(width / height, 2)
     return (screen_info.count("*"), width, height, ratio, display)
 
 

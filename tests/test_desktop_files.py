@@ -89,7 +89,9 @@ class TestDesktopFiles(unittest.TestCase):
         sfm.systemd_service_file()
         self.assertEqual(mock_stdout.getvalue(), result)
 
-    def test_10_create_local_systemd_service_file_from_client(self, mock_stdout):
+    def test_10_create_local_systemd_service_file_from_client(
+            self, mock_stdout
+    ):
         with open("tests/proofs/local-systemd-unit", "r") as f:
             result = f.read().format(path=os.getcwd())
         os.environ["CHWALL_FAKE_INSTALL"] = "absent"

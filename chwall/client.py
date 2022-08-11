@@ -8,7 +8,8 @@ from xdg.BaseDirectory import xdg_data_home
 
 # chwall imports
 from chwall import __version__
-from chwall.daemon import notify_daemon_if_any, daemon_info, daemonize
+from chwall.daemon import notify_daemon_if_any, stop_daemon_if_any, \
+                          daemon_info, daemonize
 from chwall.utils import BASE_CACHE_PATH, read_config, \
                          reset_pending_list, ServiceFileManager
 from chwall.wallpaper import blacklist_wallpaper, pick_wallpaper, \
@@ -264,8 +265,7 @@ Stop the chwall daemon.
 """))
 
     def cmd_quit(self, *opts):
-        # 15 == signal.SIGTERM
-        notify_daemon_if_any(15)
+        stop_daemon_if_any()
 
     def help_empty(self):
         self._print_usage("empty")

@@ -153,6 +153,10 @@ def notify_daemon_if_any(sig=signal.SIGUSR1):
     return True
 
 
+def stop_daemon_if_any():
+    notify_daemon_if_any(signal.SIGTERM)
+
+
 def notify_app_if_any():
     pid_data = subprocess.run(
         ["pgrep", "-f", "chwall.+app"],
@@ -170,7 +174,7 @@ def notify_app_if_any():
 
 def show_notification():
     wallinfo = current_wallpaper_info()
-    if wallinfo["type"] is None or wallinfo["local-picture-path"] is None:
+    if wallinfo["type"] == "" or wallinfo["local-picture-path"] == "":
         return
     subprocess.run(["notify-send", "-a", "chwall", "-i",
                     wallinfo["local-picture-path"],

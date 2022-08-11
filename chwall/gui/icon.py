@@ -63,7 +63,7 @@ class ChwallIcon(ChwallGui):
 
         current_wall_info = Gtk.MenuItem()
         wallinfo = current_wallpaper_info()
-        if wallinfo["type"] is None:
+        if wallinfo["type"] == "":
             current_wall_info.set_label(
                 _("Current wallpaper is not managed by Chwall"))
             current_wall_info.set_sensitive(False)
@@ -93,7 +93,7 @@ class ChwallIcon(ChwallGui):
         prevbtn.connect("activate", self.on_change_wallpaper, True)
         menu.append(prevbtn)
 
-        if wallinfo["type"] is not None:
+        if wallinfo["type"] != "":
             # favorite wallpaper
             favbtn = Gtk.ImageMenuItem.new_with_label(_("Save as favorite"))
             favbtn.set_image(Gtk.Image.new_from_icon_name(

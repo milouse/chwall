@@ -41,7 +41,7 @@ def fetch_pictures(config):
         content = item.find(
             "{http://purl.org/rss/1.0/modules/content/}encoded").text
         pix_data = {}
-        for match in file_expr.findall(content):
+        for match in file_expr.findall(content or ""):
             if with_cal == "with" and match[3] == "nocal":
                 continue
             if with_cal == "without" and match[3] == "cal":
@@ -69,8 +69,8 @@ def fetch_pictures(config):
             pictures[url] = {
                 "image": url,
                 "type": "Smashing Magazine",
-                "url": pic_page + "#{slug}-{month}".format(
-                    slug=slug, month=month_id
+                "url": "{page}#{slug}-{month}".format(
+                    page=pic_page, slug=slug, month=month_id
                 ),
                 "copyright": data["title"]
             }

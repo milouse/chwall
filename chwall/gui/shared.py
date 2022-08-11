@@ -3,8 +3,9 @@ import threading
 import subprocess
 
 from chwall import __version__
-from chwall.daemon import notify_daemon_if_any, notify_app_if_any, daemon_info
-from chwall.utils import read_config, cleanup_cache
+from chwall.daemon import notify_daemon_if_any, stop_daemon_if_any, \
+    notify_app_if_any, daemon_info
+from chwall.utils import read_config
 from chwall.wallpaper import blacklist_wallpaper, pick_wallpaper, \
     favorite_wallpaper_path, favorite_wallpaper
 from chwall.gui.preferences import PrefDialog
@@ -24,6 +25,7 @@ _ = gettext.gettext
 class ChwallGui:
     def __init__(self):
         self.app = None
+        self.current_is_favorite = False
         self.reload_config()
 
     def reload_config(self):
@@ -34,8 +36,7 @@ class ChwallGui:
 
     # May be called from as a widget action, hence the variable arguments list
     def stop_daemon(self, *opts):
-        # 15 == signal.SIGTERM
-        notify_daemon_if_any(15)
+        stop_daemon_if_any()
 
     def start_in_thread_if_needed(self, function, *args):
         if self.app is None:
@@ -68,10 +69,7 @@ class ChwallGui:
 
     def on_favorite_wallpaper(self, _widget):
         if favorite_wallpaper(self.config):
-            if self.app is None:
-                return
-            self.favorite_button.set_sensitive(False)
-            self.favorite_button.set_tooltip_text(_("Already a favorite"))
+            self.current_is_favorite = True
 
     def run_chwall_component(self, _widget, component):
         def start_daemon_from_thread():
@@ -98,7 +96,8 @@ class ChwallGui:
     def is_current_wall_favorite(self, wallinfo):
         fav_path = favorite_wallpaper_path(
             wallinfo["local-picture-path"], self.config)
-        return os.path.exists(fav_path)
+        self.current_is_favorite = os.path.exists(fav_path)
+        return self.current_is_favorite
 
     def show_preferences_dialog(self, widget):
         if self.app is None:

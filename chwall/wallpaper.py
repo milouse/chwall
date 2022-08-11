@@ -500,15 +500,15 @@ def current_wallpaper_info():
     :Example:
 
     wallinfo = {
-        "remote-picture-uri": None,
-        "description": None,
-        "remote-uri": None,
-        "type": None,
-        "local-picture-path": None
+        "remote-picture-uri": "",
+        "description": "",
+        "remote-uri": "",
+        "type": "",
+        "local-picture-path": ""
     }
 
     That way, a complete dictionnary is **always** returned, and only its inner
-    value may be ``None``.
+    value may be ``""``.
 
 
     :return: current wallpaper information
@@ -516,11 +516,11 @@ def current_wallpaper_info():
     """
     curwall = []
     wallinfo = {
-        "remote-picture-uri": None,
-        "description": None,
-        "remote-uri": None,
-        "type": None,
-        "local-picture-path": None
+        "remote-picture-uri": "",
+        "description": "",
+        "remote-uri": "",
+        "type": "",
+        "local-picture-path": ""
     }
     curfile = "{}/current_wallpaper".format(BASE_CACHE_PATH)
     if not os.path.isfile(curfile):

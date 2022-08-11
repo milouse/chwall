@@ -120,7 +120,7 @@ class ChwallApp(ChwallGui):
         self.notif_reset.set_revealed(False)
         self.notif_reset.hide()
         wallinfo = current_wallpaper_info()
-        if wallinfo["type"] is None:
+        if wallinfo["type"] == "":
             self.walldesc.set_markup("<i>{}</i>".format(
                 _("Current wallpaper is not managed by Chwall")))
             self.wallpaper.set_from_icon_name(
@@ -244,6 +244,12 @@ class ChwallApp(ChwallGui):
         self.stop_daemon()
         reset_pending_list()
         self.decorate_play_pause_button(True)
+
+    def on_favorite_wallpaper(self, _widget):
+        super().on_favorite_wallpaper(_widget)
+        if self.current_is_favorite:
+            self.favorite_button.set_sensitive(False)
+            self.favorite_button.set_tooltip_text(_("Already a favorite"))
 
 
 def _build_translations_for_desktop_file(localedir):
