@@ -13,7 +13,7 @@ Terminal=false
 Type=Application
 Categories=GTK;GNOME;Utility;
 StartupNotify=false
-Actions=Next;Previous;Block;
+Actions=Next;Previous;Favorite;Block;
 
 [Desktop Action Next]
 Exec=python -m chwall.client next
@@ -28,6 +28,13 @@ Path={path}
 Name=Previous wallpaper
 Name[es]=Fondo anterior
 Name[fr]=Fond d’écran précédent
+
+[Desktop Action Favorite]
+Exec=python -m chwall.client favorite
+Path={path}
+Name=Favorite wallpaper
+Name[es]=Save as favorite
+Name[fr]=Enregistrer en tant que favori
 
 [Desktop Action Block]
 Exec=python -m chwall.client block
