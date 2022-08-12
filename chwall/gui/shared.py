@@ -6,7 +6,7 @@ from chwall import __version__
 from chwall.daemon import notify_daemon_if_any, stop_daemon_if_any, \
     notify_app_if_any, daemon_info
 from chwall.utils import read_config
-from chwall.wallpaper import blacklist_wallpaper, pick_wallpaper, \
+from chwall.wallpaper import block_wallpaper, pick_wallpaper, \
     favorite_wallpaper_path, favorite_wallpaper
 from chwall.gui.preferences import PrefDialog
 
@@ -61,11 +61,11 @@ class ChwallGui:
         else:
             self.start_in_thread_if_needed(change_wall_thread_target, direction)  # noqa
 
-    def on_blacklist_wallpaper(self, _widget):
-        def blacklist_wall_thread_target():
-            blacklist_wallpaper()
+    def on_block_wallpaper(self, _widget):
+        def block_wall_thread_target():
+            block_wallpaper()
             self.on_change_wallpaper(None, threaded=False)
-        self.start_in_thread_if_needed(blacklist_wall_thread_target)
+        self.start_in_thread_if_needed(block_wall_thread_target)
 
     def on_favorite_wallpaper(self, _widget):
         if favorite_wallpaper(self.config):

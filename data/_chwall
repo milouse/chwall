@@ -16,7 +16,7 @@ _chwall () {
     else
         local -a subcommands
         subcommands=(
-            "blacklist:Never use the current wallpaper any more and switch next"
+            "block:Never use the current wallpaper any more and switch next"
             "current:Display information about the current wallpaper"
             "empty:Empty the current pending list to force its rebuild"
             "favorite:Save a copy of the current wallpaper to not forget it"

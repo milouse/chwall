@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chwall 0.5.10\n"
 "Report-Msgid-Bugs-To: bugs@depar.is\n"
-"POT-Creation-Date: 2022-08-06 22:40+0200\n"
+"POT-Creation-Date: 2022-08-12 09:36+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -41,7 +41,7 @@ msgid "Stop daemon and erase pending list"
 msgstr ""
 
 #: chwall/gui/app.py:106 chwall/gui/app.py:297 chwall/gui/icon.py:115
-msgid "Blacklist"
+msgid "Put on block list"
 msgstr ""
 
 #: chwall/gui/app.py:125 chwall/gui/app.py:130 chwall/gui/icon.py:68
@@ -425,7 +425,7 @@ msgstr ""
 
 #: chwall/wallpaper.py:93
 #, python-brace-format
-msgid "Remove {picture} as it's in blacklist"
+msgid "Remove {picture} as it's in block list"
 msgstr ""
 
 #: chwall/wallpaper.py:111 chwall/wallpaper.py:142 chwall/wallpaper.py:157
@@ -630,7 +630,7 @@ msgstr ""
 #: chwall/client.py:213
 msgid ""
 "\n"
-"Add the current wallpaper to the blacklist to avoid it to be shown ever "
+"Add the current wallpaper on the block list to avoid it to be shown ever "
 "again\n"
 "and switch to the next wallpaper.\n"
 msgstr ""

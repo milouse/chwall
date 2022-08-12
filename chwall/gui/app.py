@@ -103,8 +103,8 @@ class ChwallApp(ChwallGui):
 
         button = Gtk.Button.new_from_icon_name(
             "edit-delete", Gtk.IconSize.LARGE_TOOLBAR)
-        button.set_tooltip_text(_("Blacklist"))
-        button.connect("clicked", self.on_blacklist_wallpaper)
+        button.set_tooltip_text(_("Put on block list"))
+        button.connect("clicked", self.on_block_wallpaper)
         control_box.pack_end(button)
 
         app_box.pack_end(control_box, False, False, 0)
@@ -259,7 +259,7 @@ def _build_translations_for_desktop_file(localedir):
         "next_name": [],
         "previous_name": [],
         "favorite_name": [],
-        "blacklist_name": []
+        "block_name": []
     }
     for lng in sorted(os.listdir(localedir)):
         if lng in ["chwall.pot", "en"]:
@@ -291,10 +291,10 @@ def _build_translations_for_desktop_file(localedir):
             "Name[{lang}]={key}".format(
                 lang=lng,
                 key=_("Save as favorite")))
-        lng_attrs["blacklist_name"].append(
+        lng_attrs["block_name"].append(
             "Name[{lang}]={key}".format(
                 lang=lng,
-                key=_("Blacklist")))
+                key=_("Put on block list")))
     return lng_attrs
 
 
@@ -327,13 +327,13 @@ Terminal=false
 Type=Application
 Categories=GTK;GNOME;Utility;
 StartupNotify=false
-Actions=Next;Previous;Favorite;Blacklist;
+Actions=Next;Previous;Favorite;Block;
 """.format(app_exec=get_binary_path("app", "xdg"))
 
     actions = _build_action_block("next", lng_attrs) \
         + _build_action_block("previous", lng_attrs) \
         + _build_action_block("favorite", lng_attrs) \
-        + _build_action_block("blacklist", lng_attrs)
+        + _build_action_block("block", lng_attrs)
     df_content += "\n".join(actions)
 
     if out == "print":

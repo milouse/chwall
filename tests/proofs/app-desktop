@@ -12,7 +12,7 @@ Terminal=false
 Type=Application
 Categories=GTK;GNOME;Utility;
 StartupNotify=false
-Actions=Next;Previous;Blacklist;
+Actions=Next;Previous;Block;
 
 [Desktop Action Next]
 Exec=/usr/bin/chwall next
@@ -26,8 +26,8 @@ Name=Previous wallpaper
 Name[es]=Fondo anterior
 Name[fr]=Fond d’écran précédent
 
-[Desktop Action Blacklist]
-Exec=/usr/bin/chwall blacklist
-Name=Blacklist wallpaper
-Name[es]=Poner en lista negra
-Name[fr]=Mettre en liste noire
+[Desktop Action Block]
+Exec=/usr/bin/chwall block
+Name=Block wallpaper
+Name[es]=Put on block list
+Name[fr]=Bloquer ce fond d’écran

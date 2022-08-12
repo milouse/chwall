@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chwall 0.5.10\n"
 "Report-Msgid-Bugs-To: bugs@depar.is\n"
-"POT-Creation-Date: 2022-08-06 22:40+0200\n"
-"PO-Revision-Date: 2021-07-16 14:08+0200\n"
+"POT-Creation-Date: 2022-08-12 09:36+0200\n"
+"PO-Revision-Date: 2022-08-12 09:38+0200\n"
 "Last-Translator: Étienne Deparis <etienne@depar.is>\n"
 "Language-Team: none\n"
 "Language: fr\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 3.1\n"
 
 #: chwall/gui/app.py:39 chwall/gui/app.py:195 chwall/gui/preferences.py:113
 msgid "Preferences"
@@ -44,8 +44,8 @@ msgid "Stop daemon and erase pending list"
 msgstr "Arrêter le service et effacer la liste d’attente"
 
 #: chwall/gui/app.py:106 chwall/gui/app.py:297 chwall/gui/icon.py:115
-msgid "Blacklist"
-msgstr "Mettre en liste noire"
+msgid "Put on block list"
+msgstr "Bloquer ce fond d’écran"
 
 #: chwall/gui/app.py:125 chwall/gui/app.py:130 chwall/gui/icon.py:68
 msgid "Current wallpaper is not managed by Chwall"
@@ -454,8 +454,8 @@ msgstr "Passe au fournisseur d’images suivant ou quitte"
 
 #: chwall/wallpaper.py:93
 #, python-brace-format
-msgid "Remove {picture} as it's in blacklist"
-msgstr "Supprime {picture} comme elle est dans la liste noire"
+msgid "Remove {picture} as it's in block list"
+msgstr "Supprime {picture} comme elle est sur la liste de blocage"
 
 #: chwall/wallpaper.py:111 chwall/wallpaper.py:142 chwall/wallpaper.py:157
 #: chwall/wallpaper.py:188 chwall/wallpaper.py:214
@@ -700,12 +700,13 @@ msgstr ""
 #: chwall/client.py:213
 msgid ""
 "\n"
-"Add the current wallpaper to the blacklist to avoid it to be shown ever "
+"Add the current wallpaper on the block list to avoid it to be shown ever "
 "again\n"
 "and switch to the next wallpaper.\n"
 msgstr ""
 "\n"
-"Ajoute le fond d’écran courant dans la liste noire afin de ne plus jamais\n"
+"Ajoute le fond d’écran courant sur la liste de blocage afin de ne plus "
+"jamais\n"
 "l’afficher à nouveau, puis passe au fond d’écran suivant.\n"
 
 #: chwall/client.py:224

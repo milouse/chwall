@@ -110,12 +110,11 @@ class ChwallIcon(ChwallGui):
                 favbtn.set_sensitive(False)
             menu.append(favbtn)
 
-            # blacklist wallpaper
-            blackbtn = Gtk.ImageMenuItem.new_from_stock(Gtk.STOCK_DELETE)
-            blackbtn.set_label(_("Blacklist"))
-            # blackbtn = Gtk.MenuItem.new_with_label(_("Blacklist"))
-            blackbtn.connect("activate", self.on_blacklist_wallpaper)
-            menu.append(blackbtn)
+            # Exclude wallpaper
+            blockbtn = Gtk.ImageMenuItem.new_from_stock(Gtk.STOCK_DELETE)
+            blockbtn.set_label(_("Put on block list"))
+            blockbtn.connect("activate", self.on_block_wallpaper)
+            menu.append(blockbtn)
 
         sep = Gtk.SeparatorMenuItem()
         menu.append(sep)
