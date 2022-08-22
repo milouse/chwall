@@ -103,8 +103,8 @@ class ChwallApp(ChwallGui):
 
         button = Gtk.Button.new_from_icon_name(
             "edit-delete", Gtk.IconSize.LARGE_TOOLBAR)
-        button.set_tooltip_text(_("Blacklist"))
-        button.connect("clicked", self.on_blacklist_wallpaper)
+        button.set_tooltip_text(_("Put on block list"))
+        button.connect("clicked", self.on_block_wallpaper)
         control_box.pack_end(button)
 
         app_box.pack_end(control_box, False, False, 0)
@@ -120,7 +120,7 @@ class ChwallApp(ChwallGui):
         self.notif_reset.set_revealed(False)
         self.notif_reset.hide()
         wallinfo = current_wallpaper_info()
-        if wallinfo["type"] is None:
+        if wallinfo["type"] == "":
             self.walldesc.set_markup("<i>{}</i>".format(
                 _("Current wallpaper is not managed by Chwall")))
             self.wallpaper.set_from_icon_name(
@@ -245,6 +245,12 @@ class ChwallApp(ChwallGui):
         reset_pending_list()
         self.decorate_play_pause_button(True)
 
+    def on_favorite_wallpaper(self, _widget):
+        super().on_favorite_wallpaper(_widget)
+        if self.current_is_favorite:
+            self.favorite_button.set_sensitive(False)
+            self.favorite_button.set_tooltip_text(_("Already a favorite"))
+
 
 def _build_translations_for_desktop_file(localedir):
     lng_attrs = {
@@ -253,7 +259,7 @@ def _build_translations_for_desktop_file(localedir):
         "next_name": [],
         "previous_name": [],
         "favorite_name": [],
-        "blacklist_name": []
+        "block_name": []
     }
     for lng in sorted(os.listdir(localedir)):
         if lng in ["chwall.pot", "en"]:
@@ -285,10 +291,10 @@ def _build_translations_for_desktop_file(localedir):
             "Name[{lang}]={key}".format(
                 lang=lng,
                 key=_("Save as favorite")))
-        lng_attrs["blacklist_name"].append(
+        lng_attrs["block_name"].append(
             "Name[{lang}]={key}".format(
                 lang=lng,
-                key=_("Blacklist")))
+                key=_("Put on block list")))
     return lng_attrs
 
 
@@ -321,13 +327,13 @@ Terminal=false
 Type=Application
 Categories=GTK;GNOME;Utility;
 StartupNotify=false
-Actions=Next;Previous;Favorite;Blacklist;
+Actions=Next;Previous;Favorite;Block;
 """.format(app_exec=get_binary_path("app", "xdg"))
 
     actions = _build_action_block("next", lng_attrs) \
         + _build_action_block("previous", lng_attrs) \
         + _build_action_block("favorite", lng_attrs) \
-        + _build_action_block("blacklist", lng_attrs)
+        + _build_action_block("block", lng_attrs)
     df_content += "\n".join(actions)
 
     if out == "print":

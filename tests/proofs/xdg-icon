@@ -7,5 +7,5 @@ Terminal=false
 Type=Application
 X-MATE-Autostart-enabled=true
 X-GNOME-Autostart-enabled=false
-NotShowIn=GNOME
+NotShowIn=GNOME;Pantheon;
 Categories=GTK;TrayIcon;Utility;

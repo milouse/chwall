@@ -19,6 +19,7 @@ def fetch_pictures(config):
         pic_page = item.find("link").text
 
         # Bigger is best
+        pic_url = None
         for size in ["o", "k", "h"]:
             scrap = html.fromstring(requests.get(
                 "{}sizes/{}/".format(pic_page, size)).text)
@@ -26,6 +27,8 @@ def fetch_pictures(config):
             pic_url = pic_data.attrib.get("src")
             if re.search("_{}\\.jpg$".format(size), pic_url) is not None:
                 break
+        if pic_url is None:
+            continue
 
         pictures[pic_url] = {
             "image": pic_url,

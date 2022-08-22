@@ -80,17 +80,17 @@ def build_wallpapers_list(config):
 def filter_wallpapers_list(collecs):
     all_pics = list(collecs.keys())
     try:
-        with open("{}/blacklist.yml"
+        with open("{}/block_list.yml"
                   .format(BASE_CACHE_PATH), "r") as f:
-            blacklist = yaml.safe_load(f) or []
+            block_list = yaml.safe_load(f) or []
     except FileNotFoundError:
-        blacklist = []
+        block_list = []
     all_pics_copy = all_pics.copy()
     for p in all_pics_copy:
-        if p not in blacklist:
+        if p not in block_list:
             continue
         logger.warning(
-            _("Remove {picture} as it's in blacklist").format(picture=p)
+            _("Remove {picture} as it's in block list").format(picture=p)
         )
         all_pics.remove(p)
         collecs.pop(p)
@@ -109,14 +109,15 @@ def build_roadmap(config):
 def set_xfce_wallpaper(path):
     if path is None:
         raise ChwallWallpaperSetError(_("No wallpaper path given"))
-    wklist = subprocess.run(["xfconf-query", "-c", "xfce4-desktop",
-                             "-l", "/backdrop"],
-                            stdout=subprocess.PIPE)
+    wklist = subprocess.run(
+        ["xfconf-query", "-c", "xfce4-desktop", "-l", "/backdrop"],
+        capture_output=True, text=True
+    )
     if wklist.returncode == 1:
         raise ChwallWallpaperSetError(
             _("Error while retrieving XFCE workspaces list")
         )
-    for line in wklist.stdout.decode().strip().split("\n"):
+    for line in wklist.stdout.strip().split("\n"):
         if not line.endswith("/last-image"):
             continue
         err = subprocess.run(["xfconf-query", "-c", "xfce4-desktop",
@@ -159,12 +160,22 @@ def set_gnome_wallpaper(path, where="background"):
         return prop_setting_error_str(
             "gnome", "{where} {prop}".format(where=where, prop=prop)
         )
-
-    err = subprocess.run(
-        ["gsettings", "set", "org.gnome.desktop.{}".format(where),
-         "picture-uri", "file://{}".format(path)]).returncode
-    if err == 1:
-        raise ChwallWallpaperSetError(_format_prop_error("picture-uri"))
+    # Gnome 42 introduces a new background key for dark mode. We need to check
+    # if this key is present before trying to set it. Also because we use the
+    # same function to set screensaver background, which does not have a dark
+    # mode (yet?)
+    key_list = subprocess.run(
+        ["gsettings", "list-keys", "org.gnome.desktop.{}".format(where)],
+        capture_output=True, text=True).stdout.splitlines()
+    picture_keys = ["picture-uri"]
+    if "picture-uri-dark" in key_list:
+        picture_keys.append("picture-uri-dark")
+    for key in picture_keys:
+        err = subprocess.run(
+            ["gsettings", "set", "org.gnome.desktop.{}".format(where),
+             key, "file://{}".format(path)]).returncode
+        if err == 1:
+            raise ChwallWallpaperSetError(_format_prop_error(key))
     err = subprocess.run(
         ["gsettings", "set", "org.gnome.desktop.{}".format(where),
          "picture-options", "zoom"]).returncode
@@ -303,9 +314,9 @@ def fetch_wallpaper(wp_data):
     if is_broken_picture(pic_file):
         # Remove useless picture
         os.unlink(pic_file)
-        # Blacklist it
+        # Block it
         _write_current_wallpaper_info(current_wall)
-        blacklist_wallpaper()
+        block_wallpaper()
         # Pick next
         return "next", None
 
@@ -392,22 +403,22 @@ def remove_wallpaper_from_roadmap(wp):
                   default_flow_style=False)
 
 
-def blacklist_wallpaper():
+def block_wallpaper():
     try:
-        with open("{}/blacklist.yml"
+        with open("{}/block_list.yml"
                   .format(BASE_CACHE_PATH), "r") as f:
-            blacklist = yaml.safe_load(f) or []
+            block_list = yaml.safe_load(f) or []
     except FileNotFoundError:
-        blacklist = []
+        block_list = []
     with open("{}/current_wallpaper"
               .format(BASE_CACHE_PATH), "r") as f:
-        blacklisted_pix = f.readlines()[0].strip()
-    blacklist.append(blacklisted_pix)
-    with open("{}/blacklist.yml"
+        blocked_pix = f.readlines()[0].strip()
+    block_list.append(blocked_pix)
+    with open("{}/block_list.yml"
               .format(BASE_CACHE_PATH), "w") as f:
-        yaml.dump(blacklist, f, explicit_start=True,
+        yaml.dump(block_list, f, explicit_start=True,
                   default_flow_style=False)
-    remove_wallpaper_from_roadmap(blacklisted_pix)
+    remove_wallpaper_from_roadmap(blocked_pix)
 
 
 # This function may raise a PermissionError
@@ -489,15 +500,15 @@ def current_wallpaper_info():
     :Example:
 
     wallinfo = {
-        "remote-picture-uri": None,
-        "description": None,
-        "remote-uri": None,
-        "type": None,
-        "local-picture-path": None
+        "remote-picture-uri": "",
+        "description": "",
+        "remote-uri": "",
+        "type": "",
+        "local-picture-path": ""
     }
 
     That way, a complete dictionnary is **always** returned, and only its inner
-    value may be ``None``.
+    value may be ``""``.
 
 
     :return: current wallpaper information
@@ -505,11 +516,11 @@ def current_wallpaper_info():
     """
     curwall = []
     wallinfo = {
-        "remote-picture-uri": None,
-        "description": None,
-        "remote-uri": None,
-        "type": None,
-        "local-picture-path": None
+        "remote-picture-uri": "",
+        "description": "",
+        "remote-uri": "",
+        "type": "",
+        "local-picture-path": ""
     }
     curfile = "{}/current_wallpaper".format(BASE_CACHE_PATH)
     if not os.path.isfile(curfile):

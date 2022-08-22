@@ -8,10 +8,11 @@ from xdg.BaseDirectory import xdg_data_home
 
 # chwall imports
 from chwall import __version__
-from chwall.daemon import notify_daemon_if_any, daemon_info, daemonize
+from chwall.daemon import notify_daemon_if_any, stop_daemon_if_any, \
+                          daemon_info, daemonize
 from chwall.utils import BASE_CACHE_PATH, read_config, \
                          reset_pending_list, ServiceFileManager
-from chwall.wallpaper import blacklist_wallpaper, pick_wallpaper, \
+from chwall.wallpaper import block_wallpaper, pick_wallpaper, \
                              favorite_wallpaper
 from chwall.gui.app import generate_desktop_file
 from chwall.gui.preferences import PrefDialog
@@ -207,15 +208,15 @@ using the best dedicated tool for it (web browser, picture viewer...).
             if url != "":
                 subprocess.run(["gio", "open", url])
 
-    def help_blacklist(self):
-        self._print_usage("blacklist")
+    def help_block(self):
+        self._print_usage("block")
         print(_("""
-Add the current wallpaper to the blacklist to avoid it to be shown ever again
+Add the current wallpaper on the block list to avoid it to be shown ever again
 and switch to the next wallpaper.
 """))
 
-    def cmd_blacklist(self, *opts):
-        blacklist_wallpaper()
+    def cmd_block(self, *opts):
+        block_wallpaper()
         self.cmd_next()
 
     def help_favorite(self):
@@ -264,8 +265,7 @@ Stop the chwall daemon.
 """))
 
     def cmd_quit(self, *opts):
-        # 15 == signal.SIGTERM
-        notify_daemon_if_any(15)
+        stop_daemon_if_any()
 
     def help_empty(self):
         self._print_usage("empty")
