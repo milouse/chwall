@@ -1,13 +1,13 @@
 # Chwall Translation Effort
-# Copyright (C) 2018-2022 Chwall volunteers
+# Copyright (C) 2018-2023 Chwall volunteers
 # This file is distributed under the same license as the Chwall package.
 # Automatically generated, 2019.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Chwall 0.5.10\n"
+"Project-Id-Version: Chwall 0.5.11\n"
 "Report-Msgid-Bugs-To: bugs@depar.is\n"
-"POT-Creation-Date: 2022-08-12 09:36+0200\n"
+"POT-Creation-Date: 2023-01-01 15:29+0100\n"
 "PO-Revision-Date: 2022-08-12 09:38+0200\n"
 "Last-Translator: Étienne Deparis <etienne@depar.is>\n"
 "Language-Team: none\n"
