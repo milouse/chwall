@@ -46,10 +46,12 @@ class ChwallApp(ChwallGui):
         self.notif_reset = Gtk.InfoBar()
         self.notif_reset.set_message_type(Gtk.MessageType.WARNING)
         notif_box = self.notif_reset.get_content_area()
-        notif_box.add(
-            Gtk.Label(label=_("Wallpapers list may be built again. It "
-                              "may take a long time if you have a lot "
-                              "of sources enabled. Please be patient.")))
+        notif_label = Gtk.Label()
+        notif_label.set_text(
+            _("Wallpapers list may be built again. It may take a long time "
+              "if you have a lot of sources enabled. Please be patient.")
+        )
+        notif_box.add(notif_label)
         app_box.pack_start(self.notif_reset, False, False, 0)
 
         self.wallpaper = Gtk.Image()

@@ -177,9 +177,12 @@ class PrefDialog(Gtk.Dialog):
             elif options["widget"] == "text":
                 prefbox = self.make_text_pref(fetcher_name, opt, label)
             elif options["widget"] == "number":
+                steps = Gtk.Adjustment(
+                    value=(defval or 0), lower=0, upper=100000,
+                    step_increment=1)
                 prefbox = self.make_number_pref(
-                    fetcher_name, opt, label,
-                    adj=Gtk.Adjustment(defval or 0, 0, 100000, 1))
+                    fetcher_name, opt, label, adj=steps
+                )
             elif options["widget"] == "list":
                 prefbox = self.make_list_pref(
                     fetcher_name, opt, label, default=defval)
@@ -203,7 +206,8 @@ class PrefDialog(Gtk.Dialog):
 
     def make_fetcher_toggle_pref(self, fetcher, fprefs):
         prefbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        label = Gtk.Label(label=_("Enable"))
+        label = Gtk.Label()
+        label.set_text(_("Enable"))
         prefbox.pack_start(label, False, False, 10)
         button = Gtk.Switch()
         button.set_active(fetcher in self.config["general"]["sources"])
@@ -222,7 +226,8 @@ class PrefDialog(Gtk.Dialog):
 
     def make_prefbox_with_label(self, label):
         prefbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        preflabel = Gtk.Label(label)
+        preflabel = Gtk.Label()
+        preflabel.set_text(label)
         prefbox.pack_start(preflabel, False, False, 10)
         return prefbox
 
@@ -298,7 +303,12 @@ class PrefDialog(Gtk.Dialog):
         if adj is not None:
             button.set_adjustment(adj)
         elif current_value is not None:
-            button.set_adjustment(Gtk.Adjustment(current_value, 0, 100000, 1))
+            button.set_adjustment(
+                Gtk.Adjustment(
+                    value=current_value, lower=0, upper=100000,
+                    step_increment=1
+                )
+            )
         button.set_numeric(True)
         button.set_update_policy(Gtk.SpinButtonUpdatePolicy.IF_VALID)
 
@@ -458,9 +468,12 @@ class PrefDialog(Gtk.Dialog):
         genbox.pack_start(prefbox, False, False, 0)
 
         sleep_time = int(self.config["general"]["sleep"] / 60)
+        steps = Gtk.Adjustment(
+            value=sleep_time, lower=5, upper=120,
+            step_increment=1)
         prefbox = self.make_number_pref(
             "general", "sleep", _("Time between each wallpaper change"),
-            adj=Gtk.Adjustment(sleep_time, 5, 120, 1), factor=60)
+            adj=steps, factor=60)
         genbox.pack_start(prefbox, False, False, 0)
 
         environments = [("gnome", "Gnome, Pantheon, Budgie, …"),
