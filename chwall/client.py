@@ -39,7 +39,7 @@ class ChwallClient:
         self.argv = opts
         if len(self.argv) > 0 and self._run():
             sys.exit()
-        self.cmd_help("__from_error__")
+        self.cmd_help(stderr=True)
         sys.exit(1)
 
     def _parse_argv(self):
@@ -86,7 +86,7 @@ class ChwallClient:
         # sooner when something goes wrong
         return True
 
-    def cmd_version(self, *opts):
+    def cmd_version(self):
         print(__version__)
 
     def _print_usage(self, *subcmd):
@@ -105,9 +105,9 @@ class ChwallClient:
 Sadly, no specific help message for this subcommand yet.
 """))
 
-    def cmd_help(self, *opts):
+    def cmd_help(self, stderr=False):
         out = sys.stdout
-        if len(opts) != 0 and opts[0] == "__from_error__":
+        if stderr:
             out = sys.stderr
         print(_("USAGE"), file=out)
         print("       chwall <command>", file=out)
@@ -127,10 +127,10 @@ If ‘write’ is passed as second parameter, the resulting systemd service file
 will be saved in .config/systemd/user/
 """))
 
-    def cmd_systemd(self, *opts):
+    def cmd_systemd(self, subcmd="print"):
         sfm = ServiceFileManager()
         write = False
-        if len(opts) != 0 and opts[0] == "write":
+        if subcmd == "write":
             write = True
         sfm.systemd_service_file(write)
 
@@ -144,17 +144,14 @@ If ‘write’ is passed as second parameter, the resulting desktop file
 will be saved in .local/share/applications/
 """))
 
-    def cmd_desktop(self, *opts):
-        out = "print"
-        if len(opts) >= 1:
-            if opts[0] == "write":
-                out = os.path.join(xdg_data_home, "applications",
-                                   "chwall-app.desktop")
-            else:
-                out = opts[0].strip()
-        if len(opts) == 2:
-            localedir = opts[1]
-        else:
+    def cmd_desktop(self, out="print", localedir=None):
+        if out == "write":
+            out = os.path.join(
+                xdg_data_home, "applications", "chwall-app.desktop"
+            )
+        elif out != "print":
+            out = out.strip()
+        if localedir is None:
             localedir = gettext.bindtextdomain("chwall")
         generate_desktop_file(localedir, out)
 
@@ -164,7 +161,7 @@ will be saved in .local/share/applications/
 Directly open the chwall preferences window.
 """))
 
-    def cmd_options(self, *opts):
+    def cmd_options(self):
         prefwin = PrefDialog(None, 0)
         prefwin.run()
         prefwin.destroy()
@@ -177,13 +174,11 @@ Detach from terminal and start either the main app or the system tray icon.
 By default, this command will start the main app if no argument is given.
 """))
 
-    def cmd_detach(self, *opts):
-        if len(opts) != 1 or opts[0] == "":
-            opts = ["app"]
-        elif opts[0] not in ["app", "icon"]:
+    def cmd_detach(self, program="app"):
+        if program not in ["app", "icon"]:
             sys.exit(1)
         daemonize()
-        cmd = "chwall-{}".format(opts[0])
+        cmd = "chwall-{}".format(program)
         os.execl("/usr/bin/{}".format(cmd), cmd)
 
     def help_status(self):
@@ -196,17 +191,19 @@ If the optional ‘open’ keyword is given, the original resource will be opene
 using the best dedicated tool for it (web browser, picture viewer...).
 """))
 
-    def cmd_status(self, *opts):
+    def cmd_status(self, subcmd="print"):
         with open("{}/current_wallpaper"
                   .format(BASE_CACHE_PATH), "r") as f:
             infos = f.readlines()[1:]
         print("".join(infos))
         dinfo = daemon_info()
         print(dinfo["last-change-label"])
-        if len(opts) != 0 and opts[0] == "open" and len(infos) >= 2:
-            url = infos[1].strip()
-            if url != "":
-                subprocess.run(["gio", "open", url])
+        if len(wallinfo) < 2 or subcmd != "open":
+            return
+        url = infos[1].strip()
+        if url == "":
+            return
+        subprocess.run(["gio", "open", url])
 
     def help_block(self):
         self._print_usage("block")
@@ -215,7 +212,7 @@ Add the current wallpaper on the block list to avoid it to be shown ever again
 and switch to the next wallpaper.
 """))
 
-    def cmd_block(self, *opts):
+    def cmd_block(self):
         block_wallpaper()
         self.cmd_next()
 
@@ -226,7 +223,7 @@ Save a copy of the current wallpaper to not forget it and display it again
 later.
 """))
 
-    def cmd_favorite(self, *opts):
+    def cmd_favorite(self):
         favorite_wallpaper(read_config())
 
     def _pick_wall(self, direction=False):
@@ -246,7 +243,7 @@ This command may be used, even if the daemon is not started to manually change
 the wallpaper.
 """))
 
-    def cmd_next(self, *opts):
+    def cmd_next(self):
         self._pick_wall()
 
     def help_previous(self):
@@ -255,7 +252,7 @@ the wallpaper.
 Switch to the previous wallpaper.
 """))
 
-    def cmd_previous(self, *opts):
+    def cmd_previous(self):
         self._pick_wall(True)
 
     def help_quit(self):
@@ -264,7 +261,7 @@ Switch to the previous wallpaper.
 Stop the chwall daemon.
 """))
 
-    def cmd_quit(self, *opts):
+    def cmd_quit(self):
         stop_daemon_if_any()
 
     def help_empty(self):
@@ -274,7 +271,7 @@ Empty the current pending list to force chwall to fetch a new wallpapers list
 the next time it will change.
 """))
 
-    def cmd_empty(self, *opts):
+    def cmd_empty(self):
         reset_pending_list()
 
     def _road_map(self):
@@ -295,7 +292,7 @@ Display the last displayed wallpapers. The most recent one is at the bottom.
 This command display only the upstream url of each wallpaper.
 """))
 
-    def cmd_history(self, *opts):
+    def cmd_history(self):
         data = self._road_map()
         print("\n".join(data["history"]))
 
@@ -308,7 +305,7 @@ at the top of the list.
 This command display only the upstream url of each wallpaper.
 """))
 
-    def cmd_pending(self, *opts):
+    def cmd_pending(self):
         data = self._road_map()
         print("\n".join(data["pictures"]))
 
