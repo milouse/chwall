@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Chwall 0.5.11\n"
+"Project-Id-Version: Chwall 0.5.12\n"
 "Report-Msgid-Bugs-To: bugs@depar.is\n"
-"POT-Creation-Date: 2023-01-01 15:29+0100\n"
+"POT-Creation-Date: 2023-03-22 12:20+0100\n"
 "PO-Revision-Date: 2022-08-12 09:38+0200\n"
 "Last-Translator: Étienne Deparis <etienne@depar.is>\n"
 "Language-Team: none\n"
@@ -48,6 +48,7 @@ msgid "Put on block list"
 msgstr "Bloquer ce fond d’écran"
 
 #: chwall/gui/app.py:125 chwall/gui/app.py:130 chwall/gui/icon.py:68
+#: chwall/client.py:197
 msgid "Current wallpaper is not managed by Chwall"
 msgstr "Le fond d’écran actuel n’est pas géré par Chwall"
 
@@ -309,7 +310,7 @@ msgstr "Chwall est publié selon les termes de la WTFPL"
 msgid "Locales"
 msgstr "Langues"
 
-#: chwall/fetcher/local.py:39
+#: chwall/fetcher/local.py:39 chwall/client.py:201
 msgid "Local wallpaper"
 msgstr "Fond d’écran local"
 
@@ -656,7 +657,7 @@ msgstr ""
 "Si ‘write’ est passé en second paramètre, le lanceur résultant sera\n"
 "enregistré sous .local/share/applications/\n"
 
-#: chwall/client.py:163
+#: chwall/client.py:160
 msgid ""
 "\n"
 "Directly open the chwall preferences window.\n"
@@ -664,7 +665,7 @@ msgstr ""
 "\n"
 "Ouvre directement la fenêtre des préférences de chwall.\n"
 
-#: chwall/client.py:174
+#: chwall/client.py:171
 msgid ""
 "\n"
 "Detach from terminal and start either the main app or the system tray icon.\n"
@@ -679,7 +680,7 @@ msgstr ""
 "argument\n"
 "n’est donné.\n"
 
-#: chwall/client.py:192
+#: chwall/client.py:187
 msgid ""
 "\n"
 "Display the current wallpaper information.\n"
@@ -697,7 +698,7 @@ msgstr ""
 "visionneuse\n"
 "d’images…).\n"
 
-#: chwall/client.py:213
+#: chwall/client.py:222
 msgid ""
 "\n"
 "Add the current wallpaper on the block list to avoid it to be shown ever "
@@ -709,7 +710,7 @@ msgstr ""
 "jamais\n"
 "l’afficher à nouveau, puis passe au fond d’écran suivant.\n"
 
-#: chwall/client.py:224
+#: chwall/client.py:233
 msgid ""
 "\n"
 "Save a copy of the current wallpaper to not forget it and display it again\n"
@@ -719,13 +720,13 @@ msgstr ""
 "Enregistre une copie du fond d’écran actuel pour ne pas l’oublier et le\n"
 "ré-afficher à nouveau plus tard.\n"
 
-#: chwall/client.py:234
+#: chwall/client.py:243
 msgid "Unable to pick wallpaper this time. Please, try again."
 msgstr ""
 "Impossible de récupérer un fond d’écran pour cette fois. Merci de bien "
 "vouloir réessayer."
 
-#: chwall/client.py:242
+#: chwall/client.py:251
 msgid ""
 "\n"
 "Switch to the next wallpaper.\n"
@@ -741,7 +742,7 @@ msgstr ""
 "pour\n"
 "manuellement changer de fond d’écran.\n"
 
-#: chwall/client.py:254
+#: chwall/client.py:263
 msgid ""
 "\n"
 "Switch to the previous wallpaper.\n"
@@ -749,7 +750,7 @@ msgstr ""
 "\n"
 "Passe au fond d’écran suivant.\n"
 
-#: chwall/client.py:263
+#: chwall/client.py:272
 msgid ""
 "\n"
 "Stop the chwall daemon.\n"
@@ -757,7 +758,7 @@ msgstr ""
 "\n"
 "Arrêter le service de Chwall.\n"
 
-#: chwall/client.py:272
+#: chwall/client.py:281
 msgid ""
 "\n"
 "Empty the current pending list to force chwall to fetch a new wallpapers "
@@ -769,11 +770,11 @@ msgstr ""
 "nouvelle\n"
 "liste lors du prochain changement.\n"
 
-#: chwall/client.py:283
+#: chwall/client.py:292
 msgid "No roadmap has been created yet"
 msgstr "Aucune liste d’attente n’a encore été définie"
 
-#: chwall/client.py:292
+#: chwall/client.py:301
 msgid ""
 "\n"
 "Display the last displayed wallpapers. The most recent one is at the "
@@ -788,7 +789,7 @@ msgstr ""
 "Cette commande renvoie simplement la liste des urls d’origine de chaque\n"
 "fond d’écran.\n"
 
-#: chwall/client.py:304
+#: chwall/client.py:313
 msgid ""
 "\n"
 "Display the next wallpapers, which will be shown in the future. The next one "
