@@ -13,7 +13,7 @@ from chwall.daemon import notify_daemon_if_any, stop_daemon_if_any, \
 from chwall.utils import BASE_CACHE_PATH, read_config, \
                          reset_pending_list, ServiceFileManager
 from chwall.wallpaper import block_wallpaper, pick_wallpaper, \
-                             favorite_wallpaper
+                             favorite_wallpaper, current_wallpaper_info
 from chwall.gui.app import generate_desktop_file
 from chwall.gui.preferences import PrefDialog
 
@@ -192,17 +192,23 @@ using the best dedicated tool for it (web browser, picture viewer...).
 """))
 
     def cmd_status(self, subcmd="print"):
-        with open("{}/current_wallpaper"
-                  .format(BASE_CACHE_PATH), "r") as f:
-            infos = f.readlines()[1:]
-        print("".join(infos))
+        wallinfo = current_wallpaper_info()
+        if wallinfo["type"] == "":
+            print(_("Current wallpaper is not managed by Chwall"))
+            return
+        if wallinfo["type"] == "local":
+            print(" ".join([
+                _("Local wallpaper"),
+                wallinfo["local-picture-path"]
+            ]))
+        else:
+            print(wallinfo["description"])
+            print(wallinfo["remote-uri"])
         dinfo = daemon_info()
         print(dinfo["last-change-label"])
         if len(wallinfo) < 2 or subcmd != "open":
             return
-        url = infos[1].strip()
-        if url == "":
-            return
+        url = wallinfo["remote-uri"]
         subprocess.run(["gio", "open", url])
 
     def help_block(self):
