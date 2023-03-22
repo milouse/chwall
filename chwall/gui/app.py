@@ -187,7 +187,7 @@ class ChwallApp(ChwallGui):
             menu.append(item)
 
         item = Gtk.MenuItem.new_with_label(
-            _("Display notification icon"))
+            _("Display an icon in the system tray"))
         if self.is_chwall_component_started("icon"):
             item.set_sensitive(False)
         else:

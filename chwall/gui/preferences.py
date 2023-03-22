@@ -495,7 +495,7 @@ class PrefDialog(Gtk.Dialog):
         genbox.pack_start(prefbox, False, False, 0)
 
         prefbox = self.make_file_chooser_pref(
-            "general", "favorites_path", _("Favorites path"),
+            "general", "favorites_path", _("Favorites folder"),
             button_label=_("Select a folder"),
             button_action=Gtk.FileChooserAction.SELECT_FOLDER
         )
@@ -614,16 +614,16 @@ as it is the more classical way of doing so.
         return framebox
 
     def make_advanced_pane(self):
-        genbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-        genbox.set_border_width(10)
-        genbox.set_spacing(10)
+        cachebox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        cachebox.set_border_width(10)
+        cachebox.set_spacing(10)
 
         prefbox = self.make_button_row(
             _("Fetch a new wallpapers list the next time wallpaper change"),
             _("Empty current pending list"),
             reset_pending_list
         )
-        genbox.pack_start(prefbox, False, False, 0)
+        cachebox.pack_start(prefbox, False, False, 0)
 
         def on_cleanup_cache(widget, update_label, clear_all=False):
             deleted = cleanup_cache(clear_all)
@@ -673,7 +673,7 @@ as it is the more classical way of doing so.
             "destructive-action",
             _update_broken_label
         )
-        genbox.pack_start(prefbox, False, False, 0)
+        cachebox.pack_start(prefbox, False, False, 0)
 
         def _update_empty_label(sibling):
             if isinstance(sibling, Gtk.Label):
@@ -689,23 +689,7 @@ as it is the more classical way of doing so.
             _update_empty_label,
             True
         )
-        genbox.pack_start(prefbox, False, False, 0)
-
-        sharedbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-        sharedbox.set_border_width(10)
-        sharedbox.set_spacing(10)
-
-        prefbox = self.make_number_pref(
-            "general.shared", "blur_radius", _("Blur radius"), default=20)
-        sharedbox.pack_start(prefbox, False, False, 0)
-
-        iconbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-        iconbox.set_border_width(10)
-        iconbox.set_spacing(10)
-
-        prefbox = self.make_toggle_pref(
-            "general", "mono_icon", _("Use monochrome icon"))
-        iconbox.pack_start(prefbox, False, False, 0)
+        cachebox.pack_start(prefbox, False, False, 0)
 
         daemonbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         daemonbox.set_border_width(10)
@@ -756,6 +740,19 @@ as it is the more classical way of doing so.
             default="WARNING")
         daemonbox.pack_start(prefbox, False, False, 0)
 
+        othersbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        othersbox.set_border_width(10)
+        othersbox.set_spacing(10)
+
+        prefbox = self.make_number_pref(
+            "general.shared", "blur_radius",
+            _("Blur radius of shared background"), default=20)
+        othersbox.pack_start(prefbox, False, False, 0)
+
+        prefbox = self.make_toggle_pref(
+            "general", "mono_icon", _("Use a monochrome status icon"))
+        othersbox.pack_start(prefbox, False, False, 0)
+
         framebox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         framebox.set_spacing(10)
         framebox.set_border_width(10)
@@ -764,21 +761,7 @@ as it is the more classical way of doing so.
         frame_label = Gtk.Label()
         frame_label.set_markup("<b>{}</b>".format(_("Cache management")))
         frame.set_label_widget(frame_label)
-        frame.add(genbox)
-        framebox.pack_start(frame, False, False, 0)
-
-        frame = Gtk.Frame()
-        frame_label = Gtk.Label()
-        frame_label.set_markup("<b>{}</b>".format(_("Status icon")))
-        frame.set_label_widget(frame_label)
-        frame.add(iconbox)
-        framebox.pack_start(frame, False, False, 0)
-
-        frame = Gtk.Frame()
-        frame_label = Gtk.Label()
-        frame_label.set_markup("<b>{}</b>".format(_("Shared background")))
-        frame.set_label_widget(frame_label)
-        frame.add(sharedbox)
+        frame.add(cachebox)
         framebox.pack_start(frame, False, False, 0)
 
         frame = Gtk.Frame()
@@ -786,6 +769,13 @@ as it is the more classical way of doing so.
         frame_label.set_markup("<b>{}</b>".format(_("Daemon")))
         frame.set_label_widget(frame_label)
         frame.add(daemonbox)
+        framebox.pack_start(frame, False, False, 0)
+
+        frame = Gtk.Frame()
+        frame_label = Gtk.Label()
+        frame_label.set_markup("<b>{}</b>".format(_("Others")))
+        frame.set_label_widget(frame_label)
+        frame.add(othersbox)
         framebox.pack_start(frame, False, False, 0)
 
         return framebox
