@@ -290,6 +290,10 @@ msgstr "Rayon de floutage du fond d’écran partagé"
 msgid "Use a monochrome status icon"
 msgstr "Utiliser une icône monochrome dans la zone de notification"
 
+#: chwall/gui/preferences.py:758
+msgid "Command to start your web browser"
+msgstr "Commande pour lancer votre navigateur web"
+
 #: chwall/gui/preferences.py:769
 msgid "Cache management"
 msgstr "Gestion du cache"

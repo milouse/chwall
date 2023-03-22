@@ -753,6 +753,13 @@ as it is the more classical way of doing so.
             "general", "mono_icon", _("Use a monochrome status icon"))
         othersbox.pack_start(prefbox, False, False, 0)
 
+        prefbox = self.make_text_pref(
+            "general", "web_browser_cmd",
+            _("Command to start your web browser"),
+            default="gio open \"{url}\""
+        )
+        othersbox.pack_start(prefbox, False, False, 0)
+
         framebox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         framebox.set_spacing(10)
         framebox.set_border_width(10)

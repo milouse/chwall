@@ -272,6 +272,10 @@ msgstr ""
 msgid "Use a monochrome status icon"
 msgstr ""
 
+#: chwall/gui/preferences.py:758
+msgid "Command to start your web browser"
+msgstr ""
+
 #: chwall/gui/preferences.py:769
 msgid "Cache management"
 msgstr ""
