@@ -3,7 +3,6 @@
 import os
 import sys
 import yaml
-import subprocess
 from xdg.BaseDirectory import xdg_data_home
 
 # chwall imports
@@ -11,7 +10,8 @@ from chwall import __version__
 from chwall.daemon import notify_daemon_if_any, stop_daemon_if_any, \
                           daemon_info, daemonize
 from chwall.utils import BASE_CACHE_PATH, read_config, \
-                         reset_pending_list, ServiceFileManager
+                         reset_pending_list, open_externally, \
+                         ServiceFileManager
 from chwall.wallpaper import block_wallpaper, pick_wallpaper, \
                              favorite_wallpaper, current_wallpaper_info
 from chwall.gui.app import generate_desktop_file
@@ -208,8 +208,7 @@ using the best dedicated tool for it (web browser, picture viewer...).
         print(dinfo["last-change-label"])
         if len(wallinfo) < 2 or subcmd != "open":
             return
-        url = wallinfo["remote-uri"]
-        subprocess.run(["gio", "open", url])
+        open_externally(wallinfo["remote-uri"])
 
     def help_block(self):
         self._print_usage("block")

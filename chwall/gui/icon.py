@@ -4,7 +4,7 @@ import subprocess
 
 from chwall.gui.shared import ChwallGui
 from chwall.wallpaper import current_wallpaper_info
-from chwall.utils import ServiceFileManager
+from chwall.utils import ServiceFileManager, open_externally
 
 import gi
 gi.require_version("Gtk", "3.0")
@@ -72,8 +72,11 @@ class ChwallIcon(ChwallGui):
                 current_wall_info.set_label(wallinfo["local-picture-path"])
             else:
                 current_wall_info.set_label(wallinfo["description"])
-            current_wall_info.connect("activate", self.open_in_context,
-                                      wallinfo["remote-uri"])
+            current_wall_info.connect(
+                "activate",
+                lambda _w, url: open_externally(url),
+                wallinfo["remote-uri"]
+            )
         menu.append(current_wall_info)
 
         item = Gtk.SeparatorMenuItem()
@@ -155,9 +158,6 @@ class ChwallIcon(ChwallGui):
         menu.show_all()
         menu.popup(None, None, Gtk.StatusIcon.position_menu,
                    self.tray, event_button, event_time)
-
-    def open_in_context(self, widget, wall_url):
-        subprocess.Popen(["gio", "open", wall_url])
 
     def toggle_must_autostart(self, widget):
         self.must_autostart = widget.get_active()
