@@ -62,6 +62,8 @@ def migrate_config(config):
     if ld_path is not None and ld_path != "":
         del config["general"]["lightdm_wall"]
         config["general"]["shared"] = {"path": ld_path}
+    if config["general"].get("desktop") == "nitrogen":
+        config["general"]["desktop"] = "feh"
     return config
 
 

@@ -183,10 +183,10 @@ def set_gnome_wallpaper(path, where="background"):
         raise ChwallWallpaperSetError(_format_prop_error("picture-options"))
 
 
-def set_nitrogen_wallpaper(path):
+def set_feh_wallpaper(path):
     if path is None:
         raise ChwallWallpaperSetError(_("No wallpaper path given"))
-    cmd = ["nitrogen", "--set-zoom-fill", "--set-color=#000000", "--save"]
+    cmd = ["feh", "--bg-fill", path]
     # screen_info = (scr_number, scr_width, scr_height, scr_ratio, display)
     screen_info = get_screen_config()
     # wall_spec = (wall_width, wall_height, wall_ratio)
@@ -194,19 +194,11 @@ def set_nitrogen_wallpaper(path):
     if wall_spec is None:
         wall_spec = (0, 0, 1)
     ratio_cmp = int(screen_info[3]) - int(wall_spec[2])
-    if screen_info[0] > 1 and ratio_cmp != 0:
-        err = 0
-        for screen_index in range(screen_info[0]):
-            head = "--head={}".format(screen_index)
-            err += subprocess.run(cmd + [head, path]).returncode
-        if err == 0:
-            return
-        raise ChwallWallpaperSetError(
-            _("Error while calling nitrogen for multihead display"))
-    err = subprocess.run(cmd + [path]).returncode
+    if screen_info[0] > 1 and ratio_cmp == 0:
+        cmd.insert(1, "--no-xinerama")
+    err = subprocess.run(cmd).returncode
     if err != 0:
-        raise ChwallWallpaperSetError(
-            _("Error while calling nitrogen for single display"))
+        raise ChwallWallpaperSetError(_("Error while calling feh"))
 
 
 def set_mate_screensaver(path):

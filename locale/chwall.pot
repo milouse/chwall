@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chwall 0.6.0\n"
 "Report-Msgid-Bugs-To: bugs@depar.is\n"
-"POT-Creation-Date: 2023-04-04 20:27+0200\n"
+"POT-Creation-Date: 2023-04-04 20:49+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -146,7 +146,7 @@ msgid "Time between each wallpaper change"
 msgstr ""
 
 #: chwall/gui/preferences.py:481
-msgid "Use Nitrogen application"
+msgid "Use Feh application"
 msgstr ""
 
 #: chwall/gui/preferences.py:483
@@ -356,7 +356,7 @@ msgid ""
 "required."
 msgstr ""
 
-#: chwall/fetcher/unsplash.py:40 chwall/wallpaper.py:473
+#: chwall/fetcher/unsplash.py:40 chwall/wallpaper.py:469
 msgid "Picture"
 msgstr ""
 
@@ -430,7 +430,7 @@ msgid "Remove {picture} as it's in block list"
 msgstr ""
 
 #: chwall/wallpaper.py:111 chwall/wallpaper.py:142 chwall/wallpaper.py:157
-#: chwall/wallpaper.py:188 chwall/wallpaper.py:214
+#: chwall/wallpaper.py:188 chwall/wallpaper.py:210
 msgid "No wallpaper path given"
 msgstr ""
 
@@ -449,53 +449,49 @@ msgid "Error while setting {desktop} {prop} property"
 msgstr ""
 
 #: chwall/wallpaper.py:205
-msgid "Error while calling nitrogen for multihead display"
+msgid "Error while calling feh"
 msgstr ""
 
-#: chwall/wallpaper.py:209
-msgid "Error while calling nitrogen for single display"
-msgstr ""
-
-#: chwall/wallpaper.py:218
+#: chwall/wallpaper.py:214
 #, python-brace-format
 msgid "screensaver {prop}"
 msgstr ""
 
-#: chwall/wallpaper.py:234
+#: chwall/wallpaper.py:230
 #, python-brace-format
 msgid "Converting non RGB picture {picture}"
 msgstr ""
 
-#: chwall/wallpaper.py:291
+#: chwall/wallpaper.py:287
 #, python-brace-format
 msgid ""
 "Catch {error} exception while downloading {picture}. Wait {time} seconds "
 "before retrying."
 msgstr ""
 
-#: chwall/wallpaper.py:300
+#: chwall/wallpaper.py:296
 #, python-brace-format
 msgid "Retry NOW to download {picture}"
 msgstr ""
 
-#: chwall/wallpaper.py:341
+#: chwall/wallpaper.py:337
 msgid ""
 "Impossible to build a new road map. It may be caused by a temporarily "
 "network error. Please try again later."
 msgstr ""
 
-#: chwall/wallpaper.py:364
+#: chwall/wallpaper.py:360
 msgid ""
 "Impossible to get any picture at this time. It may be caused by a "
 "temporarily network error. Please try again later."
 msgstr ""
 
-#: chwall/wallpaper.py:472
+#: chwall/wallpaper.py:468
 #, python-brace-format
 msgid "{title} by {author}"
 msgstr ""
 
-#: chwall/wallpaper.py:475
+#: chwall/wallpaper.py:471
 #, python-brace-format
 msgid "{title} (on {source})"
 msgstr ""
