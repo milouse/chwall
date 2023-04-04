@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Chwall 0.5.11\n"
+"Project-Id-Version: Chwall 0.5.12\n"
 "Report-Msgid-Bugs-To: bugs@depar.is\n"
-"POT-Creation-Date: 2023-01-01 15:29+0100\n"
-"PO-Revision-Date: 2022-08-12 09:38+0200\n"
+"POT-Creation-Date: 2023-03-22 13:53+0100\n"
+"PO-Revision-Date: 2023-03-22 13:31+0100\n"
 "Last-Translator: Étienne Deparis <etienne@depar.is>\n"
 "Language-Team: none\n"
 "Language: fr\n"
@@ -16,13 +16,13 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.1\n"
+"X-Generator: Poedit 3.2.2\n"
 
-#: chwall/gui/app.py:39 chwall/gui/app.py:195 chwall/gui/preferences.py:113
+#: chwall/gui/app.py:39 chwall/gui/app.py:197 chwall/gui/preferences.py:113
 msgid "Preferences"
 msgstr "Préférences"
 
-#: chwall/gui/app.py:50
+#: chwall/gui/app.py:51
 msgid ""
 "Wallpapers list may be built again. It may take a long time if you have a "
 "lot of sources enabled. Please be patient."
@@ -31,71 +31,72 @@ msgstr ""
 "prendre quelques temps si vous avez beaucoup de sources activées. Merci pour "
 "votre patience."
 
-#: chwall/gui/app.py:62 chwall/gui/app.py:289 chwall/gui/icon.py:91
+#: chwall/gui/app.py:64 chwall/gui/app.py:291 chwall/gui/icon.py:94
 msgid "Previous wallpaper"
 msgstr "Fond d’écran précédent"
 
-#: chwall/gui/app.py:74 chwall/gui/app.py:285 chwall/gui/icon.py:84
+#: chwall/gui/app.py:76 chwall/gui/app.py:287 chwall/gui/icon.py:87
 msgid "Next wallpaper"
 msgstr "Fond d’écran suivant"
 
-#: chwall/gui/app.py:83
+#: chwall/gui/app.py:85
 msgid "Stop daemon and erase pending list"
 msgstr "Arrêter le service et effacer la liste d’attente"
 
-#: chwall/gui/app.py:106 chwall/gui/app.py:297 chwall/gui/icon.py:115
+#: chwall/gui/app.py:108 chwall/gui/app.py:299 chwall/gui/icon.py:118
 msgid "Put on block list"
 msgstr "Bloquer ce fond d’écran"
 
-#: chwall/gui/app.py:125 chwall/gui/app.py:130 chwall/gui/icon.py:68
+#: chwall/gui/app.py:127 chwall/gui/app.py:132 chwall/gui/icon.py:68
+#: chwall/client.py:197
 msgid "Current wallpaper is not managed by Chwall"
 msgstr "Le fond d’écran actuel n’est pas géré par Chwall"
 
-#: chwall/gui/app.py:136 chwall/gui/app.py:252 chwall/gui/icon.py:103
+#: chwall/gui/app.py:138 chwall/gui/app.py:254 chwall/gui/icon.py:106
 msgid "Already a favorite"
 msgstr "Déjà dans les favoris"
 
-#: chwall/gui/app.py:139 chwall/gui/app.py:293 chwall/gui/icon.py:98
+#: chwall/gui/app.py:141 chwall/gui/app.py:295 chwall/gui/icon.py:101
 msgid "Save as favorite"
 msgstr "Enregistrer en tant que favori"
 
-#: chwall/gui/app.py:145 chwall/gui/icon.py:109
+#: chwall/gui/app.py:147 chwall/gui/icon.py:112
 msgid "Error accessing the favorites folder"
 msgstr "Erreur lors de l’accès au dossier des favoris"
 
-#: chwall/gui/app.py:188
-msgid "Display notification icon"
+#: chwall/gui/app.py:190
+msgid "Display an icon in the system tray"
 msgstr "Afficher une icône dans la zone de notification"
 
-#: chwall/gui/app.py:199 chwall/gui/icon.py:146
+#: chwall/gui/app.py:201 chwall/gui/icon.py:149
 msgid "About Chwall"
 msgstr "À propos de Chwall"
 
-#: chwall/gui/app.py:223 chwall/gui/icon.py:53
+#: chwall/gui/app.py:225 chwall/gui/icon.py:53
 msgid "Stop daemon"
 msgstr "Arrêter le service"
 
-#: chwall/gui/app.py:228 chwall/gui/icon.py:49
+#: chwall/gui/app.py:230 chwall/gui/icon.py:49
 msgid "Start daemon"
 msgstr "Démarrer le service"
 
-#: chwall/gui/app.py:277 chwall/gui/icon.py:166 chwall/gui/shared.py:120
+#: chwall/gui/app.py:279 chwall/gui/icon.py:166 chwall/gui/shared.py:120
 msgid "Wallpaper Changer"
 msgstr "Changeur de fond d’écran"
 
-#: chwall/gui/app.py:281
+#: chwall/gui/app.py:283
 msgid "Main window of the Chwall wallpaper changer"
 msgstr "Fenêtre principale du changeur de fond d’écran Chwall"
 
-#: chwall/gui/icon.py:122
+#: chwall/gui/icon.py:125
 msgid "Open main window"
 msgstr "Ouvrir la fenêtre principale"
 
-#: chwall/gui/icon.py:130
+#: chwall/gui/icon.py:133
 msgid "Always display this icon"
 msgstr "Toujours afficher cette icône"
 
-#: chwall/gui/icon.py:140
+#: chwall/gui/icon.py:143
 msgid "Report a bug"
 msgstr "Signaler un bogue"
 
@@ -123,55 +124,55 @@ msgstr "Nombre d’élément à récupérer"
 msgid "Collections"
 msgstr "Collections"
 
-#: chwall/gui/preferences.py:206
+#: chwall/gui/preferences.py:210
 msgid "Enable"
 msgstr "Activer"
 
-#: chwall/gui/preferences.py:391 chwall/gui/preferences.py:729
+#: chwall/gui/preferences.py:401 chwall/gui/preferences.py:726
 msgid "Remove"
 msgstr "Supprimer"
 
-#: chwall/gui/preferences.py:396
+#: chwall/gui/preferences.py:406
 msgid "Add"
 msgstr "Ajouter"
 
-#: chwall/gui/preferences.py:419
+#: chwall/gui/preferences.py:429
 msgid "Select a file"
 msgstr "Sélectionner un fichier"
 
-#: chwall/gui/preferences.py:457
+#: chwall/gui/preferences.py:467
 msgid "Display notification when wallpaper changes"
 msgstr "Montrer une notification lorsque le fond d’écran est changé"
 
-#: chwall/gui/preferences.py:462
+#: chwall/gui/preferences.py:475
 msgid "Time between each wallpaper change"
 msgstr "Délai entre chaque changement de fond d’écran"
 
-#: chwall/gui/preferences.py:468
+#: chwall/gui/preferences.py:481
 msgid "Use Nitrogen application"
 msgstr "Utiliser l’application Nitrogen"
 
-#: chwall/gui/preferences.py:470
+#: chwall/gui/preferences.py:483
 msgid "Desktop environment"
 msgstr "Environnement de bureau"
 
-#: chwall/gui/preferences.py:475
+#: chwall/gui/preferences.py:488
 msgid "Shared background path"
 msgstr "Chemin vers le fond d’écran partagé"
 
-#: chwall/gui/preferences.py:480
+#: chwall/gui/preferences.py:493
 msgid "Blur shared background"
 msgstr "Flouter le fond d’écran partagé"
 
-#: chwall/gui/preferences.py:485
-msgid "Favorites path"
-msgstr "Chemin des favoris"
+#: chwall/gui/preferences.py:498
+msgid "Favorites folder"
+msgstr "Dossier des favoris"
 
-#: chwall/gui/preferences.py:486
+#: chwall/gui/preferences.py:499
 msgid "Select a folder"
 msgstr "Sélectionner un dossier"
 
-#: chwall/gui/preferences.py:497
+#: chwall/gui/preferences.py:510
 msgid ""
 "\n"
 "You have two options to launch Chwall daemon when your user session starts:\n"
@@ -191,115 +192,115 @@ msgstr ""
 "choix le plus\n"
 "sûr, comme il s’agit de la manière classique de procéder.\n"
 
-#: chwall/gui/preferences.py:508
+#: chwall/gui/preferences.py:521
 msgid ""
 "Launch Chwall daemon with an XDG autostart file when your session starts"
 msgstr ""
 "Démarrer le service de Chwall avec un lanceur d’application XDG lorsque "
 "votre session démarre"
 
-#: chwall/gui/preferences.py:516
+#: chwall/gui/preferences.py:529
 msgid "Chwall daemon"
 msgstr "Service en tâche de fond de Chwall"
 
-#: chwall/gui/preferences.py:517
+#: chwall/gui/preferences.py:530
 msgid "Start Chwall daemon"
 msgstr "Démarrer le service de Chwall"
 
-#: chwall/gui/preferences.py:551
+#: chwall/gui/preferences.py:564
 msgid "Install the systemd service file before using it to start Chwall daemon"
 msgstr ""
 "Installer le service systemd avant de pouvoir l’utiliser pour démarrer le "
 "service Chwall"
 
-#: chwall/gui/preferences.py:553
+#: chwall/gui/preferences.py:566
 msgid "Create"
 msgstr "Créer"
 
-#: chwall/gui/preferences.py:567
+#: chwall/gui/preferences.py:580
 msgid "Launch Chwall daemon with systemd when your session starts"
 msgstr ""
 "Démarrer le service de Chwall avec systemd lorsque votre session démarre"
 
-#: chwall/gui/preferences.py:589
+#: chwall/gui/preferences.py:602
 msgid "Behavior"
 msgstr "Comportement"
 
-#: chwall/gui/preferences.py:596 chwall/gui/preferences.py:773
+#: chwall/gui/preferences.py:609 chwall/gui/preferences.py:776
 msgid "Daemon"
 msgstr "Tâche de fond"
 
-#: chwall/gui/preferences.py:609
+#: chwall/gui/preferences.py:622
 msgid "Fetch a new wallpapers list the next time wallpaper change"
 msgstr ""
 "Récupère une nouvelle liste de fonds d’écran lors du prochain changement"
 
-#: chwall/gui/preferences.py:610
+#: chwall/gui/preferences.py:623
 msgid "Empty current pending list"
 msgstr "Vider la liste d’attente courante"
 
-#: chwall/gui/preferences.py:621 chwall/daemon.py:252
+#: chwall/gui/preferences.py:634 chwall/daemon.py:252
 #, python-brace-format
 msgid "{number} cache entry has been removed."
 msgid_plural "{number} cache entries have been removed."
 msgstr[0] "{number} entrée du cache a été supprimée."
 msgstr[1] "{number} entrées du cache ont été supprimées."
 
-#: chwall/gui/preferences.py:631
+#: chwall/gui/preferences.py:644
 msgid "Cache cleanup"
 msgstr "Nettoyage du cache"
 
-#: chwall/gui/preferences.py:641 chwall/gui/preferences.py:650
+#: chwall/gui/preferences.py:654 chwall/gui/preferences.py:663
 #, python-brace-format
 msgid "{number} broken picture currently in cache"
 msgid_plural "{number} broken pictures currently in cache"
 msgstr[0] "{number} image cassée actuellement dans le cache"
 msgstr[1] "{number} images cassées actuellement dans le cache"
 
-#: chwall/gui/preferences.py:658
+#: chwall/gui/preferences.py:671
 msgid "Clear broken pictures"
 msgstr "Nettoyer les entrées cassées du cache"
 
-#: chwall/gui/preferences.py:668 chwall/gui/preferences.py:672
+#: chwall/gui/preferences.py:681 chwall/gui/preferences.py:685
 #, python-brace-format
 msgid "Picture cache use {size}"
 msgstr "Le cache des images utilise {size}"
 
-#: chwall/gui/preferences.py:673
+#: chwall/gui/preferences.py:686
 msgid "Clear picture cache"
 msgstr "Vider le cache des images"
 
-#: chwall/gui/preferences.py:686
-msgid "Blur radius"
-msgstr "Rayon de floutage"
-
-#: chwall/gui/preferences.py:694
-msgid "Use monochrome icon"
-msgstr "Utiliser une icône monochrome"
-
-#: chwall/gui/preferences.py:702
+#: chwall/gui/preferences.py:699
 msgid "X Display in use"
 msgstr "Affichage X à utiliser"
 
-#: chwall/gui/preferences.py:728
+#: chwall/gui/preferences.py:725
 msgid "Remove systemd service file"
 msgstr "Supprimer le fichier de service systemd"
 
-#: chwall/gui/preferences.py:740
+#: chwall/gui/preferences.py:737
 msgid "Log level"
 msgstr "Niveau de journalisation"
 
-#: chwall/gui/preferences.py:752
+#: chwall/gui/preferences.py:749
+msgid "Blur radius of shared background"
+msgstr "Rayon de floutage du fond d’écran partagé"
+
+#: chwall/gui/preferences.py:753
+msgid "Use a monochrome status icon"
+msgstr "Utiliser une icône monochrome dans la zone de notification"
+
+#: chwall/gui/preferences.py:758
+msgid "Command to start your web browser"
+msgstr "Commande pour lancer votre navigateur web"
+
+#: chwall/gui/preferences.py:769
 msgid "Cache management"
 msgstr "Gestion du cache"
 
-#: chwall/gui/preferences.py:759
-msgid "Status icon"
-msgstr "Icône de statut"
-
-#: chwall/gui/preferences.py:766
-msgid "Shared background"
-msgstr "Fond d’écran partagé"
+#: chwall/gui/preferences.py:783
+msgid "Others"
+msgstr "Autres"
 
 #: chwall/gui/shared.py:122
 msgid "Chwall is released under the WTFPL"
@@ -309,7 +310,7 @@ msgstr "Chwall est publié selon les termes de la WTFPL"
 msgid "Locales"
 msgstr "Langues"
 
-#: chwall/fetcher/local.py:39
+#: chwall/fetcher/local.py:39 chwall/client.py:201
 msgid "Local wallpaper"
 msgstr "Fond d’écran local"
 
@@ -656,7 +657,7 @@ msgstr ""
 "Si ‘write’ est passé en second paramètre, le lanceur résultant sera\n"
 "enregistré sous .local/share/applications/\n"
 
-#: chwall/client.py:163
+#: chwall/client.py:160
 msgid ""
 "\n"
 "Directly open the chwall preferences window.\n"
@@ -664,7 +665,7 @@ msgstr ""
 "\n"
 "Ouvre directement la fenêtre des préférences de chwall.\n"
 
-#: chwall/client.py:174
+#: chwall/client.py:171
 msgid ""
 "\n"
 "Detach from terminal and start either the main app or the system tray icon.\n"
@@ -679,7 +680,7 @@ msgstr ""
 "argument\n"
 "n’est donné.\n"
 
-#: chwall/client.py:192
+#: chwall/client.py:187
 msgid ""
 "\n"
 "Display the current wallpaper information.\n"
@@ -697,7 +698,7 @@ msgstr ""
 "visionneuse\n"
 "d’images…).\n"
 
-#: chwall/client.py:213
+#: chwall/client.py:215
 msgid ""
 "\n"
 "Add the current wallpaper on the block list to avoid it to be shown ever "
@@ -709,7 +710,7 @@ msgstr ""
 "jamais\n"
 "l’afficher à nouveau, puis passe au fond d’écran suivant.\n"
 
-#: chwall/client.py:224
+#: chwall/client.py:226
 msgid ""
 "\n"
 "Save a copy of the current wallpaper to not forget it and display it again\n"
@@ -719,13 +720,13 @@ msgstr ""
 "Enregistre une copie du fond d’écran actuel pour ne pas l’oublier et le\n"
 "ré-afficher à nouveau plus tard.\n"
 
-#: chwall/client.py:234
+#: chwall/client.py:236
 msgid "Unable to pick wallpaper this time. Please, try again."
 msgstr ""
 "Impossible de récupérer un fond d’écran pour cette fois. Merci de bien "
 "vouloir réessayer."
 
-#: chwall/client.py:242
+#: chwall/client.py:244
 msgid ""
 "\n"
 "Switch to the next wallpaper.\n"
@@ -741,7 +742,7 @@ msgstr ""
 "pour\n"
 "manuellement changer de fond d’écran.\n"
 
-#: chwall/client.py:254
+#: chwall/client.py:256
 msgid ""
 "\n"
 "Switch to the previous wallpaper.\n"
@@ -749,7 +750,7 @@ msgstr ""
 "\n"
 "Passe au fond d’écran suivant.\n"
 
-#: chwall/client.py:263
+#: chwall/client.py:265
 msgid ""
 "\n"
 "Stop the chwall daemon.\n"
@@ -757,7 +758,7 @@ msgstr ""
 "\n"
 "Arrêter le service de Chwall.\n"
 
-#: chwall/client.py:272
+#: chwall/client.py:274
 msgid ""
 "\n"
 "Empty the current pending list to force chwall to fetch a new wallpapers "
@@ -769,11 +770,11 @@ msgstr ""
 "nouvelle\n"
 "liste lors du prochain changement.\n"
 
-#: chwall/client.py:283
+#: chwall/client.py:285
 msgid "No roadmap has been created yet"
 msgstr "Aucune liste d’attente n’a encore été définie"
 
-#: chwall/client.py:292
+#: chwall/client.py:294
 msgid ""
 "\n"
 "Display the last displayed wallpapers. The most recent one is at the "
@@ -788,7 +789,7 @@ msgstr ""
 "Cette commande renvoie simplement la liste des urls d’origine de chaque\n"
 "fond d’écran.\n"
 
-#: chwall/client.py:304
+#: chwall/client.py:306
 msgid ""
 "\n"
 "Display the next wallpapers, which will be shown in the future. The next one "

@@ -191,6 +191,18 @@ def get_binary_path(component, target_type="systemd", arguments=""):
     return "python -m {0}\n{1}={2}".format(module, workdirkey, local_path)
 
 
+def open_externally(url):
+    if url.startswith("http"):
+        browser_cmd = read_config()["general"].get(
+            "web_browser_cmd", "gio open \"{url}\""
+        ).format(url=url)
+        subprocess.Popen(browser_cmd, shell=True)
+    else:
+        # No need to daemonize when we are sure to call gio, as it will
+        # detach itself from its parent when called.
+        subprocess.Popen(["gio", "open", url])
+
+
 class ServiceFileManager:
     def __init__(self):
         self.systemd_version = None

@@ -177,9 +177,12 @@ class PrefDialog(Gtk.Dialog):
             elif options["widget"] == "text":
                 prefbox = self.make_text_pref(fetcher_name, opt, label)
             elif options["widget"] == "number":
+                steps = Gtk.Adjustment(
+                    value=(defval or 0), lower=0, upper=100000,
+                    step_increment=1)
                 prefbox = self.make_number_pref(
-                    fetcher_name, opt, label,
-                    adj=Gtk.Adjustment(defval or 0, 0, 100000, 1))
+                    fetcher_name, opt, label, adj=steps
+                )
             elif options["widget"] == "list":
                 prefbox = self.make_list_pref(
                     fetcher_name, opt, label, default=defval)
@@ -203,7 +206,8 @@ class PrefDialog(Gtk.Dialog):
 
     def make_fetcher_toggle_pref(self, fetcher, fprefs):
         prefbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        label = Gtk.Label(label=_("Enable"))
+        label = Gtk.Label()
+        label.set_text(_("Enable"))
         prefbox.pack_start(label, False, False, 10)
         button = Gtk.Switch()
         button.set_active(fetcher in self.config["general"]["sources"])
@@ -222,7 +226,8 @@ class PrefDialog(Gtk.Dialog):
 
     def make_prefbox_with_label(self, label):
         prefbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        preflabel = Gtk.Label(label)
+        preflabel = Gtk.Label()
+        preflabel.set_text(label)
         prefbox.pack_start(preflabel, False, False, 10)
         return prefbox
 
@@ -298,7 +303,12 @@ class PrefDialog(Gtk.Dialog):
         if adj is not None:
             button.set_adjustment(adj)
         elif current_value is not None:
-            button.set_adjustment(Gtk.Adjustment(current_value, 0, 100000, 1))
+            button.set_adjustment(
+                Gtk.Adjustment(
+                    value=current_value, lower=0, upper=100000,
+                    step_increment=1
+                )
+            )
         button.set_numeric(True)
         button.set_update_policy(Gtk.SpinButtonUpdatePolicy.IF_VALID)
 
@@ -458,9 +468,12 @@ class PrefDialog(Gtk.Dialog):
         genbox.pack_start(prefbox, False, False, 0)
 
         sleep_time = int(self.config["general"]["sleep"] / 60)
+        steps = Gtk.Adjustment(
+            value=sleep_time, lower=5, upper=120,
+            step_increment=1)
         prefbox = self.make_number_pref(
             "general", "sleep", _("Time between each wallpaper change"),
-            adj=Gtk.Adjustment(sleep_time, 5, 120, 1), factor=60)
+            adj=steps, factor=60)
         genbox.pack_start(prefbox, False, False, 0)
 
         environments = [("gnome", "Gnome, Pantheon, Budgie, …"),
@@ -482,7 +495,7 @@ class PrefDialog(Gtk.Dialog):
         genbox.pack_start(prefbox, False, False, 0)
 
         prefbox = self.make_file_chooser_pref(
-            "general", "favorites_path", _("Favorites path"),
+            "general", "favorites_path", _("Favorites folder"),
             button_label=_("Select a folder"),
             button_action=Gtk.FileChooserAction.SELECT_FOLDER
         )
@@ -601,16 +614,16 @@ as it is the more classical way of doing so.
         return framebox
 
     def make_advanced_pane(self):
-        genbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-        genbox.set_border_width(10)
-        genbox.set_spacing(10)
+        cachebox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        cachebox.set_border_width(10)
+        cachebox.set_spacing(10)
 
         prefbox = self.make_button_row(
             _("Fetch a new wallpapers list the next time wallpaper change"),
             _("Empty current pending list"),
             reset_pending_list
         )
-        genbox.pack_start(prefbox, False, False, 0)
+        cachebox.pack_start(prefbox, False, False, 0)
 
         def on_cleanup_cache(widget, update_label, clear_all=False):
             deleted = cleanup_cache(clear_all)
@@ -660,7 +673,7 @@ as it is the more classical way of doing so.
             "destructive-action",
             _update_broken_label
         )
-        genbox.pack_start(prefbox, False, False, 0)
+        cachebox.pack_start(prefbox, False, False, 0)
 
         def _update_empty_label(sibling):
             if isinstance(sibling, Gtk.Label):
@@ -676,23 +689,7 @@ as it is the more classical way of doing so.
             _update_empty_label,
             True
         )
-        genbox.pack_start(prefbox, False, False, 0)
-
-        sharedbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-        sharedbox.set_border_width(10)
-        sharedbox.set_spacing(10)
-
-        prefbox = self.make_number_pref(
-            "general.shared", "blur_radius", _("Blur radius"), default=20)
-        sharedbox.pack_start(prefbox, False, False, 0)
-
-        iconbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-        iconbox.set_border_width(10)
-        iconbox.set_spacing(10)
-
-        prefbox = self.make_toggle_pref(
-            "general", "mono_icon", _("Use monochrome icon"))
-        iconbox.pack_start(prefbox, False, False, 0)
+        cachebox.pack_start(prefbox, False, False, 0)
 
         daemonbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         daemonbox.set_border_width(10)
@@ -743,6 +740,26 @@ as it is the more classical way of doing so.
             default="WARNING")
         daemonbox.pack_start(prefbox, False, False, 0)
 
+        othersbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        othersbox.set_border_width(10)
+        othersbox.set_spacing(10)
+
+        prefbox = self.make_number_pref(
+            "general.shared", "blur_radius",
+            _("Blur radius of shared background"), default=20)
+        othersbox.pack_start(prefbox, False, False, 0)
+
+        prefbox = self.make_toggle_pref(
+            "general", "mono_icon", _("Use a monochrome status icon"))
+        othersbox.pack_start(prefbox, False, False, 0)
+
+        prefbox = self.make_text_pref(
+            "general", "web_browser_cmd",
+            _("Command to start your web browser"),
+            default="gio open \"{url}\""
+        )
+        othersbox.pack_start(prefbox, False, False, 0)
+
         framebox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         framebox.set_spacing(10)
         framebox.set_border_width(10)
@@ -751,21 +768,7 @@ as it is the more classical way of doing so.
         frame_label = Gtk.Label()
         frame_label.set_markup("<b>{}</b>".format(_("Cache management")))
         frame.set_label_widget(frame_label)
-        frame.add(genbox)
-        framebox.pack_start(frame, False, False, 0)
-
-        frame = Gtk.Frame()
-        frame_label = Gtk.Label()
-        frame_label.set_markup("<b>{}</b>".format(_("Status icon")))
-        frame.set_label_widget(frame_label)
-        frame.add(iconbox)
-        framebox.pack_start(frame, False, False, 0)
-
-        frame = Gtk.Frame()
-        frame_label = Gtk.Label()
-        frame_label.set_markup("<b>{}</b>".format(_("Shared background")))
-        frame.set_label_widget(frame_label)
-        frame.add(sharedbox)
+        frame.add(cachebox)
         framebox.pack_start(frame, False, False, 0)
 
         frame = Gtk.Frame()
@@ -773,6 +776,13 @@ as it is the more classical way of doing so.
         frame_label.set_markup("<b>{}</b>".format(_("Daemon")))
         frame.set_label_widget(frame_label)
         frame.add(daemonbox)
+        framebox.pack_start(frame, False, False, 0)
+
+        frame = Gtk.Frame()
+        frame_label = Gtk.Label()
+        frame_label.set_markup("<b>{}</b>".format(_("Others")))
+        frame.set_label_widget(frame_label)
+        frame.add(othersbox)
         framebox.pack_start(frame, False, False, 0)
 
         return framebox
