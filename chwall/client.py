@@ -2,6 +2,7 @@
 
 import os
 import sys
+import time
 import yaml
 from xdg.BaseDirectory import xdg_data_home
 
@@ -240,16 +241,23 @@ later.
             notify_daemon_if_any()
 
     def help_next(self):
-        self._print_usage("next", "once")
+        self._print_usage("next [ savetime ]", "once [ savetime ]")
         print(_("""
 Switch to the next wallpaper.
 
 This command may be used, even if the daemon is not started to manually change
 the wallpaper.
+
+If the optional ‘savetime’ keyword is given, the current time will be stored as
+the last time the wallpaper was changed (as if it was done by the daemon).
 """))
 
-    def cmd_next(self):
+    def cmd_next(self, subcmd="pass"):
         self._pick_wall()
+        if subcmd != "savetime":
+            return
+        with open("{}/last_change".format(BASE_CACHE_PATH), "w") as f:
+            f.write(str(int(time.time())))
 
     def help_previous(self):
         self._print_usage("previous")

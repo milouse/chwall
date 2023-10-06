@@ -1,11 +1,23 @@
+Service file:
 [Unit]
-Description = Simple wallpaper changer
+Description=Simple wallpaper changer
 After=network.target
 
 [Service]
 Type=simple
 Environment=DISPLAY=:0
-ExecStart=/usr/bin/chwall-daemon -D
+ExecStart=/usr/bin/chwall next savetime
 
 [Install]
 WantedBy=default.target
+
+Timer file:
+[Unit]
+Description=Change wallpaper every 10 minutes
+After=network.target
+
+[Timer]
+OnCalendar=*:0/10
+
+[Install]
+WantedBy=timers.target

@@ -48,6 +48,25 @@ def get_wall_config(path):
     return size_t
 
 
+def migrate_systemd_service_files():
+    sfm = ServiceFileManager()
+    # Detect old deprecated enabled service
+    old_enabled_service_file = os.path.join(
+        sfm.systemd_base_path, "default.target.wants", "chwall.service"
+    )
+    if not os.path.exists(old_enabled_service_file):
+        return
+    # Disable old service
+    subprocess.run(
+        ["systemctl", "--user", "disable", "chwall.service"]
+    )
+    # Enable directly the new timer
+    sfm.systemd_service_file(write=True, force=True)
+    subprocess.run(
+        ["systemctl", "--user", "enable", "chwall.timer", "--now"]
+    )
+
+
 def migrate_config(config):
     if "local" in config:
         if isinstance(config["local"], list):
@@ -64,6 +83,7 @@ def migrate_config(config):
         config["general"]["shared"] = {"path": ld_path}
     if config["general"].get("desktop") == "nitrogen":
         config["general"]["desktop"] = "feh"
+    migrate_systemd_service_files()
     return config
 
 
@@ -213,6 +233,8 @@ class ServiceFileManager:
             xdg_config_home, "systemd", "user")
         self.systemd_service_file_path = os.path.join(
             self.systemd_base_path, "chwall.service")
+        self.systemd_timer_file_path = os.path.join(
+            self.systemd_base_path, "chwall.timer")
         self.autostart_dir = os.path.join(xdg_config_home, "autostart")
 
     def detect_systemd(self):
@@ -229,17 +251,19 @@ class ServiceFileManager:
 
     def systemd_service_file_exists(self, check_enabled=False):
         if check_enabled:
-            service_file = os.path.join(
-                self.systemd_base_path, "default.target.wants",
-                "chwall.service")
-            return os.path.exists(service_file)
-        return os.path.isfile(self.systemd_service_file_path)
+            timer_file = os.path.join(
+                self.systemd_base_path, "timers.target.wants", "chwall.timer"
+            )
+            return os.path.exists(timer_file)
+        return os.path.isfile(self.systemd_service_file_path) and \
+            os.path.isfile(self.systemd_timer_file_path)
 
-    def systemd_service_file(self, write=False):
-        display = read_config()["general"].get("display", ":0")
+    def systemd_service_file(self, write=False, force=False):
+        config = read_config()
+        display = config["general"].get("display", ":0")
         file_content = """\
 [Unit]
-Description = Simple wallpaper changer
+Description=Simple wallpaper changer
 After=network.target
 
 [Service]
@@ -249,22 +273,41 @@ ExecStart={app_exec}
 
 [Install]
 WantedBy=default.target
-""".format(display=display, app_exec=get_binary_path("daemon", arguments="-D"))
+""".format(display=display,
+           app_exec=get_binary_path("client", arguments="next savetime"))
+        sleep_time = int(int(config["general"]["sleep"]) / 60)
+        timer_content = """\
+[Unit]
+Description=Change wallpaper every {sleep} minutes
+After=network.target
+
+[Timer]
+OnCalendar=*:0/{sleep}
+
+[Install]
+WantedBy=timers.target
+""".format(sleep=sleep_time)
         if write is False:
+            print("Service file:")
             print(file_content, end="")
+            print("\nTimer file:")
+            print(timer_content, end="")
             return
-        if self.systemd_service_file_exists():
+        if not force and self.systemd_service_file_exists():
             return
         self.remove_xdg_autostart_file("daemon")
         os.makedirs(self.systemd_base_path, exist_ok=True)
         with open(self.systemd_service_file_path, "w") as f:
             f.write(file_content)
+        with open(self.systemd_timer_file_path, "w") as f:
+            f.write(timer_content)
         subprocess.run(["systemctl", "--user", "daemon-reload"])
 
     def remove_systemd_service_file(self):
         self.systemd_service_toggle(False)
         if self.systemd_service_file_exists():
             os.unlink(self.systemd_service_file_path)
+            os.unlink(self.systemd_timer_file_path)
             subprocess.run(["systemctl", "--user", "daemon-reload"])
 
     def systemd_service_toggle(self, enabled=True):
@@ -276,7 +319,7 @@ WantedBy=default.target
             cond = "enable"
         if cond is None:
             return
-        subprocess.run(["systemctl", "--user", cond, "chwall.service"])
+        subprocess.run(["systemctl", "--user", cond, "chwall.timer"])
 
     def remove_xdg_autostart_file(self, component="daemon"):
         autostart_file = os.path.join(

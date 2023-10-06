@@ -47,9 +47,8 @@ def kill_daemon(_signo, _stack_frame):
 
 
 def last_wallpaper_change(sleep_time):
-    pid_file = "{}/chwall_pid".format(BASE_CACHE_PATH)
     change_file = "{}/last_change".format(BASE_CACHE_PATH)
-    if not os.path.exists(pid_file) or not os.path.exists(change_file):
+    if not os.path.exists(change_file):
         return -1
     with open(change_file, "r") as f:
         try:
@@ -59,7 +58,8 @@ def last_wallpaper_change(sleep_time):
     if last_change > sleep_time:
         # We are currently reading a very old last_change flag file. Certainly
         # because the daemon has crashed without cleaning up its pid
-        # file. Assume it is stopped
+        # file, or because we have just booted the computer.
+        # Let’s assume it is stopped.
         return -1
     return last_change
 
@@ -109,9 +109,9 @@ def daemon_info():
         change_labels = daemon_change_label(last_change, next_change)
 
     systemd_path = os.path.expanduser("~/.config/systemd/user")
-    if os.path.exists("{}/chwall.service".format(systemd_path)):
+    if os.path.exists("{}/chwall.timer".format(systemd_path)):
         daemon_type = "systemd"
-        if os.path.exists("{}/default.target.wants/chwall.service"
+        if os.path.exists("{}/timers.target.wants/chwall.timer"
                           .format(systemd_path)):
             daemon_enabled = True
         else:
