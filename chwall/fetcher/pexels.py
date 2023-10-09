@@ -25,6 +25,7 @@ def fetch_pictures(config):
     params = {"per_page": px_conf.get("count", 10)}
     if "query" in px_conf:
         params["query"] = px_conf["query"]
+        params["orientation"] = "landscape"
         url = "https://api.pexels.com/v1/search"
     else:
         url = "https://api.pexels.com/v1/curated"
@@ -52,6 +53,15 @@ def preferences():
             "width": {
                 "widget": "number",
                 "default": 1600
+            },
+            "orientation": {
+                "widget": "select",
+                "values": [
+                    ("landscape", _("Landscape")),
+                    ("portrait", _("Portrait")),
+                    ("square", _("Square"))
+                ],
+                "default": "landscape"
             },
             "count": {
                 "widget": "number",

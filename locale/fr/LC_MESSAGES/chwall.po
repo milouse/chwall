@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chwall 0.6.1\n"
 "Report-Msgid-Bugs-To: bugs@depar.is\n"
-"POT-Creation-Date: 2023-11-06 09:19+0100\n"
-"PO-Revision-Date: 2023-11-06 09:24+0100\n"
+"POT-Creation-Date: 2023-11-06 09:28+0100\n"
+"PO-Revision-Date: 2023-11-06 09:29+0100\n"
 "Last-Translator: Étienne Deparis <etienne@depar.is>\n"
 "Language-Team: none\n"
 "Language: fr\n"
@@ -331,12 +331,24 @@ msgid "An ‘access_key’ param is required to fetch pictures from Pexels."
 msgstr ""
 "Un paramètre ‘access_key’ est requis pour récupérer des images depuis Pexels."
 
-#: chwall/fetcher/pexels.py:62 chwall/fetcher/unsplash.py:84
+#: chwall/fetcher/pexels.py:60
+msgid "Landscape"
+msgstr "Paysage"
+
+#: chwall/fetcher/pexels.py:61
+msgid "Portrait"
+msgstr "Portrait"
+
+#: chwall/fetcher/pexels.py:62
+msgid "Square"
+msgstr "Carré"
+
+#: chwall/fetcher/pexels.py:72 chwall/fetcher/unsplash.py:84
 #: chwall/fetcher/wikiart.py:79
 msgid "API access key"
 msgstr "Clé d’accès API"
 
-#: chwall/fetcher/pexels.py:66 chwall/fetcher/wikiart.py:103
+#: chwall/fetcher/pexels.py:76 chwall/fetcher/wikiart.py:103
 msgid "Search query"
 msgstr "Requête"
 
