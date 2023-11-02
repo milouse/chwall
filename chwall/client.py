@@ -2,8 +2,11 @@
 
 import os
 import sys
+import json
 import time
 import yaml
+import pkgutil
+from importlib import import_module
 from xdg.BaseDirectory import xdg_data_home
 
 # chwall imports
@@ -321,6 +324,35 @@ This command display only the upstream url of each wallpaper.
     def cmd_pending(self):
         data = self._road_map()
         print("\n".join(data["pictures"]))
+
+    def cmd_fetcher(self, *subcmd):
+        subcmd = list(subcmd)
+        if len(subcmd) == 0:
+            fetcher = "_list_"
+        else:
+            fetcher = subcmd.pop(0)
+        fetcher_package = import_module("chwall.fetcher")
+        fp_source = fetcher_package.__path__
+        fetchers_list = []
+        for fd in pkgutil.iter_modules(fp_source):
+            fetcher_mod = import_module("chwall.fetcher.{}".format(fd.name))
+            if "preferences" not in dir(fetcher_mod):
+                continue
+            fetchers_list.append(fd.name)
+        if fetcher == "_list_" or fetcher not in fetchers_list:
+            for name in fetchers_list:
+                print(name)
+            return
+        fetcher_mod = import_module(f"chwall.fetcher.{fetcher}")
+        if len(subcmd) == 0:
+            print(json.dumps(fetcher_mod.preferences()))
+            return
+        # Last args must be the json configuration for the fetcher.
+        # Simplify the user work by wrapping ourselve the given data into a
+        # named dictionary
+        config = {fetcher: json.loads(subcmd[0])}
+        results = fetcher_mod.fetch_pictures(config)
+        print(json.dumps(results))
 
 
 if __name__ == "__main__":
