@@ -138,7 +138,7 @@ class PrefDialog(Gtk.Dialog):
         sourceprefbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         sourceprefbox.set_spacing(10)
         fprefs = fetcher.preferences()
-        prefbox = self.make_fetcher_toggle_pref(fetcher_name, fprefs)
+        prefbox = self.make_fetcher_toggle_pref(fetcher_name)
         sourceprefbox.pack_start(prefbox, False, False, 0)
         if "options" not in fprefs:
             self.make_source_frame(fetcher_name, fprefs, sourceprefbox)
@@ -204,7 +204,7 @@ class PrefDialog(Gtk.Dialog):
         frame.add(sourceprefbox)
         self.sources_stack.add_titled(frame, fetcher_name, cap_name)
 
-    def make_fetcher_toggle_pref(self, fetcher, fprefs):
+    def make_fetcher_toggle_pref(self, fetcher):
         prefbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         label = Gtk.Label()
         label.set_text(_("Enable"))
@@ -212,7 +212,7 @@ class PrefDialog(Gtk.Dialog):
         button = Gtk.Switch()
         button.set_active(fetcher in self.config["general"]["sources"])
 
-        def on_toggle_fetcher_set(widget, state, fetcher):
+        def on_toggle_fetcher_set(_widget, state, fetcher):
             if state and fetcher not in self.config["general"]["sources"]:
                 self.config["general"]["sources"].append(fetcher)
                 self.config.write()
@@ -239,7 +239,7 @@ class PrefDialog(Gtk.Dialog):
         if current_value is not None:
             button.set_active(current_value)
 
-        def on_toggle_state_set(widget, state):
+        def on_toggle_state_set(_widget, state):
             self.config.write_config_opt(path, opt, state)
 
         button.connect("state-set", on_toggle_state_set)
@@ -328,7 +328,7 @@ class PrefDialog(Gtk.Dialog):
             for val in self.config[path][opt]:
                 liststore.append([val])
         elif defaults is not None:
-            if type(defaults).__name__ != "list":
+            if not isinstance(defaults, list):
                 liststore.append([defaults])
             else:
                 for val in defaults:
@@ -350,7 +350,7 @@ class PrefDialog(Gtk.Dialog):
                 del self.config[path][opt]
             self.config.write()
 
-        def on_cell_edited(widget, storepath, text):
+        def on_cell_edited(_widget, storepath, text):
             if text.strip() != "":
                 liststore[storepath][0] = text
             elif len(liststore) > 1:
@@ -523,7 +523,7 @@ as it is the more classical way of doing so.
         button = Gtk.Switch()
         button.set_active(self.sfm.xdg_autostart_file_exists())
 
-        def on_toggle_classic_set(widget, state):
+        def on_toggle_classic_set(_widget, state):
             if state:
                 self.sfm.xdg_autostart_file(
                     "daemon", _("Chwall daemon"),
@@ -582,7 +582,7 @@ as it is the more classical way of doing so.
             enable_systemd_btn = Gtk.Switch()
             enable_systemd_btn.set_active(service_enabled)
 
-            def on_toggle_systemd_state(widget, state):
+            def on_toggle_systemd_state(_widget, state):
                 self.sfm.systemd_service_toggle(state)
                 classic_daemon_box.set_sensitive(not state)
 
