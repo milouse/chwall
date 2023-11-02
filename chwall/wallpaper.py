@@ -79,12 +79,13 @@ def build_wallpapers_list(config):
 
 def filter_wallpapers_list(collecs):
     all_pics = list(collecs.keys())
-    try:
-        with open("{}/block_list.yml"
-                  .format(BASE_CACHE_PATH), "r") as f:
-            block_list = yaml.safe_load(f) or []
-    except FileNotFoundError:
-        block_list = []
+    block_list_file = "{}/block_list.yml".format(BASE_CACHE_PATH)
+    if not os.path.exists(block_list_file):
+        # Nothing to filter
+        return (all_pics, collecs)
+    block_list = []
+    with open(block_list_file, "r") as f:
+        block_list = yaml.safe_load(f) or []
     all_pics_copy = all_pics.copy()
     for p in all_pics_copy:
         if p not in block_list:
@@ -302,18 +303,18 @@ def fetch_wallpaper(wp_data):
         os.unlink(pic_file)
         return None, None
 
-    # Now check file with common placeholder, like broken image on reddit
-    if is_broken_picture(pic_file):
-        # Remove useless picture
-        os.unlink(pic_file)
-        # Block it
-        _write_current_wallpaper_info(current_wall)
-        block_wallpaper()
-        # Pick next
-        return "next", None
-
     _write_current_wallpaper_info(current_wall)
-    return pic_file, current_wall[0]
+
+    # Now check file with common placeholder, like broken image on reddit
+    if not is_broken_picture(pic_file):
+        # Everything is good
+        return pic_file, current_wall[0]
+
+    # Block it (removal of the useless picture will be part of the
+    # blocking process)
+    block_wallpaper()
+    # Pick next
+    return "next", None
 
 
 def pick_wallpaper(config, backward=False, guard=False):
@@ -396,15 +397,12 @@ def remove_wallpaper_from_roadmap(wp):
 
 
 def block_wallpaper():
-    try:
-        with open("{}/block_list.yml"
-                  .format(BASE_CACHE_PATH), "r") as f:
+    block_list = []
+    block_list_file = "{}/block_list.yml".format(BASE_CACHE_PATH)
+    if os.path.exists(block_list_file):
+        with open(block_list_file, "r") as f:
             block_list = yaml.safe_load(f) or []
-    except FileNotFoundError:
-        block_list = []
-    with open("{}/current_wallpaper"
-              .format(BASE_CACHE_PATH), "r") as f:
-        blocked_pix = f.readlines()[0].strip()
+    blocked_pix = current_wallpaper_info()["remote-picture-uri"]
     block_list.append(blocked_pix)
     with open("{}/block_list.yml"
               .format(BASE_CACHE_PATH), "w") as f:
@@ -431,9 +429,10 @@ def favorite_wallpaper_path(current_file, config):
 
 
 def favorite_wallpaper(config):
-    with open("{}/current_wallpaper"
-              .format(BASE_CACHE_PATH), "r") as f:
-        curfile = f.readlines()[4].strip()
+    current_wall = current_wallpaper_info()
+    curfile = current_wall["local-picture-path"]
+    if curfile == "":
+        return False
     try:
         target_file = favorite_wallpaper_path(curfile, config)
     except PermissionError as e:
