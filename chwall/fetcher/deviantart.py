@@ -3,7 +3,7 @@ from xml.etree import ElementTree
 
 
 def fetch_pictures(config):
-    collecs = config.get("deviantart", {}).get("collections", [])
+    collecs = config.get("deviantart", {}).get("collections", ["colorful"])
     if len(collecs) == 0:
         return {}
     pictures = {}
@@ -31,7 +31,8 @@ def preferences():
         "name": "Deviantart",
         "options": {
             "collections": {
-                "widget": "list"
+                "widget": "list",
+                "default": ["colorful"]
             }
         }
     }
