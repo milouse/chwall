@@ -5,7 +5,7 @@ from xml.etree import ElementTree
 
 
 def fetch_pictures(config):
-    tag_list = config.get("flickr", {}).get("tags", [])
+    tag_list = config.get("flickr", {}).get("tags", ["colorful"])
     if len(tag_list) == 0:
         return {}
     tags = ",".join(list(map(lambda x: x.strip(), tag_list)))
