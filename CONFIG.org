@@ -28,10 +28,12 @@ objects:
   open permissions to your home folder. Use something in ~/var/cache~
   for exemple.
 - ~sources~ is an array containing the activated pictures sources. By
-  default, only ~bing~ and ~natgeo~ are activated. The sources must be
-  one or more of: ~bing~, ~natgeo~ (for the National Geographic picture
-  of the day), ~nasa~ (for the NASA astronomical picture of the day),
-  ~unsplash~, ~deviantart~, or ~local~ (for your local folders).
+  default, only ~bing~ is activated. The sources must be one or more of:
+  ~bing~, ~deviantart~, ~flickr~, ~muzei~, ~nasa~ (for the NASA
+  astronomical picture of the day), ~natgeo~ (for the National
+  Geographic picture of the day), ~pexels~, ~powder~, ~reddit~,
+  ~smashing~ (for the Smashing Magazine calendar wallpapers of the
+  month), ~unsplash~, ~wikiart~, or ~local~ (for your local folders).
 
 #+begin_src yaml
 ---

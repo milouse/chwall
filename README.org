@@ -1,7 +1,8 @@
 #+title: README
 #+author: Étienne Deparis
 
-Chwall [[https://en.wiktionary.org/wiki/Appendix:French_pronunciation][{ʃwal}]] is tiny automatic wallpaper changer, written in python.
+Chwall [[https://en.wiktionary.org/wiki/Appendix:French_pronunciation][{ʃwal}]] is tiny automatic wallpaper changer for your Linux
+desktop, written in python.
 
 It's name is the contraction of /change wallpaper/, which may be
 pronounced as a twisted version of /cheval/, which means /horse/ in
@@ -16,13 +17,17 @@ Chwall is currently able to retrieve pictures from the following
 sources:
 
 - your local folders
-- bing pictures of the day
+- Bing pictures of the day
 - National Geographic pictures of the day
 - NASA astronomical pictures of the day
-- deviantart RSS feeds
-- Unsplash random API (requires a free account to access their API)
+- Deviantart RSS feeds
+- Unsplash (requires a free API key)
+- Pexels (requires a free API key)
+- Powder
+- Muzei
 - Reddit
 - Smashing Magazine monthly wallpaper collection
+- WikiArt
 
 * Install
 
