@@ -22,7 +22,6 @@ sources:
 - Deviantart RSS feeds
 - Unsplash (requires a free API key)
 - Pexels (requires a free API key)
-- Powder
 - Muzei
 - Reddit
 - Smashing Magazine monthly wallpaper collection
