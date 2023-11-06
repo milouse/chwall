@@ -12,7 +12,9 @@ _ = gettext.gettext
 
 
 def fetch_pictures(config):
-    subreds = config.get("reddit", {}).get("subreddits", [])
+    subreds = config.get("reddit", {}).get(
+        "subreddits", ["wallpaper", "wallpapers", "EarthPorn"]
+    )
     if len(subreds) == 0:
         return {}
     pictures = {}
