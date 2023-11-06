@@ -99,7 +99,7 @@ def read_config():
         os.makedirs(pic_cache)
 
     config.setdefault("general", {})
-    config["general"].setdefault("sources", ["bing", "natgeo"])
+    config["general"].setdefault("sources", ["bing"])
     config["general"].setdefault("sleep", 10 * 60)
     config["general"].setdefault("notify", False)
     config["general"].setdefault(

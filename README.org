@@ -18,7 +18,6 @@ sources:
 
 - your local folders
 - Bing pictures of the day
-- National Geographic pictures of the day
 - NASA astronomical pictures of the day
 - Deviantart RSS feeds
 - Unsplash (requires a free API key)

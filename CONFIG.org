@@ -30,8 +30,7 @@ objects:
 - ~sources~ is an array containing the activated pictures sources. By
   default, only ~bing~ is activated. The sources must be one or more of:
   ~bing~, ~deviantart~, ~flickr~, ~muzei~, ~nasa~ (for the NASA
-  astronomical picture of the day), ~natgeo~ (for the National
-  Geographic picture of the day), ~pexels~, ~powder~, ~reddit~,
+  astronomical picture of the day), ~pexels~, ~powder~, ~reddit~,
   ~smashing~ (for the Smashing Magazine calendar wallpapers of the
   month), ~unsplash~, ~wikiart~, or ~local~ (for your local folders).
 
@@ -42,7 +41,6 @@ general:
     path: /var/cache/last-wall
   sources:
     - bing
-    - natgeo
     - nasa
     - deviantart
     - unsplash
