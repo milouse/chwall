@@ -36,7 +36,13 @@ def build_wallpapers_list(config):
     for module_name in config["general"]["sources"]:
         try_again = 5
         ll = {}
-        m = import_module("chwall.fetcher.{}".format(module_name))
+        try:
+            m = import_module("chwall.fetcher.{}".format(module_name))
+        except ModuleNotFoundError:
+            logger.warning(
+                _("Fetcher {name} does not exist").format(name=module_name)
+            )
+            continue
 
         while try_again > 0:
             logger.info(
