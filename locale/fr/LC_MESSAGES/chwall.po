@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chwall 0.6.1\n"
 "Report-Msgid-Bugs-To: bugs@depar.is\n"
-"POT-Creation-Date: 2023-04-04 20:49+0200\n"
-"PO-Revision-Date: 2023-03-22 13:31+0100\n"
+"POT-Creation-Date: 2023-11-06 09:19+0100\n"
+"PO-Revision-Date: 2023-11-06 09:24+0100\n"
 "Last-Translator: Étienne Deparis <etienne@depar.is>\n"
 "Language-Team: none\n"
 "Language: fr\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.3.2\n"
 
 #: chwall/gui/app.py:39 chwall/gui/app.py:197 chwall/gui/preferences.py:113
 msgid "Preferences"
@@ -48,7 +48,7 @@ msgid "Put on block list"
 msgstr "Bloquer ce fond d’écran"
 
 #: chwall/gui/app.py:127 chwall/gui/app.py:132 chwall/gui/icon.py:68
-#: chwall/client.py:197
+#: chwall/client.py:201
 msgid "Current wallpaper is not managed by Chwall"
 msgstr "Le fond d’écran actuel n’est pas géré par Chwall"
 
@@ -310,7 +310,7 @@ msgstr "Chwall est publié selon les termes de la WTFPL"
 msgid "Locales"
 msgstr "Langues"
 
-#: chwall/fetcher/local.py:39 chwall/client.py:201
+#: chwall/fetcher/local.py:39 chwall/client.py:205
 msgid "Local wallpaper"
 msgstr "Fond d’écran local"
 
@@ -340,12 +340,12 @@ msgstr "Clé d’accès API"
 msgid "Search query"
 msgstr "Requête"
 
-#: chwall/fetcher/reddit.py:34
+#: chwall/fetcher/reddit.py:36
 #, python-brace-format
 msgid "{title}, picked on {subreddit}"
 msgstr "{title}, prise sur {subreddit}"
 
-#: chwall/fetcher/reddit.py:48
+#: chwall/fetcher/reddit.py:50
 msgid "Fetcher for Reddit"
 msgstr "Récupérateur pour Reddit"
 
@@ -377,7 +377,7 @@ msgstr ""
 "Unsplash a arrêté de fournir un flux RSS. De ce fait, le paramètre "
 "‘access_key’ est désormais requis."
 
-#: chwall/fetcher/unsplash.py:40 chwall/wallpaper.py:469
+#: chwall/fetcher/unsplash.py:40 chwall/wallpaper.py:470
 msgid "Picture"
 msgstr "Image"
 
@@ -432,10 +432,15 @@ msgstr "Récupération des adresses des images…"
 
 #: chwall/wallpaper.py:43
 #, python-brace-format
+msgid "Fetcher {name} does not exist"
+msgstr "Le récupérateur {name} n’existe pas"
+
+#: chwall/wallpaper.py:49
+#, python-brace-format
 msgid "Fetching pictures list from {name} - Attempt {number}"
 msgstr "Récupération de la liste d’images de {name} - Essai {number}"
 
-#: chwall/wallpaper.py:53
+#: chwall/wallpaper.py:59
 #, python-brace-format
 msgid ""
 "Catch {error} exception while retrieving images from {module}. Wait {time} "
@@ -444,55 +449,54 @@ msgstr ""
 "Récupération de l’exception {error} durant la récupération des images pour "
 "{module}. Attente de {time} secondes avant de réessayer."
 
-#: chwall/wallpaper.py:66
+#: chwall/wallpaper.py:72
 #, python-brace-format
 msgid "Retry NOW to connect to {module}"
 msgstr "Essaye MAINTENANT de se connecter à {module}"
 
-#: chwall/wallpaper.py:69
+#: chwall/wallpaper.py:75
 msgid "Switch to next picture provider or exit"
 msgstr "Passe au fournisseur d’images suivant ou quitte"
 
-#: chwall/wallpaper.py:93
+#: chwall/wallpaper.py:100
 #, python-brace-format
 msgid "Remove {picture} as it's in block list"
 msgstr "Supprime {picture} comme elle est sur la liste de blocage"
 
-#: chwall/wallpaper.py:111 chwall/wallpaper.py:142 chwall/wallpaper.py:157
-#: chwall/wallpaper.py:188 chwall/wallpaper.py:210
+#: chwall/wallpaper.py:118 chwall/wallpaper.py:149 chwall/wallpaper.py:164
+#: chwall/wallpaper.py:195 chwall/wallpaper.py:213
 msgid "No wallpaper path given"
 msgstr "Aucun chemin vers un fond d’écran donné"
 
-#: chwall/wallpaper.py:118
+#: chwall/wallpaper.py:125
 msgid "Error while retrieving XFCE workspaces list"
 msgstr "Erreur durant la récupération des espaces de travail XFCE"
 
-#: chwall/wallpaper.py:127
+#: chwall/wallpaper.py:134
 #, python-brace-format
 msgid "Error while trying to set XFCE wallpaper in {prop}"
 msgstr "Erreur durant la mise en place du fond d’écran XFCE dans {prop}"
 
-#: chwall/wallpaper.py:136
+#: chwall/wallpaper.py:143
 #, python-brace-format
 msgid "Error while setting {desktop} {prop} property"
 msgstr "Erreur durant la configuration de la propriété {prop} de {desktop}"
 
-#: chwall/wallpaper.py:205
-#, fuzzy
+#: chwall/wallpaper.py:208
 msgid "Error while calling feh"
 msgstr "Erreur lors de l’appel à feh"
 
-#: chwall/wallpaper.py:214
+#: chwall/wallpaper.py:217
 #, python-brace-format
 msgid "screensaver {prop}"
 msgstr "{prop} de l’écran de veille"
 
-#: chwall/wallpaper.py:230
+#: chwall/wallpaper.py:233
 #, python-brace-format
 msgid "Converting non RGB picture {picture}"
 msgstr "Conversion de l’image non RGB {picture}"
 
-#: chwall/wallpaper.py:287
+#: chwall/wallpaper.py:290
 #, python-brace-format
 msgid ""
 "Catch {error} exception while downloading {picture}. Wait {time} seconds "
@@ -501,12 +505,12 @@ msgstr ""
 "Récupération de l’exception {error} durant le téléchargement de {picture}. "
 "Attente de {time} secondes avant de réessayer."
 
-#: chwall/wallpaper.py:296
+#: chwall/wallpaper.py:299
 #, python-brace-format
 msgid "Retry NOW to download {picture}"
 msgstr "Essaye MAINTENANT de télécharger {picture}"
 
-#: chwall/wallpaper.py:337
+#: chwall/wallpaper.py:340
 msgid ""
 "Impossible to build a new road map. It may be caused by a temporarily "
 "network error. Please try again later."
@@ -514,7 +518,7 @@ msgstr ""
 "Impossible de construire une nouvelle liste d’attente. Cela peut être dû à "
 "une erreur temporaire de réseau. Merci de réessayer ultérieurement."
 
-#: chwall/wallpaper.py:360
+#: chwall/wallpaper.py:363
 msgid ""
 "Impossible to get any picture at this time. It may be caused by a "
 "temporarily network error. Please try again later."
@@ -522,12 +526,12 @@ msgstr ""
 "Impossible de récupérer une image pour l’instant. Cela peut être dû à une "
 "erreur temporaire de réseau. Merci de réessayer ultérieurement."
 
-#: chwall/wallpaper.py:468
+#: chwall/wallpaper.py:469
 #, python-brace-format
 msgid "{title} by {author}"
 msgstr "{title} de {author}"
 
-#: chwall/wallpaper.py:471
+#: chwall/wallpaper.py:472
 #, python-brace-format
 msgid "{title} (on {source})"
 msgstr "{title} (sur {source})"
@@ -594,15 +598,15 @@ msgstr "Nettoyage…"
 msgid "Starting Chwall Daemon v{version}…"
 msgstr "Démarrage du service de Chwall v{version}…"
 
-#: chwall/client.py:93
+#: chwall/client.py:97
 msgid "Usage:"
 msgstr "Usage :"
 
-#: chwall/client.py:98
+#: chwall/client.py:102
 msgid "or"
 msgstr "ou"
 
-#: chwall/client.py:104
+#: chwall/client.py:108
 msgid ""
 "\n"
 "Sadly, no specific help message for this subcommand yet.\n"
@@ -610,15 +614,15 @@ msgstr ""
 "\n"
 "Malheureusement, il n’y a pas encore d’aide spécifique pour cette commande.\n"
 
-#: chwall/client.py:112
+#: chwall/client.py:116
 msgid "USAGE"
 msgstr "USAGE"
 
-#: chwall/client.py:115
+#: chwall/client.py:119
 msgid "COMMANDS"
 msgstr "COMMANDES"
 
-#: chwall/client.py:122
+#: chwall/client.py:126
 msgid ""
 "\n"
 "Display a systemd service file exemple, which can be used to\n"
@@ -636,7 +640,7 @@ msgstr ""
 "Si ‘write’ est passé en second paramètre, le fichier de service\n"
 "résultant sera enregistré sous .config/systemd/user/\n"
 
-#: chwall/client.py:139
+#: chwall/client.py:143
 msgid ""
 "\n"
 "Display a launcher file example for your desktop, which can be used to "
@@ -653,7 +657,7 @@ msgstr ""
 "Si ‘write’ est passé en second paramètre, le lanceur résultant sera\n"
 "enregistré sous .local/share/applications/\n"
 
-#: chwall/client.py:160
+#: chwall/client.py:164
 msgid ""
 "\n"
 "Directly open the chwall preferences window.\n"
@@ -661,7 +665,7 @@ msgstr ""
 "\n"
 "Ouvre directement la fenêtre des préférences de chwall.\n"
 
-#: chwall/client.py:171
+#: chwall/client.py:175
 msgid ""
 "\n"
 "Detach from terminal and start either the main app or the system tray icon.\n"
@@ -676,7 +680,7 @@ msgstr ""
 "argument\n"
 "n’est donné.\n"
 
-#: chwall/client.py:187
+#: chwall/client.py:191
 msgid ""
 "\n"
 "Display the current wallpaper information.\n"
@@ -694,7 +698,7 @@ msgstr ""
 "visionneuse\n"
 "d’images…).\n"
 
-#: chwall/client.py:215
+#: chwall/client.py:219
 msgid ""
 "\n"
 "Add the current wallpaper on the block list to avoid it to be shown ever "
@@ -706,7 +710,7 @@ msgstr ""
 "jamais\n"
 "l’afficher à nouveau, puis passe au fond d’écran suivant.\n"
 
-#: chwall/client.py:226
+#: chwall/client.py:230
 msgid ""
 "\n"
 "Save a copy of the current wallpaper to not forget it and display it again\n"
@@ -716,13 +720,13 @@ msgstr ""
 "Enregistre une copie du fond d’écran actuel pour ne pas l’oublier et le\n"
 "ré-afficher à nouveau plus tard.\n"
 
-#: chwall/client.py:236
+#: chwall/client.py:240
 msgid "Unable to pick wallpaper this time. Please, try again."
 msgstr ""
 "Impossible de récupérer un fond d’écran pour cette fois. Merci de bien "
 "vouloir réessayer."
 
-#: chwall/client.py:244
+#: chwall/client.py:248
 msgid ""
 "\n"
 "Switch to the next wallpaper.\n"
@@ -730,6 +734,10 @@ msgid ""
 "This command may be used, even if the daemon is not started to manually "
 "change\n"
 "the wallpaper.\n"
+"\n"
+"If the optional ‘savetime’ keyword is given, the current time will be stored "
+"as\n"
+"the last time the wallpaper was changed (as if it was done by the daemon).\n"
 msgstr ""
 "\n"
 "Passe au fond d’écran suivant.\n"
@@ -737,8 +745,13 @@ msgstr ""
 "Cette commande peut-être utilisée, même si le service n’est pas démarré, "
 "pour\n"
 "manuellement changer de fond d’écran.\n"
+"\n"
+"Si le mot clé ‘savetime’ est donné, l’heure courante sera enregistrée comme\n"
+"heure du dernier changement de fond d’écran (comme si cela avait été fait "
+"par\n"
+"le service).\n"
 
-#: chwall/client.py:256
+#: chwall/client.py:267
 msgid ""
 "\n"
 "Switch to the previous wallpaper.\n"
@@ -746,7 +759,7 @@ msgstr ""
 "\n"
 "Passe au fond d’écran suivant.\n"
 
-#: chwall/client.py:265
+#: chwall/client.py:276
 msgid ""
 "\n"
 "Stop the chwall daemon.\n"
@@ -754,7 +767,7 @@ msgstr ""
 "\n"
 "Arrêter le service de Chwall.\n"
 
-#: chwall/client.py:274
+#: chwall/client.py:285
 msgid ""
 "\n"
 "Empty the current pending list to force chwall to fetch a new wallpapers "
@@ -766,11 +779,11 @@ msgstr ""
 "nouvelle\n"
 "liste lors du prochain changement.\n"
 
-#: chwall/client.py:285
+#: chwall/client.py:296
 msgid "No roadmap has been created yet"
 msgstr "Aucune liste d’attente n’a encore été définie"
 
-#: chwall/client.py:294
+#: chwall/client.py:305
 msgid ""
 "\n"
 "Display the last displayed wallpapers. The most recent one is at the "
@@ -785,7 +798,7 @@ msgstr ""
 "Cette commande renvoie simplement la liste des urls d’origine de chaque\n"
 "fond d’écran.\n"
 
-#: chwall/client.py:306
+#: chwall/client.py:317
 msgid ""
 "\n"
 "Display the next wallpapers, which will be shown in the future. The next one "
