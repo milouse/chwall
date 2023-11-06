@@ -1,20 +1,13 @@
 DESTDIR =
 
-prefix = $(DESTDIR)/usr
-datarootdir = $(prefix)/share
+datarootdir = $(DESTDIR)/usr/share
+bindir = $(DESTDIR)/usr/bin
 
-exec_prefix = $(prefix)
-bindir = $(exec_prefix)/bin
-libdir = $(exec_prefix)/lib
-
-VERSION = $(shell python setup.py --version)
+VERSION = $(shell python -c "from chwall import __version__; print(__version__)")
 
 ICON_SIZE  = 128 64 48 32 24 16
 DEST_ICONS = $(foreach z,$(ICON_SIZE),$(datarootdir)/icons/hicolor/$(z)x$(z)/apps/chwall.png) \
 	$(foreach z,$(ICON_SIZE),$(datarootdir)/icons/hicolor/$(z)x$(z)/apps/chwall_mono.png)
-
-PY_VERSION = $(shell python -c "import sys;v=sys.version_info;print('{}.{}'.format(v.major, v.minor))")
-PY_SITE    = $(libdir)/python$(PY_VERSION)/site-packages
 
 L10N_LANGS   = fr es
 PO_FILES     = $(L10N_LANGS:%=locale/%/LC_MESSAGES/chwall.po)
@@ -23,12 +16,15 @@ DEST_MO      = $(L10N_LANGS:%=$(datarootdir)/locale/%/LC_MESSAGES/chwall.mo)
 TRANSLATABLE = chwall/gui/*.py chwall/fetcher/*.py \
 	chwall/wallpaper.py chwall/daemon.py chwall/client.py
 
-.PHONY: clean dist install lang uninstall
+.PHONY: build clean install lang package uninstall
 
 .INTERMEDIATE: chwall-app.desktop $(MO_FILES)
 
-dist: clean $(DEST_ICONS) $(DEST_MO) chwall-app.desktop
-	python setup.py install --no-compile --root=$(DESTDIR)/
+build: clean
+	python -m build --wheel --no-isolation
+	python -m installer --destdir="$(DESTDIR)/" dist/chwall-$(VERSION)-py3-none-any.whl
+
+package: build $(DEST_ICONS) $(DEST_MO) chwall-app.desktop
 	install -d -m755 $(datarootdir)/applications
 	install -d -m755 $(datarootdir)/licenses/chwall
 	install -d -m755 $(datarootdir)/bash-completion/completions
@@ -38,7 +34,7 @@ dist: clean $(DEST_ICONS) $(DEST_MO) chwall-app.desktop
 	install -D -m644 data/chwall-completions $(datarootdir)/bash-completion/completions/chwall
 	install -D -m644 data/_chwall $(datarootdir)/zsh/site-functions/_chwall
 
-install: uninstall dist
+install: uninstall package
 	update-desktop-database $(datarootdir)/applications
 	gtk-update-icon-cache $(datarootdir)/icons/hicolor
 
@@ -48,10 +44,11 @@ clean:
 	find $(PWD) -type d -empty ! -path "*/.git/*" -print0 | \
 		xargs -0r rmdir -p --ignore-fail-on-non-empty
 	rm -f $(MO_FILES) chwall-app.desktop
-	rm -rf build chwall.egg-info
+	rm -rf build dist chwall.egg-info
 
+PY_SITE = $(DESTDIR)$(shell python -c "import site; print(site.getsitepackages()[0])")
 uninstall:
-	rm -rf $(PY_SITE)/chwall $(PY_SITE)/chwall-*-py$(PY_VERSION).egg-info
+	rm -rf $(PY_SITE)/chwall $(PY_SITE)/chwall-*.dist-info $(PY_SITE)/chwall-*.egg-info
 	rm -rf $(datarootdir)/licenses/chwall
 	rm -f $(DEST_ICONS)
 	gtk-update-icon-cache $(datarootdir)/icons/hicolor
