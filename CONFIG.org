@@ -32,7 +32,7 @@ objects:
   ~bing~, ~deviantart~, ~flickr~, ~muzei~, ~nasa~ (for the NASA
   astronomical picture of the day), ~pexels~, ~reddit~, ~smashing~ (for
   the Smashing Magazine calendar wallpapers of the month), ~unsplash~,
-  ~wikiart~, or ~local~ (for your local folders).
+  ~wallhaven~, ~wikiart~, or ~local~ (for your local folders).
 
 #+begin_src yaml
 ---

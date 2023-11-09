@@ -26,6 +26,7 @@ sources:
 - Reddit
 - Smashing Magazine monthly wallpaper collection
 - WikiArt
+- Wallhaven
 
 * Install
 

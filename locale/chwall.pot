@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chwall 0.6.1\n"
 "Report-Msgid-Bugs-To: bugs@depar.is\n"
-"POT-Creation-Date: 2023-11-09 21:41+0100\n"
+"POT-Creation-Date: 2023-11-09 21:47+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -97,7 +97,7 @@ msgstr ""
 msgid "Report a bug"
 msgstr ""
 
-#: chwall/gui/preferences.py:126
+#: chwall/gui/preferences.py:126 chwall/fetcher/wallhaven.py:100
 msgid "General"
 msgstr ""
 
@@ -320,11 +320,11 @@ msgstr ""
 msgid "An ‘access_key’ param is required to fetch pictures from Pexels."
 msgstr ""
 
-#: chwall/fetcher/pexels.py:59
+#: chwall/fetcher/pexels.py:59 chwall/fetcher/wallhaven.py:58
 msgid "Landscape"
 msgstr ""
 
-#: chwall/fetcher/pexels.py:60
+#: chwall/fetcher/pexels.py:60 chwall/fetcher/wallhaven.py:59
 msgid "Portrait"
 msgstr ""
 
@@ -384,12 +384,100 @@ msgstr ""
 msgid "High"
 msgstr ""
 
-#: chwall/fetcher/unsplash.py:81
+#: chwall/fetcher/unsplash.py:81 chwall/fetcher/wallhaven.py:95
 msgid "Content filtering"
 msgstr ""
 
 #: chwall/fetcher/unsplash.py:86
 msgid "Complementary query"
+msgstr ""
+
+#: chwall/fetcher/wallhaven.py:53
+msgid "Wallpaper height"
+msgstr ""
+
+#: chwall/fetcher/wallhaven.py:65
+msgid "Ratio"
+msgstr ""
+
+#: chwall/fetcher/wallhaven.py:69
+msgid "Main color"
+msgstr ""
+
+#: chwall/fetcher/wallhaven.py:74
+msgid "Relevance"
+msgstr ""
+
+#: chwall/fetcher/wallhaven.py:75
+msgid "Random"
+msgstr ""
+
+#: chwall/fetcher/wallhaven.py:76
+msgid "Date Added"
+msgstr ""
+
+#: chwall/fetcher/wallhaven.py:77
+msgid "Views"
+msgstr ""
+
+#: chwall/fetcher/wallhaven.py:78
+msgid "Favorites"
+msgstr ""
+
+#: chwall/fetcher/wallhaven.py:79
+msgid "Toplist"
+msgstr ""
+
+#: chwall/fetcher/wallhaven.py:80
+msgid "Hot"
+msgstr ""
+
+#: chwall/fetcher/wallhaven.py:83
+msgid "Sorting order"
+msgstr ""
+
+#: chwall/fetcher/wallhaven.py:88
+msgid "SFW"
+msgstr ""
+
+#: chwall/fetcher/wallhaven.py:89
+msgid "Sketchy"
+msgstr ""
+
+#: chwall/fetcher/wallhaven.py:90
+msgid "NSFW"
+msgstr ""
+
+#: chwall/fetcher/wallhaven.py:91
+msgid "Sketchy + NSFW"
+msgstr ""
+
+#: chwall/fetcher/wallhaven.py:92 chwall/fetcher/wallhaven.py:106
+msgid "All"
+msgstr ""
+
+#: chwall/fetcher/wallhaven.py:101
+msgid "Anime"
+msgstr ""
+
+#: chwall/fetcher/wallhaven.py:102
+msgid "People"
+msgstr ""
+
+#: chwall/fetcher/wallhaven.py:103
+msgid "General + Anime"
+msgstr ""
+
+#: chwall/fetcher/wallhaven.py:104
+msgid "Anime + People"
+msgstr ""
+
+#: chwall/fetcher/wallhaven.py:105
+msgid "General + People"
+msgstr ""
+
+#: chwall/fetcher/wallhaven.py:109
+msgid "Categories"
 msgstr ""
 
 #: chwall/fetcher/wikiart.py:21

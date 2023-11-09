@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chwall 0.6.1\n"
 "Report-Msgid-Bugs-To: bugs@depar.is\n"
-"POT-Creation-Date: 2023-11-09 21:41+0100\n"
-"PO-Revision-Date: 2023-11-06 09:29+0100\n"
+"POT-Creation-Date: 2023-11-09 21:47+0100\n"
+"PO-Revision-Date: 2023-11-09 21:47+0100\n"
 "Last-Translator: Étienne Deparis <etienne@depar.is>\n"
 "Language-Team: none\n"
 "Language: fr\n"
@@ -100,7 +100,7 @@ msgstr "Toujours afficher cette icône"
 msgid "Report a bug"
 msgstr "Signaler un bogue"
 
-#: chwall/gui/preferences.py:126
+#: chwall/gui/preferences.py:126 chwall/fetcher/wallhaven.py:100
 msgid "General"
 msgstr "Général"
 
@@ -339,11 +339,11 @@ msgid "An ‘access_key’ param is required to fetch pictures from Pexels."
 msgstr ""
 "Un paramètre ‘access_key’ est requis pour récupérer des images depuis Pexels."
 
-#: chwall/fetcher/pexels.py:59
+#: chwall/fetcher/pexels.py:59 chwall/fetcher/wallhaven.py:58
 msgid "Landscape"
 msgstr "Paysage"
 
-#: chwall/fetcher/pexels.py:60
+#: chwall/fetcher/pexels.py:60 chwall/fetcher/wallhaven.py:59
 msgid "Portrait"
 msgstr "Portrait"
 
@@ -405,13 +405,101 @@ msgstr "Modéré"
 msgid "High"
 msgstr "Haut"
 
-#: chwall/fetcher/unsplash.py:81
+#: chwall/fetcher/unsplash.py:81 chwall/fetcher/wallhaven.py:95
 msgid "Content filtering"
 msgstr "Filtre de contenu"
 
 #: chwall/fetcher/unsplash.py:86
 msgid "Complementary query"
 msgstr "Requête complémentaire"
+
+#: chwall/fetcher/wallhaven.py:53
+msgid "Wallpaper height"
+msgstr "Hauteur du fond d’écran"
+
+#: chwall/fetcher/wallhaven.py:65
+msgid "Ratio"
+msgstr "Ratio"
+
+#: chwall/fetcher/wallhaven.py:69
+msgid "Main color"
+msgstr "Couleur principale"
+
+#: chwall/fetcher/wallhaven.py:74
+msgid "Relevance"
+msgstr "Pertinence"
+
+#: chwall/fetcher/wallhaven.py:75
+msgid "Random"
+msgstr "Aléatoire"
+
+#: chwall/fetcher/wallhaven.py:76
+msgid "Date Added"
+msgstr "Date d’ajout"
+
+#: chwall/fetcher/wallhaven.py:77
+msgid "Views"
+msgstr "Vues"
+
+#: chwall/fetcher/wallhaven.py:78
+msgid "Favorites"
+msgstr "Mis en favoris"
+
+#: chwall/fetcher/wallhaven.py:79
+msgid "Toplist"
+msgstr "En vogue sur 30 jours"
+
+#: chwall/fetcher/wallhaven.py:80
+msgid "Hot"
+msgstr "En vogue"
+
+#: chwall/fetcher/wallhaven.py:83
+msgid "Sorting order"
+msgstr "Ordre de tri"
+
+#: chwall/fetcher/wallhaven.py:88
+msgid "SFW"
+msgstr "SFW"
+
+#: chwall/fetcher/wallhaven.py:89
+msgid "Sketchy"
+msgstr "Louche"
+
+#: chwall/fetcher/wallhaven.py:90
+msgid "NSFW"
+msgstr "NSFW"
+
+#: chwall/fetcher/wallhaven.py:91
+msgid "Sketchy + NSFW"
+msgstr "Louche + NSFW"
+
+#: chwall/fetcher/wallhaven.py:92 chwall/fetcher/wallhaven.py:106
+msgid "All"
+msgstr "Tout"
+
+#: chwall/fetcher/wallhaven.py:101
+msgid "Anime"
+msgstr "Anime"
+
+#: chwall/fetcher/wallhaven.py:102
+msgid "People"
+msgstr "Personnes"
+
+#: chwall/fetcher/wallhaven.py:103
+msgid "General + Anime"
+msgstr "Général + Anime"
+
+#: chwall/fetcher/wallhaven.py:104
+msgid "Anime + People"
+msgstr "Anime + Personnes"
+
+#: chwall/fetcher/wallhaven.py:105
+msgid "General + People"
+msgstr "Général + Personnes"
+
+#: chwall/fetcher/wallhaven.py:109
+msgid "Categories"
+msgstr "Catégories"
 
 #: chwall/fetcher/wikiart.py:21
 msgid "An ‘access_key’ param is required to fetch pictures from Wikiart."
