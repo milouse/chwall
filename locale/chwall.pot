@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chwall 0.6.1\n"
 "Report-Msgid-Bugs-To: bugs@depar.is\n"
-"POT-Creation-Date: 2023-11-09 21:07+0100\n"
+"POT-Creation-Date: 2023-11-09 21:08+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: chwall/gui/app.py:39 chwall/gui/app.py:197 chwall/gui/preferences.py:113
+#: chwall/gui/app.py:39 chwall/gui/app.py:197 chwall/gui/preferences.py:117
 msgid "Preferences"
 msgstr ""
 
@@ -97,87 +97,87 @@ msgstr ""
 msgid "Report a bug"
 msgstr ""
 
-#: chwall/gui/preferences.py:121
+#: chwall/gui/preferences.py:125
 msgid "General"
 msgstr ""
 
-#: chwall/gui/preferences.py:123
+#: chwall/gui/preferences.py:127
 msgid "Pictures sources"
 msgstr ""
 
-#: chwall/gui/preferences.py:125
+#: chwall/gui/preferences.py:129
 msgid "Advanced"
 msgstr ""
 
-#: chwall/gui/preferences.py:153
+#: chwall/gui/preferences.py:157
 msgid "Wallpaper width"
 msgstr ""
 
-#: chwall/gui/preferences.py:155
+#: chwall/gui/preferences.py:159
 msgid "Number of item to retrieve"
 msgstr ""
 
-#: chwall/gui/preferences.py:157
+#: chwall/gui/preferences.py:161
 msgid "Collections"
 msgstr ""
 
-#: chwall/gui/preferences.py:159
+#: chwall/gui/preferences.py:163
 msgid "API access key"
 msgstr ""
 
-#: chwall/gui/preferences.py:161
+#: chwall/gui/preferences.py:165
 msgid "Search query"
 msgstr ""
 
-#: chwall/gui/preferences.py:214
+#: chwall/gui/preferences.py:218
 msgid "Enable"
 msgstr ""
 
-#: chwall/gui/preferences.py:405 chwall/gui/preferences.py:730
+#: chwall/gui/preferences.py:409 chwall/gui/preferences.py:734
 msgid "Remove"
 msgstr ""
 
-#: chwall/gui/preferences.py:410
+#: chwall/gui/preferences.py:414
 msgid "Add"
 msgstr ""
 
-#: chwall/gui/preferences.py:433
+#: chwall/gui/preferences.py:437
 msgid "Select a file"
 msgstr ""
 
-#: chwall/gui/preferences.py:471
+#: chwall/gui/preferences.py:475
 msgid "Display notification when wallpaper changes"
 msgstr ""
 
-#: chwall/gui/preferences.py:479
+#: chwall/gui/preferences.py:483
 msgid "Time between each wallpaper change"
 msgstr ""
 
-#: chwall/gui/preferences.py:485
+#: chwall/gui/preferences.py:489
 msgid "Use Feh application"
 msgstr ""
 
-#: chwall/gui/preferences.py:487
+#: chwall/gui/preferences.py:491
 msgid "Desktop environment"
 msgstr ""
 
-#: chwall/gui/preferences.py:492
+#: chwall/gui/preferences.py:496
 msgid "Shared background path"
 msgstr ""
 
-#: chwall/gui/preferences.py:497
+#: chwall/gui/preferences.py:501
 msgid "Blur shared background"
 msgstr ""
 
-#: chwall/gui/preferences.py:502
+#: chwall/gui/preferences.py:506
 msgid "Favorites folder"
 msgstr ""
 
-#: chwall/gui/preferences.py:503
+#: chwall/gui/preferences.py:507
 msgid "Select a folder"
 msgstr ""
 
-#: chwall/gui/preferences.py:514
+#: chwall/gui/preferences.py:518
 msgid ""
 "\n"
 "You have two options to launch Chwall daemon when your user session starts:\n"
@@ -188,107 +188,107 @@ msgid ""
 "as it is the more classical way of doing so.\n"
 msgstr ""
 
-#: chwall/gui/preferences.py:525
+#: chwall/gui/preferences.py:529
 msgid ""
 "Launch Chwall daemon with an XDG autostart file when your session starts"
 msgstr ""
 
-#: chwall/gui/preferences.py:533
+#: chwall/gui/preferences.py:537
 msgid "Chwall daemon"
 msgstr ""
 
-#: chwall/gui/preferences.py:534
+#: chwall/gui/preferences.py:538
 msgid "Start Chwall daemon"
 msgstr ""
 
-#: chwall/gui/preferences.py:568
+#: chwall/gui/preferences.py:572
 msgid "Install the systemd service file before using it to start Chwall daemon"
 msgstr ""
 
-#: chwall/gui/preferences.py:570
+#: chwall/gui/preferences.py:574
 msgid "Create"
 msgstr ""
 
-#: chwall/gui/preferences.py:584
+#: chwall/gui/preferences.py:588
 msgid "Launch Chwall daemon with systemd when your session starts"
 msgstr ""
 
-#: chwall/gui/preferences.py:606
+#: chwall/gui/preferences.py:610
 msgid "Behavior"
 msgstr ""
 
-#: chwall/gui/preferences.py:613 chwall/gui/preferences.py:780
+#: chwall/gui/preferences.py:617 chwall/gui/preferences.py:784
 msgid "Daemon"
 msgstr ""
 
-#: chwall/gui/preferences.py:626
+#: chwall/gui/preferences.py:630
 msgid "Fetch a new wallpapers list the next time wallpaper change"
 msgstr ""
 
-#: chwall/gui/preferences.py:627
+#: chwall/gui/preferences.py:631
 msgid "Empty current pending list"
 msgstr ""
 
-#: chwall/gui/preferences.py:638 chwall/daemon.py:252
+#: chwall/gui/preferences.py:642 chwall/daemon.py:252
 #, python-brace-format
 msgid "{number} cache entry has been removed."
 msgid_plural "{number} cache entries have been removed."
 msgstr[0] ""
 msgstr[1] ""
 
-#: chwall/gui/preferences.py:648
+#: chwall/gui/preferences.py:652
 msgid "Cache cleanup"
 msgstr ""
 
-#: chwall/gui/preferences.py:658 chwall/gui/preferences.py:667
+#: chwall/gui/preferences.py:662 chwall/gui/preferences.py:671
 #, python-brace-format
 msgid "{number} broken picture currently in cache"
 msgid_plural "{number} broken pictures currently in cache"
 msgstr[0] ""
 msgstr[1] ""
 
-#: chwall/gui/preferences.py:675
+#: chwall/gui/preferences.py:679
 msgid "Clear broken pictures"
 msgstr ""
 
-#: chwall/gui/preferences.py:685 chwall/gui/preferences.py:689
+#: chwall/gui/preferences.py:689 chwall/gui/preferences.py:693
 #, python-brace-format
 msgid "Picture cache use {size}"
 msgstr ""
 
-#: chwall/gui/preferences.py:690
+#: chwall/gui/preferences.py:694
 msgid "Clear picture cache"
 msgstr ""
 
-#: chwall/gui/preferences.py:703
+#: chwall/gui/preferences.py:707
 msgid "X Display in use"
 msgstr ""
 
-#: chwall/gui/preferences.py:729
+#: chwall/gui/preferences.py:733
 msgid "Remove systemd service file"
 msgstr ""
 
-#: chwall/gui/preferences.py:741
+#: chwall/gui/preferences.py:745
 msgid "Log level"
 msgstr ""
 
-#: chwall/gui/preferences.py:753
+#: chwall/gui/preferences.py:757
 msgid "Blur radius of shared background"
 msgstr ""
 
-#: chwall/gui/preferences.py:757
+#: chwall/gui/preferences.py:761
 msgid "Use a monochrome status icon"
 msgstr ""
 
-#: chwall/gui/preferences.py:762
+#: chwall/gui/preferences.py:766
 msgid "Command to start your web browser"
 msgstr ""
 
-#: chwall/gui/preferences.py:773
+#: chwall/gui/preferences.py:777
 msgid "Cache management"
 msgstr ""
 
-#: chwall/gui/preferences.py:787
+#: chwall/gui/preferences.py:791
 msgid "Others"
 msgstr ""
 

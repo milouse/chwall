@@ -71,7 +71,11 @@ class ConfigWrapper:
         def _browse_and_write_config_opt(config, path, opt, value):
             if path == "":
                 # Last element, we can directly put opt in config
-                config[opt] = value
+                if value is None:
+                    # Remove value
+                    config.pop(opt, None)
+                else:
+                    config[opt] = value
                 return config
             pe = path.split(".")
             p = pe.pop(0)
