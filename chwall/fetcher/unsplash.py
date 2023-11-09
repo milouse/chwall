@@ -78,16 +78,11 @@ def preferences():
                 "default": "low",
                 "label": _("Content filtering")
             },
-            "access_key": {
-                "widget": "text",
-                "label": _("API access key")
-            },
+            "access_key": {"widget": "text"},
             "query": {
                 "widget": "text",
                 "label": _("Complementary query")
             },
-            "collections": {
-                "widget": "list"
-            }
+            "collections": {"widget": "list"}
         }
     }

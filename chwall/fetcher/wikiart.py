@@ -74,10 +74,7 @@ def preferences():
     return {
         "name": "Wikiart",
         "options": {
-            "access_key": {
-                "widget": "text",
-                "label": _("API access key")
-            },
+            "access_key": {"widget": "text"},
             "secret_key": {
                 "widget": "text",
                 "label": _("API secret key")
@@ -98,9 +95,6 @@ def preferences():
                 "default": "en",
                 "label": _("Locales")
             },
-            "query": {
-                "widget": "text",
-                "label": _("Search query")
-            }
+            "query": {"widget": "text"}
         }
     }

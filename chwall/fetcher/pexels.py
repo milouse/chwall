@@ -66,13 +66,7 @@ def preferences():
                 "widget": "number",
                 "default": 10
             },
-            "access_key": {
-                "widget": "text",
-                "label": _("API access key")
-            },
-            "query": {
-                "widget": "text",
-                "label": _("Search query")
-            }
+            "access_key": {"widget": "text"},
+            "query": {"widget": "text"}
         }
     }

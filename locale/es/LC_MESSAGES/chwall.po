@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chwall 0.6.1\n"
 "Report-Msgid-Bugs-To: bugs@depar.is\n"
-"POT-Creation-Date: 2023-11-06 09:28+0100\n"
+"POT-Creation-Date: 2023-11-09 21:06+0100\n"
 "PO-Revision-Date: 2020-05-02 12:28+0000\n"
 "Last-Translator: ruko <ruko@null.net>\n"
 "Language-Team: Spanish <https://translations.umaneti.net/projects/chwall/"
@@ -124,55 +124,63 @@ msgstr "Número del objeto a recuperar"
 msgid "Collections"
 msgstr "Colecciones"
 
-#: chwall/gui/preferences.py:210
+#: chwall/gui/preferences.py:159
+msgid "API access key"
+msgstr ""
+
+#: chwall/gui/preferences.py:161
+msgid "Search query"
+msgstr ""
+
+#: chwall/gui/preferences.py:214
 msgid "Enable"
 msgstr "Activar"
 
-#: chwall/gui/preferences.py:401 chwall/gui/preferences.py:726
+#: chwall/gui/preferences.py:405 chwall/gui/preferences.py:730
 msgid "Remove"
 msgstr "Eliminar"
 
-#: chwall/gui/preferences.py:406
+#: chwall/gui/preferences.py:410
 msgid "Add"
 msgstr "Añadir"
 
-#: chwall/gui/preferences.py:429
+#: chwall/gui/preferences.py:433
 msgid "Select a file"
 msgstr "Selecciona un archivo"
 
-#: chwall/gui/preferences.py:467
+#: chwall/gui/preferences.py:471
 msgid "Display notification when wallpaper changes"
 msgstr "Mostrar una notificación cuando el fondo de pantalla cambie"
 
-#: chwall/gui/preferences.py:475
+#: chwall/gui/preferences.py:479
 msgid "Time between each wallpaper change"
 msgstr "Tiempo entre cada cambio de fondo de pantalla"
 
-#: chwall/gui/preferences.py:481
+#: chwall/gui/preferences.py:485
 msgid "Use Feh application"
 msgstr "Usar la aplicación Feh"
 
-#: chwall/gui/preferences.py:483
+#: chwall/gui/preferences.py:487
 msgid "Desktop environment"
 msgstr "Entorno de escritorio"
 
-#: chwall/gui/preferences.py:488
+#: chwall/gui/preferences.py:492
 msgid "Shared background path"
 msgstr "Directorio compartido del fondo de pantalla"
 
-#: chwall/gui/preferences.py:493
+#: chwall/gui/preferences.py:497
 msgid "Blur shared background"
 msgstr ""
 
-#: chwall/gui/preferences.py:498
+#: chwall/gui/preferences.py:502
 msgid "Favorites folder"
 msgstr ""
 
-#: chwall/gui/preferences.py:499
+#: chwall/gui/preferences.py:503
 msgid "Select a folder"
 msgstr "Selecciona un archivo"
 
-#: chwall/gui/preferences.py:510
+#: chwall/gui/preferences.py:514
 msgid ""
 "\n"
 "You have two options to launch Chwall daemon when your user session starts:\n"
@@ -183,107 +191,107 @@ msgid ""
 "as it is the more classical way of doing so.\n"
 msgstr ""
 
-#: chwall/gui/preferences.py:521
+#: chwall/gui/preferences.py:525
 msgid ""
 "Launch Chwall daemon with an XDG autostart file when your session starts"
 msgstr ""
 
-#: chwall/gui/preferences.py:529
+#: chwall/gui/preferences.py:533
 msgid "Chwall daemon"
 msgstr "Chwall servicio"
 
-#: chwall/gui/preferences.py:530
+#: chwall/gui/preferences.py:534
 msgid "Start Chwall daemon"
 msgstr "Iniciar Chwall servicio"
 
-#: chwall/gui/preferences.py:564
+#: chwall/gui/preferences.py:568
 msgid "Install the systemd service file before using it to start Chwall daemon"
 msgstr ""
 
-#: chwall/gui/preferences.py:566
+#: chwall/gui/preferences.py:570
 msgid "Create"
 msgstr ""
 
-#: chwall/gui/preferences.py:580
+#: chwall/gui/preferences.py:584
 msgid "Launch Chwall daemon with systemd when your session starts"
 msgstr ""
 
-#: chwall/gui/preferences.py:602
+#: chwall/gui/preferences.py:606
 msgid "Behavior"
 msgstr ""
 
-#: chwall/gui/preferences.py:609 chwall/gui/preferences.py:776
+#: chwall/gui/preferences.py:613 chwall/gui/preferences.py:780
 msgid "Daemon"
 msgstr "Servicio"
 
-#: chwall/gui/preferences.py:622
+#: chwall/gui/preferences.py:626
 msgid "Fetch a new wallpapers list the next time wallpaper change"
 msgstr ""
 
-#: chwall/gui/preferences.py:623
+#: chwall/gui/preferences.py:627
 msgid "Empty current pending list"
 msgstr ""
 
-#: chwall/gui/preferences.py:634 chwall/daemon.py:252
+#: chwall/gui/preferences.py:638 chwall/daemon.py:252
 #, python-brace-format
 msgid "{number} cache entry has been removed."
 msgid_plural "{number} cache entries have been removed."
 msgstr[0] "{number} entrada en cache ha sido eliminada."
 msgstr[1] "{number} entradas en cache han sido eliminadas."
 
-#: chwall/gui/preferences.py:644
+#: chwall/gui/preferences.py:648
 msgid "Cache cleanup"
 msgstr "Limpiar cache"
 
-#: chwall/gui/preferences.py:654 chwall/gui/preferences.py:663
+#: chwall/gui/preferences.py:658 chwall/gui/preferences.py:667
 #, python-brace-format
 msgid "{number} broken picture currently in cache"
 msgid_plural "{number} broken pictures currently in cache"
 msgstr[0] ""
 msgstr[1] ""
 
-#: chwall/gui/preferences.py:671
+#: chwall/gui/preferences.py:675
 msgid "Clear broken pictures"
 msgstr ""
 
-#: chwall/gui/preferences.py:681 chwall/gui/preferences.py:685
+#: chwall/gui/preferences.py:685 chwall/gui/preferences.py:689
 #, python-brace-format
 msgid "Picture cache use {size}"
 msgstr ""
 
-#: chwall/gui/preferences.py:686
+#: chwall/gui/preferences.py:690
 msgid "Clear picture cache"
 msgstr ""
 
-#: chwall/gui/preferences.py:699
+#: chwall/gui/preferences.py:703
 msgid "X Display in use"
 msgstr ""
 
-#: chwall/gui/preferences.py:725
+#: chwall/gui/preferences.py:729
 msgid "Remove systemd service file"
 msgstr ""
 
-#: chwall/gui/preferences.py:737
+#: chwall/gui/preferences.py:741
 msgid "Log level"
 msgstr ""
 
-#: chwall/gui/preferences.py:749
+#: chwall/gui/preferences.py:753
 msgid "Blur radius of shared background"
 msgstr ""
 
-#: chwall/gui/preferences.py:753
+#: chwall/gui/preferences.py:757
 msgid "Use a monochrome status icon"
 msgstr ""
 
-#: chwall/gui/preferences.py:758
+#: chwall/gui/preferences.py:762
 msgid "Command to start your web browser"
 msgstr ""
 
-#: chwall/gui/preferences.py:769
+#: chwall/gui/preferences.py:773
 msgid "Cache management"
 msgstr ""
 
-#: chwall/gui/preferences.py:783
+#: chwall/gui/preferences.py:787
 msgid "Others"
 msgstr ""
 
@@ -291,7 +299,7 @@ msgstr ""
 msgid "Chwall is released under the WTFPL"
 msgstr "Chwall es publicado bajo los términos de la licencia WTFPL"
 
-#: chwall/fetcher/bing.py:46 chwall/fetcher/wikiart.py:99
+#: chwall/fetcher/bing.py:46 chwall/fetcher/wikiart.py:96
 msgid "Locales"
 msgstr ""
 
@@ -325,15 +333,6 @@ msgstr ""
 
 #: chwall/fetcher/pexels.py:61
 msgid "Square"
-msgstr ""
-
-#: chwall/fetcher/pexels.py:71 chwall/fetcher/unsplash.py:83
-#: chwall/fetcher/wikiart.py:79
-msgid "API access key"
-msgstr ""
-
-#: chwall/fetcher/pexels.py:75 chwall/fetcher/wikiart.py:103
-msgid "Search query"
 msgstr ""
 
 #: chwall/fetcher/reddit.py:34
@@ -392,7 +391,7 @@ msgstr ""
 msgid "Content filtering"
 msgstr ""
 
-#: chwall/fetcher/unsplash.py:87
+#: chwall/fetcher/unsplash.py:84
 msgid "Complementary query"
 msgstr ""
 
@@ -410,7 +409,7 @@ msgid ""
 "check again your access and secret keys."
 msgstr ""
 
-#: chwall/fetcher/wikiart.py:83
+#: chwall/fetcher/wikiart.py:80
 msgid "API secret key"
 msgstr ""
 

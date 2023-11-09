@@ -155,6 +155,10 @@ class PrefDialog(Gtk.Dialog):
                 return _("Number of item to retrieve")
             elif default == "collections":
                 return _("Collections")
+            elif default == "access_key":
+                return _("API access key")
+            elif default == "query":
+                return _("Search query")
             return default.capitalize()
 
         for opt in fprefs["options"]:
