@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chwall 0.6.1\n"
 "Report-Msgid-Bugs-To: bugs@depar.is\n"
-"POT-Creation-Date: 2023-11-09 21:06+0100\n"
+"POT-Creation-Date: 2023-11-09 21:07+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -367,28 +367,28 @@ msgid ""
 "required."
 msgstr ""
 
-#: chwall/fetcher/unsplash.py:39 chwall/wallpaper.py:471
+#: chwall/fetcher/unsplash.py:41 chwall/wallpaper.py:471
 msgid "Picture"
 msgstr ""
 
-#: chwall/fetcher/unsplash.py:48
+#: chwall/fetcher/unsplash.py:50
 #, python-brace-format
 msgid "{desc}, taken in {location}"
 msgstr ""
 
-#: chwall/fetcher/unsplash.py:75
+#: chwall/fetcher/unsplash.py:77
 msgid "Low"
 msgstr ""
 
-#: chwall/fetcher/unsplash.py:76
+#: chwall/fetcher/unsplash.py:78
 msgid "High"
 msgstr ""
 
-#: chwall/fetcher/unsplash.py:79
+#: chwall/fetcher/unsplash.py:81
 msgid "Content filtering"
 msgstr ""
 
-#: chwall/fetcher/unsplash.py:84
+#: chwall/fetcher/unsplash.py:86
 msgid "Complementary query"
 msgstr ""
 

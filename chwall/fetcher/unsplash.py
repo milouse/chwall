@@ -23,16 +23,18 @@ def fetch_pictures(config):
     width = us_conf.get("width", 1600)
     nb_pic = us_conf.get("count", 10)
     ct_fltr = us_conf.get("content_filter", "low")
-    params = ["count=%d" % nb_pic, "content_filter=%s" % ct_fltr]
+    params = {
+        "client_id": client_id,
+        "count": nb_pic,
+        "content_filter": ct_fltr
+    }
     if "query" in us_conf:
-        params.append("query=" + us_conf["query"])
+        params["query"] = us_conf["query"]
     if "collections" in us_conf:
-        params.append("collections=" + ",".join(us_conf["collections"]))
+        params["collections"] = ",".join(us_conf["collections"])
     url = "https://api.unsplash.com/photos/random"
-    params.append("client_id=" + client_id)
     pictures = {}
-    final_uri = "{}?{}".format(url, "&".join(params))
-    data = requests_get(final_uri).json()
+    data = requests_get(url, params=params).json()
     for p in data:
         px = "{u}&w={w}".format(u=p["urls"]["raw"], w=width)
         if p["description"] is None:

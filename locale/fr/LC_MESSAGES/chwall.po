@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chwall 0.6.1\n"
 "Report-Msgid-Bugs-To: bugs@depar.is\n"
-"POT-Creation-Date: 2023-11-09 21:06+0100\n"
+"POT-Creation-Date: 2023-11-09 21:07+0100\n"
 "PO-Revision-Date: 2023-11-06 09:29+0100\n"
 "Last-Translator: Étienne Deparis <etienne@depar.is>\n"
 "Language-Team: none\n"
@@ -388,28 +388,28 @@ msgstr ""
 "Unsplash a arrêté de fournir un flux RSS. De ce fait, le paramètre "
 "‘access_key’ est désormais requis."
 
-#: chwall/fetcher/unsplash.py:39 chwall/wallpaper.py:471
+#: chwall/fetcher/unsplash.py:41 chwall/wallpaper.py:471
 msgid "Picture"
 msgstr "Image"
 
-#: chwall/fetcher/unsplash.py:48
+#: chwall/fetcher/unsplash.py:50
 #, python-brace-format
 msgid "{desc}, taken in {location}"
 msgstr "{desc}, prise à {location}"
 
-#: chwall/fetcher/unsplash.py:75
+#: chwall/fetcher/unsplash.py:77
 msgid "Low"
 msgstr "Modéré"
 
-#: chwall/fetcher/unsplash.py:76
+#: chwall/fetcher/unsplash.py:78
 msgid "High"
 msgstr "Haut"
 
-#: chwall/fetcher/unsplash.py:79
+#: chwall/fetcher/unsplash.py:81
 msgid "Content filtering"
 msgstr "Filtre de contenu"
 
-#: chwall/fetcher/unsplash.py:84
+#: chwall/fetcher/unsplash.py:86
 msgid "Complementary query"
 msgstr "Requête complémentaire"
 
