@@ -10,6 +10,7 @@ from PIL import Image, ImageFilter
 from importlib import import_module
 
 # chwall imports
+from chwall.fetcher import requests_get
 from chwall.utils import BASE_CACHE_PATH, get_screen_config, get_wall_config, \
                          get_logger, is_broken_picture
 
@@ -279,7 +280,7 @@ def fetch_wallpaper(wp_data):
     try_again = 5
     while try_again > 0:
         try:
-            pic_data = requests.get(current_wall[0]).content
+            pic_data = requests_get(current_wall[0]).content
             with open(pic_file, "wb") as f:
                 f.write(pic_data)
             break

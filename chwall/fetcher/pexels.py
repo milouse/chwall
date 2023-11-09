@@ -1,5 +1,4 @@
-import requests
-
+from chwall.fetcher import requests_get
 from chwall.utils import get_logger
 
 import gettext
@@ -30,7 +29,7 @@ def fetch_pictures(config):
     else:
         url = "https://api.pexels.com/v1/curated"
     pictures = {}
-    data = requests.get(
+    data = requests_get(
         url,
         params=params,
         headers={"Authorization": client_id}

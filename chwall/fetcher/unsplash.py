@@ -1,5 +1,4 @@
-import requests
-
+from chwall.fetcher import requests_get
 from chwall.utils import get_logger
 
 import gettext
@@ -33,7 +32,7 @@ def fetch_pictures(config):
     params.append("client_id=" + client_id)
     pictures = {}
     final_uri = "{}?{}".format(url, "&".join(params))
-    data = requests.get(final_uri).json()
+    data = requests_get(final_uri).json()
     for p in data:
         px = "{u}&w={w}".format(u=p["urls"]["raw"], w=width)
         if p["description"] is None:

@@ -311,88 +311,88 @@ msgstr ""
 msgid "Include favorites wallpapers"
 msgstr ""
 
-#: chwall/fetcher/pexels.py:20
+#: chwall/fetcher/pexels.py:19
 msgid "An ‘access_key’ param is required to fetch pictures from Pexels."
 msgstr ""
 
-#: chwall/fetcher/pexels.py:60
+#: chwall/fetcher/pexels.py:59
 msgid "Landscape"
 msgstr ""
 
-#: chwall/fetcher/pexels.py:61
+#: chwall/fetcher/pexels.py:60
 msgid "Portrait"
 msgstr ""
 
-#: chwall/fetcher/pexels.py:62
+#: chwall/fetcher/pexels.py:61
 msgid "Square"
 msgstr ""
 
-#: chwall/fetcher/pexels.py:72 chwall/fetcher/unsplash.py:84
+#: chwall/fetcher/pexels.py:71 chwall/fetcher/unsplash.py:83
 #: chwall/fetcher/wikiart.py:79
 msgid "API access key"
 msgstr ""
 
-#: chwall/fetcher/pexels.py:76 chwall/fetcher/wikiart.py:103
+#: chwall/fetcher/pexels.py:75 chwall/fetcher/wikiart.py:103
 msgid "Search query"
 msgstr ""
 
-#: chwall/fetcher/reddit.py:36
+#: chwall/fetcher/reddit.py:34
 #, python-brace-format
 msgid "{title}, picked on {subreddit}"
 msgstr ""
 
-#: chwall/fetcher/reddit.py:50
+#: chwall/fetcher/reddit.py:48
 msgid "Fetcher for Reddit"
 msgstr ""
 
-#: chwall/fetcher/smashing.py:85
+#: chwall/fetcher/smashing.py:86
 msgid "Select wallpapers with or without calendar"
 msgstr ""
 
-#: chwall/fetcher/smashing.py:88
+#: chwall/fetcher/smashing.py:89
 msgid "Both"
 msgstr ""
 
-#: chwall/fetcher/smashing.py:89
+#: chwall/fetcher/smashing.py:90
 msgid "With"
 msgstr ""
 
-#: chwall/fetcher/smashing.py:90
+#: chwall/fetcher/smashing.py:91
 msgid "Without"
 msgstr ""
 
-#: chwall/fetcher/smashing.py:95
+#: chwall/fetcher/smashing.py:96
 msgid "Select only wallpapers for current month"
 msgstr ""
 
-#: chwall/fetcher/unsplash.py:20
+#: chwall/fetcher/unsplash.py:19
 msgid ""
 "Unsplash has discontinued their RSS feed. Thus an ‘access_key’ param is now "
 "required."
 msgstr ""
 
-#: chwall/fetcher/unsplash.py:40 chwall/wallpaper.py:470
+#: chwall/fetcher/unsplash.py:39 chwall/wallpaper.py:471
 msgid "Picture"
 msgstr "Imagen"
 
-#: chwall/fetcher/unsplash.py:49
+#: chwall/fetcher/unsplash.py:48
 #, python-brace-format
 msgid "{desc}, taken in {location}"
 msgstr ""
 
-#: chwall/fetcher/unsplash.py:76
+#: chwall/fetcher/unsplash.py:75
 msgid "Low"
 msgstr ""
 
-#: chwall/fetcher/unsplash.py:77
+#: chwall/fetcher/unsplash.py:76
 msgid "High"
 msgstr ""
 
-#: chwall/fetcher/unsplash.py:80
+#: chwall/fetcher/unsplash.py:79
 msgid "Content filtering"
 msgstr ""
 
-#: chwall/fetcher/unsplash.py:88
+#: chwall/fetcher/unsplash.py:87
 msgid "Complementary query"
 msgstr ""
 
@@ -404,7 +404,7 @@ msgstr ""
 msgid "A ‘secret_key’ param is required to fetch pictures from Wikiart."
 msgstr ""
 
-#: chwall/fetcher/wikiart.py:40
+#: chwall/fetcher/wikiart.py:41
 msgid ""
 "An error occured while authenticating your credentials with Wikiart. Please "
 "check again your access and secret keys."
@@ -414,104 +414,104 @@ msgstr ""
 msgid "API secret key"
 msgstr ""
 
-#: chwall/wallpaper.py:34
+#: chwall/wallpaper.py:35
 msgid "Fetching pictures addresses…"
 msgstr ""
 
-#: chwall/wallpaper.py:43
+#: chwall/wallpaper.py:44
 #, python-brace-format
 msgid "Fetcher {name} does not exist"
 msgstr ""
 
-#: chwall/wallpaper.py:49
+#: chwall/wallpaper.py:50
 #, python-brace-format
 msgid "Fetching pictures list from {name} - Attempt {number}"
 msgstr ""
 
-#: chwall/wallpaper.py:59
+#: chwall/wallpaper.py:60
 #, python-brace-format
 msgid ""
 "Catch {error} exception while retrieving images from {module}. Wait {time} "
 "seconds before retrying."
 msgstr ""
 
-#: chwall/wallpaper.py:72
+#: chwall/wallpaper.py:73
 #, python-brace-format
 msgid "Retry NOW to connect to {module}"
 msgstr ""
 
-#: chwall/wallpaper.py:75
+#: chwall/wallpaper.py:76
 msgid "Switch to next picture provider or exit"
 msgstr ""
 
-#: chwall/wallpaper.py:100
+#: chwall/wallpaper.py:101
 #, python-brace-format
 msgid "Remove {picture} as it's in block list"
 msgstr ""
 
-#: chwall/wallpaper.py:118 chwall/wallpaper.py:149 chwall/wallpaper.py:164
-#: chwall/wallpaper.py:195 chwall/wallpaper.py:213
+#: chwall/wallpaper.py:119 chwall/wallpaper.py:150 chwall/wallpaper.py:165
+#: chwall/wallpaper.py:196 chwall/wallpaper.py:214
 msgid "No wallpaper path given"
 msgstr ""
 
-#: chwall/wallpaper.py:125
+#: chwall/wallpaper.py:126
 msgid "Error while retrieving XFCE workspaces list"
 msgstr ""
 
-#: chwall/wallpaper.py:134
+#: chwall/wallpaper.py:135
 #, python-brace-format
 msgid "Error while trying to set XFCE wallpaper in {prop}"
 msgstr ""
 
-#: chwall/wallpaper.py:143
+#: chwall/wallpaper.py:144
 #, python-brace-format
 msgid "Error while setting {desktop} {prop} property"
 msgstr ""
 
-#: chwall/wallpaper.py:208
+#: chwall/wallpaper.py:209
 msgid "Error while calling feh"
 msgstr ""
 
-#: chwall/wallpaper.py:217
+#: chwall/wallpaper.py:218
 #, python-brace-format
 msgid "screensaver {prop}"
 msgstr ""
 
-#: chwall/wallpaper.py:233
+#: chwall/wallpaper.py:234
 #, python-brace-format
 msgid "Converting non RGB picture {picture}"
 msgstr ""
 
-#: chwall/wallpaper.py:290
+#: chwall/wallpaper.py:291
 #, python-brace-format
 msgid ""
 "Catch {error} exception while downloading {picture}. Wait {time} seconds "
 "before retrying."
 msgstr ""
 
-#: chwall/wallpaper.py:299
+#: chwall/wallpaper.py:300
 #, python-brace-format
 msgid "Retry NOW to download {picture}"
 msgstr ""
 
-#: chwall/wallpaper.py:340
+#: chwall/wallpaper.py:341
 msgid ""
 "Impossible to build a new road map. It may be caused by a temporarily "
 "network error. Please try again later."
 msgstr ""
 
-#: chwall/wallpaper.py:363
+#: chwall/wallpaper.py:364
 msgid ""
 "Impossible to get any picture at this time. It may be caused by a "
 "temporarily network error. Please try again later."
 msgstr ""
 
-#: chwall/wallpaper.py:469
+#: chwall/wallpaper.py:470
 #, python-brace-format
 msgid "{title} by {author}"
 msgstr ""
 
-#: chwall/wallpaper.py:472
+#: chwall/wallpaper.py:473
 #, python-brace-format
 msgid "{title} (on {source})"
 msgstr ""

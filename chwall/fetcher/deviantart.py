@@ -1,5 +1,5 @@
-import requests
 from xml.etree import ElementTree
+from chwall.fetcher import requests_get
 
 
 def fetch_pictures(config):
@@ -9,7 +9,7 @@ def fetch_pictures(config):
     pictures = {}
     url = "https://backend.deviantart.com/rss.xml?type=deviation&q={}"
     for q in collecs:
-        data = ElementTree.fromstring(requests.get(url.format(q)).text)
+        data = ElementTree.fromstring(requests_get(url.format(q)).text)
         for item in data[0].findall("item"):
             title = item.find("title").text
             author = item.find("{http://search.yahoo.com/mrss/}credit").text

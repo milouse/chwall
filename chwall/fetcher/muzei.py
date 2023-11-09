@@ -1,6 +1,7 @@
 import json
 import datetime
-import requests
+
+from chwall.fetcher import requests_get
 
 
 def fetch_pictures(config):
@@ -15,7 +16,7 @@ def fetch_pictures(config):
     # that's sufficient.
     metafile = "{year}{month:0>2}.txt".format(year=year, month=month)
     baseuri = "https://storage.googleapis.com/muzeifeaturedart/archivemeta"
-    rawdata = requests.get("{}/{}".format(baseuri, metafile)).text
+    rawdata = requests_get("{}/{}".format(baseuri, metafile)).text
     # Only the first line is interesting
     data = json.loads(rawdata.split("\n", 1)[0])
     pictures = {}

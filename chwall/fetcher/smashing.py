@@ -1,7 +1,8 @@
 import re
-import requests
 from datetime import date
 from xml.etree import ElementTree
+
+from chwall.fetcher import requests_get
 
 import gettext
 # Uncomment the following line during development.
@@ -35,7 +36,7 @@ def fetch_pictures(config):
             month_re=month_re, size_re=size_re
         )
     )
-    xml_data = ElementTree.fromstring(requests.get(feed).text)
+    xml_data = ElementTree.fromstring(requests_get(feed).text)
     for item in xml_data[0].findall("item"):
         pic_page = item.find("link").text
         content = item.find(

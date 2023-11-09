@@ -1,7 +1,6 @@
 import re
-import requests
 
-from chwall import __version__
+from chwall.fetcher import requests_get
 
 import gettext
 # Uncomment the following line during development.
@@ -20,9 +19,8 @@ def fetch_pictures(config):
     pictures = {}
     url = "https://www.reddit.com/r/{}.json?raw_json=1".format(
         "+".join(list(map(lambda x: x.strip(), subreds))))
-    uagent = "python:Chwall:v{version} (by /u/milouse)".format(
-        version=__version__)
-    data = requests.get(url, headers={"user-agent": uagent}).json()
+    uagent = "python:Chwall:v{version} (by /u/milouse; https://git.umaneti.net/chwall)"  # noqa
+    data = requests_get(url, uagent).json()
     collecs = data.get("data", {}).get("children", [])
     for p in collecs:
         if p["data"].get("post_hint") != "image":
