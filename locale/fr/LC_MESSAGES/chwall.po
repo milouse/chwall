@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Chwall 0.6.1\n"
+"Project-Id-Version: Chwall 0.7.0\n"
 "Report-Msgid-Bugs-To: bugs@depar.is\n"
-"POT-Creation-Date: 2023-11-09 21:47+0100\n"
-"PO-Revision-Date: 2023-11-09 21:47+0100\n"
+"POT-Creation-Date: 2023-11-09 21:50+0100\n"
+"PO-Revision-Date: 2023-11-06 09:29+0100\n"
 "Last-Translator: Étienne Deparis <etienne@depar.is>\n"
 "Language-Team: none\n"
 "Language: fr\n"
