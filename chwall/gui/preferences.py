@@ -6,8 +6,9 @@ from chwall.utils import read_config, write_config, reset_pending_list, \
                          compute_cache_size, ServiceFileManager
 
 import gi
+gi.require_version("Gdk", "3.0")
 gi.require_version("Gtk", "3.0")
-from gi.repository import Gtk  # noqa: E402
+from gi.repository import Gdk, Gtk  # noqa: E402
 
 import gettext  # noqa: E402
 # Uncomment the following line during development.
@@ -197,6 +198,9 @@ class PrefDialog(Gtk.Dialog):
             elif options["widget"] == "toggle":
                 prefbox = self.make_toggle_pref(
                     fetcher_name, opt, label, default=defval)
+            elif options["widget"] == "color":
+                prefbox = self.make_color_pref(
+                    fetcher_name, opt, label, default=defval)
             if prefbox is not None:
                 sourceprefbox.pack_start(prefbox, False, False, 0)
         self.make_source_frame(fetcher_name, fprefs, sourceprefbox)
@@ -252,6 +256,43 @@ class PrefDialog(Gtk.Dialog):
 
         button.connect("state-set", on_toggle_state_set)
         prefbox.pack_end(button, False, False, 10)
+        return prefbox
+
+    def make_color_pref(self, path, opt, label, **kwargs):
+        default = kwargs.get("default")
+        prefbox = self.make_prefbox_with_label(label)
+
+        color_button = Gtk.ColorButton()
+        prefbox.pack_end(color_button, False, False, 10)
+
+        remove_color = Gtk.Switch()
+        prefbox.pack_end(remove_color, False, False, 10)
+
+        current_value = self.config.read_config_opt(path, opt, default)
+        if current_value is None:
+            remove_color.set_active(False)
+            color_button.set_sensitive(False)
+        else:
+            remove_color.set_active(True)
+            color = Gdk.RGBA()
+            color.parse(current_value)
+            color_button.set_rgba(color)
+            color_button.set_sensitive(True)
+
+        def on_color_set(widget):
+            color = widget.get_rgba().to_string()
+            self.config.write_config_opt(path, opt, color)
+
+        def on_remove_color(_widget, state):
+            if state:
+                on_color_set(color_button)
+            else:
+                self.config.write_config_opt(path, opt, None)
+            color_button.set_sensitive(state)
+
+        color_button.connect("color-set", on_color_set)
+        remove_color.connect("state-set", on_remove_color)
+
         return prefbox
 
     def make_select_pref(self, path, opt, label, values, **kwargs):
