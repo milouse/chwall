@@ -67,6 +67,25 @@ def migrate_systemd_service_files():
     )
 
 
+def migrate_block_list_files():
+    old_block_list_file = "{}/blacklist.yml".format(BASE_CACHE_PATH)
+    if not os.path.exists(old_block_list_file):
+        # Nothing to do
+        return
+    block_list = []
+    block_list_file = "{}/block_list.yml".format(BASE_CACHE_PATH)
+    if os.path.exists(block_list_file):
+        with open(block_list_file, "r") as f:
+            block_list = yaml.safe_load(f) or []
+    with open(old_block_list_file, "r") as f:
+        block_list += yaml.safe_load(f) or []
+    block_list = list(set(block_list))
+    with open(block_list_file, "w") as f:
+        yaml.dump(block_list, f, explicit_start=True,
+                  default_flow_style=False)
+    os.unlink(old_block_list_file)
+
+
 def migrate_config(config):
     if "local" in config:
         if isinstance(config["local"], list):
@@ -83,6 +102,7 @@ def migrate_config(config):
         config["general"]["shared"] = {"path": ld_path}
     if config["general"].get("desktop") == "nitrogen":
         config["general"]["desktop"] = "feh"
+    migrate_block_list_files()
     migrate_systemd_service_files()
     return config
 
