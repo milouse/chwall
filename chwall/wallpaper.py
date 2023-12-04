@@ -134,6 +134,14 @@ def set_xfce_wallpaper(path):
                         "-p", zoom_line, "--set", "5"])
 
 
+def set_sway_wallpaper(path):
+    if path is None:
+        raise ChwallWallpaperSetError(_("No wallpaper path given"))
+    last_pic_path = f"{BASE_CACHE_PATH}/last_pic"
+    shutil.copy(path, last_pic_path)
+    subprocess.run(["swaymsg", "-q", f"output * bg '{path}' fill"])
+
+
 def prop_setting_error_str(desktop, prop):
     return _(f"Error while setting {desktop} {prop} property")
 

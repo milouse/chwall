@@ -28,6 +28,9 @@ sources:
 - WikiArt
 - Wallhaven
 
+It currently supports some major desktop environments (Gnome, XFCE,
+Mate) and light window managers (Sway and anything accepting feh).
+
 * Install
 
 ** Locally in a virtualenv

@@ -526,7 +526,9 @@ class PrefDialog(Gtk.Dialog):
         genbox.pack_start(prefbox, False, False, 0)
 
         environments = [("gnome", "Gnome, Pantheon, Budgie, …"),
-                        ("mate", "Mate"), ("xfce", "XFCE"),
+                        ("mate", "Mate"),
+                        ("xfce", "XFCE"),
+                        ("sway", "Sway"),
                         ("feh", _("Use Feh application"))]
         prefbox = self.make_select_pref(
             "general", "desktop", _("Desktop environment"),
