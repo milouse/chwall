@@ -30,11 +30,9 @@ def fetch_pictures(config):
     size_re = "(?P<size>[0-9]+x[0-9]+)"
     file_expr = re.compile(
         "href=\"(https://www\\.smashingmagazine\\.com/files/wallpapers/"
-        "{month_re}/(?P<slug>[^/]+)/((?:no)?cal)/"
-        "(?P=month)-(?P=slug)-(?:no)?cal-{size_re}\\.png)\" "
-        "title=\"(.+) - (?P=size)\">(?P=size)<".format(
-            month_re=month_re, size_re=size_re
-        )
+        f"{month_re}/(?P<slug>[^/]+)/((?:no)?cal)/"
+        f"(?P=month)-(?P=slug)-(?:no)?cal-{size_re}\\.png)\" "
+        "title=\"(.+) - (?P=size)\">(?P=size)<"
     )
     xml_data = ElementTree.fromstring(requests_get(feed).text)
     for item in xml_data[0].findall("item"):
@@ -70,9 +68,7 @@ def fetch_pictures(config):
             pictures[url] = {
                 "image": url,
                 "type": "Smashing Magazine",
-                "url": "{page}#{slug}-{month}".format(
-                    page=pic_page, slug=slug, month=month_id
-                ),
+                "url": f"{pic_page}#{slug}-{month_id}",
                 "copyright": data["title"]
             }
     return pictures

@@ -14,9 +14,9 @@ def fetch_pictures(config):
     # We get the last month meta file to have enough wallpaper to show (~30).
     # As we don't have a mecanism to ensure today's wallpaper is displayed,
     # that's sufficient.
-    metafile = "{year}{month:0>2}.txt".format(year=year, month=month)
+    metafile = f"{year}{month:0>2}.txt"
     baseuri = "https://storage.googleapis.com/muzeifeaturedart/archivemeta"
-    rawdata = requests_get("{}/{}".format(baseuri, metafile)).text
+    rawdata = requests_get(f"{baseuri}/{metafile}").text
     # Only the first line is interesting
     data = json.loads(rawdata.split("\n", 1)[0])
     pictures = {}

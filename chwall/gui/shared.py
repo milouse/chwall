@@ -88,7 +88,7 @@ class ChwallGui:
 
     def is_chwall_component_started(self, component):
         retcode = subprocess.run(
-            ["pgrep", "-f", "chwall.+{}".format(component)],
+            ["pgrep", "-f", f"chwall.+{component}"],
             stdout=subprocess.DEVNULL).returncode
         return retcode == 0
 

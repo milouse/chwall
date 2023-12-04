@@ -30,7 +30,7 @@ def fetch_pictures(config):
         path = os.path.expanduser(path)
         try:
             for ext in ["jpg", "jpeg", "png"]:
-                glob_path = "{}/*.{}".format(path, ext)
+                glob_path = f"{path}/*.{ext}"
                 for f in glob.iglob(glob_path, recursive=True):
                     pictures[f] = {
                         "image": f,

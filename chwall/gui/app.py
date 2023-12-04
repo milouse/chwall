@@ -303,15 +303,19 @@ def _build_translations_for_desktop_file(localedir):
 def _build_action_block(name, lng_attrs):
     label = name.capitalize()
     block_cmd = get_binary_path("client", "xdg", name)
-    block = ["", "[Desktop Action {name}]".format(name=label),
-             "Exec={app_exec}".format(app_exec=block_cmd),
-             "Name={name} wallpaper".format(name=label)]
+    block = [
+        f"""
+[Desktop Action {label}]
+Exec={block_cmd}
+Name={label} wallpaper"""
+    ]
     for line in lng_attrs[name + "_name"]:
         block.append(line)
     return block
 
 
 def generate_desktop_file(localedir="./locale", out="chwall-app.desktop"):
+    app_exec=get_binary_path("app", "xdg")
     lng_attrs = _build_translations_for_desktop_file(localedir)
     df_content = ["[Desktop Entry]"]
     df_content.append("Name=Chwall")
@@ -322,7 +326,7 @@ def generate_desktop_file(localedir="./locale", out="chwall-app.desktop"):
     for line in lng_attrs["comment"]:
         df_content.append(line)
     df_content = "\n".join(df_content)
-    df_content += """
+    df_content += f"""
 Exec={app_exec}
 Icon=chwall
 Terminal=false
@@ -330,8 +334,7 @@ Type=Application
 Categories=GTK;GNOME;Utility;
 StartupNotify=false
 Actions=Next;Previous;Favorite;Block;
-""".format(app_exec=get_binary_path("app", "xdg"))
-
+"""
     actions = _build_action_block("next", lng_attrs) \
         + _build_action_block("previous", lng_attrs) \
         + _build_action_block("favorite", lng_attrs) \

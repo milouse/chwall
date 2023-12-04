@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chwall 0.7.0\n"
 "Report-Msgid-Bugs-To: bugs@depar.is\n"
-"POT-Creation-Date: 2023-11-09 21:50+0100\n"
-"PO-Revision-Date: 2023-11-06 09:29+0100\n"
+"POT-Creation-Date: 2023-12-04 15:23+0100\n"
+"PO-Revision-Date: 2023-12-04 15:24+0100\n"
 "Last-Translator: Étienne Deparis <etienne@depar.is>\n"
 "Language-Team: none\n"
 "Language: fr\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.3.2\n"
+"X-Generator: Poedit 3.4.1\n"
 
 #: chwall/gui/app.py:39 chwall/gui/app.py:197 chwall/gui/preferences.py:118
 msgid "Preferences"
@@ -136,7 +136,7 @@ msgstr "Requête"
 msgid "Enable"
 msgstr "Activer"
 
-#: chwall/gui/preferences.py:450 chwall/gui/preferences.py:775
+#: chwall/gui/preferences.py:450 chwall/gui/preferences.py:776
 msgid "Remove"
 msgstr "Supprimer"
 
@@ -156,31 +156,31 @@ msgstr "Montrer une notification lorsque le fond d’écran est changé"
 msgid "Time between each wallpaper change"
 msgstr "Délai entre chaque changement de fond d’écran"
 
-#: chwall/gui/preferences.py:530
+#: chwall/gui/preferences.py:532
 msgid "Use Feh application"
 msgstr "Utiliser l’application Feh"
 
-#: chwall/gui/preferences.py:532
+#: chwall/gui/preferences.py:534
 msgid "Desktop environment"
 msgstr "Environnement de bureau"
 
-#: chwall/gui/preferences.py:537
+#: chwall/gui/preferences.py:539
 msgid "Shared background path"
 msgstr "Chemin vers le fond d’écran partagé"
 
-#: chwall/gui/preferences.py:542
+#: chwall/gui/preferences.py:544
 msgid "Blur shared background"
 msgstr "Flouter le fond d’écran partagé"
 
-#: chwall/gui/preferences.py:547
+#: chwall/gui/preferences.py:549
 msgid "Favorites folder"
 msgstr "Dossier des favoris"
 
-#: chwall/gui/preferences.py:548
+#: chwall/gui/preferences.py:550
 msgid "Select a folder"
 msgstr "Sélectionner un dossier"
 
-#: chwall/gui/preferences.py:559
+#: chwall/gui/preferences.py:561
 msgid ""
 "\n"
 "You have two options to launch Chwall daemon when your user session starts:\n"
@@ -200,113 +200,113 @@ msgstr ""
 "choix le plus\n"
 "sûr, comme il s’agit de la manière classique de procéder.\n"
 
-#: chwall/gui/preferences.py:570
+#: chwall/gui/preferences.py:572
 msgid ""
 "Launch Chwall daemon with an XDG autostart file when your session starts"
 msgstr ""
 "Démarrer le service de Chwall avec un lanceur d’application XDG lorsque "
 "votre session démarre"
 
-#: chwall/gui/preferences.py:578
+#: chwall/gui/preferences.py:580
 msgid "Chwall daemon"
 msgstr "Service en tâche de fond de Chwall"
 
-#: chwall/gui/preferences.py:579
+#: chwall/gui/preferences.py:581
 msgid "Start Chwall daemon"
 msgstr "Démarrer le service de Chwall"
 
-#: chwall/gui/preferences.py:613
+#: chwall/gui/preferences.py:615
 msgid "Install the systemd service file before using it to start Chwall daemon"
 msgstr ""
 "Installer le service systemd avant de pouvoir l’utiliser pour démarrer le "
 "service Chwall"
 
-#: chwall/gui/preferences.py:615
+#: chwall/gui/preferences.py:617
 msgid "Create"
 msgstr "Créer"
 
-#: chwall/gui/preferences.py:629
+#: chwall/gui/preferences.py:631
 msgid "Launch Chwall daemon with systemd when your session starts"
 msgstr ""
 "Démarrer le service de Chwall avec systemd lorsque votre session démarre"
 
-#: chwall/gui/preferences.py:651
+#: chwall/gui/preferences.py:653
 msgid "Behavior"
 msgstr "Comportement"
 
-#: chwall/gui/preferences.py:658 chwall/gui/preferences.py:825
+#: chwall/gui/preferences.py:660 chwall/gui/preferences.py:826
 msgid "Daemon"
 msgstr "Tâche de fond"
 
-#: chwall/gui/preferences.py:671
+#: chwall/gui/preferences.py:673
 msgid "Fetch a new wallpapers list the next time wallpaper change"
 msgstr ""
 "Récupère une nouvelle liste de fonds d’écran lors du prochain changement"
 
-#: chwall/gui/preferences.py:672
+#: chwall/gui/preferences.py:674
 msgid "Empty current pending list"
 msgstr "Vider la liste d’attente courante"
 
-#: chwall/gui/preferences.py:683 chwall/daemon.py:252
+#: chwall/gui/preferences.py:685 chwall/daemon.py:251
 #, python-brace-format
 msgid "{number} cache entry has been removed."
 msgid_plural "{number} cache entries have been removed."
 msgstr[0] "{number} entrée du cache a été supprimée."
 msgstr[1] "{number} entrées du cache ont été supprimées."
 
-#: chwall/gui/preferences.py:693
+#: chwall/gui/preferences.py:695
 msgid "Cache cleanup"
 msgstr "Nettoyage du cache"
 
-#: chwall/gui/preferences.py:703 chwall/gui/preferences.py:712
+#: chwall/gui/preferences.py:704 chwall/gui/preferences.py:714
 #, python-brace-format
 msgid "{number} broken picture currently in cache"
 msgid_plural "{number} broken pictures currently in cache"
 msgstr[0] "{number} image cassée actuellement dans le cache"
 msgstr[1] "{number} images cassées actuellement dans le cache"
 
-#: chwall/gui/preferences.py:720
+#: chwall/gui/preferences.py:722
 msgid "Clear broken pictures"
 msgstr "Nettoyer les entrées cassées du cache"
 
-#: chwall/gui/preferences.py:730 chwall/gui/preferences.py:734
+#: chwall/gui/preferences.py:732 chwall/gui/preferences.py:735
 #, python-brace-format
 msgid "Picture cache use {size}"
 msgstr "Le cache des images utilise {size}"
 
-#: chwall/gui/preferences.py:735
+#: chwall/gui/preferences.py:736
 msgid "Clear picture cache"
 msgstr "Vider le cache des images"
 
-#: chwall/gui/preferences.py:748
+#: chwall/gui/preferences.py:749
 msgid "X Display in use"
 msgstr "Affichage X à utiliser"
 
-#: chwall/gui/preferences.py:774
+#: chwall/gui/preferences.py:775
 msgid "Remove systemd service file"
 msgstr "Supprimer le fichier de service systemd"
 
-#: chwall/gui/preferences.py:786
+#: chwall/gui/preferences.py:787
 msgid "Log level"
 msgstr "Niveau de journalisation"
 
-#: chwall/gui/preferences.py:798
+#: chwall/gui/preferences.py:799
 msgid "Blur radius of shared background"
 msgstr "Rayon de floutage du fond d’écran partagé"
 
-#: chwall/gui/preferences.py:802
+#: chwall/gui/preferences.py:803
 msgid "Use a monochrome status icon"
 msgstr "Utiliser une icône monochrome dans la zone de notification"
 
-#: chwall/gui/preferences.py:807
+#: chwall/gui/preferences.py:808
 msgid "Command to start your web browser"
 msgstr "Commande pour lancer votre navigateur web"
 
-#: chwall/gui/preferences.py:818
+#: chwall/gui/preferences.py:819
 msgid "Cache management"
 msgstr "Gestion du cache"
 
-#: chwall/gui/preferences.py:832
+#: chwall/gui/preferences.py:833
 msgid "Others"
 msgstr "Autres"
 
@@ -360,23 +360,23 @@ msgstr "{title}, prise sur {subreddit}"
 msgid "Fetcher for Reddit"
 msgstr "Récupérateur pour Reddit"
 
-#: chwall/fetcher/smashing.py:86
+#: chwall/fetcher/smashing.py:82
 msgid "Select wallpapers with or without calendar"
 msgstr "Sélectionner les fonds d’écran avec ou sans calendrier"
 
-#: chwall/fetcher/smashing.py:89
+#: chwall/fetcher/smashing.py:85
 msgid "Both"
 msgstr "Tous"
 
-#: chwall/fetcher/smashing.py:90
+#: chwall/fetcher/smashing.py:86
 msgid "With"
 msgstr "Avec"
 
-#: chwall/fetcher/smashing.py:91
+#: chwall/fetcher/smashing.py:87
 msgid "Without"
 msgstr "Sans"
 
-#: chwall/fetcher/smashing.py:96
+#: chwall/fetcher/smashing.py:92
 msgid "Select only wallpapers for current month"
 msgstr "Sélectionner seulement les fonds d’écran du mois courant"
 
@@ -388,28 +388,28 @@ msgstr ""
 "Unsplash a arrêté de fournir un flux RSS. De ce fait, le paramètre "
 "‘access_key’ est désormais requis."
 
-#: chwall/fetcher/unsplash.py:41 chwall/wallpaper.py:471
+#: chwall/fetcher/unsplash.py:41 chwall/wallpaper.py:469
 msgid "Picture"
 msgstr "Image"
 
 #: chwall/fetcher/unsplash.py:50
 #, python-brace-format
-msgid "{desc}, taken in {location}"
-msgstr "{desc}, prise à {location}"
+msgid "{label}, taken in {location}"
+msgstr "{label}, prise à {location}"
 
-#: chwall/fetcher/unsplash.py:77
+#: chwall/fetcher/unsplash.py:76
 msgid "Low"
 msgstr "Modéré"
 
-#: chwall/fetcher/unsplash.py:78
+#: chwall/fetcher/unsplash.py:77
 msgid "High"
 msgstr "Haut"
 
-#: chwall/fetcher/unsplash.py:81 chwall/fetcher/wallhaven.py:95
+#: chwall/fetcher/unsplash.py:80 chwall/fetcher/wallhaven.py:95
 msgid "Content filtering"
 msgstr "Filtre de contenu"
 
-#: chwall/fetcher/unsplash.py:86
+#: chwall/fetcher/unsplash.py:85
 msgid "Complementary query"
 msgstr "Requête complémentaire"
 
@@ -529,17 +529,17 @@ msgstr "Clé secrète d’API"
 msgid "Fetching pictures addresses…"
 msgstr "Récupération des adresses des images…"
 
-#: chwall/wallpaper.py:44
+#: chwall/wallpaper.py:43
 #, python-brace-format
-msgid "Fetcher {name} does not exist"
-msgstr "Le récupérateur {name} n’existe pas"
+msgid "Fetcher {module_name} does not exist"
+msgstr "Le récupérateur {module_name} n’existe pas"
 
-#: chwall/wallpaper.py:50
+#: chwall/wallpaper.py:48
 #, python-brace-format
 msgid "Fetching pictures list from {name} - Attempt {number}"
 msgstr "Récupération de la liste d’images de {name} - Essai {number}"
 
-#: chwall/wallpaper.py:60
+#: chwall/wallpaper.py:58
 #, python-brace-format
 msgid ""
 "Catch {error} exception while retrieving images from {module}. Wait {time} "
@@ -548,54 +548,54 @@ msgstr ""
 "Récupération de l’exception {error} durant la récupération des images pour "
 "{module}. Attente de {time} secondes avant de réessayer."
 
-#: chwall/wallpaper.py:73
+#: chwall/wallpaper.py:71
 #, python-brace-format
-msgid "Retry NOW to connect to {module}"
-msgstr "Essaye MAINTENANT de se connecter à {module}"
+msgid "Retry NOW to connect to {module_name}"
+msgstr "Essaye MAINTENANT de se connecter à {module_name}"
 
-#: chwall/wallpaper.py:76
+#: chwall/wallpaper.py:73
 msgid "Switch to next picture provider or exit"
 msgstr "Passe au fournisseur d’images suivant ou quitte"
 
-#: chwall/wallpaper.py:101
+#: chwall/wallpaper.py:97
 #, python-brace-format
 msgid "Remove {picture} as it's in block list"
 msgstr "Supprime {picture} comme elle est sur la liste de blocage"
 
-#: chwall/wallpaper.py:119 chwall/wallpaper.py:150 chwall/wallpaper.py:165
-#: chwall/wallpaper.py:196 chwall/wallpaper.py:214
+#: chwall/wallpaper.py:114 chwall/wallpaper.py:139 chwall/wallpaper.py:152
+#: chwall/wallpaper.py:167 chwall/wallpaper.py:198 chwall/wallpaper.py:216
 msgid "No wallpaper path given"
 msgstr "Aucun chemin vers un fond d’écran donné"
 
-#: chwall/wallpaper.py:126
+#: chwall/wallpaper.py:121
 msgid "Error while retrieving XFCE workspaces list"
 msgstr "Erreur durant la récupération des espaces de travail XFCE"
 
-#: chwall/wallpaper.py:135
+#: chwall/wallpaper.py:130
 #, python-brace-format
 msgid "Error while trying to set XFCE wallpaper in {prop}"
 msgstr "Erreur durant la mise en place du fond d’écran XFCE dans {prop}"
 
-#: chwall/wallpaper.py:144
+#: chwall/wallpaper.py:147
 #, python-brace-format
 msgid "Error while setting {desktop} {prop} property"
 msgstr "Erreur durant la configuration de la propriété {prop} de {desktop}"
 
-#: chwall/wallpaper.py:209
+#: chwall/wallpaper.py:211
 msgid "Error while calling feh"
 msgstr "Erreur lors de l’appel à feh"
 
-#: chwall/wallpaper.py:218
+#: chwall/wallpaper.py:220
 #, python-brace-format
 msgid "screensaver {prop}"
 msgstr "{prop} de l’écran de veille"
 
-#: chwall/wallpaper.py:234
+#: chwall/wallpaper.py:235
 #, python-brace-format
-msgid "Converting non RGB picture {picture}"
-msgstr "Conversion de l’image non RGB {picture}"
+msgid "Converting non RGB picture {path}"
+msgstr "Conversion de l’image non RGB {path}"
 
-#: chwall/wallpaper.py:291
+#: chwall/wallpaper.py:290
 #, python-brace-format
 msgid ""
 "Catch {error} exception while downloading {picture}. Wait {time} seconds "
@@ -604,12 +604,12 @@ msgstr ""
 "Récupération de l’exception {error} durant le téléchargement de {picture}. "
 "Attente de {time} secondes avant de réessayer."
 
-#: chwall/wallpaper.py:300
+#: chwall/wallpaper.py:299
 #, python-brace-format
 msgid "Retry NOW to download {picture}"
 msgstr "Essaye MAINTENANT de télécharger {picture}"
 
-#: chwall/wallpaper.py:341
+#: chwall/wallpaper.py:340
 msgid ""
 "Impossible to build a new road map. It may be caused by a temporarily "
 "network error. Please try again later."
@@ -617,7 +617,7 @@ msgstr ""
 "Impossible de construire une nouvelle liste d’attente. Cela peut être dû à "
 "une erreur temporaire de réseau. Merci de réessayer ultérieurement."
 
-#: chwall/wallpaper.py:364
+#: chwall/wallpaper.py:363
 msgid ""
 "Impossible to get any picture at this time. It may be caused by a "
 "temporarily network error. Please try again later."
@@ -625,17 +625,17 @@ msgstr ""
 "Impossible de récupérer une image pour l’instant. Cela peut être dû à une "
 "erreur temporaire de réseau. Merci de réessayer ultérieurement."
 
-#: chwall/wallpaper.py:470
+#: chwall/wallpaper.py:468
 #, python-brace-format
 msgid "{title} by {author}"
 msgstr "{title} de {author}"
 
-#: chwall/wallpaper.py:473
+#: chwall/wallpaper.py:471
 #, python-brace-format
 msgid "{title} (on {source})"
 msgstr "{title} (sur {source})"
 
-#: chwall/daemon.py:72
+#: chwall/daemon.py:73
 #, python-brace-format
 msgid "Last change was {minutes} minute and {seconds}s ago"
 msgid_plural "Last change was {minutes} minutes and {seconds}s ago"
@@ -644,35 +644,35 @@ msgstr[0] ""
 msgstr[1] ""
 "Le dernier changement a eu lieu il y a {minutes} minutes et {seconds}s"
 
-#: chwall/daemon.py:77
+#: chwall/daemon.py:78
 #, python-brace-format
 msgid "Last change was {seconds}s ago"
 msgstr "Le dernier changement a eu lieu il y a {seconds}s"
 
-#: chwall/daemon.py:83
+#: chwall/daemon.py:85
 #, python-brace-format
 msgid "Next change in {minutes} minute and {seconds}s"
 msgid_plural "Next change in {minutes} minutes and {seconds}s"
 msgstr[0] "Prochain changement dans {minutes} minute et {seconds}s"
 msgstr[1] "Prochain changement dans {minutes} minutes et {seconds}s"
 
-#: chwall/daemon.py:88
+#: chwall/daemon.py:90
 #, python-brace-format
 msgid "Next change in {seconds}s"
 msgstr "Prochain changement dans {seconds}s"
 
-#: chwall/daemon.py:99 chwall/daemon.py:104
+#: chwall/daemon.py:101 chwall/daemon.py:106
 msgid "Daemon stopped"
 msgstr "Service arrêté"
 
-#: chwall/daemon.py:107
+#: chwall/daemon.py:109
 msgid "Daemon started"
 msgstr "Service démarré"
 
-#: chwall/daemon.py:118
+#: chwall/daemon.py:119
 #, python-brace-format
-msgid "{daemon_state} (disabled)"
-msgstr "{daemon_state} (désactivé)"
+msgid "{daemon_state_label} (disabled)"
+msgstr "{daemon_state_label} (désactivé)"
 
 #: chwall/daemon.py:141
 #, python-brace-format
@@ -684,15 +684,15 @@ msgstr "Tuer le processus {pid}"
 msgid "Sending process {pid} signal {sid}"
 msgstr "Envoi du signal {sid} au processus {pid}"
 
-#: chwall/daemon.py:208
+#: chwall/daemon.py:207
 msgid "Exit signal received"
 msgstr "Signal d’extinction reçu"
 
-#: chwall/daemon.py:213
+#: chwall/daemon.py:212
 msgid "Cleaning up…"
 msgstr "Nettoyage…"
 
-#: chwall/daemon.py:247
+#: chwall/daemon.py:246
 #, python-brace-format
 msgid "Starting Chwall Daemon v{version}…"
 msgstr "Démarrage du service de Chwall v{version}…"

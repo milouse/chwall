@@ -35,7 +35,7 @@ def fetch_pictures(config):
         headers={"Authorization": client_id}
     ).json()
     for p in data["photos"]:
-        px = p["src"]["original"] + "?auto=compress&width={}".format(width)
+        px = p["src"]["original"] + f"?auto=compress&width={width}"
         pictures[px] = {
             "image": px,
             "author": p["photographer"],

@@ -493,7 +493,7 @@ class PrefDialog(Gtk.Dialog):
         fetcher_package = import_module("chwall.fetcher")
         fp_source = fetcher_package.__path__
         for fd in pkgutil.iter_modules(fp_source):
-            fetcher = import_module("chwall.fetcher.{}".format(fd.name))
+            fetcher = import_module(f"chwall.fetcher.{fd.name}")
             if "preferences" not in dir(fetcher):
                 continue
             self.add_source_panel(fd.name, fetcher)
@@ -675,15 +675,15 @@ as it is the more classical way of doing so.
         cachebox.pack_start(prefbox, False, False, 0)
 
         def on_cleanup_cache(widget, update_label, clear_all=False):
-            deleted = cleanup_cache(clear_all)
-            if deleted == 0:
+            number = cleanup_cache(clear_all)
+            if number == 0:
                 return
 
             message = gettext.ngettext(
-                "{number} cache entry has been removed.",
-                "{number} cache entries have been removed.",
-                deleted
-            ).format(number=deleted)
+                f"{number} cache entry has been removed.",
+                f"{number} cache entries have been removed.",
+                number
+            )
 
             widget.get_parent().foreach(update_label)
 
@@ -697,22 +697,22 @@ as it is the more classical way of doing so.
             dialog.run()
             dialog.destroy()
 
-        broken_files = count_broken_pictures_in_cache()
-
+        number = count_broken_pictures_in_cache()
         label = gettext.ngettext(
-                "{number} broken picture currently in cache",
-                "{number} broken pictures currently in cache",
-                broken_files
-        ).format(number=broken_files)
+                f"{number} broken picture currently in cache",
+                f"{number} broken pictures currently in cache",
+                number
+        )
 
         def _update_broken_label(sibling):
             if isinstance(sibling, Gtk.Label):
+                number = 0
                 sibling.set_label(
                     gettext.ngettext(
-                        "{number} broken picture currently in cache",
-                        "{number} broken pictures currently in cache",
-                        0
-                    ).format(number=0)
+                        f"{number} broken picture currently in cache",
+                        f"{number} broken pictures currently in cache",
+                        number
+                    )
                 )
 
         prefbox = self.make_button_row(
@@ -726,9 +726,8 @@ as it is the more classical way of doing so.
 
         def _update_empty_label(sibling):
             if isinstance(sibling, Gtk.Label):
-                sibling.set_label(
-                    _("Picture cache use {size}").format(size="0.0 ko")
-                )
+                size = "0.0 ko"
+                sibling.set_label(_(f"Picture cache use {size}"))
 
         prefbox = self.make_button_row(
             _("Picture cache use {size}").format(size=compute_cache_size()),

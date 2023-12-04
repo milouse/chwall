@@ -7,7 +7,7 @@ import subprocess
 from xdg.BaseDirectory import xdg_cache_home, xdg_config_home
 
 
-BASE_CACHE_PATH = "{}/chwall".format(xdg_cache_home)
+BASE_CACHE_PATH = f"{xdg_cache_home}/chwall"
 
 
 def get_screen_config():
@@ -68,12 +68,12 @@ def migrate_systemd_service_files():
 
 
 def migrate_block_list_files():
-    old_block_list_file = "{}/blacklist.yml".format(BASE_CACHE_PATH)
+    old_block_list_file = f"{BASE_CACHE_PATH}/blacklist.yml"
     if not os.path.exists(old_block_list_file):
         # Nothing to do
         return
     block_list = []
-    block_list_file = "{}/block_list.yml".format(BASE_CACHE_PATH)
+    block_list_file = f"{BASE_CACHE_PATH}/block_list.yml"
     if os.path.exists(block_list_file):
         with open(block_list_file, "r") as f:
             block_list = yaml.safe_load(f) or []
@@ -114,7 +114,7 @@ def read_config():
             config = yaml.safe_load(f) or {}
     except FileNotFoundError:
         config = {}
-    pic_cache = "{}/pictures".format(BASE_CACHE_PATH)
+    pic_cache = f"{BASE_CACHE_PATH}/pictures"
     if not os.path.exists(pic_cache):
         os.makedirs(pic_cache)
 
@@ -123,7 +123,7 @@ def read_config():
     config["general"].setdefault("sleep", 10 * 60)
     config["general"].setdefault("notify", False)
     config["general"].setdefault(
-        "favorites_path", "{}/favorites".format(BASE_CACHE_PATH)
+        "favorites_path", f"{BASE_CACHE_PATH}/favorites"
     )
     return migrate_config(config)
 
@@ -138,13 +138,13 @@ def write_config(config):
 # This function may be called from a gui app and pass a widget or other stuff
 # as arguments
 def reset_pending_list(*opts):
-    road_map = "{}/roadmap".format(BASE_CACHE_PATH)
+    road_map = f"{BASE_CACHE_PATH}/roadmap"
     if os.path.exists(road_map):
         os.unlink(road_map)
 
 
 def compute_cache_size():
-    pic_cache = "{}/pictures".format(BASE_CACHE_PATH)
+    pic_cache = f"{BASE_CACHE_PATH}/pictures"
     if not os.path.exists(pic_cache):
         return 0
     cache_total = 0
@@ -170,7 +170,7 @@ def is_broken_picture(picture):
 
 
 def count_broken_pictures_in_cache():
-    pic_cache = "{}/pictures".format(BASE_CACHE_PATH)
+    pic_cache = f"{BASE_CACHE_PATH}/pictures"
     if not os.path.exists(pic_cache):
         return 0
     broken_files = 0
@@ -181,7 +181,7 @@ def count_broken_pictures_in_cache():
 
 
 def cleanup_cache(clear_all=False):
-    pic_cache = "{}/pictures".format(BASE_CACHE_PATH)
+    pic_cache = f"{BASE_CACHE_PATH}/pictures"
     if not os.path.exists(pic_cache):
         return 0
     deleted = 0
@@ -212,8 +212,8 @@ def get_binary_path(component, target_type="systemd", arguments=""):
         comp = "/usr/bin/chwall-daemon"
         module = "chwall.daemon"
     else:
-        comp = "/usr/bin/chwall-{}".format(component)
-        module = "chwall.gui." + component
+        comp = f"/usr/bin/chwall-{component}"
+        module = f"chwall.gui.{component}"
     # Is it an installed version?
     test_env = os.getenv("CHWALL_FAKE_INSTALL", "pass")
     if (test_env == "pass" and os.path.exists(comp)) or test_env == "exists":
@@ -230,7 +230,7 @@ def get_binary_path(component, target_type="systemd", arguments=""):
     local_path = os.path.realpath(
         os.path.join(os.path.dirname(__file__), "..")
     )
-    return "python -m {0}\n{1}={2}".format(module, workdirkey, local_path)
+    return f"python -m {module}\n{workdirkey}={local_path}"
 
 
 def open_externally(url):
@@ -281,7 +281,8 @@ class ServiceFileManager:
     def systemd_service_file(self, write=False, force=False):
         config = read_config()
         display = config["general"].get("display", ":0")
-        file_content = """\
+        app_exec = get_binary_path("client", arguments="next savetime")
+        file_content = f"""\
 [Unit]
 Description=Simple wallpaper changer
 After=network.target
@@ -293,20 +294,19 @@ ExecStart={app_exec}
 
 [Install]
 WantedBy=default.target
-""".format(display=display,
-           app_exec=get_binary_path("client", arguments="next savetime"))
+"""
         sleep_time = int(int(config["general"]["sleep"]) / 60)
-        timer_content = """\
+        timer_content = f"""\
 [Unit]
-Description=Change wallpaper every {sleep} minutes
+Description=Change wallpaper every {sleep_time} minutes
 After=network.target
 
 [Timer]
-OnCalendar=*:0/{sleep}
+OnCalendar=*:0/{sleep_time}
 
 [Install]
 WantedBy=timers.target
-""".format(sleep=sleep_time)
+"""
         if write is False:
             print("Service file:")
             print(file_content, end="")
@@ -343,23 +343,24 @@ WantedBy=timers.target
 
     def remove_xdg_autostart_file(self, component="daemon"):
         autostart_file = os.path.join(
-            self.autostart_dir, "chwall-{}.desktop".format(component))
+            self.autostart_dir, f"chwall-{component}.desktop"
+        )
         file_yet_exists = os.path.isfile(autostart_file)
         if file_yet_exists:
             os.remove(autostart_file)
 
     def xdg_autostart_file(self, component, app_name, app_desc, write=False):
         chwall_cmd = get_binary_path(component, target_type="xdg")
-        file_content = """\
+        file_content = f"""\
 [Desktop Entry]
 Name={app_name}
 Comment={app_desc}
-Exec={app_exec}
+Exec={chwall_cmd}
 Icon=chwall
 Terminal=false
 Type=Application
 X-MATE-Autostart-enabled=true
-""".format(app_name=app_name, app_desc=app_desc, app_exec=chwall_cmd)
+"""
         if component == "daemon":
             file_content += """\
 X-GNOME-Autostart-enabled=true
@@ -376,7 +377,8 @@ Categories=GTK;TrayIcon;Utility;
             print(file_content, end="")
             return
         autostart_file = os.path.join(
-            self.autostart_dir, "chwall-{}.desktop".format(component))
+            self.autostart_dir, f"chwall-{component}.desktop"
+        )
         if os.path.isfile(autostart_file):
             return
         self.remove_systemd_service_file()
@@ -388,5 +390,6 @@ Categories=GTK;TrayIcon;Utility;
     def xdg_autostart_file_exists(self, component="daemon"):
         autostart_file = os.path.join(
             xdg_config_home, "autostart",
-            "chwall-{}.desktop".format(component))
+            f"chwall-{component}.desktop"
+        )
         return os.path.isfile(autostart_file)

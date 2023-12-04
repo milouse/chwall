@@ -76,13 +76,13 @@ class ChwallClient:
                 self.cmd_help()
                 return True
             subcmd = SUBCOMMAND_ALIASES.get(opts[0], opts[0])
-            action = getattr(self, "help_{}".format(subcmd), None)
+            action = getattr(self, f"help_{subcmd}", None)
             if action is None:
                 self.help_generic(subcmd)
                 return True
             opts = []
         else:
-            action = getattr(self, "cmd_{}".format(action), None)
+            action = getattr(self, f"cmd_{action}", None)
             if action is None:
                 return False
         action(*opts)
@@ -182,8 +182,8 @@ By default, this command will start the main app if no argument is given.
         if program not in ["app", "icon"]:
             sys.exit(1)
         daemonize()
-        cmd = "chwall-{}".format(program)
-        os.execl("/usr/bin/{}".format(cmd), cmd)
+        cmd = f"chwall-{program}"
+        os.execl(f"/usr/bin/{cmd}", cmd)
 
     def help_status(self):
         self._print_usage("status [ open ]", "current [ open ]",
@@ -259,7 +259,7 @@ the last time the wallpaper was changed (as if it was done by the daemon).
         self._pick_wall()
         if subcmd != "savetime":
             return
-        with open("{}/last_change".format(BASE_CACHE_PATH), "w") as f:
+        with open(f"{BASE_CACHE_PATH}/last_change", "w") as f:
             f.write(str(int(time.time())))
 
     def help_previous(self):
@@ -291,7 +291,7 @@ the next time it will change.
         reset_pending_list()
 
     def _road_map(self):
-        road_map = "{}/roadmap".format(BASE_CACHE_PATH)
+        road_map = f"{BASE_CACHE_PATH}/roadmap"
         if not os.path.exists(road_map):
             print(_("No roadmap has been created yet"), file=sys.stderr)
             sys.exit(1)
@@ -335,7 +335,7 @@ This command display only the upstream url of each wallpaper.
         fp_source = fetcher_package.__path__
         fetchers_list = []
         for fd in pkgutil.iter_modules(fp_source):
-            fetcher_mod = import_module("chwall.fetcher.{}".format(fd.name))
+            fetcher_mod = import_module(f"chwall.fetcher.{fd.name}")
             if "preferences" not in dir(fetcher_mod):
                 continue
             fetchers_list.append(fd.name)

@@ -30,7 +30,7 @@ class ChwallRestartTimer(Exception):
 
 
 def wait_before_change(sleep_time):
-    with open("{}/last_change".format(BASE_CACHE_PATH), "w") as f:
+    with open(f"{BASE_CACHE_PATH}/last_change", "w") as f:
         f.write(str(int(time.time())))
     try:
         time.sleep(sleep_time)
@@ -47,7 +47,7 @@ def kill_daemon(_signo, _stack_frame):
 
 
 def last_wallpaper_change(sleep_time):
-    change_file = "{}/last_change".format(BASE_CACHE_PATH)
+    change_file = f"{BASE_CACHE_PATH}/last_change"
     if not os.path.exists(change_file):
         return -1
     with open(change_file, "r") as f:
@@ -65,28 +65,30 @@ def last_wallpaper_change(sleep_time):
 
 
 def daemon_change_label(last_change, next_change):
-    if last_change > 60:
-        last_change_m = int(last_change / 60)
-        last_change_s = last_change % 60
+    seconds = last_change
+    if seconds > 60:
+        minutes = int(last_change / 60)
+        seconds = last_change % 60
         last_change_label = gettext.ngettext(
-            "Last change was {minutes} minute and {seconds}s ago",
-            "Last change was {minutes} minutes and {seconds}s ago",
-            last_change_m
-        ).format(minutes=last_change_m, seconds=last_change_s)
+            f"Last change was {minutes} minute and {seconds}s ago",
+            f"Last change was {minutes} minutes and {seconds}s ago",
+            minutes
+        )
     else:
-        last_change_label = (_("Last change was {seconds}s ago")
-                             .format(seconds=last_change))
-    if next_change > 60:
-        next_change_m = int(next_change / 60)
-        next_change_s = next_change % 60
+        last_change_label = _("Last change was {seconds}s ago")
+
+    seconds = next_change
+    if seconds > 60:
+        minutes = int(next_change / 60)
+        seconds = next_change % 60
         next_change_label = gettext.ngettext(
-            "Next change in {minutes} minute and {seconds}s",
-            "Next change in {minutes} minutes and {seconds}s",
-            next_change_m
-        ).format(minutes=next_change_m, seconds=next_change_s)
+            f"Next change in {minutes} minute and {seconds}s",
+            f"Next change in {minutes} minutes and {seconds}s",
+            minutes
+        )
     else:
-        next_change_label = (_("Next change in {seconds}s")
-                             .format(seconds=next_change))
+        next_change_label = _(f"Next change in {seconds}s")
+
     return last_change_label, next_change_label
 
 
@@ -109,14 +111,12 @@ def daemon_info():
         change_labels = daemon_change_label(last_change, next_change)
 
     systemd_path = os.path.expanduser("~/.config/systemd/user")
-    if os.path.exists("{}/chwall.timer".format(systemd_path)):
+    if os.path.exists(f"{systemd_path}/chwall.timer"):
         daemon_type = "systemd"
-        if os.path.exists("{}/timers.target.wants/chwall.timer"
-                          .format(systemd_path)):
+        if os.path.exists(f"{systemd_path}/timers.target.wants/chwall.timer"):
             daemon_enabled = True
         else:
-            daemon_state_label = _("{daemon_state} (disabled)").format(
-                daemon_state=daemon_state_label)
+            daemon_state_label = _(f"{daemon_state_label} (disabled)")
 
     return {
         "last-change": last_change,
@@ -130,20 +130,19 @@ def daemon_info():
     }
 
 
-def notify_daemon_if_any(sig=signal.SIGUSR1):
-    pid_file = "{}/chwall_pid".format(BASE_CACHE_PATH)
+def notify_daemon_if_any(sid=signal.SIGUSR1):
+    pid_file = f"{BASE_CACHE_PATH}/chwall_pid"
     if not os.path.exists(pid_file):
         return False
     pid = None
     with open(pid_file, "r") as f:
         pid = f.read().strip()
-    if sig == signal.SIGTERM:
-        logger.warning(_("Kill process {pid}").format(pid=pid))
+    if sid == signal.SIGTERM:
+        logger.warning(_(f"Kill process {pid}"))
     else:
-        logger.debug(_("Sending process {pid} signal {sid}")
-                     .format(pid=pid, sid=sig))
+        logger.debug(_(f"Sending process {pid} signal {sid}"))
     try:
-        os.kill(int(pid), sig)
+        os.kill(int(pid), sid)
     except ValueError:
         return False
     except ProcessLookupError:
@@ -166,9 +165,9 @@ def notify_app_if_any():
         pid = int(pid_data.stdout.strip())
     except ValueError:
         return False
-    logger.debug(_("Sending process {pid} signal {sid}")
-                 .format(pid=pid, sid=signal.SIGUSR1))
-    os.kill(pid, signal.SIGUSR1)
+    sid = signal.SIGUSR1
+    logger.debug(_(f"Sending process {pid} signal {sid}"))
+    os.kill(pid, sid)
     return True
 
 
@@ -211,7 +210,7 @@ def daemon_loop():
         error_code = 1
     finally:
         logger.info(_("Cleaning up…"))
-        pid_file = "{}/chwall_pid".format(BASE_CACHE_PATH)
+        pid_file = f"{BASE_CACHE_PATH}/chwall_pid"
         if os.path.isfile(pid_file):
             os.unlink(pid_file)
         if error_code == 0:
@@ -242,17 +241,17 @@ def daemonize():
 def start_daemon():
     if sys.argv[-1] != "-D":
         daemonize()
-    with open("{}/chwall_pid".format(BASE_CACHE_PATH), "w") as f:
+    with open(f"{BASE_CACHE_PATH}/chwall_pid", "w") as f:
         f.write(str(os.getpid()))
     logger.info(_("Starting Chwall Daemon v{version}…")
                 .format(version=__version__))
     # Try to keep cache as clean as possible
-    deleted = cleanup_cache()
+    number = cleanup_cache()
     logger.info(gettext.ngettext(
         "{number} cache entry has been removed.",
         "{number} cache entries have been removed.",
-        deleted
-    ).format(number=deleted))
+        number
+    ))
     sys.exit(daemon_loop())
 
 
