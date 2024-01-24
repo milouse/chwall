@@ -1,9 +1,11 @@
+import os
 import pkgutil
+import threading
 from importlib import import_module
 
 from chwall.utils import read_config, write_config, reset_pending_list, \
-                         count_broken_pictures_in_cache, cleanup_cache, \
-                         compute_cache_size, ServiceFileManager
+                         is_broken_picture, ServiceFileManager, \
+                         BASE_CACHE_PATH
 
 import gi
 gi.require_version("Gdk", "3.0")
@@ -16,6 +18,44 @@ import gettext  # noqa: E402
 # gettext.bindtextdomain("chwall", "./locale")
 gettext.textdomain("chwall")
 _ = gettext.gettext
+
+
+def compute_cache_size():
+    pic_cache = f"{BASE_CACHE_PATH}/pictures"
+    if not os.path.exists(pic_cache):
+        return 0
+    cache_total = 0
+    for pic in os.scandir(pic_cache):
+        cache_total += pic.stat().st_size
+    cache_total = cache_total / 1000
+    if cache_total > 1000000:
+        return "{} Go".format(str(round(cache_total/1000000, 2)))
+    elif cache_total > 1000:
+        return "{} Mo".format(str(round(cache_total/1000, 2)))
+    return "{} ko".format(str(round(cache_total, 2)))
+
+
+def count_broken_pictures_in_cache():
+    pic_cache = f"{BASE_CACHE_PATH}/pictures"
+    if not os.path.exists(pic_cache):
+        return 0
+    broken_files = 0
+    for pic in os.scandir(pic_cache):
+        if pic.stat().st_size == 0 or is_broken_picture(pic):
+            broken_files += 1
+    return broken_files
+
+
+def cleanup_cache(clear_all=False):
+    pic_cache = f"{BASE_CACHE_PATH}/pictures"
+    if not os.path.exists(pic_cache):
+        return 0
+    deleted = 0
+    for pic in os.scandir(pic_cache):
+        if clear_all or pic.stat().st_size == 0 or is_broken_picture(pic):
+            os.unlink(pic.path)
+            deleted += 1
+    return deleted
 
 
 def do_for_widget_by_name(name, callback, parent):
@@ -687,7 +727,7 @@ as it is the more classical way of doing so.
                 number
             )
 
-            widget.get_parent().foreach(update_label)
+            update_label(widget.get_parent())
 
             # flags 3 = MODAL | DESTROY_WITH_PARENT
             dialog = Gtk.MessageDialog(
@@ -699,24 +739,36 @@ as it is the more classical way of doing so.
             dialog.run()
             dialog.destroy()
 
-        number = count_broken_pictures_in_cache()
+        def _label_for_box(box):
+            for sibling in box.get_children():
+                if isinstance(sibling, Gtk.Label):
+                    return sibling
+            return None
+
+        def _start_in_thread(function, box):
+            t = threading.Thread(target=function, args=[box])
+            t.daemon = True
+            t.start()
+
+        def _update_broken_label(box):
+            label = _label_for_box(box)
+            if not label:
+                return
+            number = count_broken_pictures_in_cache()
+            label.set_label(
+                gettext.ngettext(
+                    f"{number} broken picture currently in cache",
+                    f"{number} broken pictures currently in cache",
+                    number
+                )
+            )
+
+        number = 0
         label = gettext.ngettext(
                 f"{number} broken picture currently in cache",
                 f"{number} broken pictures currently in cache",
                 number
         )
-
-        def _update_broken_label(sibling):
-            if isinstance(sibling, Gtk.Label):
-                number = 0
-                sibling.set_label(
-                    gettext.ngettext(
-                        f"{number} broken picture currently in cache",
-                        f"{number} broken pictures currently in cache",
-                        number
-                    )
-                )
-
         prefbox = self.make_button_row(
             label,
             _("Clear broken pictures"),
@@ -724,21 +776,26 @@ as it is the more classical way of doing so.
             "destructive-action",
             _update_broken_label
         )
+        _start_in_thread(_update_broken_label, prefbox)
         cachebox.pack_start(prefbox, False, False, 0)
 
-        def _update_empty_label(sibling):
-            if isinstance(sibling, Gtk.Label):
-                size = "0.0 ko"
-                sibling.set_label(_(f"Picture cache use {size}"))
+        def _update_cache_label(box):
+            label = _label_for_box(box)
+            if not label:
+                return
+            size = compute_cache_size()
+            label.set_label(_(f"Picture cache use {size}"))
 
+        size = "0.0 ko"
         prefbox = self.make_button_row(
-            _("Picture cache use {size}").format(size=compute_cache_size()),
+            _(f"Picture cache use {size}"),
             _("Clear picture cache"),
             on_cleanup_cache,
             "destructive-action",
-            _update_empty_label,
+            _update_cache_label,
             True
         )
+        _start_in_thread(_update_cache_label, prefbox)
         cachebox.pack_start(prefbox, False, False, 0)
 
         daemonbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)

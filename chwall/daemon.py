@@ -8,8 +8,7 @@ import subprocess
 
 # chwall imports
 from chwall import __version__
-from chwall.utils import BASE_CACHE_PATH, read_config, cleanup_cache, \
-                         get_logger
+from chwall.utils import BASE_CACHE_PATH, read_config, get_logger
 from chwall.wallpaper import pick_wallpaper, ChwallWallpaperSetError, \
                              current_wallpaper_info
 
@@ -245,13 +244,6 @@ def start_daemon():
         f.write(str(os.getpid()))
     logger.info(_("Starting Chwall Daemon v{version}…")
                 .format(version=__version__))
-    # Try to keep cache as clean as possible
-    number = cleanup_cache()
-    logger.info(gettext.ngettext(
-        "{number} cache entry has been removed.",
-        "{number} cache entries have been removed.",
-        number
-    ))
     sys.exit(daemon_loop())
 
 
