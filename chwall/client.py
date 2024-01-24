@@ -171,15 +171,16 @@ Directly open the chwall preferences window.
         prefwin.destroy()
 
     def help_detach(self):
-        self._print_usage("detach [ app | icon ]")
+        self._print_usage("detach [ app | icon | indicator ]")
         print(_("""
-Detach from terminal and start either the main app or the system tray icon.
+Detach from terminal and start either the main app, the system tray icon or the
+app indicator.
 
 By default, this command will start the main app if no argument is given.
 """))
 
     def cmd_detach(self, program="app"):
-        if program not in ["app", "icon"]:
+        if program not in ["app", "icon", "indicator"]:
             sys.exit(1)
         daemonize()
         cmd = f"chwall-{program}"

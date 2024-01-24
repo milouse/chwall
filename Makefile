@@ -55,7 +55,8 @@ uninstall:
 	rm -f $(DEST_MO)
 	rm -f $(datarootdir)/bash-completion/completions/chwall
 	rm -f $(datarootdir)/zsh/site-functions/_chwall
-	rm -f $(bindir)/chwall $(bindir)/chwall-daemon $(bindir)/chwall-icon $(bindir)/chwall-app
+	rm -f $(bindir)/chwall $(bindir)/chwall-app $(bindir)/chwall-daemon \
+		$(bindir)/chwall-icon $(bindir)/chwall-indicator
 	rm -f $(datarootdir)/applications/chwall-app.desktop
 
 chwall-app.desktop: $(MO_FILES)

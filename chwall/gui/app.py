@@ -188,10 +188,10 @@ class ChwallApp(ChwallGui):
 
         item = Gtk.MenuItem.new_with_label(
             _("Display an icon in the system tray"))
-        if self.is_chwall_component_started("icon"):
+        if self.is_chwall_component_started("indicator"):
             item.set_sensitive(False)
         else:
-            item.connect("activate", self.run_chwall_component, "icon")
+            item.connect("activate", self.run_chwall_component, "indicator")
         menu.append(item)
 
         item = Gtk.MenuItem.new_with_label(_("Preferences"))

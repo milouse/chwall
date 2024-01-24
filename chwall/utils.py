@@ -329,7 +329,7 @@ X-GNOME-Autostart-enabled=true
 Categories=Utility;
 StartupNotify=false
 """
-        elif component == "icon":
+        elif component in ["icon", "indicator"]:
             file_content += """\
 X-GNOME-Autostart-enabled=false
 NotShowIn=GNOME;Pantheon;
