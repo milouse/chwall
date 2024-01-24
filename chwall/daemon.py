@@ -37,11 +37,11 @@ def wait_before_change(sleep_time):
         wait_before_change(sleep_time)
 
 
-def restart_sleep(_signo, _stack_frame):
+def restart_sleep(*args):
     raise ChwallRestartTimer()
 
 
-def kill_daemon(_signo, _stack_frame):
+def kill_daemon(*args):
     sys.exit(0)
 
 

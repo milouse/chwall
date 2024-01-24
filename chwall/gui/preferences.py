@@ -500,13 +500,13 @@ class PrefDialog(Gtk.Dialog):
         prefbox.pack_end(listbox, True, True, 0)
         return prefbox
 
-    def make_button_row(self, label, button_label, action, style=None, *opts):
+    def make_button_row(self, label, button_label, action, style=None, *args):
         prefbox = self.make_prefbox_with_label(label)
         button = Gtk.Button()
         button.set_label(button_label)
         if style is not None:
             button.get_style_context().add_class(style)
-        button.connect("clicked", action, *opts)
+        button.connect("clicked", action, *args)
         prefbox.pack_end(button, False, False, 10)
         return prefbox
 

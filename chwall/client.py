@@ -48,14 +48,14 @@ class ChwallClient:
 
     def _parse_argv(self):
         action = None
-        opts = []
+        args = []
         for a in self.argv:
             arg = a.lower()
             if arg in ["help", "--help", "-h"]:
                 if action == "help":
                     continue
                 if action is not None:
-                    opts.insert(0, action)
+                    args.insert(0, action)
                 action = "help"
                 continue
             elif arg in ["version", "--version", "-v"]:
@@ -63,29 +63,29 @@ class ChwallClient:
             if action is None:
                 action = arg
             else:
-                opts.append(arg)
-        return action, opts
+                args.append(arg)
+        return action, args
 
     def _run(self):
-        action, opts = self._parse_argv()
+        action, args = self._parse_argv()
         if action is None:
             return False
         action = SUBCOMMAND_ALIASES.get(action, action)
         if action == "help":
-            if len(opts) == 0:
+            if len(args) == 0:
                 self.cmd_help()
                 return True
-            subcmd = SUBCOMMAND_ALIASES.get(opts[0], opts[0])
+            subcmd = SUBCOMMAND_ALIASES.get(args[0], args[0])
             action = getattr(self, f"help_{subcmd}", None)
             if action is None:
                 self.help_generic(subcmd)
                 return True
-            opts = []
+            args = []
         else:
             action = getattr(self, f"cmd_{action}", None)
             if action is None:
                 return False
-        action(*opts)
+        action(*args)
         # By default, return success. It's up to each method to exit with error
         # sooner when something goes wrong
         return True

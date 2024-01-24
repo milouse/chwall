@@ -137,7 +137,7 @@ def write_config(config):
 
 # This function may be called from a gui app and pass a widget or other stuff
 # as arguments
-def reset_pending_list(*opts):
+def reset_pending_list(*args):
     road_map = f"{BASE_CACHE_PATH}/roadmap"
     if os.path.exists(road_map):
         os.unlink(road_map)

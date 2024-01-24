@@ -35,7 +35,7 @@ class ChwallGui:
         return daemon_info()
 
     # May be called from as a widget action, hence the variable arguments list
-    def stop_daemon(self, *opts):
+    def stop_daemon(self, *args):
         stop_daemon_if_any()
 
     def start_in_thread_if_needed(self, function, *args):
@@ -99,7 +99,7 @@ class ChwallGui:
         self.current_is_favorite = os.path.exists(fav_path)
         return self.current_is_favorite
 
-    def show_preferences_dialog(self, widget):
+    def show_preferences_dialog(self, _widget):
         if self.app is None:
             flags = 0
         else:
@@ -110,7 +110,7 @@ class ChwallGui:
         prefwin.destroy()
         self.reload_config()
 
-    def show_about_dialog(self, widget):
+    def show_about_dialog(self, _widget):
         about_dialog = Gtk.AboutDialog()
         about_dialog.set_destroy_with_parent(True)
         about_dialog.set_icon_name("chwall")

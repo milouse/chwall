@@ -118,7 +118,7 @@ class ChwallApp(ChwallGui):
         self.update_wall_box()
         signal.signal(signal.SIGUSR1, self.update_wall_box)
 
-    def update_wall_box(self, _signo=None, _stack_frame=None):
+    def update_wall_box(self, *args):
         self.notif_reset.set_revealed(False)
         self.notif_reset.hide()
         wallinfo = current_wallpaper_info()
@@ -164,7 +164,7 @@ class ChwallApp(ChwallGui):
             pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(
                 wallinfo["local-picture-path"], width, 600, True)
             self.wallpaper.set_from_pixbuf(pixbuf)
-        except gi.repository.GLib.Error:
+        except GLib.Error:
             self.wallpaper.set_from_icon_name(
                 "image-missing", Gtk.IconSize.DIALOG)
         self.wallpaper.show()
@@ -242,13 +242,13 @@ class ChwallApp(ChwallGui):
         self.notif_reset.set_revealed(True)
         self.run_chwall_component(widget, "daemon")
 
-    def on_stop_clicked(self, widget):
+    def on_stop_clicked(self, _widget):
         self.stop_daemon()
         reset_pending_list()
         self.decorate_play_pause_button(True)
 
-    def on_favorite_wallpaper(self, _widget):
-        super().on_favorite_wallpaper(_widget)
+    def on_favorite_wallpaper(self, widget):
+        super().on_favorite_wallpaper(widget)
         if self.current_is_favorite:
             self.favorite_button.set_sensitive(False)
             self.favorite_button.set_tooltip_text(_("Already a favorite"))

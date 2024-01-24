@@ -168,7 +168,7 @@ class ChwallIcon(ChwallGui):
         else:
             self.sfm.remove_xdg_autostart_file("icon")
 
-    def report_a_bug(self, widget):
+    def report_a_bug(self, _widget):
         subprocess.Popen(
             ["gio", "open",
              "https://framagit.org/milouse/chwall/issues"])
