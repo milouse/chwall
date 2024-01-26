@@ -3,11 +3,10 @@ import threading
 import subprocess
 
 from chwall import __version__
-from chwall.daemon import notify_daemon_if_any, stop_daemon_if_any, \
-    notify_app_if_any, daemon_info, save_change_time
+from chwall.daemon import notify_daemon_if_any, notify_app_if_any, daemon_info
 from chwall.utils import ServiceFileManager, read_config
 from chwall.wallpaper import block_wallpaper, pick_wallpaper, \
-    favorite_wallpaper_path, favorite_wallpaper
+                             favorite_wallpaper_path, favorite_wallpaper
 from chwall.gui.preferences import PrefDialog
 
 import gi
@@ -52,14 +51,13 @@ class ChwallGui:
 
     # May be called from as a widget action, hence the variable arguments list
     def stop_daemon(self, *args):
-        stop_daemon_if_any()
+        notify_daemon_if_any("stop")
 
     def on_change_wallpaper(self, _widget, backward=False, block=False):
         def change_wall_in_thread(backward, block):
             if block:
                 block_wallpaper()
             pick_wallpaper(self.config, backward)
-            save_change_time()
             notify_daemon_if_any()
             notify_app_if_any()
 

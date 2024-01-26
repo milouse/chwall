@@ -6,18 +6,19 @@ After=network.target
 [Service]
 Type=simple
 Environment=DISPLAY=:0
-ExecStart=/usr/bin/chwall next savetime
+ExecStart=/usr/bin/chwall next no_restart
 
 [Install]
 WantedBy=default.target
 
 Timer file:
 [Unit]
-Description=Change wallpaper every 10 minutes
+Description=Change wallpaper every 600 seconds
 After=network.target
 
 [Timer]
-OnCalendar=*:0/10
+OnActiveSec=600
+OnUnitActiveSec=600
 
 [Install]
 WantedBy=timers.target

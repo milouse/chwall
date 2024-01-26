@@ -10,8 +10,7 @@ from xdg.BaseDirectory import xdg_data_home
 
 # chwall imports
 from chwall import __version__
-from chwall.daemon import notify_daemon_if_any, stop_daemon_if_any, \
-                          daemon_info, save_change_time
+from chwall.daemon import notify_daemon_if_any, daemon_info
 from chwall.utils import BASE_CACHE_PATH, read_config, \
                          reset_pending_list, open_externally, \
                          ServiceFileManager
@@ -219,31 +218,24 @@ later.
     def cmd_favorite(self):
         favorite_wallpaper(read_config())
 
-    def _pick_wall(self, backward=False):
+    def _pick_wall(self, backward=False, notify_term="notify"):
         if pick_wallpaper(read_config(), backward) is None:
             print(_("Unable to pick wallpaper this time. Please, try again."),
                   file=sys.stderr)
-            self.cmd_quit()
-        else:
-            notify_daemon_if_any()
+            return
+        notify_daemon_if_any(notify_term)
 
     def help_next(self):
-        self._print_usage("next [ savetime ]", "once [ savetime ]")
+        self._print_usage("next", "once")
         print(_("""
 Switch to the next wallpaper.
 
 This command may be used, even if the daemon is not started to manually change
 the wallpaper.
-
-If the optional ‘savetime’ keyword is given, the current time will be stored as
-the last time the wallpaper was changed (as if it was done by the daemon).
 """))
 
-    def cmd_next(self, subcmd="pass"):
-        self._pick_wall()
-        if subcmd != "savetime":
-            return
-        save_change_time()
+    def cmd_next(self, subcmd="notify"):
+        self._pick_wall(notify_term=subcmd)
 
     def help_previous(self):
         self._print_usage("previous")
@@ -261,7 +253,7 @@ Stop the chwall daemon.
 """))
 
     def cmd_quit(self):
-        stop_daemon_if_any()
+        notify_daemon_if_any("stop")
 
     def help_empty(self):
         self._print_usage("empty")

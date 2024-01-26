@@ -8,7 +8,8 @@ import subprocess
 
 # chwall imports
 from chwall import __version__
-from chwall.utils import BASE_CACHE_PATH, read_config, get_logger
+from chwall.utils import BASE_CACHE_PATH, read_config, get_logger, \
+                         detect_systemd, ServiceFileManager
 from chwall.wallpaper import pick_wallpaper, ChwallWallpaperSetError, \
                              current_wallpaper_info
 
@@ -102,8 +103,6 @@ def daemon_info():
     next_change = -1
     daemon_state = "stopped"
     daemon_state_label = _("Daemon stopped")
-    daemon_enabled = False
-    daemon_type = "standalone"
 
     last_change = last_wallpaper_change(sleep_time)
     change_labels = (_("Daemon stopped"), _("Daemon stopped"))
@@ -113,13 +112,10 @@ def daemon_info():
         next_change = sleep_time - last_change
         change_labels = daemon_change_label(last_change, next_change)
 
-    systemd_path = os.path.expanduser("~/.config/systemd/user")
-    if os.path.exists(f"{systemd_path}/chwall.timer"):
-        daemon_type = "systemd"
-        if os.path.exists(f"{systemd_path}/timers.target.wants/chwall.timer"):
-            daemon_enabled = True
-        else:
-            daemon_state_label = _(f"{daemon_state_label} (disabled)")
+    sfm = ServiceFileManager()
+    service_file_status = sfm.service_file_status()
+    if not service_file_status["enabled"]:
+        daemon_state_label = _(f"{daemon_state_label} (disabled)")
 
     return {
         "last-change": last_change,
@@ -127,22 +123,67 @@ def daemon_info():
         "last-change-label": change_labels[0],
         "next-change-label": change_labels[1],
         "daemon-state-label": daemon_state_label,
-        "daemon-type": daemon_type,
-        "daemon-enabled": daemon_enabled,
+        "daemon-type": service_file_status["type"],
+        "daemon-enabled": service_file_status["enabled"],
         "daemon-state": daemon_state
     }
 
 
-def notify_daemon_if_any(sid=signal.SIGUSR1):
+def systemd_timer_running():
+    if not detect_systemd():
+        return False
+
+    status = subprocess.run(
+        ["systemctl", "--user", "-P", "ActiveState", "show",
+         "chwall.timer"],
+        check=True, capture_output=True, text=True
+    ).stdout.strip()
+    return status == "active"
+
+
+def stop_systemd_timer():
+    err = subprocess.run(
+        ["systemctl", "--user", "stop", "chwall.timer"]
+    ).returncode
+    change_file = f"{BASE_CACHE_PATH}/last_change"
+    if os.path.exists(change_file):
+        os.unlink(change_file)
+    return err
+
+
+def restart_systemd_timer():
+    err = subprocess.run(
+        ["systemctl", "--user", "restart", "chwall.timer"]
+    ).returncode
+    return err == 0
+
+
+def notify_daemon_if_any(action="notify"):
+    if systemd_timer_running():
+        if action == "stop":
+            return stop_systemd_timer()
+
+        save_change_time()
+
+        if action == "notify":
+            return restart_systemd_timer()
+        return True
+
     pid_file = f"{BASE_CACHE_PATH}/chwall_pid"
     if not os.path.exists(pid_file):
         return False
+
     pid = None
     with open(pid_file, "r") as f:
         pid = f.read().strip()
-    if sid == signal.SIGTERM:
+    if not pid:
+        return False
+
+    if action == "stop":
+        sid = signal.SIGTERM
         logger.warning(_(f"Kill process {pid}"))
     else:
+        sid = signal.SIGUSR1
         logger.debug(_(f"Sending process {pid} signal {sid}"))
     try:
         os.kill(int(pid), sid)
@@ -153,10 +194,6 @@ def notify_daemon_if_any(sid=signal.SIGUSR1):
         os.unlink(pid_file)
         return False
     return True
-
-
-def stop_daemon_if_any():
-    notify_daemon_if_any(signal.SIGTERM)
 
 
 def notify_app_if_any():
@@ -242,6 +279,13 @@ def daemonize():
 
 
 def start_daemon():
+    sfm = ServiceFileManager()
+    if sfm.systemd_service_file_exists():
+        save_change_time()
+        return subprocess.run(
+            ["systemctl", "--user", "start", "chwall.timer"]
+        )
+
     if sys.argv[-1] != "-D":
         daemonize()
     with open(f"{BASE_CACHE_PATH}/chwall_pid", "w") as f:

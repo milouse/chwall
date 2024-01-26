@@ -201,6 +201,19 @@ def get_binary_path(component, target_type="systemd", arguments=""):
     return f"python -m {module}\n{workdirkey}={local_path}"
 
 
+def detect_systemd():
+    try:
+        sdata = subprocess.run(
+            ["systemctl", "--version"],
+            check=True, capture_output=True, text=True
+        )
+    except subprocess.CalledProcessError:
+        return
+    except FileNotFoundError:
+        return
+    return sdata.stdout.split("\n")[0]
+
+
 def open_externally(url):
     if url.startswith("http"):
         browser_cmd = read_config()["general"].get(
@@ -213,8 +226,7 @@ def open_externally(url):
 
 class ServiceFileManager:
     def __init__(self):
-        self.systemd_version = None
-        self._detect_systemd()
+        self.systemd_version = detect_systemd()
         self.systemd_base_path = os.path.join(
             xdg_config_home, "systemd", "user")
         self.systemd_service_file_path = os.path.join(
@@ -223,17 +235,17 @@ class ServiceFileManager:
             self.systemd_base_path, "chwall.timer")
         self.autostart_dir = os.path.join(xdg_config_home, "autostart")
 
-    def _detect_systemd(self):
-        try:
-            sdata = subprocess.run(
-                ["systemctl", "--version"],
-                check=True, capture_output=True, text=True
-            )
-        except subprocess.CalledProcessError:
-            return
-        except FileNotFoundError:
-            return
-        self.systemd_version = sdata.stdout.split("\n")[0]
+    def service_file_status(self):
+        status = {
+            "enabled": False,
+            "type": "xdg"
+        }
+        if self.systemd_service_file_exists():
+            status["type"] = "systemd"
+            status["enabled"] = self.systemd_service_file_exists(True)
+        else:
+            status["enabled"] = self.xdg_autostart_file_exists()
+        return status
 
     def systemd_service_file_exists(self, check_enabled=False):
         if check_enabled:
@@ -247,7 +259,7 @@ class ServiceFileManager:
     def systemd_service_file(self, write=False, force=False):
         config = read_config()
         display = config["general"].get("display", ":0")
-        app_exec = get_binary_path("client", arguments="next savetime")
+        app_exec = get_binary_path("client", arguments="next no_restart")
         file_content = f"""\
 [Unit]
 Description=Simple wallpaper changer
@@ -261,14 +273,15 @@ ExecStart={app_exec}
 [Install]
 WantedBy=default.target
 """
-        sleep_time = int(int(config["general"]["sleep"]) / 60)
+        sleep_time = int(config["general"]["sleep"])
         timer_content = f"""\
 [Unit]
-Description=Change wallpaper every {sleep_time} minutes
+Description=Change wallpaper every {sleep_time} seconds
 After=network.target
 
 [Timer]
-OnCalendar=*:0/{sleep_time}
+OnActiveSec={sleep_time}
+OnUnitActiveSec={sleep_time}
 
 [Install]
 WantedBy=timers.target
