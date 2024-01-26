@@ -12,7 +12,7 @@ from xdg.BaseDirectory import xdg_data_home
 # chwall imports
 from chwall import __version__
 from chwall.daemon import notify_daemon_if_any, stop_daemon_if_any, \
-                          daemon_info, daemonize
+                          daemon_info
 from chwall.utils import BASE_CACHE_PATH, read_config, \
                          reset_pending_list, open_externally, \
                          ServiceFileManager
@@ -169,22 +169,6 @@ Directly open the chwall preferences window.
         prefwin = PrefDialog(None, 0)
         prefwin.run()
         prefwin.destroy()
-
-    def help_detach(self):
-        self._print_usage("detach [ app | icon | indicator ]")
-        print(_("""
-Detach from terminal and start either the main app, the system tray icon or the
-app indicator.
-
-By default, this command will start the main app if no argument is given.
-"""))
-
-    def cmd_detach(self, program="app"):
-        if program not in ["app", "icon", "indicator"]:
-            sys.exit(1)
-        daemonize()
-        cmd = f"chwall-{program}"
-        os.execl(f"/usr/bin/{cmd}", cmd)
 
     def help_status(self):
         self._print_usage("status [ open ]", "current [ open ]",

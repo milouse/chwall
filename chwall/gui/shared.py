@@ -83,8 +83,8 @@ class ChwallGui:
 
         if component == "daemon":
             self.start_in_thread_if_needed(start_daemon_from_thread)
-        else:
-            subprocess.run(["chwall", "detach", component])
+        elif component in ["app", "icon", "indicator"]:
+            subprocess.Popen(f"chwall-{component}")
 
     def is_chwall_component_started(self, component):
         retcode = subprocess.run(

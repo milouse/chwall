@@ -202,8 +202,6 @@ def open_externally(url):
         ).format(url=url)
         subprocess.Popen(browser_cmd, shell=True)
     else:
-        # No need to daemonize when we are sure to call gio, as it will
-        # detach itself from its parent when called.
         subprocess.Popen(["gio", "open", url])
 
 
