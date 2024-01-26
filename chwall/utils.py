@@ -6,6 +6,13 @@ import logging
 import subprocess
 from xdg.BaseDirectory import xdg_cache_home, xdg_config_home
 
+import gettext  # noqa: E402
+# Uncomment the following line during development.
+# Please, be cautious to NOT commit the following line uncommented.
+# gettext.bindtextdomain("chwall", "./locale")
+gettext.textdomain("chwall")
+_ = gettext.gettext
+
 
 BASE_CACHE_PATH = f"{xdg_cache_home}/chwall"
 
@@ -177,8 +184,7 @@ def get_binary_path(component, target_type="systemd", arguments=""):
         comp = f"/usr/bin/chwall-{component}"
         module = f"chwall.gui.{component}"
     # Is it an installed version?
-    test_env = os.getenv("CHWALL_FAKE_INSTALL", "pass")
-    if (test_env == "pass" and os.path.exists(comp)) or test_env == "exists":
+    if os.path.exists(comp):
         if arguments != "":
             comp += " " + arguments
         return comp
@@ -208,7 +214,7 @@ def open_externally(url):
 class ServiceFileManager:
     def __init__(self):
         self.systemd_version = None
-        self.detect_systemd()
+        self._detect_systemd()
         self.systemd_base_path = os.path.join(
             xdg_config_home, "systemd", "user")
         self.systemd_service_file_path = os.path.join(
@@ -217,7 +223,7 @@ class ServiceFileManager:
             self.systemd_base_path, "chwall.timer")
         self.autostart_dir = os.path.join(xdg_config_home, "autostart")
 
-    def detect_systemd(self):
+    def _detect_systemd(self):
         try:
             sdata = subprocess.run(
                 ["systemctl", "--version"],
@@ -309,8 +315,10 @@ WantedBy=timers.target
         if file_yet_exists:
             os.remove(autostart_file)
 
-    def xdg_autostart_file(self, component, app_name, app_desc, write=False):
-        chwall_cmd = get_binary_path(component, target_type="xdg")
+    def _xdg_autostart_for_daemon(self, write=False):
+        chwall_cmd = get_binary_path("daemon", target_type="xdg")
+        app_name = _("Chwall Daemon")
+        app_desc = _("Start Chwall Daemon")
         file_content = f"""\
 [Desktop Entry]
 Name={app_name}
@@ -320,30 +328,49 @@ Icon=chwall
 Terminal=false
 Type=Application
 X-MATE-Autostart-enabled=true
-"""
-        if component == "daemon":
-            file_content += """\
 X-GNOME-Autostart-enabled=true
 Categories=Utility;
 StartupNotify=false
 """
-        elif component in ["icon", "indicator"]:
-            file_content += """\
+        if write:
+            self.remove_systemd_service_file()
+        return file_content
+
+    def _xdg_autostart_for_icon(self, component):
+        chwall_cmd = get_binary_path(component, target_type="xdg")
+        app_desc = _("Wallpaper Changer")
+        return f"""\
+[Desktop Entry]
+Name=Chwall
+Comment={app_desc}
+Exec={chwall_cmd}
+Icon=chwall
+Terminal=false
+Type=Application
+X-MATE-Autostart-enabled=true
 X-GNOME-Autostart-enabled=false
 NotShowIn=GNOME;Pantheon;
 Categories=GTK;TrayIcon;Utility;
 """
+
+    def xdg_autostart_file(self, component, write=False):
+        if component == "daemon":
+            file_content = self._xdg_autostart_for_daemon(write)
+        else:
+            file_content = self._xdg_autostart_for_icon(component)
+
         if write is False:
             print(file_content, end="")
             return
+
         autostart_file = os.path.join(
             self.autostart_dir, f"chwall-{component}.desktop"
         )
         if os.path.isfile(autostart_file):
             return
-        self.remove_systemd_service_file()
-        if not os.path.isdir(self.autostart_dir):
+        elif not os.path.isdir(self.autostart_dir):
             os.makedirs(self.autostart_dir)
+
         with open(autostart_file, "w") as f:
             f.write(file_content)
 
@@ -353,3 +380,84 @@ Categories=GTK;TrayIcon;Utility;
             f"chwall-{component}.desktop"
         )
         return os.path.isfile(autostart_file)
+
+    def _build_translations_for_desktop_file(self, localedir):
+        lang_attrs = {
+            "gname": [],
+            "comment": [],
+            "next_name": [],
+            "previous_name": [],
+            "favorite_name": [],
+            "block_name": []
+        }
+        for lang in sorted(os.listdir(localedir)):
+            if lang in ["chwall.pot", "en"]:
+                continue
+            domain_file = os.path.join(
+                localedir, lang, "LC_MESSAGES", "chwall.mo"
+            )
+            if not os.path.exists(domain_file):
+                continue
+            glng = gettext.translation(
+                "chwall", localedir=localedir, languages=[lang]
+            )
+            glng.install()
+            _ = glng.gettext
+            label = _("Wallpaper Changer")
+            lang_attrs["gname"].append(f"GenericName[{lang}]={label}")
+            label = _("Main window of the Chwall wallpaper changer")
+            lang_attrs["comment"].append(f"Comment[{lang}]={label}")
+            label = _("Next wallpaper")
+            lang_attrs["next_name"].append(f"Name[{lang}]={label}")
+            label = _("Previous wallpaper")
+            lang_attrs["previous_name"].append(f"Name[{lang}]={label}")
+            label = _("Save as favorite")
+            lang_attrs["favorite_name"].append(f"Name[{lang}]={label}")
+            label = _("Put on block list")
+            lang_attrs["block_name"].append(f"Name[{lang}]={label}")
+        return lang_attrs
+
+    def _build_action_block(self, name, lang_attrs):
+        label = name.capitalize()
+        block_cmd = get_binary_path("client", "xdg", name)
+        block = [f"""
+
+[Desktop Action {label}]
+Exec={block_cmd}
+Name={label} wallpaper"""]
+        for line in lang_attrs[name + "_name"]:
+            block.append(line)
+        return "\n".join(block)
+
+    def generate_desktop_file(self, localedir="./locale",
+                              out="chwall-app.desktop"):
+        df_content = ["[Desktop Entry]", "Name=Chwall",
+                      "GenericName=Wallpaper Changer"]
+        lang_attrs = self._build_translations_for_desktop_file(localedir)
+        for line in lang_attrs["gname"]:
+            df_content.append(line)
+        df_content.append(
+            "Comment=Main window of the Chwall wallpaper changer"
+        )
+        for line in lang_attrs["comment"]:
+            df_content.append(line)
+        df_content = "\n".join(df_content)
+        app_exec = get_binary_path("app", "xdg")
+        df_content += f"""
+Exec={app_exec}
+Icon=chwall
+Terminal=false
+Type=Application
+Categories=GTK;GNOME;Utility;
+StartupNotify=false
+Actions=Next;Previous;Favorite;Block;"""
+        df_content += self._build_action_block("next", lang_attrs)
+        df_content += self._build_action_block("previous", lang_attrs)
+        df_content += self._build_action_block("favorite", lang_attrs)
+        df_content += self._build_action_block("block", lang_attrs)
+
+        if out == "print":
+            print(df_content)
+        else:
+            with open(out, "w") as f:
+                f.write(df_content)

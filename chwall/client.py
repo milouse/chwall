@@ -17,7 +17,6 @@ from chwall.utils import BASE_CACHE_PATH, read_config, \
                          ServiceFileManager
 from chwall.wallpaper import block_wallpaper, pick_wallpaper, \
                              favorite_wallpaper, current_wallpaper_info
-from chwall.gui.app import generate_desktop_file
 from chwall.gui.preferences import PrefDialog
 
 import gettext
@@ -156,7 +155,8 @@ will be saved in .local/share/applications/
             out = out.strip()
         if localedir is None:
             localedir = gettext.bindtextdomain("chwall")
-        generate_desktop_file(localedir, out)
+        sfm = ServiceFileManager()
+        sfm.generate_desktop_file(localedir, out)
 
     def help_options(self):
         self._print_usage("options", "preferences")

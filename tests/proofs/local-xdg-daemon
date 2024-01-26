@@ -1,6 +1,6 @@
 [Desktop Entry]
-Name=TEST DAEMON
-Comment=TEST DESC
+Name=Chwall Daemon
+Comment=Start Chwall Daemon
 Exec=python -m chwall.daemon
 Path={path}
 Icon=chwall

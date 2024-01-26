@@ -13,7 +13,7 @@ L10N_LANGS   = fr es
 PO_FILES     = $(L10N_LANGS:%=locale/%/LC_MESSAGES/chwall.po)
 MO_FILES     = $(PO_FILES:%.po=%.mo)
 DEST_MO      = $(L10N_LANGS:%=$(datarootdir)/locale/%/LC_MESSAGES/chwall.mo)
-TRANSLATABLE = chwall/gui/*.py chwall/fetcher/*.py \
+TRANSLATABLE = chwall/gui/*.py chwall/fetcher/*.py chwall/utils.py \
 	chwall/wallpaper.py chwall/daemon.py chwall/client.py
 
 .PHONY: build clean install lang package uninstall
@@ -60,7 +60,7 @@ uninstall:
 	rm -f $(datarootdir)/applications/chwall-app.desktop
 
 chwall-app.desktop: $(MO_FILES)
-	CHWALL_FAKE_INSTALL=exists python -B -m chwall.client desktop chwall-app.desktop ./locale
+	python -B -m chwall.client desktop chwall-app.desktop ./locale
 
 $(datarootdir)/icons/hicolor/%/apps/chwall.png: data/icon_%.png
 	install -d -m755 $(@:%/chwall.png=%)
