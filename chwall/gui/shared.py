@@ -4,7 +4,7 @@ import subprocess
 
 from chwall import __version__
 from chwall.daemon import notify_daemon_if_any, stop_daemon_if_any, \
-    notify_app_if_any, daemon_info
+    notify_app_if_any, daemon_info, save_change_time
 from chwall.utils import read_config
 from chwall.wallpaper import block_wallpaper, pick_wallpaper, \
     favorite_wallpaper_path, favorite_wallpaper
@@ -53,6 +53,7 @@ class ChwallGui:
     def on_change_wallpaper(self, _widget, direction=False, threaded=True):
         def change_wall_thread_target(direction):
             pick_wallpaper(self.config, direction)
+            save_change_time()
             notify_daemon_if_any()
             notify_app_if_any()
 

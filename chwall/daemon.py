@@ -28,9 +28,13 @@ class ChwallRestartTimer(Exception):
     pass
 
 
-def wait_before_change(sleep_time):
+def save_change_time():
     with open(f"{BASE_CACHE_PATH}/last_change", "w") as f:
         f.write(str(int(time.time())))
+
+
+def wait_before_change(sleep_time):
+    save_change_time()
     try:
         time.sleep(sleep_time)
     except ChwallRestartTimer:

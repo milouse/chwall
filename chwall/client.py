@@ -3,7 +3,6 @@
 import os
 import sys
 import json
-import time
 import yaml
 import pkgutil
 from importlib import import_module
@@ -12,7 +11,7 @@ from xdg.BaseDirectory import xdg_data_home
 # chwall imports
 from chwall import __version__
 from chwall.daemon import notify_daemon_if_any, stop_daemon_if_any, \
-                          daemon_info
+                          daemon_info, save_change_time
 from chwall.utils import BASE_CACHE_PATH, read_config, \
                          reset_pending_list, open_externally, \
                          ServiceFileManager
@@ -244,8 +243,7 @@ the last time the wallpaper was changed (as if it was done by the daemon).
         self._pick_wall()
         if subcmd != "savetime":
             return
-        with open(f"{BASE_CACHE_PATH}/last_change", "w") as f:
-            f.write(str(int(time.time())))
+        save_change_time()
 
     def help_previous(self):
         self._print_usage("previous")
