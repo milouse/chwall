@@ -43,7 +43,7 @@ def get_wall_config(path):
             check=True, capture_output=True, text=True
         )
     except subprocess.CalledProcessError:
-        return None
+        return
     size = size_data.stdout.split("x")
     try:
         width = int(size[0])
@@ -51,7 +51,7 @@ def get_wall_config(path):
         ratio = round(width / height, 2)
         size_t = (width, height, ratio)
     except ValueError:
-        return None
+        return
     return size_t
 
 

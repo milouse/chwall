@@ -340,7 +340,7 @@ def pick_wallpaper(config, backward=False, guard=False):
                   "caused by a temporarily network error. Please "
                   "try again later.")
             )
-            return None
+            return
         # List is empty. Maybe it was the last picture of the current list?
         # Thus, try again now. Backward is always false because at this point,
         # something went wrong and we should start over.
@@ -363,7 +363,7 @@ def pick_wallpaper(config, backward=False, guard=False):
               "caused by a temporarily network error. Please try again "
               "later.")
         )
-        return None
+        return
     if lp == "next":
         # fetch_wallpaper already clean up thing, thus only return a new
         # pick_wallpaper call.

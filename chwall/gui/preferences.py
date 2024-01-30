@@ -740,7 +740,7 @@ as it is the more classical way of doing so.
             for sibling in box.get_children():
                 if isinstance(sibling, Gtk.Label):
                     return sibling
-            return None
+            return
 
         def _start_in_thread(function, box):
             t = threading.Thread(target=function, args=[box])
