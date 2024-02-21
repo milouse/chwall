@@ -151,8 +151,8 @@ class ChwallIndicator(ChwallGui):
         self.build_main_menu()
         self.tray.set_icon_full(self.main_icon(), "Chwall Icon")
 
-    def on_change_wallpaper(self, widget, direction=False, block=False):
-        super().on_change_wallpaper(widget, direction, block)
+    def on_change_wallpaper(self, widget, backward=False, block=False):
+        super().on_change_wallpaper(widget, backward, block)
         self.build_main_menu()
 
     def on_favorite_wallpaper(self, widget):

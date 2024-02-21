@@ -219,8 +219,8 @@ later.
     def cmd_favorite(self):
         favorite_wallpaper(read_config())
 
-    def _pick_wall(self, direction=False):
-        if pick_wallpaper(read_config(), direction) is None:
+    def _pick_wall(self, backward=False):
+        if pick_wallpaper(read_config(), backward) is None:
             print(_("Unable to pick wallpaper this time. Please, try again."),
                   file=sys.stderr)
             self.cmd_quit()
