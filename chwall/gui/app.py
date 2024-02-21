@@ -192,7 +192,9 @@ class ChwallApp(ChwallGui):
         if self.is_chwall_component_started("indicator"):
             item.set_sensitive(False)
         else:
-            item.connect("activate", self.run_chwall_component, "indicator")
+            item.connect(
+                "activate", self.run_chwall_component, "indicator"
+            )
         menu.append(item)
 
         item = Gtk.MenuItem.new_with_label(_("Preferences"))

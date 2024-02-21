@@ -54,30 +54,29 @@ class ChwallGui:
     def stop_daemon(self, *args):
         stop_daemon_if_any()
 
-    def start_in_thread_if_needed(self, function, *args):
-        if self.component == "app":
-            # Coming from the app, call through an intermediate thread to
-            # avoid ugly UI freeze
-            t = threading.Thread(target=function, args=args)
-            t.daemon = True
-            t.start()
-        else:
-            # Coming from the icon, directly call the daemon to avoid
-            # system-tray icon disapearance
-            function(*args)
-
-    def on_change_wallpaper(self, _widget, direction=False, block=False):
-        def change_wall_thread_target(direction, block):
+    def on_change_wallpaper(self, _widget, backward=False, block=False):
+        def change_wall_in_thread(backward, block):
             if block:
                 block_wallpaper()
-            pick_wallpaper(self.config, direction)
+            pick_wallpaper(self.config, backward)
             save_change_time()
             notify_daemon_if_any()
             notify_app_if_any()
 
-        self.start_in_thread_if_needed(
-            change_wall_thread_target, direction, block
-        )
+        if self.component == "app":
+            # Coming from the app, call through an intermediate thread to
+            # avoid ugly UI freeze
+            t = threading.Thread(
+                target=change_wall_in_thread,
+                args=[backward, block]
+            )
+            t.daemon = True
+            t.start()
+
+        else:
+            # Coming from the icon, directly call the daemon to avoid
+            # system-tray icon disapearance
+            change_wall_in_thread(backward, block)
 
     def on_block_wallpaper(self, widget):
         self.on_change_wallpaper(widget, block=True)
@@ -96,19 +95,17 @@ class ChwallGui:
             self.sfm.remove_xdg_autostart_file(self.component)
 
     def run_chwall_component(self, _widget, component):
-        def start_daemon_from_thread():
+        if component == "daemon":
+            module_name = "chwall.daemon"
             # At the difference of the daemon itself, it's expected than a
             # service start from inside the app or the icon will immediatly
             # change the current wallpaper.
             pick_wallpaper(self.config)
             notify_app_if_any()
-            # No need to fork, daemon already do that
-            subprocess.run(["chwall-daemon"])
+        else:
+            module_name = f"chwall.gui.{component}"
 
-        if component == "daemon":
-            self.start_in_thread_if_needed(start_daemon_from_thread)
-        elif component in ["app", "icon", "indicator"]:
-            subprocess.Popen(f"chwall-{component}")
+        subprocess.Popen(["python", "-m", module_name])
 
     def is_chwall_component_started(self, component):
         retcode = subprocess.run(
