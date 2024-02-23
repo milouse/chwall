@@ -27,11 +27,12 @@ _ = gettext.gettext
 
 
 SUBCOMMAND_ALIASES = {
-    "preferences": "options",
     "current": "status",
     "info": "status",
+    "kill": "quit",
     "once": "next",
-    "kill": "quit"
+    "preferences": "options",
+    "prune": "empty"
 }
 
 
@@ -256,7 +257,7 @@ Stop the chwall daemon.
         notify_daemon_if_any("stop")
 
     def help_empty(self):
-        self._print_usage("empty")
+        self._print_usage("empty", "prune")
         print(_("""
 Empty the current pending list to force chwall to fetch a new wallpapers list
 the next time it will change.
