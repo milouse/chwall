@@ -137,13 +137,17 @@ will be saved in .config/systemd/user/
         sfm.systemd_service_file(write)
 
     def help_desktop(self):
-        self._print_usage("desktop [ write ]")
+        self._print_usage("desktop [ write | print | <filepath> ]")
         print(_("""
-Display a launcher file example for your desktop, which can be used to start
+If no parameter is given, or with ‘print’ as a parameter, this command will
+display a launcher file example for your desktop, which can be used to start
 chwall main app from your desktop applications menu.
 
-If ‘write’ is passed as second parameter, the resulting desktop file
-will be saved in .local/share/applications/
+If ‘write’ is passed as a parameter, the resulting desktop file
+will be saved in .local/share/applications/chwall-app.desktop
+
+If anything else is passed as a parameter, it will be taken as a file path and
+the resulting desktop file will be saved at this path.
 """))
 
     def cmd_desktop(self, out="print", localedir=None):
@@ -153,6 +157,7 @@ will be saved in .local/share/applications/
             )
         elif out != "print":
             out = out.strip()
+        localedir = os.getenv("CHWALL_LOCALE_DIR", None)
         if localedir is None:
             localedir = gettext.bindtextdomain("chwall")
         sfm = ServiceFileManager()

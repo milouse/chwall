@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chwall 0.7.0\n"
 "Report-Msgid-Bugs-To: bugs@depar.is\n"
-"POT-Creation-Date: 2024-02-23 09:11+0100\n"
+"POT-Creation-Date: 2024-03-15 13:44+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,12 +30,12 @@ msgid ""
 msgstr ""
 
 #: chwall/gui/app.py:69 chwall/gui/icon.py:81 chwall/gui/indicator.py:76
-#: chwall/utils.py:425
+#: chwall/utils.py:426
 msgid "Previous wallpaper"
 msgstr ""
 
 #: chwall/gui/app.py:81 chwall/gui/icon.py:74 chwall/gui/indicator.py:72
-#: chwall/utils.py:423
+#: chwall/utils.py:424
 msgid "Next wallpaper"
 msgstr ""
 
@@ -44,12 +44,12 @@ msgid "Stop daemon and erase pending list"
 msgstr ""
 
 #: chwall/gui/app.py:113 chwall/gui/icon.py:105 chwall/gui/indicator.py:94
-#: chwall/utils.py:429
+#: chwall/utils.py:430
 msgid "Put on block list"
 msgstr ""
 
 #: chwall/gui/app.py:128 chwall/gui/app.py:133 chwall/gui/icon.py:55
-#: chwall/gui/indicator.py:41 chwall/client.py:185
+#: chwall/gui/indicator.py:41 chwall/client.py:190
 msgid "Current wallpaper is not managed by Chwall"
 msgstr ""
 
@@ -59,7 +59,7 @@ msgid "Already a favorite"
 msgstr ""
 
 #: chwall/gui/app.py:142 chwall/gui/icon.py:88 chwall/gui/indicator.py:81
-#: chwall/utils.py:427
+#: chwall/utils.py:428
 msgid "Save as favorite"
 msgstr ""
 
@@ -290,7 +290,7 @@ msgstr ""
 msgid "Others"
 msgstr ""
 
-#: chwall/gui/shared.py:140 chwall/utils.py:354 chwall/utils.py:419
+#: chwall/gui/shared.py:140 chwall/utils.py:355 chwall/utils.py:420
 msgid "Wallpaper Changer"
 msgstr ""
 
@@ -302,7 +302,7 @@ msgstr ""
 msgid "Locales"
 msgstr ""
 
-#: chwall/fetcher/local.py:39 chwall/client.py:189
+#: chwall/fetcher/local.py:39 chwall/client.py:194
 msgid "Local wallpaper"
 msgstr ""
 
@@ -500,15 +500,15 @@ msgstr ""
 msgid "API secret key"
 msgstr ""
 
-#: chwall/utils.py:333
+#: chwall/utils.py:334
 msgid "Chwall Daemon"
 msgstr ""
 
-#: chwall/utils.py:334
+#: chwall/utils.py:335
 msgid "Start Chwall Daemon"
 msgstr ""
 
-#: chwall/utils.py:421
+#: chwall/utils.py:422
 msgid "Main window of the Chwall wallpaper changer"
 msgstr ""
 
@@ -710,21 +710,26 @@ msgstr ""
 #: chwall/client.py:141
 msgid ""
 "\n"
-"Display a launcher file example for your desktop, which can be used to "
+"If no parameter is given, or with ‘print’ as a parameter, this command will\n"
+"display a launcher file example for your desktop, which can be used to "
 "start\n"
 "chwall main app from your desktop applications menu.\n"
 "\n"
-"If ‘write’ is passed as second parameter, the resulting desktop file\n"
-"will be saved in .local/share/applications/\n"
+"If ‘write’ is passed as a parameter, the resulting desktop file\n"
+"will be saved in .local/share/applications/chwall-app.desktop\n"
+"\n"
+"If anything else is passed as a parameter, it will be taken as a file path "
+"and\n"
+"the resulting desktop file will be saved at this path.\n"
 msgstr ""
 
-#: chwall/client.py:163
+#: chwall/client.py:168
 msgid ""
 "\n"
 "Directly open the chwall preferences window.\n"
 msgstr ""
 
-#: chwall/client.py:175
+#: chwall/client.py:180
 msgid ""
 "\n"
 "Display the current wallpaper information.\n"
@@ -734,7 +739,7 @@ msgid ""
 "using the best dedicated tool for it (web browser, picture viewer...).\n"
 msgstr ""
 
-#: chwall/client.py:203
+#: chwall/client.py:208
 msgid ""
 "\n"
 "Add the current wallpaper on the block list to avoid it to be shown ever "
@@ -742,18 +747,18 @@ msgid ""
 "and switch to the next wallpaper.\n"
 msgstr ""
 
-#: chwall/client.py:214
+#: chwall/client.py:219
 msgid ""
 "\n"
 "Save a copy of the current wallpaper to not forget it and display it again\n"
 "later.\n"
 msgstr ""
 
-#: chwall/client.py:224
+#: chwall/client.py:229
 msgid "Unable to pick wallpaper this time. Please, try again."
 msgstr ""
 
-#: chwall/client.py:231
+#: chwall/client.py:236
 msgid ""
 "\n"
 "Switch to the next wallpaper.\n"
@@ -763,19 +768,19 @@ msgid ""
 "the wallpaper.\n"
 msgstr ""
 
-#: chwall/client.py:243
+#: chwall/client.py:248
 msgid ""
 "\n"
 "Switch to the previous wallpaper.\n"
 msgstr ""
 
-#: chwall/client.py:252
+#: chwall/client.py:257
 msgid ""
 "\n"
 "Stop the chwall daemon.\n"
 msgstr ""
 
-#: chwall/client.py:261
+#: chwall/client.py:266
 msgid ""
 "\n"
 "Empty the current pending list to force chwall to fetch a new wallpapers "
@@ -783,11 +788,11 @@ msgid ""
 "the next time it will change.\n"
 msgstr ""
 
-#: chwall/client.py:272
+#: chwall/client.py:277
 msgid "No roadmap has been created yet"
 msgstr ""
 
-#: chwall/client.py:281
+#: chwall/client.py:286
 msgid ""
 "\n"
 "Display the last displayed wallpapers. The most recent one is at the "
@@ -796,7 +801,7 @@ msgid ""
 "This command display only the upstream url of each wallpaper.\n"
 msgstr ""
 
-#: chwall/client.py:293
+#: chwall/client.py:298
 msgid ""
 "\n"
 "Display the next wallpapers, which will be shown in the future. The next one "

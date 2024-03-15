@@ -32,7 +32,8 @@ class TestLocalDesktopFiles(TestCase):
         with open("tests/proofs/local-app-desktop", "r") as f:
             result = f.read().format(path=os.getcwd())
         try:
-            ChwallClient(["desktop", "print", "./locale"])
+            os.environ["CHWALL_LOCALE_DIR"] = "./locale"
+            ChwallClient(["desktop"])
         except SystemExit:
             pass
         self.assertEqual(mock_stdout.getvalue(), result)

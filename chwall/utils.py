@@ -184,7 +184,8 @@ def get_binary_path(component, target_type="systemd", arguments=""):
         comp = f"/usr/bin/chwall-{component}"
         module = f"chwall.gui.{component}"
     # Is it an installed version?
-    if os.path.exists(comp):
+    force_native_path = os.getenv("CHWALL_NATIVE_PATH", None)
+    if os.path.exists(comp) or force_native_path:
         if arguments != "":
             comp += " " + arguments
         return comp
