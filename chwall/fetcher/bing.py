@@ -1,5 +1,5 @@
 import re
-import requests
+from chwall.fetcher import requests_get
 
 import gettext
 # Uncomment the following line during development.
@@ -20,7 +20,7 @@ def fetch_pictures(config):
     url = "https://www.bing.com/HPImageArchive.aspx?format=js&n=8&mkt={}"
     for lang in i18n_src:
         lang_url = "{}[0-9]{{10}}".format(lang.upper())
-        data = requests.get(url.format(lang)).json()
+        data = requests_get(url.format(lang)).json()
         for p in data["images"]:
             ad = re.sub(lang_url, "", p["url"])
             if ad in already_done:

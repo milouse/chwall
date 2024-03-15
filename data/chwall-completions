@@ -9,7 +9,7 @@ function _chwall() {
             commands=open
             ;;
         *)
-            commands="block current empty favorite help history info kill next once previous pending quit status"
+            commands="block current empty favorite help history info kill next once options pending preferences previous prune quit status"
             ;;
     esac
 

@@ -1,5 +1,4 @@
-import requests
-
+from chwall.fetcher import requests_get
 from chwall.utils import get_logger
 
 import gettext
@@ -25,17 +24,18 @@ def fetch_pictures(config):
     params = {"per_page": px_conf.get("count", 10)}
     if "query" in px_conf:
         params["query"] = px_conf["query"]
+        params["orientation"] = "landscape"
         url = "https://api.pexels.com/v1/search"
     else:
         url = "https://api.pexels.com/v1/curated"
     pictures = {}
-    data = requests.get(
+    data = requests_get(
         url,
         params=params,
         headers={"Authorization": client_id}
     ).json()
     for p in data["photos"]:
-        px = p["src"]["original"] + "?auto=compress&width={}".format(width)
+        px = p["src"]["original"] + f"?auto=compress&width={width}"
         pictures[px] = {
             "image": px,
             "author": p["photographer"],
@@ -53,17 +53,20 @@ def preferences():
                 "widget": "number",
                 "default": 1600
             },
+            "orientation": {
+                "widget": "select",
+                "values": [
+                    ("landscape", _("Landscape")),
+                    ("portrait", _("Portrait")),
+                    ("square", _("Square"))
+                ],
+                "default": "landscape"
+            },
             "count": {
                 "widget": "number",
                 "default": 10
             },
-            "access_key": {
-                "widget": "text",
-                "label": _("API access key")
-            },
-            "query": {
-                "widget": "text",
-                "label": _("Search query")
-            }
+            "access_key": {"widget": "text"},
+            "query": {"widget": "text"}
         }
     }

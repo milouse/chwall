@@ -1,6 +1,6 @@
 [Desktop Entry]
-Name=TEST ICON
-Comment=TEST DESC
+Name=Chwall
+Comment=Wallpaper Changer
 Exec=python -m chwall.gui.icon
 Path={path}
 Icon=chwall

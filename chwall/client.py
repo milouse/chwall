@@ -2,19 +2,20 @@
 
 import os
 import sys
+import json
 import yaml
+import pkgutil
+from importlib import import_module
 from xdg.BaseDirectory import xdg_data_home
 
 # chwall imports
 from chwall import __version__
-from chwall.daemon import notify_daemon_if_any, stop_daemon_if_any, \
-                          daemon_info, daemonize
+from chwall.daemon import notify_daemon_if_any, daemon_info
 from chwall.utils import BASE_CACHE_PATH, read_config, \
                          reset_pending_list, open_externally, \
                          ServiceFileManager
 from chwall.wallpaper import block_wallpaper, pick_wallpaper, \
                              favorite_wallpaper, current_wallpaper_info
-from chwall.gui.app import generate_desktop_file
 from chwall.gui.preferences import PrefDialog
 
 import gettext
@@ -26,11 +27,12 @@ _ = gettext.gettext
 
 
 SUBCOMMAND_ALIASES = {
-    "preferences": "options",
     "current": "status",
     "info": "status",
+    "kill": "quit",
     "once": "next",
-    "kill": "quit"
+    "preferences": "options",
+    "prune": "empty"
 }
 
 
@@ -44,14 +46,14 @@ class ChwallClient:
 
     def _parse_argv(self):
         action = None
-        opts = []
+        args = []
         for a in self.argv:
             arg = a.lower()
             if arg in ["help", "--help", "-h"]:
                 if action == "help":
                     continue
                 if action is not None:
-                    opts.insert(0, action)
+                    args.insert(0, action)
                 action = "help"
                 continue
             elif arg in ["version", "--version", "-v"]:
@@ -59,29 +61,29 @@ class ChwallClient:
             if action is None:
                 action = arg
             else:
-                opts.append(arg)
-        return action, opts
+                args.append(arg)
+        return action, args
 
     def _run(self):
-        action, opts = self._parse_argv()
+        action, args = self._parse_argv()
         if action is None:
             return False
         action = SUBCOMMAND_ALIASES.get(action, action)
         if action == "help":
-            if len(opts) == 0:
+            if len(args) == 0:
                 self.cmd_help()
                 return True
-            subcmd = SUBCOMMAND_ALIASES.get(opts[0], opts[0])
-            action = getattr(self, "help_{}".format(subcmd), None)
+            subcmd = SUBCOMMAND_ALIASES.get(args[0], args[0])
+            action = getattr(self, f"help_{subcmd}", None)
             if action is None:
                 self.help_generic(subcmd)
                 return True
-            opts = []
+            args = []
         else:
-            action = getattr(self, "cmd_{}".format(action), None)
+            action = getattr(self, f"cmd_{action}", None)
             if action is None:
                 return False
-        action(*opts)
+        action(*args)
         # By default, return success. It's up to each method to exit with error
         # sooner when something goes wrong
         return True
@@ -153,7 +155,8 @@ will be saved in .local/share/applications/
             out = out.strip()
         if localedir is None:
             localedir = gettext.bindtextdomain("chwall")
-        generate_desktop_file(localedir, out)
+        sfm = ServiceFileManager()
+        sfm.generate_desktop_file(localedir, out)
 
     def help_options(self):
         self._print_usage("options", "preferences")
@@ -165,21 +168,6 @@ Directly open the chwall preferences window.
         prefwin = PrefDialog(None, 0)
         prefwin.run()
         prefwin.destroy()
-
-    def help_detach(self):
-        self._print_usage("detach [ app | icon ]")
-        print(_("""
-Detach from terminal and start either the main app or the system tray icon.
-
-By default, this command will start the main app if no argument is given.
-"""))
-
-    def cmd_detach(self, program="app"):
-        if program not in ["app", "icon"]:
-            sys.exit(1)
-        daemonize()
-        cmd = "chwall-{}".format(program)
-        os.execl("/usr/bin/{}".format(cmd), cmd)
 
     def help_status(self):
         self._print_usage("status [ open ]", "current [ open ]",
@@ -231,13 +219,12 @@ later.
     def cmd_favorite(self):
         favorite_wallpaper(read_config())
 
-    def _pick_wall(self, direction=False):
-        if pick_wallpaper(read_config(), direction) is None:
+    def _pick_wall(self, backward=False, notify_term="notify"):
+        if pick_wallpaper(read_config(), backward) is None:
             print(_("Unable to pick wallpaper this time. Please, try again."),
                   file=sys.stderr)
-            self.cmd_quit()
-        else:
-            notify_daemon_if_any()
+            return
+        notify_daemon_if_any(notify_term)
 
     def help_next(self):
         self._print_usage("next", "once")
@@ -248,8 +235,8 @@ This command may be used, even if the daemon is not started to manually change
 the wallpaper.
 """))
 
-    def cmd_next(self):
-        self._pick_wall()
+    def cmd_next(self, subcmd="notify"):
+        self._pick_wall(notify_term=subcmd)
 
     def help_previous(self):
         self._print_usage("previous")
@@ -267,10 +254,10 @@ Stop the chwall daemon.
 """))
 
     def cmd_quit(self):
-        stop_daemon_if_any()
+        notify_daemon_if_any("stop")
 
     def help_empty(self):
-        self._print_usage("empty")
+        self._print_usage("empty", "prune")
         print(_("""
 Empty the current pending list to force chwall to fetch a new wallpapers list
 the next time it will change.
@@ -280,7 +267,7 @@ the next time it will change.
         reset_pending_list()
 
     def _road_map(self):
-        road_map = "{}/roadmap".format(BASE_CACHE_PATH)
+        road_map = f"{BASE_CACHE_PATH}/roadmap"
         if not os.path.exists(road_map):
             print(_("No roadmap has been created yet"), file=sys.stderr)
             sys.exit(1)
@@ -313,6 +300,35 @@ This command display only the upstream url of each wallpaper.
     def cmd_pending(self):
         data = self._road_map()
         print("\n".join(data["pictures"]))
+
+    def cmd_fetcher(self, *subcmd):
+        subcmd = list(subcmd)
+        if len(subcmd) == 0:
+            fetcher = "_list_"
+        else:
+            fetcher = subcmd.pop(0)
+        fetcher_package = import_module("chwall.fetcher")
+        fp_source = fetcher_package.__path__
+        fetchers_list = []
+        for fd in pkgutil.iter_modules(fp_source):
+            fetcher_mod = import_module(f"chwall.fetcher.{fd.name}")
+            if "preferences" not in dir(fetcher_mod):
+                continue
+            fetchers_list.append(fd.name)
+        if fetcher == "_list_" or fetcher not in fetchers_list:
+            for name in fetchers_list:
+                print(name)
+            return
+        fetcher_mod = import_module(f"chwall.fetcher.{fetcher}")
+        if len(subcmd) == 0:
+            print(json.dumps(fetcher_mod.preferences()))
+            return
+        # Last args must be the json configuration for the fetcher.
+        # Simplify the user work by wrapping ourselve the given data into a
+        # named dictionary
+        config = {fetcher: json.loads(subcmd[0])}
+        results = fetcher_mod.fetch_pictures(config)
+        print(json.dumps(results))
 
 
 if __name__ == "__main__":

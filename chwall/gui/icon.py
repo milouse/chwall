@@ -1,14 +1,12 @@
 #!/usr/bin/env python3
 
-import subprocess
-
 from chwall.gui.shared import ChwallGui
 from chwall.wallpaper import current_wallpaper_info
-from chwall.utils import ServiceFileManager, open_externally
+from chwall.utils import open_externally
 
 import gi
 gi.require_version("Gtk", "3.0")
-from gi.repository import Gtk, GLib  # noqa: E402
+from gi.repository import Gtk  # noqa: E402
 
 import gettext  # noqa: E402
 # Uncomment the following line during development.
@@ -21,26 +19,15 @@ _ = gettext.gettext
 class ChwallIcon(ChwallGui):
     def __init__(self):
         super().__init__()
-        self.tray = Gtk.StatusIcon()
-        self.load_main_icon()
-        self.tray.set_tooltip_text("Chwall")
-        self.tray.connect("popup-menu", self.display_menu)
-        self.sfm = ServiceFileManager()
-        self.must_autostart = self.sfm.xdg_autostart_file_exists("icon")
+        self.component = "icon"
+        self.init_service_file_manager()
+        tray = Gtk.StatusIcon()
+        tray.set_from_icon_name(self.main_icon())
+        tray.set_tooltip_text("Chwall")
+        tray.connect("popup-menu", self.display_menu)
+        self.start()
 
-    def load_main_icon(self):
-        mono_icon = self.config["general"].get("mono_icon", False)
-        if mono_icon:
-            icon_name = "chwall_mono"
-        else:
-            icon_name = "chwall"
-        self.tray.set_from_icon_name(icon_name)
-
-    def show_preferences_dialog(self, widget):
-        super().show_preferences_dialog(widget)
-        self.load_main_icon()
-
-    def display_menu(self, _icon, event_button, event_time):
+    def display_menu(self, icon, event_button, event_time):
         self.reload_config()
         dinfo = self.daemon_info()
         daemon_state_label = dinfo["daemon-state-label"]
@@ -133,16 +120,16 @@ class ChwallIcon(ChwallGui):
         asbtn = Gtk.CheckMenuItem.new_with_label(_("Always display this icon"))
         asbtn.set_active(self.must_autostart)
         menu.append(asbtn)
-        asbtn.connect("toggled", self.toggle_must_autostart)
+        asbtn.connect("toggled", self.on_toggle_must_autostart)
 
         prefs = Gtk.ImageMenuItem.new_from_stock(Gtk.STOCK_PREFERENCES)
-        prefs.connect("activate", self.show_preferences_dialog)
+        prefs.connect("activate", self.show_preferences_dialog, icon)
         menu.append(prefs)
 
         # report a bug
         reportbug = Gtk.MenuItem.new_with_label(_("Report a bug"))
         menu.append(reportbug)
-        reportbug.connect("activate", self.report_a_bug)
+        reportbug.connect("activate", self.show_report_a_bug)
 
         # show about dialog
         about = Gtk.ImageMenuItem.new_from_stock(Gtk.STOCK_ABOUT)
@@ -157,32 +144,14 @@ class ChwallIcon(ChwallGui):
 
         menu.show_all()
         menu.popup(None, None, Gtk.StatusIcon.position_menu,
-                   self.tray, event_button, event_time)
+                   icon, event_button, event_time)
 
-    def toggle_must_autostart(self, widget):
-        self.must_autostart = widget.get_active()
-        if self.must_autostart:
-            self.sfm.xdg_autostart_file(
-                "icon", "Chwall", _("Wallpaper Changer"), True
-            )
-        else:
-            self.sfm.remove_xdg_autostart_file("icon")
-
-    def report_a_bug(self, widget):
-        subprocess.Popen(
-            ["gio", "open",
-             "https://framagit.org/milouse/chwall/issues"])
-
-
-def start_icon():
-    # Install signal handlers
-    # SIGTERM = 15
-    # SIGINT = 2
-    GLib.unix_signal_add(GLib.PRIORITY_DEFAULT, 15, Gtk.main_quit, None)
-    GLib.unix_signal_add(GLib.PRIORITY_DEFAULT, 2, Gtk.main_quit, None)
-    ChwallIcon()
-    Gtk.main()
+    def show_preferences_dialog(self, widget, app=None):
+        super().show_preferences_dialog(widget, None)
+        if not app or not isinstance(app, Gtk.StatusIcon):
+            return  # Should never happen, just to make pyright happy
+        app.set_from_icon_name(self.main_icon())
 
 
 if __name__ == "__main__":
-    start_icon()
+    ChwallIcon()

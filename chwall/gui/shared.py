@@ -3,16 +3,15 @@ import threading
 import subprocess
 
 from chwall import __version__
-from chwall.daemon import notify_daemon_if_any, stop_daemon_if_any, \
-    notify_app_if_any, daemon_info
-from chwall.utils import read_config
+from chwall.daemon import notify_daemon_if_any, notify_app_if_any, daemon_info
+from chwall.utils import ServiceFileManager, read_config
 from chwall.wallpaper import block_wallpaper, pick_wallpaper, \
-    favorite_wallpaper_path, favorite_wallpaper
+                             favorite_wallpaper_path, favorite_wallpaper
 from chwall.gui.preferences import PrefDialog
 
 import gi
 gi.require_version("Gtk", "3.0")
-from gi.repository import Gtk  # noqa: E402
+from gi.repository import GLib, Gtk  # noqa: E402
 
 import gettext  # noqa: E402
 # Uncomment the following line during development.
@@ -24,71 +23,91 @@ _ = gettext.gettext
 
 class ChwallGui:
     def __init__(self):
-        self.app = None
+        self.sfm = None
+        self.component = None
+        self.must_autostart = False
         self.current_is_favorite = False
         self.reload_config()
 
+    def init_service_file_manager(self):
+        if not self.component:
+            return
+        self.sfm = ServiceFileManager()
+        self.must_autostart = self.sfm.xdg_autostart_file_exists(
+            self.component
+        )
+
     def reload_config(self):
         self.config = read_config()
+
+    def main_icon(self):
+        mono_icon = self.config["general"].get("mono_icon", False)
+        if mono_icon:
+            return "chwall_mono"
+        return "chwall"
 
     def daemon_info(self):
         return daemon_info()
 
     # May be called from as a widget action, hence the variable arguments list
-    def stop_daemon(self, *opts):
-        stop_daemon_if_any()
+    def stop_daemon(self, *args):
+        notify_daemon_if_any("stop")
 
-    def start_in_thread_if_needed(self, function, *args):
-        if self.app is None:
-            # Coming from the icon, directly call the daemon to avoid
-            # system-tray icon disapearance
-            function(*args)
-        else:
-            # Coming from the app, call through an intermediate thread to
-            # avoid ugly UI freeze
-            t = threading.Thread(target=function, args=args)
-            t.daemon = True
-            t.start()
-
-    def on_change_wallpaper(self, _widget, direction=False, threaded=True):
-        def change_wall_thread_target(direction):
-            pick_wallpaper(self.config, direction)
+    def on_change_wallpaper(self, _widget, backward=False, block=False):
+        def change_wall_in_thread(backward, block):
+            if block:
+                block_wallpaper()
+            pick_wallpaper(self.config, backward)
             notify_daemon_if_any()
             notify_app_if_any()
 
-        if not threaded:
-            change_wall_thread_target(direction)
-        else:
-            self.start_in_thread_if_needed(change_wall_thread_target, direction)  # noqa
+        if self.component == "app":
+            # Coming from the app, call through an intermediate thread to
+            # avoid ugly UI freeze
+            t = threading.Thread(
+                target=change_wall_in_thread,
+                args=[backward, block]
+            )
+            t.daemon = True
+            t.start()
 
-    def on_block_wallpaper(self, _widget):
-        def block_wall_thread_target():
-            block_wallpaper()
-            self.on_change_wallpaper(None, threaded=False)
-        self.start_in_thread_if_needed(block_wall_thread_target)
+        else:
+            # Coming from the icon, directly call the daemon to avoid
+            # system-tray icon disapearance
+            change_wall_in_thread(backward, block)
+
+    def on_block_wallpaper(self, widget):
+        self.on_change_wallpaper(widget, block=True)
 
     def on_favorite_wallpaper(self, _widget):
         if favorite_wallpaper(self.config):
             self.current_is_favorite = True
 
+    def on_toggle_must_autostart(self, widget):
+        if not self.sfm or not self.component:
+            return
+        self.must_autostart = widget.get_active()
+        if self.must_autostart:
+            self.sfm.xdg_autostart_file(self.component, True)
+        else:
+            self.sfm.remove_xdg_autostart_file(self.component)
+
     def run_chwall_component(self, _widget, component):
-        def start_daemon_from_thread():
+        if component == "daemon":
+            module_name = "chwall.daemon"
             # At the difference of the daemon itself, it's expected than a
             # service start from inside the app or the icon will immediatly
             # change the current wallpaper.
             pick_wallpaper(self.config)
             notify_app_if_any()
-            # No need to fork, daemon already do that
-            subprocess.run(["chwall-daemon"])
-
-        if component == "daemon":
-            self.start_in_thread_if_needed(start_daemon_from_thread)
         else:
-            subprocess.run(["chwall", "detach", component])
+            module_name = f"chwall.gui.{component}"
+
+        subprocess.Popen(["python", "-m", module_name])
 
     def is_chwall_component_started(self, component):
         retcode = subprocess.run(
-            ["pgrep", "-f", "chwall.+{}".format(component)],
+            ["pgrep", "-f", f"chwall.+{component}"],
             stdout=subprocess.DEVNULL).returncode
         return retcode == 0
 
@@ -99,18 +118,19 @@ class ChwallGui:
         self.current_is_favorite = os.path.exists(fav_path)
         return self.current_is_favorite
 
-    def show_preferences_dialog(self, widget):
-        if self.app is None:
-            flags = 0
-        else:
+    def show_preferences_dialog(self, _widget, app=None):
+        if isinstance(app, Gtk.Window):
             # flags 3 = MODAL | DESTROY_WITH_PARENT
             flags = 3
-        prefwin = PrefDialog(self.app, flags)
+        else:
+            flags = 0
+            app = None  # Mute it
+        prefwin = PrefDialog(app, flags)
         prefwin.run()
         prefwin.destroy()
         self.reload_config()
 
-    def show_about_dialog(self, widget):
+    def show_about_dialog(self, _widget):
         about_dialog = Gtk.AboutDialog()
         about_dialog.set_destroy_with_parent(True)
         about_dialog.set_icon_name("chwall")
@@ -140,6 +160,19 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
         # about_dialog.set_translator_credits(_("translator-credits"))
         about_dialog.run()
         about_dialog.destroy()
+
+    def show_report_a_bug(self, _widget):
+        subprocess.Popen(
+            ["gio", "open",
+             "https://framagit.org/milouse/chwall/issues"])
+
+    def start(self):
+        # Install signal handlers
+        # SIGTERM = 15
+        # SIGINT = 2
+        GLib.unix_signal_add(GLib.PRIORITY_DEFAULT, 15, Gtk.main_quit, None)
+        GLib.unix_signal_add(GLib.PRIORITY_DEFAULT, 2, Gtk.main_quit, None)
+        Gtk.main()
 
     def kthxbye(self, *args):
         Gtk.main_quit()

@@ -1,6 +1,6 @@
 import os
-import requests
 
+from chwall.fetcher import requests_get
 from chwall.utils import get_logger
 
 import gettext
@@ -30,10 +30,11 @@ def fetch_pictures(config):
         )
         return {}
     locale = wa_conf.get("locale", "en")
-    base_uri = "https://www.wikiart.org/{}/Api/2/".format(locale)
-    log_data = requests.get("{}login".format(base_uri),
-                            params={"accessCode": access_key,
-                                    "secretCode": secret_key}).json()
+    base_uri = f"https://www.wikiart.org/{locale}/Api/2/"
+    log_data = requests_get(
+        f"{base_uri}login",
+        params={"accessCode": access_key, "secretCode": secret_key}
+    ).json()
     session_key = log_data.get("SessionKey")
     if session_key is None:
         logger.error(
@@ -50,8 +51,7 @@ def fetch_pictures(config):
     if query is not None and query != "":
         endpoint = "PaintingSearch"
         payload["term"] = query
-    data = requests.get("{}{}".format(base_uri, endpoint),
-                        params=payload).json()
+    data = requests_get(f"{base_uri}{endpoint}", params=payload).json()
     pictures = {}
     for pic in data["data"]:
         url = pic["image"]
@@ -74,10 +74,7 @@ def preferences():
     return {
         "name": "Wikiart",
         "options": {
-            "access_key": {
-                "widget": "text",
-                "label": _("API access key")
-            },
+            "access_key": {"widget": "text"},
             "secret_key": {
                 "widget": "text",
                 "label": _("API secret key")
@@ -98,9 +95,6 @@ def preferences():
                 "default": "en",
                 "label": _("Locales")
             },
-            "query": {
-                "widget": "text",
-                "label": _("Search query")
-            }
+            "query": {"widget": "text"}
         }
     }

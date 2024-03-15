@@ -26,8 +26,11 @@ _chwall () {
             "kill:Stop current running daemon, if any"
             "next:Switch to next wallpaper"
             "once:Just set one wallpaper"
-            "previous:Switch to previous wallpaper"
+            "options:Directly open the chwall preferences window"
             "pending:Display the upcoming wallpapers"
+            "preferences:Directly open the chwall preferences window"
+            "previous:Switch to previous wallpaper"
+            "prune:Empty the current pending list to force its rebuild"
             "quit:Stop current running daemon, if any"
             "status:Display information about the current wallpaper"
         )

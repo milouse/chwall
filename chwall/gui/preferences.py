@@ -1,13 +1,16 @@
+import os
 import pkgutil
+import threading
 from importlib import import_module
 
 from chwall.utils import read_config, write_config, reset_pending_list, \
-                         count_broken_pictures_in_cache, cleanup_cache, \
-                         compute_cache_size, ServiceFileManager
+                         is_broken_picture, ServiceFileManager, \
+                         BASE_CACHE_PATH
 
 import gi
+gi.require_version("Gdk", "3.0")
 gi.require_version("Gtk", "3.0")
-from gi.repository import Gtk  # noqa: E402
+from gi.repository import Gdk, Gtk  # noqa: E402
 
 import gettext  # noqa: E402
 # Uncomment the following line during development.
@@ -15,6 +18,44 @@ import gettext  # noqa: E402
 # gettext.bindtextdomain("chwall", "./locale")
 gettext.textdomain("chwall")
 _ = gettext.gettext
+
+
+def compute_cache_size():
+    pic_cache = f"{BASE_CACHE_PATH}/pictures"
+    if not os.path.exists(pic_cache):
+        return 0
+    cache_total = 0
+    for pic in os.scandir(pic_cache):
+        cache_total += pic.stat().st_size
+    cache_total = cache_total / 1000
+    if cache_total > 1000000:
+        return "{} Go".format(str(round(cache_total/1000000, 2)))
+    elif cache_total > 1000:
+        return "{} Mo".format(str(round(cache_total/1000, 2)))
+    return "{} ko".format(str(round(cache_total, 2)))
+
+
+def count_broken_pictures_in_cache():
+    pic_cache = f"{BASE_CACHE_PATH}/pictures"
+    if not os.path.exists(pic_cache):
+        return 0
+    broken_files = 0
+    for pic in os.scandir(pic_cache):
+        if pic.stat().st_size == 0 or is_broken_picture(pic):
+            broken_files += 1
+    return broken_files
+
+
+def cleanup_cache(clear_all=False):
+    pic_cache = f"{BASE_CACHE_PATH}/pictures"
+    if not os.path.exists(pic_cache):
+        return 0
+    deleted = 0
+    for pic in os.scandir(pic_cache):
+        if clear_all or pic.stat().st_size == 0 or is_broken_picture(pic):
+            os.unlink(pic.path)
+            deleted += 1
+    return deleted
 
 
 def do_for_widget_by_name(name, callback, parent):
@@ -71,7 +112,11 @@ class ConfigWrapper:
         def _browse_and_write_config_opt(config, path, opt, value):
             if path == "":
                 # Last element, we can directly put opt in config
-                config[opt] = value
+                if value is None:
+                    # Remove value
+                    config.pop(opt, None)
+                else:
+                    config[opt] = value
                 return config
             pe = path.split(".")
             p = pe.pop(0)
@@ -138,7 +183,7 @@ class PrefDialog(Gtk.Dialog):
         sourceprefbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         sourceprefbox.set_spacing(10)
         fprefs = fetcher.preferences()
-        prefbox = self.make_fetcher_toggle_pref(fetcher_name, fprefs)
+        prefbox = self.make_fetcher_toggle_pref(fetcher_name)
         sourceprefbox.pack_start(prefbox, False, False, 0)
         if "options" not in fprefs:
             self.make_source_frame(fetcher_name, fprefs, sourceprefbox)
@@ -155,6 +200,10 @@ class PrefDialog(Gtk.Dialog):
                 return _("Number of item to retrieve")
             elif default == "collections":
                 return _("Collections")
+            elif default == "access_key":
+                return _("API access key")
+            elif default == "query":
+                return _("Search query")
             return default.capitalize()
 
         for opt in fprefs["options"]:
@@ -189,6 +238,9 @@ class PrefDialog(Gtk.Dialog):
             elif options["widget"] == "toggle":
                 prefbox = self.make_toggle_pref(
                     fetcher_name, opt, label, default=defval)
+            elif options["widget"] == "color":
+                prefbox = self.make_color_pref(
+                    fetcher_name, opt, label, default=defval)
             if prefbox is not None:
                 sourceprefbox.pack_start(prefbox, False, False, 0)
         self.make_source_frame(fetcher_name, fprefs, sourceprefbox)
@@ -204,7 +256,7 @@ class PrefDialog(Gtk.Dialog):
         frame.add(sourceprefbox)
         self.sources_stack.add_titled(frame, fetcher_name, cap_name)
 
-    def make_fetcher_toggle_pref(self, fetcher, fprefs):
+    def make_fetcher_toggle_pref(self, fetcher):
         prefbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         label = Gtk.Label()
         label.set_text(_("Enable"))
@@ -212,7 +264,7 @@ class PrefDialog(Gtk.Dialog):
         button = Gtk.Switch()
         button.set_active(fetcher in self.config["general"]["sources"])
 
-        def on_toggle_fetcher_set(widget, state, fetcher):
+        def on_toggle_fetcher_set(_widget, state, fetcher):
             if state and fetcher not in self.config["general"]["sources"]:
                 self.config["general"]["sources"].append(fetcher)
                 self.config.write()
@@ -239,11 +291,48 @@ class PrefDialog(Gtk.Dialog):
         if current_value is not None:
             button.set_active(current_value)
 
-        def on_toggle_state_set(widget, state):
+        def on_toggle_state_set(_widget, state):
             self.config.write_config_opt(path, opt, state)
 
         button.connect("state-set", on_toggle_state_set)
         prefbox.pack_end(button, False, False, 10)
+        return prefbox
+
+    def make_color_pref(self, path, opt, label, **kwargs):
+        default = kwargs.get("default")
+        prefbox = self.make_prefbox_with_label(label)
+
+        color_button = Gtk.ColorButton()
+        prefbox.pack_end(color_button, False, False, 10)
+
+        remove_color = Gtk.Switch()
+        prefbox.pack_end(remove_color, False, False, 10)
+
+        current_value = self.config.read_config_opt(path, opt, default)
+        if current_value is None:
+            remove_color.set_active(False)
+            color_button.set_sensitive(False)
+        else:
+            remove_color.set_active(True)
+            color = Gdk.RGBA()
+            color.parse(current_value)
+            color_button.set_rgba(color)
+            color_button.set_sensitive(True)
+
+        def on_color_set(widget):
+            color = widget.get_rgba().to_string()
+            self.config.write_config_opt(path, opt, color)
+
+        def on_remove_color(_widget, state):
+            if state:
+                on_color_set(color_button)
+            else:
+                self.config.write_config_opt(path, opt, None)
+            color_button.set_sensitive(state)
+
+        color_button.connect("color-set", on_color_set)
+        remove_color.connect("state-set", on_remove_color)
+
         return prefbox
 
     def make_select_pref(self, path, opt, label, values, **kwargs):
@@ -328,7 +417,7 @@ class PrefDialog(Gtk.Dialog):
             for val in self.config[path][opt]:
                 liststore.append([val])
         elif defaults is not None:
-            if type(defaults).__name__ != "list":
+            if not isinstance(defaults, list):
                 liststore.append([defaults])
             else:
                 for val in defaults:
@@ -350,7 +439,7 @@ class PrefDialog(Gtk.Dialog):
                 del self.config[path][opt]
             self.config.write()
 
-        def on_cell_edited(widget, storepath, text):
+        def on_cell_edited(_widget, storepath, text):
             if text.strip() != "":
                 liststore[storepath][0] = text
             elif len(liststore) > 1:
@@ -411,13 +500,13 @@ class PrefDialog(Gtk.Dialog):
         prefbox.pack_end(listbox, True, True, 0)
         return prefbox
 
-    def make_button_row(self, label, button_label, action, style=None, *opts):
+    def make_button_row(self, label, button_label, action, style=None, *args):
         prefbox = self.make_prefbox_with_label(label)
         button = Gtk.Button()
         button.set_label(button_label)
         if style is not None:
             button.get_style_context().add_class(style)
-        button.connect("clicked", action, *opts)
+        button.connect("clicked", action, *args)
         prefbox.pack_end(button, False, False, 10)
         return prefbox
 
@@ -444,7 +533,7 @@ class PrefDialog(Gtk.Dialog):
         fetcher_package = import_module("chwall.fetcher")
         fp_source = fetcher_package.__path__
         for fd in pkgutil.iter_modules(fp_source):
-            fetcher = import_module("chwall.fetcher.{}".format(fd.name))
+            fetcher = import_module(f"chwall.fetcher.{fd.name}")
             if "preferences" not in dir(fetcher):
                 continue
             self.add_source_panel(fd.name, fetcher)
@@ -477,7 +566,9 @@ class PrefDialog(Gtk.Dialog):
         genbox.pack_start(prefbox, False, False, 0)
 
         environments = [("gnome", "Gnome, Pantheon, Budgie, …"),
-                        ("mate", "Mate"), ("xfce", "XFCE"),
+                        ("mate", "Mate"),
+                        ("xfce", "XFCE"),
+                        ("sway", "Sway"),
                         ("feh", _("Use Feh application"))]
         prefbox = self.make_select_pref(
             "general", "desktop", _("Desktop environment"),
@@ -523,12 +614,9 @@ as it is the more classical way of doing so.
         button = Gtk.Switch()
         button.set_active(self.sfm.xdg_autostart_file_exists())
 
-        def on_toggle_classic_set(widget, state):
+        def on_toggle_classic_set(_widget, state):
             if state:
-                self.sfm.xdg_autostart_file(
-                    "daemon", _("Chwall daemon"),
-                    _("Start Chwall daemon"), True
-                )
+                self.sfm.xdg_autostart_file("daemon", True)
             else:
                 self.sfm.remove_xdg_autostart_file()
             do_for_widget_by_name(
@@ -582,7 +670,7 @@ as it is the more classical way of doing so.
             enable_systemd_btn = Gtk.Switch()
             enable_systemd_btn.set_active(service_enabled)
 
-            def on_toggle_systemd_state(widget, state):
+            def on_toggle_systemd_state(_widget, state):
                 self.sfm.systemd_service_toggle(state)
                 classic_daemon_box.set_sensitive(not state)
 
@@ -626,17 +714,17 @@ as it is the more classical way of doing so.
         cachebox.pack_start(prefbox, False, False, 0)
 
         def on_cleanup_cache(widget, update_label, clear_all=False):
-            deleted = cleanup_cache(clear_all)
-            if deleted == 0:
+            number = cleanup_cache(clear_all)
+            if number == 0:
                 return
 
             message = gettext.ngettext(
-                "{number} cache entry has been removed.",
-                "{number} cache entries have been removed.",
-                deleted
-            ).format(number=deleted)
+                f"{number} cache entry has been removed.",
+                f"{number} cache entries have been removed.",
+                number
+            )
 
-            widget.get_parent().foreach(update_label)
+            update_label(widget.get_parent())
 
             # flags 3 = MODAL | DESTROY_WITH_PARENT
             dialog = Gtk.MessageDialog(
@@ -648,24 +736,36 @@ as it is the more classical way of doing so.
             dialog.run()
             dialog.destroy()
 
-        broken_files = count_broken_pictures_in_cache()
+        def _label_for_box(box):
+            for sibling in box.get_children():
+                if isinstance(sibling, Gtk.Label):
+                    return sibling
+            return
 
-        label = gettext.ngettext(
-                "{number} broken picture currently in cache",
-                "{number} broken pictures currently in cache",
-                broken_files
-        ).format(number=broken_files)
+        def _start_in_thread(function, box):
+            t = threading.Thread(target=function, args=[box])
+            t.daemon = True
+            t.start()
 
-        def _update_broken_label(sibling):
-            if isinstance(sibling, Gtk.Label):
-                sibling.set_label(
-                    gettext.ngettext(
-                        "{number} broken picture currently in cache",
-                        "{number} broken pictures currently in cache",
-                        0
-                    ).format(number=0)
+        def _update_broken_label(box):
+            label = _label_for_box(box)
+            if not label:
+                return
+            number = count_broken_pictures_in_cache()
+            label.set_label(
+                gettext.ngettext(
+                    f"{number} broken picture currently in cache",
+                    f"{number} broken pictures currently in cache",
+                    number
                 )
+            )
 
+        number = 0
+        label = gettext.ngettext(
+                f"{number} broken picture currently in cache",
+                f"{number} broken pictures currently in cache",
+                number
+        )
         prefbox = self.make_button_row(
             label,
             _("Clear broken pictures"),
@@ -673,22 +773,26 @@ as it is the more classical way of doing so.
             "destructive-action",
             _update_broken_label
         )
+        _start_in_thread(_update_broken_label, prefbox)
         cachebox.pack_start(prefbox, False, False, 0)
 
-        def _update_empty_label(sibling):
-            if isinstance(sibling, Gtk.Label):
-                sibling.set_label(
-                    _("Picture cache use {size}").format(size="0.0 ko")
-                )
+        def _update_cache_label(box):
+            label = _label_for_box(box)
+            if not label:
+                return
+            size = compute_cache_size()
+            label.set_label(_(f"Picture cache use {size}"))
 
+        size = "0.0 ko"
         prefbox = self.make_button_row(
-            _("Picture cache use {size}").format(size=compute_cache_size()),
+            _(f"Picture cache use {size}"),
             _("Clear picture cache"),
             on_cleanup_cache,
             "destructive-action",
-            _update_empty_label,
+            _update_cache_label,
             True
         )
+        _start_in_thread(_update_cache_label, prefbox)
         cachebox.pack_start(prefbox, False, False, 0)
 
         daemonbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)

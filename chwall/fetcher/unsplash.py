@@ -1,5 +1,4 @@
-import requests
-
+from chwall.fetcher import requests_get
 from chwall.utils import get_logger
 
 import gettext
@@ -24,16 +23,18 @@ def fetch_pictures(config):
     width = us_conf.get("width", 1600)
     nb_pic = us_conf.get("count", 10)
     ct_fltr = us_conf.get("content_filter", "low")
-    params = ["count=%d" % nb_pic, "content_filter=%s" % ct_fltr]
+    params = {
+        "client_id": client_id,
+        "count": nb_pic,
+        "content_filter": ct_fltr
+    }
     if "query" in us_conf:
-        params.append("query=" + us_conf["query"])
+        params["query"] = us_conf["query"]
     if "collections" in us_conf:
-        params.append("collections=" + ",".join(us_conf["collections"]))
+        params["collections"] = ",".join(us_conf["collections"])
     url = "https://api.unsplash.com/photos/random"
-    params.append("client_id=" + client_id)
     pictures = {}
-    final_uri = "{}?{}".format(url, "&".join(params))
-    data = requests.get(final_uri).json()
+    data = requests_get(url, params=params).json()
     for p in data:
         px = "{u}&w={w}".format(u=p["urls"]["raw"], w=width)
         if p["description"] is None:
@@ -46,8 +47,7 @@ def fetch_pictures(config):
                 label = label[0:200] + "…"
         location = p.get("location", {}).get("title", "")
         if location is not None and location != "":
-            label = (_("{desc}, taken in {location}")
-                     .format(desc=label, location=location))
+            label = _(f"{label}, taken in {location}")
         pictures[px] = {
             "image": px,
             "description": label,
@@ -79,16 +79,11 @@ def preferences():
                 "default": "low",
                 "label": _("Content filtering")
             },
-            "access_key": {
-                "widget": "text",
-                "label": _("API access key")
-            },
+            "access_key": {"widget": "text"},
             "query": {
                 "widget": "text",
                 "label": _("Complementary query")
             },
-            "collections": {
-                "widget": "list"
-            }
+            "collections": {"widget": "list"}
         }
     }

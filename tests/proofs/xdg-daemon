@@ -1,6 +1,6 @@
 [Desktop Entry]
-Name=TEST DAEMON
-Comment=TEST DESC
+Name=Chwall Daemon
+Comment=Start Chwall Daemon
 Exec=/usr/bin/chwall-daemon
 Icon=chwall
 Terminal=false

@@ -1,6 +1,6 @@
 import re
 import time
-import requests
+from chwall.fetcher import requests_get
 
 
 def fetch_pictures(config):
@@ -12,7 +12,7 @@ def fetch_pictures(config):
             time.strftime("%y%m%d", time.localtime(curday)))
         # Go to yesterday
         curday = curday - 86400
-        data = requests.get(pic_page).text
+        data = requests_get(pic_page).text
         m = re.search("^<a href=\"(image/[0-9]{4}/.+)\">$",
                       data, re.MULTILINE)
         if m is None:

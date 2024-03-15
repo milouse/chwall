@@ -1,25 +1,21 @@
-import requests
-from lxml import html
 from xml.etree import ElementTree
+from chwall.fetcher import requests_get
 
 
 def fetch_pictures(config):
-    collecs = config.get("deviantart", {}).get("collections", [])
+    collecs = config.get("deviantart", {}).get("collections", ["colorful"])
     if len(collecs) == 0:
         return {}
     pictures = {}
     url = "https://backend.deviantart.com/rss.xml?type=deviation&q={}"
     for q in collecs:
-        data = ElementTree.fromstring(requests.get(url.format(q)).text)
+        data = ElementTree.fromstring(requests_get(url.format(q)).text)
         for item in data[0].findall("item"):
             title = item.find("title").text
-            author = item.find(
-                        "{http://search.yahoo.com/mrss/}credit").text
+            author = item.find("{http://search.yahoo.com/mrss/}credit").text
             pic_page = item.find("link").text
-            scrap = html.fromstring(requests.get(pic_page or "").text)
-            meta = scrap.xpath('//meta[@property="og:image"]')[0]
-            pic_data = meta.attrib.get("content").split("/v1/fill/")
-            pic_url = pic_data[0]
+            pic_url = item.find("{http://search.yahoo.com/mrss/}content")
+            pic_url = pic_url.attrib["url"]
             pictures[pic_url] = {
                 "image": pic_url,
                 "type": "Deviantart",
@@ -35,7 +31,8 @@ def preferences():
         "name": "Deviantart",
         "options": {
             "collections": {
-                "widget": "list"
+                "widget": "list",
+                "default": ["colorful"]
             }
         }
     }

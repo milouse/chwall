@@ -10,6 +10,7 @@ from PIL import Image, ImageFilter
 from importlib import import_module
 
 # chwall imports
+from chwall.fetcher import requests_get
 from chwall.utils import BASE_CACHE_PATH, get_screen_config, get_wall_config, \
                          get_logger, is_broken_picture
 
@@ -36,7 +37,11 @@ def build_wallpapers_list(config):
     for module_name in config["general"]["sources"]:
         try_again = 5
         ll = {}
-        m = import_module("chwall.fetcher.{}".format(module_name))
+        try:
+            m = import_module(f"chwall.fetcher.{module_name}")
+        except ModuleNotFoundError:
+            logger.warning(_(f"Fetcher {module_name} does not exist"))
+            continue
 
         while try_again > 0:
             logger.info(
@@ -63,8 +68,7 @@ def build_wallpapers_list(config):
                 try:
                     time.sleep(WAIT_ERROR)
                 except KeyboardInterrupt:
-                    logger.warning(_("Retry NOW to connect to {module}")
-                                   .format(module=module_name))
+                    logger.warning(_(f"Retry NOW to connect to {module_name}"))
             except KeyboardInterrupt:
                 logger.warning(_("Switch to next picture provider or exit"))
                 try_again = 0
@@ -79,21 +83,20 @@ def build_wallpapers_list(config):
 
 def filter_wallpapers_list(collecs):
     all_pics = list(collecs.keys())
-    try:
-        with open("{}/block_list.yml"
-                  .format(BASE_CACHE_PATH), "r") as f:
-            block_list = yaml.safe_load(f) or []
-    except FileNotFoundError:
-        block_list = []
+    block_list_file = f"{BASE_CACHE_PATH}/block_list.yml"
+    if not os.path.exists(block_list_file):
+        # Nothing to filter
+        return (all_pics, collecs)
+    block_list = []
+    with open(block_list_file, "r") as f:
+        block_list = yaml.safe_load(f) or []
     all_pics_copy = all_pics.copy()
-    for p in all_pics_copy:
-        if p not in block_list:
+    for picture in all_pics_copy:
+        if picture not in block_list:
             continue
-        logger.warning(
-            _("Remove {picture} as it's in block list").format(picture=p)
-        )
-        all_pics.remove(p)
-        collecs.pop(p)
+        logger.warning(_(f"Remove {picture} as it's in block list"))
+        all_pics.remove(picture)
+        collecs.pop(picture)
     return (all_pics, collecs)
 
 
@@ -102,7 +105,7 @@ def build_roadmap(config):
     all_pics = data[0]
     random.shuffle(all_pics)
     road_map = {"data": data[1], "pictures": all_pics, "history": []}
-    with open("{}/roadmap".format(BASE_CACHE_PATH), "w") as f:
+    with open(f"{BASE_CACHE_PATH}/roadmap", "w") as f:
         yaml.dump(road_map, f, explicit_start=True, default_flow_style=False)
 
 
@@ -131,10 +134,16 @@ def set_xfce_wallpaper(path):
                         "-p", zoom_line, "--set", "5"])
 
 
+def set_sway_wallpaper(path):
+    if path is None:
+        raise ChwallWallpaperSetError(_("No wallpaper path given"))
+    last_pic_path = f"{BASE_CACHE_PATH}/last_pic"
+    shutil.copy(path, last_pic_path)
+    subprocess.run(["swaymsg", "-q", f"output * bg '{path}' fill"])
+
+
 def prop_setting_error_str(desktop, prop):
-    return _(
-        "Error while setting {desktop} {prop} property"
-    ).format(desktop=desktop, prop=prop)
+    return _(f"Error while setting {desktop} {prop} property")
 
 
 def set_mate_wallpaper(path):
@@ -156,31 +165,31 @@ def set_gnome_wallpaper(path, where="background"):
     if path is None:
         raise ChwallWallpaperSetError(_("No wallpaper path given"))
 
-    def _format_prop_error(prop):
-        return prop_setting_error_str(
-            "gnome", "{where} {prop}".format(where=where, prop=prop)
-        )
     # Gnome 42 introduces a new background key for dark mode. We need to check
     # if this key is present before trying to set it. Also because we use the
     # same function to set screensaver background, which does not have a dark
     # mode (yet?)
     key_list = subprocess.run(
-        ["gsettings", "list-keys", "org.gnome.desktop.{}".format(where)],
+        ["gsettings", "list-keys", f"org.gnome.desktop.{where}"],
         capture_output=True, text=True).stdout.splitlines()
     picture_keys = ["picture-uri"]
     if "picture-uri-dark" in key_list:
         picture_keys.append("picture-uri-dark")
     for key in picture_keys:
         err = subprocess.run(
-            ["gsettings", "set", "org.gnome.desktop.{}".format(where),
-             key, "file://{}".format(path)]).returncode
+            ["gsettings", "set", f"org.gnome.desktop.{where}",
+             key, f"file://{path}"]).returncode
         if err == 1:
-            raise ChwallWallpaperSetError(_format_prop_error(key))
+            raise ChwallWallpaperSetError(
+                prop_setting_error_str("gnome", f"{where} {key}")
+            )
     err = subprocess.run(
-        ["gsettings", "set", "org.gnome.desktop.{}".format(where),
+        ["gsettings", "set", f"org.gnome.desktop.{where}",
          "picture-options", "zoom"]).returncode
     if err == 1:
-        raise ChwallWallpaperSetError(_format_prop_error("picture-options"))
+        raise ChwallWallpaperSetError(
+            prop_setting_error_str("gnome", f"{where} picture-options")
+        )
 
 
 def set_feh_wallpaper(path):
@@ -207,7 +216,7 @@ def set_mate_screensaver(path):
     err = subprocess.run(["gsettings", "set", "org.mate.screensaver",
                           "picture-filename", path]).returncode
     if err == 1:
-        msg = _("screensaver {prop}".format(prop="picture-filename"))
+        msg = _("screensaver {prop}").format(prop="picture-filename")
         raise ChwallWallpaperSetError(prop_setting_error_str("mate", msg))
 
 
@@ -222,28 +231,25 @@ def blur_picture(path, ld_path, radius):
             # lost by any picture operation.
             orig_format = im.format
             if im.mode != "RGB":
-                logger.warning(
-                    _("Converting non RGB picture {picture}")
-                    .format(picture=path)
-                )
+                logger.warning(_(f"Converting non RGB picture {path}"))
                 im = im.convert("RGB")
             im_blurred = im.filter(ImageFilter.GaussianBlur(radius))
             im_blurred.save(ld_path, orig_format)
     except ValueError as e:
-        logger.error("{}: {}".format(path, e))
+        logger.error(f"{path}: {e}")
         # Copy original image if blurring fails.
         shutil.copy(path, ld_path)
 
 
 def set_wallpaper(path, config):
     desktop = config["general"].get("desktop", "gnome")
-    wall_method = "set_{}_wallpaper".format(desktop)
+    wall_method = f"set_{desktop}_wallpaper"
     if wall_method in globals():
         globals()[wall_method](path)
     else:
         set_gnome_wallpaper(path)
     shared_path = config["general"].get("shared", {}).get("path")
-    screensaver_method = "set_{}_screensaver".format(desktop)
+    screensaver_method = f"set_{desktop}_screensaver"
     if screensaver_method in globals():
         globals()[screensaver_method](shared_path or path)
     if shared_path is not None and shared_path != "":
@@ -261,7 +267,7 @@ def fetch_wallpaper(wp_data):
     pic_file = current_wall[4]
 
     def _write_current_wallpaper_info(current_wall):
-        with open("{}/current_wallpaper".format(BASE_CACHE_PATH), "w") as f:
+        with open(f"{BASE_CACHE_PATH}/current_wallpaper", "w") as f:
             for line in current_wall:
                 f.write(line + "\n")
 
@@ -272,7 +278,7 @@ def fetch_wallpaper(wp_data):
     try_again = 5
     while try_again > 0:
         try:
-            pic_data = requests.get(current_wall[0]).content
+            pic_data = requests_get(current_wall[0]).content
             with open(pic_file, "wb") as f:
                 f.write(pic_data)
             break
@@ -302,22 +308,22 @@ def fetch_wallpaper(wp_data):
         os.unlink(pic_file)
         return None, None
 
-    # Now check file with common placeholder, like broken image on reddit
-    if is_broken_picture(pic_file):
-        # Remove useless picture
-        os.unlink(pic_file)
-        # Block it
-        _write_current_wallpaper_info(current_wall)
-        block_wallpaper()
-        # Pick next
-        return "next", None
-
     _write_current_wallpaper_info(current_wall)
-    return pic_file, current_wall[0]
+
+    # Now check file with common placeholder, like broken image on reddit
+    if not is_broken_picture(pic_file):
+        # Everything is good
+        return pic_file, current_wall[0]
+
+    # Block it (removal of the useless picture will be part of the
+    # blocking process)
+    block_wallpaper()
+    # Pick next
+    return "next", None
 
 
 def pick_wallpaper(config, backward=False, guard=False):
-    road_map = "{}/roadmap".format(BASE_CACHE_PATH)
+    road_map = f"{BASE_CACHE_PATH}/roadmap"
     if not os.path.exists(road_map):
         build_roadmap(config)
     with open(road_map, "r") as f:
@@ -334,7 +340,7 @@ def pick_wallpaper(config, backward=False, guard=False):
                   "caused by a temporarily network error. Please "
                   "try again later.")
             )
-            return None
+            return
         # List is empty. Maybe it was the last picture of the current list?
         # Thus, try again now. Backward is always false because at this point,
         # something went wrong and we should start over.
@@ -357,7 +363,7 @@ def pick_wallpaper(config, backward=False, guard=False):
               "caused by a temporarily network error. Please try again "
               "later.")
         )
-        return None
+        return
     if lp == "next":
         # fetch_wallpaper already clean up thing, thus only return a new
         # pick_wallpaper call.
@@ -378,7 +384,7 @@ def pick_wallpaper(config, backward=False, guard=False):
 
 
 def remove_wallpaper_from_roadmap(wp):
-    road_map = "{}/roadmap".format(BASE_CACHE_PATH)
+    road_map = f"{BASE_CACHE_PATH}/roadmap"
     with open(road_map, "r") as f:
         data = yaml.safe_load(f)
     if wp in data.get("pictures", []):
@@ -396,18 +402,14 @@ def remove_wallpaper_from_roadmap(wp):
 
 
 def block_wallpaper():
-    try:
-        with open("{}/block_list.yml"
-                  .format(BASE_CACHE_PATH), "r") as f:
+    block_list = []
+    block_list_file = f"{BASE_CACHE_PATH}/block_list.yml"
+    if os.path.exists(block_list_file):
+        with open(block_list_file, "r") as f:
             block_list = yaml.safe_load(f) or []
-    except FileNotFoundError:
-        block_list = []
-    with open("{}/current_wallpaper"
-              .format(BASE_CACHE_PATH), "r") as f:
-        blocked_pix = f.readlines()[0].strip()
+    blocked_pix = current_wallpaper_info()["remote-picture-uri"]
     block_list.append(blocked_pix)
-    with open("{}/block_list.yml"
-              .format(BASE_CACHE_PATH), "w") as f:
+    with open(f"{BASE_CACHE_PATH}/block_list.yml", "w") as f:
         yaml.dump(block_list, f, explicit_start=True,
                   default_flow_style=False)
     remove_wallpaper_from_roadmap(blocked_pix)
@@ -431,9 +433,10 @@ def favorite_wallpaper_path(current_file, config):
 
 
 def favorite_wallpaper(config):
-    with open("{}/current_wallpaper"
-              .format(BASE_CACHE_PATH), "r") as f:
-        curfile = f.readlines()[4].strip()
+    current_wall = current_wallpaper_info()
+    curfile = current_wall["local-picture-path"]
+    if curfile == "":
+        return False
     try:
         target_file = favorite_wallpaper_path(curfile, config)
     except PermissionError as e:
@@ -514,7 +517,7 @@ def current_wallpaper_info():
         "type": "",
         "local-picture-path": ""
     }
-    curfile = "{}/current_wallpaper".format(BASE_CACHE_PATH)
+    curfile = f"{BASE_CACHE_PATH}/current_wallpaper"
     if not os.path.isfile(curfile):
         return wallinfo
     with open(curfile, "r") as f:

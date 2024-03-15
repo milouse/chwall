@@ -9,60 +9,62 @@ from chwall.client import ChwallClient
 original_exists = os.path.exists
 def exists_side_effect(path):
     if path.startswith("/usr/bin/chwall"):
-        return True
+        return False
     return original_exists(path)
 
 
 @mock.patch("os.path.exists", side_effect=exists_side_effect)
 @mock.patch("sys.stdout", new_callable=StringIO)
-class TestDesktopFiles(TestCase):
+class TestLocalDesktopFiles(TestCase):
     def setUp(self):
         self.maxDiff = None
         # Force english locale
         os.environ["LANG"] = "en_US"
 
-    def test_01_create_desktop_file(self, mock_stdout, _mock_path):
-        with open("tests/proofs/app-desktop", "r") as f:
-            result = f.read()
+    def test_01_create_local_desktop_file(self, mock_stdout, _mock_path):
+        with open("tests/proofs/local-app-desktop", "r") as f:
+            result = f.read().format(path=os.getcwd())
         sfm = ServiceFileManager()
         sfm.generate_desktop_file("./locale", "print")
         self.assertEqual(mock_stdout.getvalue(), result)
 
-    def test_02_create_desktop_file_from_client(self, mock_stdout, _mock_path):
-        with open("tests/proofs/app-desktop", "r") as f:
-            result = f.read()
+    def test_02_create_local_desktop_file_from_client(self, mock_stdout, _mock_path):
+        with open("tests/proofs/local-app-desktop", "r") as f:
+            result = f.read().format(path=os.getcwd())
         try:
             ChwallClient(["desktop", "print", "./locale"])
         except SystemExit:
             pass
         self.assertEqual(mock_stdout.getvalue(), result)
 
-    def test_03_create_systemd_service_file(self, mock_stdout, _mock_path):
-        with open("tests/proofs/systemd-unit", "r") as f:
-            result = f.read()
+    def test_03_create_local_systemd_service_file(self, mock_stdout, _mock_path):
+        with open("tests/proofs/local-systemd-unit", "r") as f:
+            result = f.read().format(path=os.getcwd())
         sfm = ServiceFileManager()
         sfm.systemd_service_file()
         self.assertEqual(mock_stdout.getvalue(), result)
 
-    def test_04_create_systemd_service_file_from_client(self, mock_stdout, _mock_path):
-        with open("tests/proofs/systemd-unit", "r") as f:
-            result = f.read()
+    def test_04_create_local_systemd_service_file_from_client(
+            self, mock_stdout, _mock_path
+    ):
+        with open("tests/proofs/local-systemd-unit", "r") as f:
+            result = f.read().format(path=os.getcwd())
         try:
             ChwallClient(["systemd"])
         except SystemExit:
             pass
         self.assertEqual(mock_stdout.getvalue(), result)
 
-    def test_05_create_xdg_autostart_icon_file(self, mock_stdout, _mock_path):
-        with open("tests/proofs/xdg-icon", "r") as f:
-            result = f.read()
+    def test_05_create_local_xdg_autostart_icon_file(self, mock_stdout, _mock_path):
+        with open("tests/proofs/local-xdg-icon", "r") as f:
+            result = f.read().format(path=os.getcwd())
         sfm = ServiceFileManager()
         sfm.xdg_autostart_file("icon")
         self.assertEqual(mock_stdout.getvalue(), result)
 
-    def test_06_create_xdg_autostart_daemon_file(self, mock_stdout, _mock_path):
-        with open("tests/proofs/xdg-daemon", "r") as f:
-            result = f.read()
+    def test_06_create_local_xdg_autostart_daemon_file(self, mock_stdout, _mock_path):
+        with open("tests/proofs/local-xdg-daemon", "r") as f:
+            result = f.read().format(path=os.getcwd())
         sfm = ServiceFileManager()
         sfm.xdg_autostart_file("daemon")
         self.assertEqual(mock_stdout.getvalue(), result)

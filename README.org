@@ -1,7 +1,8 @@
 #+title: README
 #+author: Étienne Deparis
 
-Chwall [[https://en.wiktionary.org/wiki/Appendix:French_pronunciation][{ʃwal}]] is tiny automatic wallpaper changer, written in python.
+Chwall [[https://en.wiktionary.org/wiki/Appendix:French_pronunciation][{ʃwal}]] is tiny automatic wallpaper changer for your Linux
+desktop, written in python.
 
 It's name is the contraction of /change wallpaper/, which may be
 pronounced as a twisted version of /cheval/, which means /horse/ in
@@ -16,13 +17,19 @@ Chwall is currently able to retrieve pictures from the following
 sources:
 
 - your local folders
-- bing pictures of the day
-- National Geographic pictures of the day
+- Bing pictures of the day
 - NASA astronomical pictures of the day
-- deviantart RSS feeds
-- Unsplash random API (requires a free account to access their API)
+- Deviantart RSS feeds
+- Unsplash (requires a free API key)
+- Pexels (requires a free API key)
+- Muzei
 - Reddit
 - Smashing Magazine monthly wallpaper collection
+- WikiArt
+- Wallhaven
+
+It currently supports some major desktop environments (Gnome, XFCE,
+Mate) and light window managers (Sway and anything accepting feh).
 
 * Install
 
@@ -57,17 +64,18 @@ There is also two AUR packages for archlinux:
 
 * Usage
 
-Chwall is organized around 4 components:
+Chwall is organized around 5 components:
 
 - chwall-app
 - chwall-icon
+- chwall-indicator
 - chwall
 - chwall-daemon
 
-The ~chwall-app~ and ~chwall-icon~ are alternative graphical interface
-to the simple ~chwall~ command line client. These 3 programs are here to
-drive the ~chwall-daemon~ component, which is responsible to change the
-wallpaper at given interval of time.
+The ~chwall-app~, ~chwall-icon~ and ~chwall-indicator~ are alternative
+graphical interface to the simple ~chwall~ command line client. These 3
+programs are here to drive the ~chwall-daemon~ component, which is
+responsible to change the wallpaper at given interval of time.
 
 After a system-wide installation, you should find a icon among your
 other programs, which starts ~chwall-app~. From there, you'll be able to
@@ -75,7 +83,8 @@ access the preferences window to customize the behavior of chwall.
 
 You can also interact with the daemon through the system tray icon
 ~chwall-icon~, which also let you customize Chwall with the preferences
-window.
+window. ~chwall-indicator~ is also available as a more modern tray icon
+alternative (~chwall-icon~ does not work under wayland).
 
 In the case, where you want a totally headless experience, you should
 try the simple ~chwall~ command line client. If you don't want (or
