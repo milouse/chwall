@@ -10,6 +10,12 @@ original_exists = os.path.exists
 def exists_side_effect(path):
     if path.startswith("/usr/bin/chwall"):
         return False
+    elif path.endswith("/chwall.yml"):
+        # Force default config to be used
+        return False
+    elif path.endswith("/chwall/pictures"):
+        # Do not force create cache folders
+        return True
     return original_exists(path)
 
 

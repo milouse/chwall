@@ -116,10 +116,10 @@ def migrate_config(config):
 
 def read_config():
     config_file = os.path.join(xdg_config_home, "chwall.yml")
-    try:
+    if os.path.exists(config_file):
         with open(config_file, "r") as f:
             config = yaml.safe_load(f) or {}
-    except FileNotFoundError:
+    else:
         config = {}
     pic_cache = f"{BASE_CACHE_PATH}/pictures"
     if not os.path.exists(pic_cache):
