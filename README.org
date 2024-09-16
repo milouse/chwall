@@ -1,5 +1,5 @@
 #+title: README
-#+author: Étienne Deparis
+#+author: Étienne Pflieger
 
 Chwall [[https://en.wiktionary.org/wiki/Appendix:French_pronunciation][{ʃwal}]] is tiny automatic wallpaper changer for your Linux
 desktop, written in python.

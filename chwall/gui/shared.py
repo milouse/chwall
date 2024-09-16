@@ -2,7 +2,7 @@ import os
 import threading
 import subprocess
 
-from chwall import __version__
+from chwall import __version__, __author__, __email__
 from chwall.daemon import notify_daemon_if_any, notify_app_if_any, daemon_info
 from chwall.utils import ServiceFileManager, read_config
 from chwall.wallpaper import block_wallpaper, pick_wallpaper, \
@@ -156,7 +156,7 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
 0. You just DO WHAT THE FUCK YOU WANT TO.
 """)
-        about_dialog.set_authors(["Étienne Deparis <etienne@depar.is>"])
+        about_dialog.set_authors([f"{__author__} <{__email__}>"])
         # about_dialog.set_translator_credits(_("translator-credits"))
         about_dialog.run()
         about_dialog.destroy()
