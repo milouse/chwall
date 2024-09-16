@@ -72,10 +72,10 @@ $(datarootdir)/icons/hicolor/%/apps/chwall_mono.png: data/icon_mono_%.png
 	install -D -m644 $< $@
 
 data/icon_%.png:
-	convert data/icon_800.png -resize $(@:data/icon_%.png=%) $@
+	gm convert data/icon_800.png -resize $(@:data/icon_%.png=%) $@
 
 data/icon_mono_%.png:
-	convert data/icon_mono_800.png -resize $(@:data/icon_mono_%.png=%) $@
+	gm convert data/icon_mono_800.png -resize $(@:data/icon_mono_%.png=%) $@
 
 locale/chwall.pot:
 	mkdir -p locale
