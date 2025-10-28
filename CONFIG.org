@@ -21,6 +21,10 @@ objects:
 
 ~general~ may contains the following subkeys:
 
+- ~desktop~ specifies which desktop environment or window manager you are
+  using. Supported values are: ~gnome~, ~xfce~, ~mate~, ~plasma~ (for KDE
+  Plasma), ~sway~ and ~feh~ (for lightweight window managers). If not
+  specified, ~gnome~ is used as default.
 - ~shared~, which is an object containing at least another subkey:
   ~path~. This must be the path to a writable file, which will always
   contains the last set wallpaper. This is usefull to display the same
@@ -37,6 +41,7 @@ objects:
 #+begin_src yaml
 ---
 general:
+  desktop: gnome
   shared:
     path: /var/cache/last-wall
   sources:

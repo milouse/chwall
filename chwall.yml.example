@@ -8,6 +8,8 @@ bing:
   - de-DE
   - ja-JP
 general:
+  # Desktop environment: gnome, xfce, mate, sway, feh, plasma
+  desktop: gnome
   shared:
     path: /var/cache/last-wall
   sources:
