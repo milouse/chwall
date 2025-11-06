@@ -102,7 +102,7 @@ unsplash:
 *** Number of pictures to fetch
 
 The ~count~ subkey let you choose how many pictures you want to retrieve
-from Unsplash. You are limited to 30 by the API, and the default is 20.
+from Unsplash. You are limited to 30 by the API and the default is 20.
 
 #+begin_src yaml
 ---

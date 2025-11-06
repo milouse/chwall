@@ -502,7 +502,7 @@ def current_wallpaper_info():
         "local-picture-path": ""
     }
 
-    That way, a complete dictionnary is **always** returned, and only its inner
+    That way, a complete dictionnary is **always** returned and only its inner
     value may be ``""``.
 
 

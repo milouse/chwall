@@ -1,5 +1,5 @@
 vext
 
-# installs dependencies from ./setup.py, and the package itself,
+# installs dependencies from ./setup.py and the package itself,
 # in editable mode
 -e .
