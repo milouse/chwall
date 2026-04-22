@@ -1,0 +1,43 @@
+[build-system]
+requires = ["flit_core >= 3.12.0, <4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "chwall"
+dynamic = ["version", "description"]
+authors = [
+  { name="Étienne Pflieger", email="etienne@pflieger.bzh" },
+]
+readme = "README.org"
+keywords = ["wallpaper"]
+license = "WTFPL"
+license-files = ["LICENSE"]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Environment :: Console",
+  "Environment :: X11 Applications :: GTK",
+  "Intended Audience :: End Users/Desktop",
+  "Programming Language :: Python :: 3",
+  "Topic :: Desktop Environment",
+]
+requires-python = ">= 3.8"
+dependencies = [
+  "cssselect",
+  "lxml",
+  "Pillow",
+  "pyxdg",
+  "pyyaml",
+  "requests",
+]
+
+[project.urls]
+Homepage = "https://git.umaneti.net/chwall/about/"
+
+[project.scripts]
+chwall = "chwall.client:ChwallClient"
+chwall-daemon = "chwall.daemon:start_daemon"
+
+[project.gui-scripts]
+chwall-app = "chwall.gui.app:ChwallApp"
+chwall-icon = "chwall.gui.icon:ChwallIcon"
+chwall-indicator = "chwall.gui.indicator:ChwallIndicator"

@@ -1,7 +1,6 @@
 DESTDIR =
 
 datarootdir = $(DESTDIR)/usr/share
-bindir = $(DESTDIR)/usr/bin
 
 VERSION = $(shell python -c "from chwall import __version__; print(__version__)")
 
@@ -45,6 +44,7 @@ clean:
 	rm -f $(ICON_FILES) $(MO_FILES) chwall-app.desktop
 	rm -rf build dist chwall.egg-info
 
+bindir = $(DESTDIR)/usr/bin
 PY_SITE = $(DESTDIR)$(shell python -c "import site; print(site.getsitepackages()[0])")
 uninstall:
 	rm -rf $(PY_SITE)/chwall $(PY_SITE)/chwall-*.dist-info $(PY_SITE)/chwall-*.egg-info
@@ -63,7 +63,7 @@ chwall-app.desktop: $(MO_FILES)
 		python -B -m chwall.client desktop chwall-app.desktop
 
 dist/chwall-$(VERSION)-py3-none-any.whl:
-	python -m build --no-isolation
+	python -m build --wheel --no-isolation
 
 $(datarootdir)/icons/hicolor/%/apps/chwall.png: data/icon_%.png
 	install -d -m755 $(@:%/chwall.png=%)
