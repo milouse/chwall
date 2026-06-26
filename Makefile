@@ -1,11 +1,12 @@
 DESTDIR =
 
 datarootdir = $(DESTDIR)/usr/share
-bindir = $(DESTDIR)/usr/bin
 
 VERSION = $(shell python -c "from chwall import __version__; print(__version__)")
 
 ICON_SIZE  = 128 64 48 32 24 16
+ICON_FILES = $(foreach z,$(ICON_SIZE),data/icon_$(z).png) \
+	$(foreach z,$(ICON_SIZE),data/icon_mono_$(z).png)
 DEST_ICONS = $(foreach z,$(ICON_SIZE),$(datarootdir)/icons/hicolor/$(z)x$(z)/apps/chwall.png) \
 	$(foreach z,$(ICON_SIZE),$(datarootdir)/icons/hicolor/$(z)x$(z)/apps/chwall_mono.png)
 
@@ -18,13 +19,10 @@ TRANSLATABLE = chwall/gui/*.py chwall/fetcher/*.py chwall/utils.py \
 
 .PHONY: build clean install lang package uninstall
 
-.INTERMEDIATE: chwall-app.desktop $(MO_FILES)
+build: $(ICON_FILES) $(MO_FILES) chwall-app.desktop dist/chwall-$(VERSION)-py3-none-any.whl
 
-build: clean
-	python -m build --wheel --no-isolation
+package: build $(DEST_ICONS) $(DEST_MO)
 	python -m installer --destdir="$(DESTDIR)/" dist/chwall-$(VERSION)-py3-none-any.whl
-
-package: build $(DEST_ICONS) $(DEST_MO) chwall-app.desktop
 	install -d -m755 $(datarootdir)/applications
 	install -d -m755 $(datarootdir)/licenses/chwall
 	install -d -m755 $(datarootdir)/bash-completion/completions
@@ -43,9 +41,10 @@ clean:
 		xargs -0r rm -r
 	find $(PWD) -type d -empty ! -path "*/.git/*" -print0 | \
 		xargs -0r rmdir -p --ignore-fail-on-non-empty
-	rm -f $(MO_FILES) chwall-app.desktop
+	rm -f $(ICON_FILES) $(MO_FILES) chwall-app.desktop
 	rm -rf build dist chwall.egg-info
 
+bindir = $(DESTDIR)/usr/bin
 PY_SITE = $(DESTDIR)$(shell python -c "import site; print(site.getsitepackages()[0])")
 uninstall:
 	rm -rf $(PY_SITE)/chwall $(PY_SITE)/chwall-*.dist-info $(PY_SITE)/chwall-*.egg-info
@@ -63,6 +62,9 @@ chwall-app.desktop: $(MO_FILES)
 	CHWALL_LOCALE_DIR=./locale \
 		python -B -m chwall.client desktop chwall-app.desktop
 
+dist/chwall-$(VERSION)-py3-none-any.whl:
+	python -m build --wheel --no-isolation
+
 $(datarootdir)/icons/hicolor/%/apps/chwall.png: data/icon_%.png
 	install -d -m755 $(@:%/chwall.png=%)
 	install -D -m644 $< $@
@@ -72,10 +74,10 @@ $(datarootdir)/icons/hicolor/%/apps/chwall_mono.png: data/icon_mono_%.png
 	install -D -m644 $< $@
 
 data/icon_%.png:
-	convert data/icon_800.png -resize $(@:data/icon_%.png=%) $@
+	gm convert data/icon_800.png -resize $(@:data/icon_%.png=%) $@
 
 data/icon_mono_%.png:
-	convert data/icon_mono_800.png -resize $(@:data/icon_mono_%.png=%) $@
+	gm convert data/icon_mono_800.png -resize $(@:data/icon_mono_%.png=%) $@
 
 locale/chwall.pot:
 	mkdir -p locale

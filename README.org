@@ -1,5 +1,5 @@
 #+title: README
-#+author: Étienne Deparis
+#+author: Étienne Pflieger
 
 Chwall [[https://en.wiktionary.org/wiki/Appendix:French_pronunciation][{ʃwal}]] is tiny automatic wallpaper changer for your Linux
 desktop, written in python.
@@ -29,30 +29,13 @@ sources:
 - Wallhaven
 
 It currently supports some major desktop environments (Gnome, XFCE,
-Mate) and light window managers (Sway and anything accepting feh).
+Mate, KDE Plasma), Sway and anything accepting feh.
 
 * Install
-
-** Locally in a virtualenv
 
 You must have previously installed GTK gi python library. This is very
 often already packaged for your distribution, in ~python-gobject~ on
 Archlinux or ~python3-gi~ for Debian based distributions.
-
-#+begin_src bash
-python setup.py install
-pip install vext
-pip install vext.gi
-#+end_src
-
-or, maybe better for a development environment:
-
-#+begin_src shell
-pip install -r requirements.txt
-pip install vext.gi
-#+end_src
-
-** System-wide
 
 #+begin_src shell
 sudo make install
